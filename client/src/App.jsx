@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-hello
+<h1>hello</h1> 
     </>
   )
 }
