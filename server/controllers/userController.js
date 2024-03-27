@@ -1,5 +1,5 @@
 const User = require("../models/EmpDetails");
-const catchAsync = require("../utils/appError");
+const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
 const { sendTokensAndCookies } = require("./helperFunction");
@@ -10,9 +10,8 @@ exports.login = catchAsync(async (req, res, next) => {
   const { userName, password } = req.body;
 
   if (!userName || !password) {
-    return next(
-      new AppError("Please provide both userName and password.", 400)
-    );
+    return next(new AppError("Please provide both userName and password.", 400));
+
   }
 
   const user = await User.findOne({ userName, empStatus: "Active" });
