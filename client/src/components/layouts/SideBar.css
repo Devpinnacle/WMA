@@ -38,20 +38,20 @@
     color: #ffffff;
     transition: background-color 300ms ease-in-out;
 }
-.nav-content{
+
+.nav-content {
+    /* position: absolute; */
     width: 114px;
-height: 28px;
-gap: 0px;
-opacity: 0px;
-
-}
-.dashboardIcon {
-    width: 24px;
-    height: 24px;
-    margin-left: 2px;
+    height: 28px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: right;
+    margin: 4px;
+    /* top: 114px; */
 }
 
-.navigation-tabs:hover {
+/* .navigation-tabs:hover {
     background-color: #ffffff;
     color: black;
-}
+} */
