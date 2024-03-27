@@ -12,17 +12,13 @@
     width: 25rem;
     height: 23rem;
     bottom: 4rem;
-    right: 6rem;
-    font-family: DM Sans;
-    /* font-size: 30px; */
+    right: 6rem; 
     font-weight: 500;
-    line-height: 28px;
     color: white;
 }
 
 .title {
     text-align: center;
-    font-family: DM Sans;
     font-size: 40px;
 }
 
@@ -84,7 +80,6 @@
         height: 23rem;
         bottom: 3rem;
         right: 4rem;
-        font-family: DM Sans;
         font-size: 30px;
         font-weight: 500;
         color: rgb(255, 252, 252);
@@ -98,7 +93,7 @@
 
     .title {
         text-align: center;
-        font-family: DM Sans;
+        font-family:"DM Sans";
         font-size: 30px;
         margin-left: 130px;
     }
