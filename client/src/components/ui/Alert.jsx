@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import ReactDOM from "react-dom";
-
-import { clearAlert } from "../../redux/slices/userSlice";
 import "./Alert.css";
+import { clearAlert } from "../../redux/slice/userSlice";
 
 export default function Alert({ type, msg }) {
   const [showAlert, setShowAlert] = useState(false);

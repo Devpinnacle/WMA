@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../redux/api/userApi";
 import { setAlert } from "../redux/slice/userSlice";
-import "./Style.css"
+
 const Login = () => {
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const dispatch = useDispatch();
   const [login, { error, data }] = useLoginMutation();
 
-  useEffect(()=>{
-    if(error)dispatch(setAlert({type:"error",msg:error}));
+  useEffect(() => {
+    if (error) dispatch(setAlert({ type: "error", msg: error }));
 
-    if(data?.status==="SUCCESS"){
-        dispatch(setAlert({type:"success",msg:"Welcome"}))
+    if (data?.status === "SUCCESS") {
+      dispatch(setAlert({ type: "success", msg: "Welcome" }));
     }
-  },[error,dispatch,data]);
+  }, [error, dispatch, data]);
 
   const inputHandler = (e) => {
     setFormData((prevState) => ({

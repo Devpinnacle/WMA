@@ -1,12 +1,17 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { useSelector } from "react-redux";
+import Alert from "../ui/Alert";
+import { Outlet } from "react-router-dom";
 
 const Root = () => {
-    const { alertType, alertMsg } = useSelector((state) => state.user);
-    
-  return (
-    <div>Root</div>
-  )
-}
+  const { alertType, alertMsg } = useSelector((state) => state.user);
 
-export default Root
+  return (
+    <>
+      <Alert type={alertType} msg={alertMsg} />
+      <Outlet />
+    </>
+  );
+};
+
+export default Root;

@@ -16,27 +16,30 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
+          console.log("accessToken", data.accessToken)
           localStorage.setItem("accessToken", data.accessToken);
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
             })
           );
-          obj.dispatch(userApi.util.invalidateTags(["me"]));
+          console.log("me.....")
+          obj.dispatch(userApi.util.invalidateTags([{type:'me'}]));
         } catch (error) {
           console.error("Error....", error);
         }
       },
     }),
-    
+
     getMe: builder.query({
-      providesTags: () => [{ type: "me" }],
+      providesTags: () => [{ type: 'me' }],
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
       async onQueryStarted(args, obj) {
         try {
+          console.log("me here")
           const { data } = await obj.queryFulfilled;
           console.log("data is here", data.data.user);
           obj.dispatch(getUser(data.data.user));
@@ -46,16 +49,7 @@ export const userApi = createApi({
       },
     }),
 
-    createUser: builder.mutation({
-      invalidatesTags: () => [{ type: "allUsers" }],
-      query: (fromData) => ({
-        url: "/user",
-        method: "POST",
-        body: fromData,
-      }),
-    }),
   }),
 });
 
-export const { useLoginMutation, useCreateUserMutation, useGetMeQuery } =
-  userApi;
+export const { useLoginMutation, useGetMeQuery } = userApi;
