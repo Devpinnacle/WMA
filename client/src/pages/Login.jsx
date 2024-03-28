@@ -38,11 +38,13 @@ const Login = () => {
           <label htmlFor="username">Username*</label>
           <div className="form__input">
             <input
+              className="input-box"
+              required
               type="username"
               id="username"
               name="userName"
               onChange={inputHandler}
-              required
+              value={formData.userName}
             />
           </div>
         </div>
@@ -50,12 +52,13 @@ const Login = () => {
           <label htmlFor="password">Password*</label>
           <div className="form__input">
             <input
+              required
               className="input-box"
               type="password"
               id="password"
               name="password"
               onChange={inputHandler}
-              required
+              value={formData.password}
             />
           </div>
         </div>

@@ -32,6 +32,10 @@
     gap: 0.5rem;
 }
 
+.input-box{
+    color:black;
+}
+
 .login-input .form__input{
     margin-bottom:2.5rem;
     font-size:inherit;
