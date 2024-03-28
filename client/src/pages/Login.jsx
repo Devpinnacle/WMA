@@ -33,11 +33,11 @@ const Login = () => {
     <div className="login-container">
       <form className="login-form" onSubmit={submitHandler}>
         <h2 className="title">LOG IN</h2>
-        <div className="username-input">
+        
+        <div className="login-input">
           <label htmlFor="username">Username*</label>
-          <div className="form-input">
+          <div className="form__input">
             <input
-              className="input-box"
               type="username"
               id="username"
               name="userName"
@@ -46,9 +46,9 @@ const Login = () => {
             />
           </div>
         </div>
-        <div className="password-input">
+        <div className="login-input">
           <label htmlFor="password">Password*</label>
-          <div className="form-input">
+          <div className="form__input">
             <input
               className="input-box"
               type="password"
@@ -60,7 +60,7 @@ const Login = () => {
           </div>
         </div>
         <div className="flex-center">
-          <button className="btn-login">Log in</button>
+          <button className="btn-login flex-center">Log in</button>
         </div>
       </form>
     </div>
