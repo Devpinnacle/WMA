@@ -11,6 +11,8 @@ const path = require("path");
 
 const AppError = require("./utils/appError");
 
+const userRoutes=require("./routes/userRoutes")
+
 //* Start express app *******************************************************************
 
 const app = express();
@@ -70,6 +72,8 @@ app.use(compression());
 //* Routes *********************************************************
 
 app.get("/", (req, res) => res.send("Server working!"));
+
+app.use("/api/v1/user",userRoutes);
 
 //* Error Middleware ***********************************************
 

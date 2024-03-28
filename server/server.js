@@ -13,7 +13,7 @@ const app = require("./app");
 //* DB Connection **************************************************
 mongoose
   .connect(process.env.MONGO_URI)
-  .then((conn) => console.log(`MongoDB connected: ${conn.connection.host}`));
+  .then((conn) => console.log(`MongoDB connected: ${process.env.MONGO_URI}`));
 
 //* Start server ***************************************************
 const port = process.env.PORT || 3000;
