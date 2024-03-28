@@ -1,0 +1,31 @@
+.sidebar-top-links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.2rem;
+    padding-left: 1rem;
+    font-size: 1.6rem;
+}
+
+.top-link-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    padding: 0.4rem 0.5rem;
+    border-radius: 8px;
+    fill: var(--text-white-color);
+    color: var(--text-white-color);
+}
+
+.top-link-item:hover {
+    background-color: #f2f5ff;
+    fill: var(--text-black-color);
+    color: var(--text-black-color);
+}
+
+.top-link-item-active {
+    background-color: var(--btn-hovered-color) !important;
+    fill: var(--text-black-color);
+    color: var(--text-black-color);
+}
