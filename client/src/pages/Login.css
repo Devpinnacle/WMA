@@ -54,7 +54,7 @@
 @media only screen and (max-width: 35em) {
     /* 35em = 560px */
     .login-form {
-      background-color: var(--text-white-color);
+      background-color:#3D405B;
       box-shadow: none;
       width: 100%;
       padding: 5rem;
