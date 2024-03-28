@@ -6,16 +6,21 @@ import { clearAlert } from "../../redux/slice/userSlice";
 
 export default function Alert({ type, msg }) {
   const [showAlert, setShowAlert] = useState(false);
+  const [alertClass, setAlertClass] = useState("");
   const dispatch = useDispatch();
-  console.log("entered Alert..........");
 
   useEffect(() => {
     if (type && msg) {
       setShowAlert(true);
+      setAlertClass("alert-enter");
+
       const timer = setTimeout(() => {
-        setShowAlert(false);
-        dispatch(clearAlert());
-      }, 3000);
+        setAlertClass("alert-exit");
+        setTimeout(()=>{
+          setShowAlert(false);
+          dispatch(clearAlert());
+        },300);
+      }, 2500);
 
       return () => clearTimeout(timer);
     }
@@ -29,7 +34,7 @@ export default function Alert({ type, msg }) {
   }
 
   const content = (
-    <div className={`alert ${alertColor}`}>
+    <div className={`alert ${alertClass} ${alertColor}`}>
       {msg || (type === "error" && "Something went very wrong!")}
     </div>
   );

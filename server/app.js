@@ -10,8 +10,9 @@ const compression = require("compression");
 const path = require("path");
 
 const AppError = require("./utils/appError");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
-const userRoutes=require("./routes/userRoutes")
+const userRoutes=require("./routes/userRoutes");
 
 //* Start express app *******************************************************************
 
@@ -83,5 +84,8 @@ app.all("*", (req, res, next) => {
     new AppError(`Can't find ${req.originalUrl} route on this server!`, 404)
   );
 });
+
+// Global error handling *********************************************
+app.use(errorMiddleware)
 
 module.exports=app;

@@ -8,14 +8,14 @@ export default function SidebarTop() {
 
     let user = { role: "Admin" }
     //flag
-    const getClassName = (isActive) => {
-        return `top-link-item ${isActive
-            ? ["Super Admin", "Admin"].includes(user.role) //flag
-                ? "top-link-item-active"
-                : null
-            : ""
-            }`;
-    };
+    // const getClassName = (isActive) => {
+    //     return `top-link-item ${isActive
+    //         ? ["Super Admin", "Admin"].includes(user.role) //flag
+    //             ? "top-link-item-active"
+    //             : null
+    //         : ""
+    //         }`;
+    // };
 
     return (
         <div className="">
