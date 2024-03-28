@@ -25,7 +25,7 @@ export default function Icon({
         <svg
           style={{ height: finalSize, width: finalSize, fill: color, color }}
         >
-          {/* <use xlinkHref={`/icons.svg#${name}`}></use> */}
+          <use xlinkHref={`/icons.svg#${name}`}></use>
           
         
         </svg>

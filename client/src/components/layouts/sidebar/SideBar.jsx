@@ -13,9 +13,9 @@ export default function SideBar() {
                     
                 </div>
                 <div className="horizontal-line mb-2"></div>
-                <div className="sidebar-links">
+                {/* <div className="sidebar-links"> */}
                     <SidebarTop/>
-                </div>
+                {/* </div> */}
             </div>
         </div>
     )

@@ -16,7 +16,7 @@ export default function MainLayout() {
                 {width > 992 && <Sidebar />}
 
                 <div className="main-container">
-                    <div>Hello world</div>
+                    {/* <div>Hello world</div> */}
                     {/* <Outlet /> */}
                 </div>
             </div>)}

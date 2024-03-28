@@ -1,7 +1,14 @@
+.sidebar-top-container{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width:100%;
+    padding:1.5rem;
+    padding-bottom: 1rem;
+}
 .sidebar-top-links {
     display: flex;
     flex-direction: column;
-
     gap: 0.2rem;
     padding-left: 1rem;
     font-size: 1.6rem;
@@ -19,6 +26,7 @@
 }
 
 .top-link-item:hover {
+    transition: background-color 300ms ease-in-out;
     background-color: #f2f5ff;
     fill: var(--text-black-color);
     color: var(--text-black-color);
