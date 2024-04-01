@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 // import { UseDispatch,useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./SideBar"
+import Sidebar from "./SideBar";
 import useScreenSize from "../../../hooks/useScreenSize";
-import "./MainLayout.css"
+import "./MainLayout.css";
 import { useSelector } from "react-redux";
 
 export default function MainLayout() {
@@ -26,4 +26,3 @@ export default function MainLayout() {
 
     )
 }
-
