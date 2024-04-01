@@ -4,8 +4,6 @@ import Icon from "../../ui/Icon";
 import "./SidebarTop.css";
 
 export default function SidebarTop() {
-    console.log("hello")
-
     let user = { role: "Admin" }
     //flag
     const getClassName = (isActive) => {

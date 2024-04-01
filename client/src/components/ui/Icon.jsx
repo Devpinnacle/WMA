@@ -13,7 +13,7 @@ export default function Icon({
 }) {
     const { width } = useScreenSize();
     const finalSize = size || "1.5rem";
-    console.log("name",`/icons.svg#${name}`);
+  
     return (
         <div
       data-title={width > 672 ? title : null}

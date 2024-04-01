@@ -8,19 +8,20 @@ import { useSelector } from "react-redux";
 
 export default function MainLayout() {
     const { user } = useSelector((state) => state.user);
-
     const { width } = useScreenSize();
     return (
-       <Fragment>
-            {user&&(<div className="outer-container">
-                {width > 992 && <Sidebar />}
+        <Fragment>
+            {/* {user && ( */}
+            <div className="outer-container">
+               
+                {width > 992 && <Sidebar /> }
 
                 <div className="main-container">
-                    {/* <div>Hello world</div> */}
-                    {/* <Outlet /> */}
+                   
+                    <Outlet />
                 </div>
-            </div>)}
-            <Outlet/>
+            </div>
+            {/* )} */}
         </Fragment>
 
     )
