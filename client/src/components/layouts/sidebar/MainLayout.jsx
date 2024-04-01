@@ -15,10 +15,10 @@ export default function MainLayout() {
       {user && (
         <div className="outer-container">
           {width > 992 && <Sidebar />}
-          <div className="main-container"></div>
+          <div className="main-container"> <Outlet /></div>
         </div>
       )}
-      <Outlet />
+     
     </Fragment>
   );
 }

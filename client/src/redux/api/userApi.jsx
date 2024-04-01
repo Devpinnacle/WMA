@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
 import { getUser, setTokens } from "../slice/userSlice";
+import { notesApi } from "./notesApi";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -16,15 +17,16 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-          console.log("accessToken", data.accessToken)
+          console.log("accessToken", data.accessToken);
           localStorage.setItem("accessToken", data.accessToken);
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
             })
           );
-          console.log("me.....")
-          obj.dispatch(userApi.util.invalidateTags([{type:'me'}]));
+          console.log("me.....");
+          obj.dispatch(userApi.util.invalidateTags([{ type: "me" }]));
+          console.log("get note dispatched");
         } catch (error) {
           console.error("Error....", error);
         }
@@ -32,23 +34,20 @@ export const userApi = createApi({
     }),
 
     getMe: builder.query({
-      providesTags: () => [{ type: 'me' }],
+      providesTags: () => [{ type: "me" }],
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
       async onQueryStarted(args, obj) {
         try {
-          console.log("me here")
           const { data } = await obj.queryFulfilled;
-          console.log("data is here", data.data.user);
           obj.dispatch(getUser(data.data.user));
         } catch (error) {
           console.error("Error....", error);
         }
       },
     }),
-
   }),
 });
 

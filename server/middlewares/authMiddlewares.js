@@ -4,6 +4,7 @@ const AppError = require("../utils/appError");
 const User = require("../models/EmpDetails");
 
 exports.protect = catchAsync(async (req, res, next) => {
+  console.log("hitt")
   // Get token and check its existance
   let accessToken;
   if (req.cookies?.access) {
