@@ -6,10 +6,11 @@ import useOutsideClick from "../../../hooks/useOutsideClick";
 import SidebarModal from "./SidebarModal";
 import "./MainContainer.css";
 
-export default function MainContainer({ onGoBack, children, pageName }) {
+export default function MainContainer({ onGoBack, children, pageName}) {
     const wrappedRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     // const { user } = useSelector((state) => state.user);
+
     return (
         <Fragment>
             <SidebarModal
@@ -25,6 +26,7 @@ export default function MainContainer({ onGoBack, children, pageName }) {
                             onClick={() => setShowModal(true)}
                             color="#f8f9fb"
                         />
+                        <div className="page-name">{pageName}</div>
                     </div>
                 </div>
             </div>
