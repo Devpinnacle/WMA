@@ -7,22 +7,22 @@ import "./MainLayout.css";
 import { useSelector } from "react-redux";
 
 export default function MainLayout() {
-    const { user } = useSelector((state) => state.user);
-    const { width } = useScreenSize();
-    return (
-        <Fragment>
-            {/* {user && ( */}
-            <div className="outer-container">
-               
-                {width > 992 && <Sidebar /> }
+  const { user } = useSelector((state) => state.user);
+  const { width } = useScreenSize();
+  console.log("hit main")
+  return (
+    <Fragment>
+      {user && (
+        <div className="outer-container">
+          {width > 992 && <Sidebar />}
 
-                <div className="main-container">
-                   
-                    <Outlet />
-                </div>
-            </div>
-            {/* )} */}
-        </Fragment>
-
-    )
+          <div className="main-container">
+            <Outlet />
+          </div>
+        </div>
+      )}
+      {!user&&<Outlet/>}
+    </Fragment>
+   
+  );
 }

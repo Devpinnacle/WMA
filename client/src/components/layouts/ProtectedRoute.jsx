@@ -10,7 +10,6 @@ export default function ProtectedRoute({ children, reverse }) {
   const outlet = useOutlet();
   const location = useLocation();
   const { data } = useGetMeQuery();
-  useGetNotesQuery();
 
   useEffect(() => {
     if (data && !user) {

@@ -14,6 +14,10 @@ const NotesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  deleted_status:{
+    type:Boolean,
+    default:false,
+  },
   created_date: {
     type: Date,
     default: Date.now(),

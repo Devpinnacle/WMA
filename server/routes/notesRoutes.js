@@ -8,5 +8,7 @@ const router=express.Router();
 router.use(authMiddlewares.protect)
 
 router.route("/getnotes").get(notesControllers.getNotes);
+router.post("/savenotes",notesControllers.saveNotes);
+router.post("/deletenotes",notesControllers.deleteNotes)
 
 module.exports = router;

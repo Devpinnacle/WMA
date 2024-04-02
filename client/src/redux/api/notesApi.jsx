@@ -6,6 +6,39 @@ export const notesApi = createApi({
   reducerPath: "notesApi",
   baseQuery: customFetchBase,
   endpoints: (builder) => ({
+   
+    saveNotes: builder.mutation({
+      query: (fromData) => ({
+        url: "/notes/savenotes",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args,obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(getNotes(data.data));
+        } catch (error) {
+          console.error("Error saving notes:", error);
+        }
+      },
+    }),
+
+    deleteNotes:builder.mutation({
+      query:(fromData)=>({
+        url:"/notes/deletenotes",
+        method:"POST",
+        body:fromData,
+      }),
+      async onQueryStarted(args,obj){
+        try{
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(getNotes(data.data));
+        }catch(error){
+          console.log("Error delete notes:",error);
+        }
+      }
+    }),
+
     getNotes: builder.query({
       query: () => ({
         url: "/notes/getnotes",
@@ -13,7 +46,6 @@ export const notesApi = createApi({
       }),
       async onQueryStarted(args, obj) {
         try {
-          console.log("noteapi hittt....");
           const { data } = await obj.queryFulfilled;
           console.log(data.data);
           obj.dispatch(getNotes(data.data));
@@ -22,7 +54,8 @@ export const notesApi = createApi({
         }
       },
     }),
+
   }),
 });
 
-export const { useGetNotesQuery } = notesApi;
+export const { useSaveNotesMutation,useDeleteNotesMutation,useGetNotesQuery } = notesApi;
