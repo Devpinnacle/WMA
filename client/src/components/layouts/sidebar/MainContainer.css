@@ -1,14 +1,18 @@
 .top-header {
     display: flex;
     justify-content: space-between;
-    padding: 2rem 2rem;
+    /* padding: 2rem 2rem; */
     align-items: center;
-    background-color: #3D405B;
+    /* background-color: #3D405B; */
     color: var(--text-white-color);
 }
 
 .page-name {
-    font-size: 2rem;
+    display: flex;
+    /* align-items: center; */
+    font-size: 60px;
+    font-weight: bold;
+    color: black;
 }
 
 .btn-menu,
@@ -68,19 +72,18 @@
 @media only screen and (max-width: 62em) {
 
     /* 62em = 992px */
-    .btn-menu,
-    .main-container-home-icon {
+    .btn-menu{
         display: block;
     }
 
-    .profile {
+    /* .profile {
         border: none;
         padding: 0;
     }
 
     .profile svg,
-    .profile-details,
-    .page-name {
+    .profile-details, */
+    .page-name{
         display: none;
     }
 }

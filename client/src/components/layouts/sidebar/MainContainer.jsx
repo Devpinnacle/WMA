@@ -6,10 +6,15 @@ import useOutsideClick from "../../../hooks/useOutsideClick";
 import SidebarModal from "./SidebarModal";
 import "./MainContainer.css";
 
-export default function MainContainer({ onGoBack, children, pageName}) {
+export default function MainContainer({ onGoBack, children, pageName }) {
     const wrappedRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     // const { user } = useSelector((state) => state.user);
+    const pageIcons = {
+        Hi: 'hi-emoji',
+        Projects: 'projects',
+    };
+
 
     return (
         <Fragment>
@@ -26,8 +31,39 @@ export default function MainContainer({ onGoBack, children, pageName}) {
                             onClick={() => setShowModal(true)}
                             color="#f8f9fb"
                         />
-                        <div className="page-name">{pageName}</div>
+
                     </div>
+                    {onGoBack && (
+                        <Icon
+                            title="Back"
+                            name="long-arrow-back"
+                            size="5.9rem"
+                            onClick={onGoBack}
+                            color="#f8f9fb"
+                        />
+                    )}
+                    {/* <Icon
+                        name="projects"
+                        size="4rem"
+                        /> */}
+                    {/* <div className="head-container">
+                        <Icon
+                            name={pageIcons[pageName]}
+                            size="5.9rem"
+                        />
+                        <span className="page-name">{pageName}</span>
+                    </div> */}
+
+
+                    <div className="page-name">
+                        <Icon
+                            name={pageIcons[pageName]}
+                            size="5.9rem"
+                        />
+                        {pageName}
+                    </div>
+
+
                 </div>
             </div>
             {children}

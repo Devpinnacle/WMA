@@ -7,7 +7,7 @@ import SelectInput from '../components/ui/SelectInput'
 const Projects = () => {
     // const project = [{title:''}]
     return (
-        <MainContainer>
+        <MainContainer pageName="Projects">
             <div className="project-top-container mb-1">
                 <div className="project-top-actions ml-1">
                     <div className="project-top-actions-left row-gap-1">
@@ -31,7 +31,6 @@ const Projects = () => {
                                     placeholder="Tags"
                                     isSearchable={false}
                                 />
-
                             </div>
                         </div>
                     </div>
