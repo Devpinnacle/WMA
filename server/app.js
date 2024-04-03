@@ -13,7 +13,8 @@ const AppError = require("./utils/appError");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const userRoutes=require("./routes/userRoutes");
-const notesRoutes=require("./routes/notesRoutes")
+const notesRoutes=require("./routes/notesRoutes");
+const projectRoutes=require("./routes/projectRoutes");
 
 //* Start express app *******************************************************************
 
@@ -77,6 +78,7 @@ app.get("/", (req, res) => res.send("Server working!"));
 
 app.use("/api/v1/user",userRoutes);
 app.use("/api/v1/notes",notesRoutes);
+app.use("/api/v1/project",projectRoutes);
 
 //* Error Middleware ***********************************************
 

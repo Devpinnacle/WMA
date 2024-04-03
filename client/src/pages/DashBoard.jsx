@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddNotes from "../components/modals/AddNotes";
+import AddNotes from "../components/modals/notes/AddNotes";
 import { useGetNotesQuery } from "../redux/api/notesApi";
 import { getNotes } from "../redux/slice/notesSlice";
-import DeleteNotes from "../components/modals/DeleteNotes";
-import View from "../components/modals/View";
+import DeleteNotes from "../components/modals/notes/DeleteNotes";
+import View from "../components/modals/notes/View";
+import { useGetProjectQuery } from "../redux/api/projectApi";
+import { getProject } from "../redux/slice/projectSlice";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -14,10 +17,14 @@ const Dashboard = () => {
   const [deleteNoteFlag, setDeleteNoteFlag] = useState(false);
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
 
-  const { notes } = useSelector((state) => state.notes);
-  const dispatch = useDispatch();
-
   const { data: fetchedData, isLoading } = useGetNotesQuery();
+  const { data: projectData } = useGetProjectQuery();
+
+  const { notes } = useSelector((state) => state.notes);
+  const { project } = useSelector((state) => state.project);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (fetchedData) {
@@ -25,8 +32,13 @@ const Dashboard = () => {
     }
   }, [dispatch, fetchedData]);
 
-  const sortedNotes = [...notes];
+  useEffect(() => {
+    if (projectData) {
+      dispatch(getProject(projectData.data));
+    }
+  }, [dispatch, projectData]);
 
+  const sortedNotes = [...notes];
   sortedNotes.sort(
     (a, b) => new Date(a.created_date) - new Date(b.created_date)
   );
@@ -80,71 +92,110 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ color: "black", border: "2px solid black", padding: "10px" }}>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        Object.keys(groupedMessages).map((date) => (
-          <>
-            <div key={date}>
-              <p style={{ color: "gray" }}>{date}</p>
-              <>
-                {groupedMessages[date].map((message) => (
-                  <>
-                    <div
-                      style={{ border: "1px solid gray" }}
-                      onClick={() =>
-                        handleViewNote(
-                          message._id,
-                          message.heading,
-                          message.msg
-                        )
-                      }
-                    >
-                      <h2 style={{ color: "black" }}>{message.heading}</h2>
-                      <p style={{ color: "black" }}>{message.msg}</p>
-                      <button
-                        onClick={() =>
-                          handleDelete(message._id, message.heading)
-                        }
-                        style={{ color: "black", border: "2px solid black" }}
-                      >
-                        delete
-                      </button>
-                    </div>
-                    <br />
-                  </>
-                ))}
-              </>
-            </div>
-            <hr />
-          </>
-        ))
-      )}
-      <button
-        onClick={handleAddNote}
-        style={{ color: "black", border: "2px solid black" }}
+    <>
+      <div
+        style={{
+          color: "black",
+          border: "2px solid black",
+          margin: "5px",
+          padding: "10px",
+        }}
       >
-        Add Notes
-      </button>
-      {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
-      {deleteNoteFlag && (
-        <DeleteNotes
-          id={noteId}
-          head={noteHead}
-          onCancel={handleDeleteNotesCancel}
-        />
-      )}
-      {viewNoteFlag && !deleteNoteFlag && (
-        <View
-          id={noteId}
-          head={noteHead}
-          msg={noteMsg}
-          onCancel={handleViewNotesCancel}
-          onDelete={handleOnDelete}
-        />
-      )}
-    </div>
+        <h1
+          style={{ color: "black", padding: "10px" }}
+          onClick={() => navigate("projects")}
+        >
+          Projects
+        </h1>
+        {project.map((proj) => (
+          <>
+            <h2
+              style={{
+                color: "black",
+                border: "1px solid black",
+                padding: "10px",
+              }}
+            >
+              {proj.sctProjectName}
+            </h2>
+          </>
+        ))}
+      </div>
+
+      <div
+        style={{
+          color: "black",
+          border: "2px solid black",
+          margin: "5px",
+          padding: "10px",
+        }}
+      >
+        <h1 style={{ color: "black", padding: "10px" }}>Notes</h1>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          Object.keys(groupedMessages).map((date) => (
+            <>
+              <div key={date}>
+                <p style={{ color: "gray" }}>{date}</p>
+                <>
+                  {groupedMessages[date].map((message) => (
+                    <>
+                      <div
+                        style={{ border: "1px solid gray" }}
+                        onClick={() =>
+                          handleViewNote(
+                            message._id,
+                            message.heading,
+                            message.msg
+                          )
+                        }
+                      >
+                        <h2 style={{ color: "black" ,  paddingLeft: "10px"}}>{message.heading}</h2>
+                        <p style={{ color: "black",  paddingLeft: "10px" }}>{message.msg}</p>
+                        <button
+                          onClick={() =>
+                            handleDelete(message._id, message.heading)
+                          }
+                          style={{ color: "black", border: "2px solid black", marginLeft:"10px" }}
+                        >
+                          delete
+                        </button>
+                      </div>
+                      <br />
+                    </>
+                  ))}
+                </>
+              </div>
+              <hr />
+            </>
+          ))
+        )}
+        <button
+          onClick={handleAddNote}
+          style={{ color: "black", border: "2px solid black" }}
+        >
+          Add Notes
+        </button>
+        {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
+        {deleteNoteFlag && (
+          <DeleteNotes
+            id={noteId}
+            head={noteHead}
+            onCancel={handleDeleteNotesCancel}
+          />
+        )}
+        {viewNoteFlag && !deleteNoteFlag && (
+          <View
+            id={noteId}
+            head={noteHead}
+            msg={noteMsg}
+            onCancel={handleViewNotesCancel}
+            onDelete={handleOnDelete}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

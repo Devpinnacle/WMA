@@ -18,4 +18,4 @@ export const{
     getNotes
 }=notesSlice.actions;
 
-export const notesReducer=notesSlice.reducer
+export const notesReducer=notesSlice.reducer;

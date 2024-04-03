@@ -1,15 +1,11 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login";
 import Root from "./components/layouts/Root";
 import ProtectedRoute from "./components/layouts/ProtectedRoute";
-import Cp2 from "./components/layouts/Cp2";
-import Cp from "./components/layouts/Cp";
 import MainLayout from './components/layouts/sidebar/MainLayout'
 import DashBoard from "./pages/DashBoard";
+import Projects from "./pages/Projects";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,10 +34,10 @@ function App() {
               ),
             },
             {
-              path: "cp2",
+              path: "projects",
               element: (
                 <ProtectedRoute>
-                  <Cp2 />
+                  <Projects />
                 </ProtectedRoute>
               ),
             },

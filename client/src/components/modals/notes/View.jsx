@@ -1,28 +1,21 @@
-import React from "react";
-import ModalContainer from "./ModalContainer";
-import { useDeleteNotesMutation } from "../../redux/api/notesApi";
+import React, { useState } from "react";
+import ModalContainer from "../ModalContainer";
 
-const DeleteNotes = ({ id, head, onCancel }) => {
-  const [deleteNotes] = useDeleteNotesMutation();
-  const handleDeleteNote = () => {
-    const fromData = {
-      id: id,
-    };
-    deleteNotes(fromData);
-    onCancel();
-  };
+const View = ({ id, head, msg, onCancel,onDelete}) => {
+
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
         <div className="confirm-modal-header" style={{ color: "black" }}>
-          Delete Notes
+          Notes
         </div>
+        <h2 style={{ color: "black" }}>{head}</h2>
         <p style={{ color: "black" }}>
-          Are you sure you want to delete "{head}" notes?
+          {msg}
         </p>
         <button
           style={{ color: "black", padding: "5px" }}
-          onClick={handleDeleteNote}
+          onClick={onDelete}
         >
           delete
         </button>
@@ -34,4 +27,4 @@ const DeleteNotes = ({ id, head, onCancel }) => {
   );
 };
 
-export default DeleteNotes;
+export default View;

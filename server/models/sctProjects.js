@@ -22,6 +22,9 @@ const SctProjectSchema = new mongoose.Schema({
   sctProjectEditedDateTime: {
     type: String,
   },
+  tags:{
+    type:[String],
+  },
 });
 
 module.exports = sctproject = mongoose.model("sctproject", SctProjectSchema);

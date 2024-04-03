@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ModalContainer from "./ModalContainer";
-import { useSaveNotesMutation } from "../../redux/api/notesApi";
+import ModalContainer from "../ModalContainer";
+import { useSaveNotesMutation } from "../../../redux/api/notesApi";
 
 const AddNotes = ({ onCancel }) => {
   const [formData, setFormData] = useState({ head: "", msg: "" });
