@@ -29,7 +29,7 @@ function App() {
               index: true,
               element: (
                 <ProtectedRoute>
-                  <Projects/>
+                  <DashBoard/>
                 </ProtectedRoute>
               ),
             },
