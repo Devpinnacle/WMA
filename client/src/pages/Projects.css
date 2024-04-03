@@ -1,8 +1,16 @@
-.project-customize {
+.project-top-container {
+    padding: 2rem;
+    padding-bottom: 0;
+}
+
+.project-top-actions {
     display: grid;
-    grid-template-columns: minmax(auto, 26rem) minmax(auto, 10rem) minmax(auto, 18rem);
-    column-gap: 2rem;
-    align-items: center;
+    grid-template-columns: 1fr 15rem;
+}
+
+.project-top-actions-left {
+    justify-self: flex-start;
+    width: 100%;
 }
 
 .search-box {
@@ -15,8 +23,9 @@
     border-radius: 8px;
     height: 3.6rem;
     font-size: 1.3rem;
-    width: 26rem;
+    width: 40rem;
     margin-top: 10px;
+    margin-right: 1rem;
 }
 
 .search-box input {
@@ -25,6 +34,39 @@
     height: 100%;
     width: 100%;
     color: black;
+}
+.project-top-actions .project-tags {
+    width:25%;
+    margin-top: 10px;
+}
+
+.btn-outline {
+    padding: 0.8rem 1.6rem;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    color: black;
+    font-weight: 500px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    height: 3.6rem;
+    min-width: 8rem;
+    background-color: white;
+    margin-top: 10px;
+    font-weight:bold;
+}
+
+.btn-outline:hover {
+    background-color: white;
+    color: black;
+    box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+.add-project-icon {
+    margin-right: 0.2rem;
 }
 
 .project-container {
@@ -36,7 +78,7 @@
     row-gap: 1rem;
     max-height: 90%;
     overflow-y: auto;
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
     margin-bottom: 2rem;
 }
 
@@ -93,6 +135,27 @@
         grid-template-columns: repeat(2, 1fr);
         padding: 2rem 1rem;
     }
+    .project-top-container {
+        padding: 2rem 1rem 0 1rem;
+    }
+    .project-top-actions {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+
+    .project-top-actions .btn-outline{
+        width: 15rem;
+        justify-self: flex-end;
+    }
+
+    .project-top-actions-left {
+        justify-content: space-between;
+    }
+    .project-top-actions .project-tags {
+        width:50%;
+        margin-top: 10px;
+    }
+    
 }
 
 @media only screen and (max-width: 85em) {
