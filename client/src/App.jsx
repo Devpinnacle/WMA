@@ -10,6 +10,7 @@ import Cp2 from "./components/layouts/Cp2";
 import Cp from "./components/layouts/Cp";
 import MainLayout from './components/layouts/sidebar/MainLayout'
 import DashBoard from "./pages/DashBoard";
+import Projects from "./pages/Projects";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,7 +34,7 @@ function App() {
               index: true,
               element: (
                 <ProtectedRoute>
-                  <DashBoard/>
+                  <Projects/>
                 </ProtectedRoute>
               ),
             },
