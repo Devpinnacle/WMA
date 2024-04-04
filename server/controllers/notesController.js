@@ -12,7 +12,7 @@ exports.getNotes = catchAsync(async (req, res) => {
 
 //* Save notes ***********************************************************
 
-exports.saveNotes = catchAsync(async (req, res,next) => {
+exports.saveNotes = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
 
   const { head, msg } = req.body;
@@ -27,24 +27,18 @@ exports.saveNotes = catchAsync(async (req, res,next) => {
   });
   await newNotes.save();
 
-  const notes = await Notes.find({ userId, deleted_status: false });
-  res.status(200).json({ data: notes });
+  res.status(200).json({ data: "succsess" });
 });
 
 //* Delete notes ***********************************************************
 
 exports.deleteNotes = catchAsync(async (req, res, next) => {
-  const userId = req.user._id;
   const { id } = req.body;
   if (!id) {
     return next(new AppError("Please provide both header and message.", 400));
   }
 
-  await Notes.updateOne(
-    { _id: id },
-    { $set: { deleted_status: true } }
-  );
+  await Notes.updateOne({ _id: id }, { $set: { deleted_status: true } });
 
-  const notes = await Notes.find({ userId, deleted_status: false });
-  res.status(200).json({ data: notes });
+  res.status(200).json({ data: "succsess" });
 });

@@ -28,7 +28,7 @@ export default function SelectInput(props) {
                     ...provided,
                     fontSize: "1.3rem",
                     cursor: "pointer",
-
+                    color:"black",
                     backgroundColor: state.isSelected
                         ? "#F3CF96"
                         : state.isFocused

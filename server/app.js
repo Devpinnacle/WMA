@@ -12,9 +12,10 @@ const path = require("path");
 const AppError = require("./utils/appError");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 
-const userRoutes=require("./routes/userRoutes");
-const notesRoutes=require("./routes/notesRoutes");
-const projectRoutes=require("./routes/projectRoutes");
+const userRoutes = require("./routes/userRoutes");
+const notesRoutes = require("./routes/notesRoutes");
+const projectRoutes = require("./routes/projectRoutes");
+const sectionRoutes = require("./routes/sectionRoutes");
 
 //* Start express app *******************************************************************
 
@@ -76,9 +77,10 @@ app.use(compression());
 
 app.get("/", (req, res) => res.send("Server working!"));
 
-app.use("/api/v1/user",userRoutes);
-app.use("/api/v1/notes",notesRoutes);
-app.use("/api/v1/project",projectRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/notes", notesRoutes);
+app.use("/api/v1/project", projectRoutes);
+app.use("/api/v1/section", sectionRoutes);
 
 //* Error Middleware ***********************************************
 
@@ -90,6 +92,6 @@ app.all("*", (req, res, next) => {
 });
 
 // Global error handling *********************************************
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
-module.exports=app;
+module.exports = app;

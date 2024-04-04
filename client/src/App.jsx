@@ -3,9 +3,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login";
 import Root from "./components/layouts/Root";
 import ProtectedRoute from "./components/layouts/ProtectedRoute";
-import MainLayout from './components/layouts/sidebar/MainLayout'
+import MainLayout from "./components/layouts/sidebar/MainLayout";
 import DashBoard from "./pages/DashBoard";
 import Projects from "./pages/Projects";
+import Section from "./pages/Section";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,13 +24,13 @@ function App() {
         },
         {
           path: "",
-          element: <MainLayout/>,
+          element: <MainLayout />,
           children: [
             {
               index: true,
               element: (
                 <ProtectedRoute>
-                  <DashBoard/>
+                  <DashBoard />
                 </ProtectedRoute>
               ),
             },
@@ -38,6 +39,14 @@ function App() {
               element: (
                 <ProtectedRoute>
                   <Projects />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "sections",
+              element: (
+                <ProtectedRoute>
+                  <Section />
                 </ProtectedRoute>
               ),
             },

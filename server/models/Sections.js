@@ -21,6 +21,10 @@ const sectionShema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isEmpty: {
+    type: Boolean,
+    default: true,
+  },
   createdBy: {
     type: ObjectId,
   },
