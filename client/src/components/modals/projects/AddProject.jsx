@@ -11,12 +11,12 @@ const AddProject = () => {
         <ModalContainer>
             <div className="modal-container modal-centered user-modal">
                 <div className="add-project-header">
-                    <div className='title-container'>
+                    <div className='add-title-container'>
                         <Icon
                             className="projects-icon"
                             name="projects"
                             size="6rem" />
-                        <span className='title'>Add project</span>
+                        <span className='add-title'>Add project</span>
                     </div>
                     <Icon
                         className="close-icon"

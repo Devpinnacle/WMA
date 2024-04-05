@@ -1,0 +1,57 @@
+.modal-container {
+    border-radius: 48px !important;
+    width: 50%;
+}
+
+.view-note-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 3rem;
+}
+
+.title-container {
+    display: flex;
+    font-weight: 700;
+    font-size: 57px;
+    align-items: center;
+}
+
+.view-title {
+    color: black;
+    margin-left: 20px;
+
+}
+
+.view-notes-body {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.body-header {
+    /* background-color: bisque; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.body-content {
+    margin-top: 2rem;
+    color: black;
+    border: 1px solid black;
+    border-radius: 8px;
+    height: 100px;
+    font-size: 20px;
+    font-weight: 500;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+@media only screen and (max-width: 280px) {
+
+    /* 52em = 832px */
+    .body-content {
+        height: 70px;
+    }
+
+}

@@ -100,6 +100,7 @@ const Projects = () => {
             </p>
           </div>
         ))}
+        
       </div>
       <div className="project-container">
         {filteredProjects.map((proj) => (

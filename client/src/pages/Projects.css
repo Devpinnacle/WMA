@@ -56,6 +56,7 @@
     background-color: white;
     margin-top: 10px;
     font-weight:bold;
+    margin-right: 10px;
 }
 
 .btn-outline:hover {
@@ -148,7 +149,7 @@
     }
 
     .project-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         padding: 2rem 1rem;
     }
     .project-top-container {
@@ -172,13 +173,4 @@
         margin-top: 10px;
     }
     
-}
-
-@media only screen and (max-width: 85em) {
-
-    /* 85em = 1360px */
-    .header {
-        grid-template-columns: repeat(3, 1fr);
-        row-gap: 1rem;
-    }
 }

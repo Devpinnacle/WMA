@@ -8,6 +8,10 @@ import View from "../components/modals/notes/View";
 import { useGetProjectQuery } from "../redux/api/projectApi";
 import { getProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
+import MainContainer from "../components/layouts/sidebar/MainContainer";
+import "./DashBoard.css"
+import Icon from "../components/ui/Icon";
+import SelectInput from "../components/ui/SelectInput";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -92,8 +96,8 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      <div
+    <MainContainer pageName="Hi">
+      {/*{/* <div
         style={{
           color: "black",
           border: "2px solid black",
@@ -194,8 +198,163 @@ const Dashboard = () => {
             onDelete={handleOnDelete}
           />
         )}
+      </div> */}
+
+      <div className="dashboard-container">
+        <div className="dashboard-grid">
+          <div className="dashboard-item">
+            <div className="notification">
+              <div className="add-project-header">
+                <span className='title'>Notification</span>
+              </div>
+            </div>
+          </div>
+          {/* PROJECT */}
+          <div className="dashboard-item">
+            <div className="projects">
+              <div className="project-header">
+                <span className='title'>Project</span>
+                <div className="header-right">
+                  <div className="search-bar">
+                    <input
+                      id="keyword"
+                      name="keyword"
+                      type="text"
+                      placeholder="Search"
+                      autoComplete="new-off"
+                    />
+                    <Icon
+                      title="Search"
+                      name="search-icon"
+                      size="2rem"
+                    />
+                  </div>
+                  <SelectInput
+                    className="tags"
+                    placeholder="Tags"
+                  />
+                  <Icon
+                    className="icon"
+                    name="add-outline"
+                    size="3rem"
+                  />
+                </div>
+              </div>
+              <div className="project-body-container">
+                {project.map((proj) => (
+                  <div className="project-items">
+                    <div className="project-item-header">
+                      <div className="left-content">
+                        <Icon
+                          name="project-outline"
+                          size="3rem"
+                        />
+                        <span className='item-title' style={{ color: "black" }}>{proj.sctProjectName}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="dashboard-item">
+            <div className="projects">
+              <div className="add-project-header">
+                <span className='dashboard-contenttitle'></span>
+              </div>
+            </div>
+          </div>
+          {/* NOTES */}
+          <div className="dashboard-item">
+            <div className="notes">
+              <div className="notes-header">
+                <span className='title'>Notes</span>
+                {isLoading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <div className="header-right">
+                    <div className="search-bar">
+                      <input
+                        id="keyword"
+                        name="keyword"
+                        type="text"
+                        placeholder="Search"
+                        autoComplete="new-off"
+                      />
+                      <Icon
+                        title="Search"
+                        name="search-icon"
+                        size="2rem"
+                      />
+                    </div>
+                    <Icon
+                      className="icon"
+                      name="add-notes"
+                      size="3rem"
+                      onClick={handleAddNote}
+                    />
+                    {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
+                  </div>
+                )}
+              </div>
+
+              <div className="notes-body-container">
+                {Object.keys(groupedMessages).map((date) =>
+                  groupedMessages[date].map((message) => (
+                    <div className="notes-item"
+                      key={message._id}
+                    >
+                      <div className="notes-item-header">
+                        <div className="left-content">
+                          <Icon
+                            name="notes-outline"
+                            size="3rem"
+                          />
+                          <span className='item-title' style={{ color: "black" }}>{message.heading}</span>
+                        </div>
+                        <div className="notes-header-right">
+                          <Icon
+                            title="Delete"
+                            name="delete-outline"
+                            size="3rem"
+                            onClick={() => handleDelete(message._id, message.heading)}
+                          />
+                          {deleteNoteFlag && (
+                            <DeleteNotes
+                              id={noteId}
+                              head={noteHead}
+                              onCancel={handleDeleteNotesCancel}
+                            />
+                          )}
+                          <Icon
+                            name="open-outline"
+                            size="3rem"
+                            onClick={() => handleViewNote(message._id, message.heading, message.msg)}
+                          />
+                          {viewNoteFlag && !deleteNoteFlag && (
+                            <View
+                              id={noteId}
+                              head={noteHead}
+                              msg={noteMsg}
+                              onCancel={handleViewNotesCancel}
+                              onDelete={handleOnDelete}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className="note-content">
+                        {message.msg}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </MainContainer>
   );
 };
 
