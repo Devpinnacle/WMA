@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
+  swUsers: [],
   alertMsg: null,
   alertType: null,
   accessToken: localStorage.getItem("accessToken"),
@@ -34,7 +35,9 @@ const userSlice = createSlice({
     setTokens(state, { payload }) {
       state.accessToken = payload.accessToken;
     },
-
+    getSwUsers(state, { payload }) {
+      state.swUsers = payload;
+    },
     resetUser() {
       return initialState;
     },
@@ -48,5 +51,6 @@ export const {
   clearAlert,
   resetUser,
   setTokens,
+  getSwUsers,
 } = userSlice.actions;
 export const userReducer = userSlice.reducer;

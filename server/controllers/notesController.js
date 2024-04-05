@@ -35,7 +35,7 @@ exports.saveNotes = catchAsync(async (req, res, next) => {
 exports.deleteNotes = catchAsync(async (req, res, next) => {
   const { id } = req.body;
   if (!id) {
-    return next(new AppError("Please provide both header and message.", 400));
+    return next(new AppError("Please Note id.", 400));
   }
 
   await Notes.updateOne({ _id: id }, { $set: { deleted_status: true } });

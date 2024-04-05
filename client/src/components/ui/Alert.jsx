@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import "./Alert.css";
 import { clearAlert } from "../../redux/slice/userSlice";
 
-export default function Alert({ type, msg }) {
+export default function Alert({ type, msg, onExit }) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertClass, setAlertClass] = useState("");
   const dispatch = useDispatch();
@@ -16,10 +16,11 @@ export default function Alert({ type, msg }) {
 
       const timer = setTimeout(() => {
         setAlertClass("alert-exit");
-        setTimeout(()=>{
+        setTimeout(() => {
           setShowAlert(false);
+          if (onExit) onExit();
           dispatch(clearAlert());
-        },300);
+        }, 300);
       }, 2500);
 
       return () => clearTimeout(timer);

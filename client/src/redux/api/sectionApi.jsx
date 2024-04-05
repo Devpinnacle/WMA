@@ -6,6 +6,7 @@ export const sectionApi = createApi({
   reducerPath: "sectionApi",
   baseQuery: customFetchBase,
   endpoints: (builder) => ({
+    //* Add Section ******************************************************
     saveSection: builder.mutation({
       query: (fromData) => ({
         url: "/section/savesection",
@@ -24,11 +25,34 @@ export const sectionApi = createApi({
       },
     }),
 
+    //* Delete Section ***************************************************
+    deleteSection: builder.mutation({
+      query: (fromData) => ({
+        url: "/section/deletesection",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    //* Get Section ******************************************************
     getSection: builder.query({
-      providesTags: () => [{ type: "bringsection" }],
-      query: () => ({
+      providesTags: (result, error, projectId) => [
+        { type: "bringsection", projectId },
+      ],
+      query: (projectId) => ({
         url: "/section/getsection",
-        method: "GET",
+        method: "POST",
+        body: { projectId: projectId },
       }),
       async onQueryStarted(args, obj) {
         try {
@@ -42,4 +66,8 @@ export const sectionApi = createApi({
   }),
 });
 
-export const { useSaveSectionMutation, useGetSectionQuery } = sectionApi;
+export const {
+  useSaveSectionMutation,
+  useDeleteSectionMutation,
+  useGetSectionQuery,
+} = sectionApi;

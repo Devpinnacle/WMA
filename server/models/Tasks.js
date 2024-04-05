@@ -1,16 +1,12 @@
 const mongoose = require("mongoose");
 ObjectId = mongoose.Schema.ObjectId;
 
-const sectionSchema = new mongoose.Schema({
-  sectionName: {
+const taskSchema = new mongoose.Schema({
+  taskName: {
     type: String,
     required: true,
   },
-  projectId: {
-    type: ObjectId,
-    required: true,
-  },
-  startDate: {
+  assignedDate: {
     type: Date,
     default: Date.now(),
   },
@@ -18,13 +14,47 @@ const sectionSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+  },
+  stage: {
+    type: String,
+    required: true,
+  },
   progress: {
     type: Number,
     default: 0,
   },
-  totalTask: {
+  priority: {
+    type: String,
+    required: true,
+  },
+  notes: {
+    type: String,
+    default: null,
+  },
+  completedDate: {
+    type: Date,
+    default: null,
+  },
+  duration: {
     type: Number,
     default: 0,
+  },
+  totalDuration: {
+    type: Number,
+    default: 0,
+  },
+  sectionId: {
+    type: ObjectId,
+    ref: "sections",
+    required: true,
+  },
+  projectId: {
+    type: ObjectId,
+    ref: "sctproject",
+    required: true,
   },
   createdBy: {
     type: ObjectId,
@@ -35,14 +65,10 @@ const sectionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  editedDate: {
-    type: Date,
-    default:null
-  },
-  editedBy: {
+  assignedTo: {
     type: ObjectId,
     ref: "empdetails",
-    default:null
+    required: true,
   },
   deletedStatus: {
     type: Boolean,
@@ -51,12 +77,10 @@ const sectionSchema = new mongoose.Schema({
   deletedBy: {
     type: ObjectId,
     ref: "empdetails",
-    default:null
+    default: null,
   },
   deletedDate: {
     type: Date,
-    default:null
+    default: null,
   },
 });
-
-module.exports = sections = mongoose.model("sections", sectionSchema);
