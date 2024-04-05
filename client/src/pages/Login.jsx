@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={submitHandler}>
-        <h2 className="title">LOG IN</h2>
+        <h2 className="title" style={{ color: "white" }}>LOG IN</h2>
         
         <div className="login-input">
           <label htmlFor="username">Username*</label>

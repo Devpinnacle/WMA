@@ -1,27 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import ModalContainer from "../ModalContainer";
+import "./ViewNote.css"
+import Icon from "../../ui/Icon";
 
-const View = ({ id, head, msg, onCancel,onDelete}) => {
+const View = ({ id, head, msg, onCancel, onDelete }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
-        <div className="confirm-modal-header" style={{ color: "black" }}>
-          Notes
+        <div className="view-note-header">
+          <div className='title-container'>
+            <Icon
+              className="notes-icon"
+              name="notes-outline"
+              size="6rem" />
+            <span className='view-title'>Notes</span>
+          </div>
+          <Icon
+            className="close-icon"
+            name="close"
+            size="6rem"
+            onClick={onCancel}
+          />
         </div>
-        <h2 style={{ color: "black" }}>{head}</h2>
-        <p style={{ color: "black" }}>
-          {msg}
-        </p>
-        <button
-          style={{ color: "black", padding: "5px" }}
-          onClick={onDelete}
-        >
-          delete
-        </button>
-        <button style={{ color: "black", padding: "5px" }} onClick={onCancel}>
-          Cancel
-        </button>
+        <div className="view-notes-body">
+          <div className="body-header">
+            <span style={{ color: "black", fontWeight: "bold", fontSize: "25px" }}>{head}</span>
+            <Icon
+              name="delete-outline"
+              size="3rem"
+              onClick={onDelete}
+            />
+          </div>
+          <div className="body-content">
+            {msg}
+          </div>
+        </div>
       </div>
     </ModalContainer>
   );

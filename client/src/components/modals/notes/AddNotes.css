@@ -75,9 +75,6 @@
       font-size:20px;
       font-weight: 1000;
   }
-  .notes-input-box{
-      width: 100% !important;
-  }
 }
 
 @keyframes event-modal-anime {

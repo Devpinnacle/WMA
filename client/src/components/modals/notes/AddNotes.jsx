@@ -56,7 +56,7 @@ const AddNotes = ({ onCancel }) => {
           <div className="notes-input">
             <textarea
               className="notes-input-box"
-              type="texta"
+              type="text"
               name="msg"
               onChange={inputHandler}
             />

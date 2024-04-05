@@ -6,16 +6,17 @@
     display: flex;
     justify-content: space-between;
 }
-.title-container{
+.add-title-container{
     display: flex;
     color: black;
-    font-weight: 700;
-    font-size: 57px;
+
     align-items: center;
 }
-.title{
+.add-title{
     color: black;
     margin-left: 20px;
+    font-weight: 700;
+    font-size: 57px;
 }
 .project-input{
     display: flex;
