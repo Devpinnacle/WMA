@@ -234,6 +234,7 @@ const Dashboard = () => {
                     placeholder="Tags"
                   />
                   <Icon
+                    className="icon"
                     name="add-outline"
                     size="3rem"
                   />
@@ -288,6 +289,7 @@ const Dashboard = () => {
                       />
                     </div>
                     <Icon
+                      className="icon"
                       name="add-notes"
                       size="3rem"
                       onClick={handleAddNote}
