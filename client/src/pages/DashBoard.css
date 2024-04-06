@@ -206,11 +206,12 @@
     }
 
     .search-bar {
-        width: 15rem;
+        width: 18rem;
 
     }
 
-    .project-header {
+    .project-header,
+    .notes-header {
         flex-direction: column;
         align-items: flex-start;
     }
