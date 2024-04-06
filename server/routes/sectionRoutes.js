@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.use(authMiddlewares.protect);
 
-router.get("/getsection", sectionControllers.getSection);
+router.post("/getsection", sectionControllers.getSection);
 router.post("/savesection", sectionControllers.addSection);
+router.post("/deletesection", sectionControllers.deleteSections);
 
 module.exports = router;

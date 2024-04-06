@@ -10,7 +10,9 @@ exports.login = catchAsync(async (req, res, next) => {
   const { userName, password } = req.body;
 
   if (!userName || !password) {
-    return next( new AppError("Please provide both userName and password.", 400));
+    return next(
+      new AppError("Please provide both userName and password.", 400)
+    );
   }
 
   const user = await User.findOne({ userName, empStatus: "Active" });
@@ -30,5 +32,15 @@ exports.getUser = catchAsync(async (req, res) => {
     data: {
       user: user,
     },
+  });
+});
+
+//* Get Software user *********************************************************
+
+exports.getSwUsers = catchAsync(async (req, res, next) => {
+  const users =  await User.find({ empStatus: "Active", userGroupName: "Software" },{userName:1});
+  res.status(200).json({
+    status: "SUCCESS",
+    data: users,
   });
 });

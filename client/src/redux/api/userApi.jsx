@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getUser, setTokens } from "../slice/userSlice";
+import { getSwUsers, getUser, setTokens } from "../slice/userSlice";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -44,7 +44,23 @@ export const userApi = createApi({
         }
       },
     }),
+
+    //* Get Users Group is Software **************************************
+    getSwUsers: builder.query({
+      query: () => ({
+        url: "/user/getswuser",
+        method: "GET",
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(getSwUsers(data.data));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetMeQuery } = userApi;
+export const { useLoginMutation, useGetMeQuery,useGetSwUsersQuery } = userApi;

@@ -7,6 +7,7 @@ import MainLayout from "./components/layouts/sidebar/MainLayout";
 import DashBoard from "./pages/DashBoard";
 import Projects from "./pages/Projects";
 import Section from "./pages/Section";
+import Task from "./pages/Task";
 
 function App() {
   const router = createBrowserRouter([
@@ -47,6 +48,14 @@ function App() {
               element: (
                 <ProtectedRoute>
                   <Section />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: "task",
+              element: (
+                <ProtectedRoute>
+                  <Task />
                 </ProtectedRoute>
               ),
             },

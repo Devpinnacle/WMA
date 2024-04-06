@@ -9,5 +9,6 @@ router.post("/login",userControllers.login);
 router.use(authMiddlewares.protect);
 
 router.route("/me").get(userControllers.getUser);
+router.get("/getswuser",userControllers.getSwUsers);
 
 module.exports = router;

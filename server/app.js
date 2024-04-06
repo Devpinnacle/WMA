@@ -16,6 +16,7 @@ const userRoutes = require("./routes/userRoutes");
 const notesRoutes = require("./routes/notesRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
+const taskRoutes=require("./routes/taskRoutes");
 
 //* Start express app *******************************************************************
 
@@ -81,6 +82,7 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/notes", notesRoutes);
 app.use("/api/v1/project", projectRoutes);
 app.use("/api/v1/section", sectionRoutes);
+app.use("/api/v1/task",taskRoutes);
 
 //* Error Middleware ***********************************************
 

@@ -24,10 +24,6 @@ exports.addSection = catchAsync(async (req, res, next) => {
     startDate: startDate,
     dueDate: dueDate,
     createdBy: userId,
-    editedDate: null,
-    editedBy: null,
-    deletedBy: null,
-    deletedDate: null,
   });
   await newSection.save();
 
@@ -51,15 +47,32 @@ exports.getSection = catchAsync(async (req, res, next) => {
       startDate: 1,
       dueDate: 1,
       progress: 1,
-      isEmpty: 1,
+      totalTask: 1,
       createdBy: 1,
     }
   ).populate("createdBy", "userName");
 
   res.status(200).json({
     status: "success",
-    data: {
-      sections,
-    },
+    data: sections,
   });
+});
+
+//* Delete Section *************************************************
+
+exports.deleteSections = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const { id } = req.body;
+
+  if (!id) {
+    return next(new AppError("Please Section id.", 400));
+  }
+  await Section.updateOne(
+    { _id: id },
+    {
+      $set: { deletedStatus: true, deletedBy: userId, deletedDate: Date.now() },
+    }
+  );
+
+  res.status(200).json({ data: "succsess" });
 });
