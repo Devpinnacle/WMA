@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ModalContainer from "../ModalContainer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
 import { useSaveSectionMutation } from "../../../redux/api/sectionApi";
 
-const AddSection = ({ onCancel, projectId }) => {
+const AddSection = ({ onCancel }) => {
   const [sectionData, setSectionData] = useState({
     name: null,
     start: null,
@@ -14,6 +14,8 @@ const AddSection = ({ onCancel, projectId }) => {
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [saveSection] = useSaveSectionMutation();
+
+  const { selectedProject: projectId } = useSelector((state) => state.project);
 
   const dispatch = useDispatch();
 
@@ -26,17 +28,17 @@ const AddSection = ({ onCancel, projectId }) => {
 
   const handleSaveSection = () => {
     const { name, start, due } = sectionData;
-    console.log(sectionData);
+
     if (!name || !start || !due) {
       setAlertFlag(true);
-      setErrorMsg("Enter all the Fields")
+      setErrorMsg("Enter all the Fields");
       dispatch(setAlert({ type: "error", msg: "Enter all the Fields" }));
       return;
     }
 
     if (start > due) {
       setAlertFlag(true);
-      setErrorMsg("Due date must be greater than start Date")
+      setErrorMsg("Due date must be greater than start Date");
       dispatch(
         setAlert({
           type: "error",
@@ -56,10 +58,10 @@ const AddSection = ({ onCancel, projectId }) => {
     onCancel();
   };
 
-  const handleOnExit=()=>{
+  const handleOnExit = () => {
     setErrorMsg(null);
     setAlertFlag(false);
-  }
+  };
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
@@ -91,11 +93,7 @@ const AddSection = ({ onCancel, projectId }) => {
         </button>
       </div>
       {alertFlage && (
-        <Alert
-          type={"error"}
-          msg={errorMsg}
-          onExit={handleOnExit}
-        />
+        <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
       )}
     </ModalContainer>
   );

@@ -16,7 +16,7 @@ export const taskApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
         } catch (error) {
           console.error("Error....", error);
         }
@@ -44,3 +44,5 @@ export const taskApi = createApi({
     }),
   }),
 });
+
+export const { useAddTaskMutation, useGetTaskQuery } = taskApi;

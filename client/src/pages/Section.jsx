@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { setSelectedSection } from "../redux/slice/sectionSlice";
 
 const Section = () => {
-  const [addSectionFlag, setAddsectionFlag] = useState(false);
+  const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
@@ -19,8 +19,8 @@ const Section = () => {
 
   useGetSectionQuery(selectedProject);
 
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const filteredSections = sections.filter((section) =>
     section.sectionName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -28,7 +28,7 @@ const Section = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString("en-GB");
   };
 
   const handleSearch = (e) => {
@@ -41,16 +41,16 @@ const Section = () => {
     setDeleteSectionFlag(false);
   };
 
-  const handleDeleteSection=(id,head)=>{
-    setSectionId(id)
-    setSectionHead(head)
+  const handleDeleteSection = (id, head) => {
+    setSectionId(id);
+    setSectionHead(head);
     setDeleteSectionFlag(true);
-  }
+  };
 
-  const handleSectionClick=(id)=>{
-    dispatch(setSelectedSection(id));
-    navigate("/task")
-  }
+  const handleSectionClick = (section) => {
+    dispatch(setSelectedSection(section));
+    navigate("/task");
+  };
 
   return (
     <>
@@ -63,7 +63,7 @@ const Section = () => {
       />
       <button
         style={{ color: "black" }}
-        onClick={() => setAddsectionFlag(true)}
+        onClick={() => setAddSectionFlag(true)}
       >
         addsection
       </button>
@@ -72,7 +72,7 @@ const Section = () => {
         <div
           key={sec._id}
           style={{ border: "1px solid black", padding: "10px" }}
-          onClick={()=>handleSectionClick(sec._id)}
+          onClick={() => handleSectionClick(sec)}
         >
           <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
           <p style={{ color: "black" }}>
@@ -85,7 +85,7 @@ const Section = () => {
           </p>
           <p style={{ color: "black" }}>{sec.progress}</p>
           <button style={{ color: "black" }}>add task</button>
-          {sec.totalTask===0 ? (
+          {sec.totalTask === 0 ? (
             <button
               style={{ color: "black" }}
               onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
@@ -99,10 +99,7 @@ const Section = () => {
       ))}
 
       {addSectionFlag && (
-        <AddSection
-          onCancel={() => setAddsectionFlag(false)}
-          projectId={selectedProject}
-        />
+        <AddSection onCancel={() => setAddSectionFlag(false)} />
       )}
       {deleteSectionFlag && (
         <DeleteSection

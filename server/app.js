@@ -31,7 +31,9 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://127.0.0.1:5173",
-
+      "http://192.168.6.66:5173",
+      "http://192.168.6.65:5173",
+      "http://192.168.6.189:5173",
       process.env.FRONTEND_URL,
     ],
     credentials: true,

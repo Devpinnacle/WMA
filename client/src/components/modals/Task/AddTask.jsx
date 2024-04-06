@@ -1,26 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import SelectInput from "../../ui/SelectInput";
 import { useGetSwUsersQuery } from "../../../redux/api/userApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setAlert } from "../../../redux/slice/userSlice";
 import "./AddTask.css";
+import Alert from "../../ui/Alert";
+import { useAddTaskMutation } from "../../../redux/api/taskApi";
 
 const AddTask = ({ onCancel }) => {
+  const { user, swUsers } = useSelector((state) => state.user);
+  const { selectedSection: sec } = useSelector((state) => state.section);
+  const dispatch = useDispatch();
+
   const [tag, setTag] = useState([]);
+  const [alertFlage, setAlertFlag] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [taskData, setTaskData] = useState({
     name: "",
     startDt: "",
     dueDt: "",
+    notes: "",
+    progress: null,
+    time: null,
   });
-  const [list,setList]=useState({
-    priority:"",
-    status:"",
-    stages:""
-  })
+  const [list, setList] = useState({
+    priority: "",
+    status: "",
+    stages: "",
+  });
 
-  useGetSwUsersQuery();
-
-  const { swUsers } = useSelector((state) => state.user);
+  if (!(user.userGroupName == "Software")) useGetSwUsersQuery();
+  const [addTask] = useAddTaskMutation();
 
   const tags = swUsers.map((user) => ({
     label: user.userName,
@@ -32,7 +43,6 @@ const AddTask = ({ onCancel }) => {
     { label: "Normal", value: "Normal" },
     { label: "Low", value: "Low" },
   ];
-
   const statusTags = [
     { label: "In Progress", value: "In Progress" },
     { label: "Completed", value: "Completed" },
@@ -66,6 +76,100 @@ const AddTask = ({ onCancel }) => {
     }));
   };
 
+  const listHandleTags = (e, name) => {
+    setList((prevState) => ({
+      ...prevState,
+      [name]: e.value,
+    }));
+  };
+
+  const handleSave = () => {
+    const { name, startDt, dueDt, progress, notes, time } = taskData;
+    const { stages, status, priority } = list;
+    const startDate = sec.startDate.substring(0, 10);
+    const dueDate = sec.dueDate.substring(0, 10);
+    let assignee = [];
+
+    // Convert hours and minutes to numbers
+    const [hours, minutes] = time ? time.split(":") : [0, 0];
+    const hoursInMinutes = parseInt(hours, 10) * 60;
+    const minutesAsNumber = parseInt(minutes, 10);
+    const totalMinutes = hoursInMinutes + minutesAsNumber;
+
+    if (!name || !startDt || !dueDt || !priority || !stages || !status) {
+      setAlertFlag(true);
+      setErrorMsg("Enter all the necessary Fields");
+      dispatch(
+        setAlert({ type: "error", msg: "Enter all the necessary Fields" })
+      );
+      return;
+    }
+
+    if (!(user.userGroupName == "Software")) {
+      if (tag.length === 0) {
+        setAlertFlag(true);
+        setErrorMsg("You have to assign the task to someone");
+        dispatch(
+          setAlert({
+            type: "error",
+            msg: "You have to assign the task to someone",
+          })
+        );
+      } else {
+        assignee = tag.map((tg) => tg.value);
+      }
+    } else {
+      assignee.push(user._id);
+    }
+
+    if (startDt > dueDt) {
+      setAlertFlag(true);
+      setErrorMsg("Due date must be greater than start Date");
+      dispatch(
+        setAlert({
+          type: "error",
+          msg: "Due date must be greater than start Date",
+        })
+      );
+    }
+
+    if (startDt < startDate || dueDt > dueDate) {
+      setAlertFlag(true);
+      setErrorMsg(
+        "Task start date and due date must be inside the range of Section's start date and due date"
+      );
+      dispatch(
+        setAlert({
+          type: "error",
+          msg: "Task start date and due date must be inside the range of Section's start date and due date",
+        })
+      );
+      return;
+    }
+
+    const fromData = {
+      taskName: name,
+      startDate: startDt,
+      dueDate: dueDt,
+      priority: priority,
+      status: status,
+      stage: stages,
+      progress: progress ? parseInt(progress) : 0,
+      duration: totalMinutes,
+      notes: notes,
+      assignedTo: assignee,
+      sectionId: sec._id,
+      projectId: sec.projectId,
+    };
+    addTask(fromData);
+    onCancel();
+  };
+
+  const handleOnExit = () => {
+    setErrorMsg(null);
+    setAlertFlag(false);
+  };
+
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
@@ -77,22 +181,26 @@ const AddTask = ({ onCancel }) => {
           onChange={inputHandler}
           value={taskData.name}
         />
-        <SelectInput
-          placeholder="Tags"
-          onChange={handleTags}
-          isSearchable={false}
-          options={tags}
-        />
-        <div className="selected-tag">
-          {tag.map((tg, index) => (
-            <div key={index} className="tag-container">
-              <p style={{ color: "black" }}>
-                {tg.label}
-                <button onClick={() => handleRemoveTag(tg)}>c</button>
-              </p>
+        {!(user.userGroupName == "Software") && (
+          <>
+            <SelectInput
+              placeholder="Tags"
+              onChange={handleTags}
+              isSearchable={false}
+              options={tags}
+            />
+            <div className="selected-tag">
+              {tag.map((tg, index) => (
+                <div key={index} className="tag-container">
+                  <p style={{ color: "black" }}>
+                    {tg.label}
+                    <button onClick={() => handleRemoveTag(tg)}>c</button>
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
         <input
           type="date"
           style={{ color: "black" }}
@@ -111,20 +219,19 @@ const AddTask = ({ onCancel }) => {
         />
         <SelectInput
           placeholder="Priority"
-          onChange={handleTags}
+          onChange={(e) => listHandleTags(e, "priority")}
           isSearchable={false}
           options={priorityTags}
-          
         />
         <SelectInput
           placeholder="Status"
-          onChange={handleTags}
+          onChange={(e) => listHandleTags(e, "status")}
           isSearchable={false}
           options={statusTags}
         />
         <SelectInput
           placeholder="Stages"
-          onChange={handleTags}
+          onChange={(e) => listHandleTags(e, "stages")}
           isSearchable={false}
           options={stagesTags}
         />
@@ -132,11 +239,35 @@ const AddTask = ({ onCancel }) => {
           type="number"
           style={{ color: "black" }}
           placeholder="progress"
+          name="progress"
+          value={taskData.progress}
+          onChange={inputHandler}
         />
-        <input type="time" style={{ color: "black" }} placeholder="duration" />
-        <input type="text" style={{ color: "black" }} placeholder="notes" />
-        <button style={{ color: "black" }}>save</button>
+        <input
+          type="time"
+          style={{ color: "black" }}
+          placeholder="duration"
+          name="time"
+          onChange={inputHandler}
+        />
+        <input
+          type="text"
+          style={{ color: "black" }}
+          placeholder="notes"
+          name="notes"
+          value={taskData.notes}
+          onChange={inputHandler}
+        />
+        <button style={{ color: "black" }} onClick={handleSave}>
+          save
+        </button>
+        <button style={{ color: "black" }} onClick={onCancel}>
+          cancel
+        </button>
       </div>
+      {alertFlage && (
+        <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
+      )}
     </ModalContainer>
   );
 };
