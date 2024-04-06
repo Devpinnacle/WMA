@@ -201,11 +201,12 @@ const Dashboard = () => {
       </div> */}
 
       <div className="dashboard-container">
-        <div className="dashboard-grid">
+        <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
               <div className="add-project-header">
                 <span className='title'>Notification</span>
+
               </div>
             </div>
           </div>
@@ -213,7 +214,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="projects">
               <div className="project-header">
-                <span className='title'>Project</span>
+                <span className='title' onClick={() => navigate("projects")}>Project</span>
                 <div className="header-right">
                   <div className="search-bar">
                     <input
@@ -252,12 +253,19 @@ const Dashboard = () => {
                         <span className='item-title' style={{ color: "black" }}>{proj.sctProjectName}</span>
                       </div>
                     </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
+                      <span style={{ color: "black" }}>Tasks pending:  </span>
+                      <span style={{ color: "black" }}>Tasks in progress: </span>
+                    </div>
+
                   </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
 
+        <div className="dashboard-lower-grid">
           <div className="dashboard-item">
             <div className="projects">
               <div className="add-project-header">
@@ -265,7 +273,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
           {/* NOTES */}
+
           <div className="dashboard-item">
             <div className="notes">
               <div className="notes-header">
@@ -298,7 +308,6 @@ const Dashboard = () => {
                   </div>
                 )}
               </div>
-
               <div className="notes-body-container">
                 {Object.keys(groupedMessages).map((date) =>
                   groupedMessages[date].map((message) => (
@@ -311,7 +320,9 @@ const Dashboard = () => {
                             name="notes-outline"
                             size="3rem"
                           />
-                          <span className='item-title' style={{ color: "black" }}>{message.heading}</span>
+                          <div className="item-content">
+                            <span className="item-title" style={{ color: "black" }}>{message.heading}</span>
+                          </div>
                         </div>
                         <div className="notes-header-right">
                           <Icon
