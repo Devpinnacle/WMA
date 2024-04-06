@@ -96,11 +96,16 @@ const Projects = () => {
           <div key={index} className="tag-container">
             <p style={{ color: "black" }}>
               {tg}
-              <button onClick={() => handleRemoveTag(tg)}>c</button>
+              {/* <button onClick={() => handleRemoveTag(tg)}>c</button> */}
+                <Icon
+                  name="close"
+                  size="1rem"
+                  onClick={() => handleRemoveTag(tg)}
+                />
             </p>
           </div>
         ))}
-        
+
       </div>
       <div className="project-container">
         {filteredProjects.map((proj) => (
@@ -110,7 +115,7 @@ const Projects = () => {
             onClick={() => handleProjectClick(proj._id)}
           >
             <div className="project-title">
-              <Icon title="Project" name="project-outline" size="2rem" />
+              <Icon name="project-outline" size="2rem" />
               {proj.sctProjectName}
             </div>
             <div className="project-info">
