@@ -10,7 +10,7 @@ import Icon from "../components/ui/Icon";
 import "./Section.css"
 
 const Section = () => {
-  const [addSectionFlag, setAddsectionFlag] = useState(false);
+  const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
@@ -31,7 +31,7 @@ const Section = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString("en-GB");
   };
 
   const handleSearch = (e) => {
@@ -48,7 +48,7 @@ const Section = () => {
     setSectionId(id)
     setSectionHead(head)
     setDeleteSectionFlag(true);
-  }
+  };
 
   const handleSectionClick = (id) => {
     dispatch(setSelectedSection(id));
