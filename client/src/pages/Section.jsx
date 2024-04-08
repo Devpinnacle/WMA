@@ -5,6 +5,9 @@ import { useGetSectionQuery } from "../redux/api/sectionApi";
 import DeleteSection from "../components/modals/section/DeleteSection";
 import { useNavigate } from "react-router-dom";
 import { setSelectedSection } from "../redux/slice/sectionSlice";
+import MainContainer from "../components/layouts/sidebar/MainContainer";
+import Icon from "../components/ui/Icon";
+import "./Section.css"
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -42,74 +45,111 @@ const Section = () => {
   };
 
   const handleDeleteSection = (id, head) => {
-    setSectionId(id);
-    setSectionHead(head);
+    setSectionId(id)
+    setSectionHead(head)
     setDeleteSectionFlag(true);
   };
 
-  const handleSectionClick = (section) => {
-    dispatch(setSelectedSection(section));
-    navigate("/task");
-  };
+  const handleSectionClick = (id) => {
+    dispatch(setSelectedSection(id));
+    navigate("/task")
+  }
 
   return (
-    <>
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearch}
-        style={{ color: "black" }}
-        placeholder="search for section"
-      />
-      <button
-        style={{ color: "black" }}
-        onClick={() => setAddSectionFlag(true)}
-      >
-        addsection
-      </button>
+    //   <>
+    //     <input
+    //       type="text"
+    //       value={searchTerm}
+    //       onChange={handleSearch}
+    //       style={{ color: "black" }}
+    //       placeholder="search for section"
+    //     />
+    //     <button
+    //       style={{ color: "black" }}
+    //       onClick={() => setAddsectionFlag(true)}
+    //     >
+    //       addsection
+    //     </button>
 
-      {filteredSections.map((sec) => (
-        <div
-          key={sec._id}
-          style={{ border: "1px solid black", padding: "10px" }}
-          onClick={() => handleSectionClick(sec)}
-        >
-          <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
-          <p style={{ color: "black" }}>
-            Start Date: {formatDate(sec.startDate)}
-          </p>
-          <p style={{ color: "black" }}>Due Date: {formatDate(sec.dueDate)}</p>
-          <p style={{ color: "black" }}>
-            Created By:{" "}
-            {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
-          </p>
-          <p style={{ color: "black" }}>{sec.progress}</p>
-          <button style={{ color: "black" }}>add task</button>
-          {sec.totalTask === 0 ? (
-            <button
-              style={{ color: "black" }}
-              onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
-            >
-              delete task
+    //     {filteredSections.map((sec) => (
+    //       <div
+    //         key={sec._id}
+    //         style={{ border: "1px solid black", padding: "10px" }}
+    //         onClick={()=>handleSectionClick(sec._id)}
+    //       >
+    //         <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
+    //         <p style={{ color: "black" }}>
+    //           Start Date: {formatDate(sec.startDate)}
+    //         </p>
+    //         <p style={{ color: "black" }}>Due Date: {formatDate(sec.dueDate)}</p>
+    //         <p style={{ color: "black" }}>
+    //           Created By:{" "}
+    //           {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
+    //         </p>
+    //         <p style={{ color: "black" }}>{sec.progress}</p>
+    //         <button style={{ color: "black" }}>add task</button>
+    //         {sec.totalTask===0 ? (
+    //           <button
+    //             style={{ color: "black" }}
+    //             onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
+    //           >
+    //             delete task
+    //           </button>
+    //         ) : (
+    //           <button style={{ color: "black" }}>View task</button>
+    //         )}
+    //       </div>
+    //     ))}
+
+    //     {addSectionFlag && (
+    //       <AddSection
+    //         onCancel={() => setAddsectionFlag(false)}
+    //         projectId={selectedProject}
+    //       />
+    //     )}
+    //     {deleteSectionFlag && (
+    //       <DeleteSection
+    //         id={sectionId}
+    //         head={sectionHead}
+    //         onCancel={handleOnCancelSection}
+    //       />
+    //     )}
+    //   </>
+    // );
+    <MainContainer pageName="Section">
+      <div className="section-top">
+          <div className="search-box">
+            <input
+              id="keyword"
+              name="keyword"
+              type="text"
+              placeholder="Search for Section"
+              autoComplete="new-off"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <Icon
+              title="Search"
+              name="search-icon"
+              size="2rem"
+            />
+          </div>
+          <div className="section-top-right">
+            <button className="btn-outline">
+              Show completed sections
             </button>
-          ) : (
-            <button style={{ color: "black" }}>View task</button>
-          )}
-        </div>
-      ))}
+            <button className="btn-outline">
+              <Icon name="add-outline" size="2rem" />
+              Add Section
+            </button>
+          </div>
+      </div>
+      <div className="section-bottom">
+        
+      </div>
 
-      {addSectionFlag && (
-        <AddSection onCancel={() => setAddSectionFlag(false)} />
-      )}
-      {deleteSectionFlag && (
-        <DeleteSection
-          id={sectionId}
-          head={sectionHead}
-          onCancel={handleOnCancelSection}
-        />
-      )}
-    </>
-  );
+    </MainContainer>
+  )
 };
 
 export default Section;
