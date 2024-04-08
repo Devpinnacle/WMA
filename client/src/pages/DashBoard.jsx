@@ -9,12 +9,13 @@ import { useGetProjectQuery } from "../redux/api/projectApi";
 import { getProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
-import "./DashBoard.css"
+import "./DashBoard.css";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
+  const [tag, setTag] = useState([]);
   const [noteHead, setNoteHead] = useState(null);
   const [noteMsg, setNoteMsg] = useState(null);
   const [addNoteFlag, setAddNoteFlag] = useState(false);
@@ -29,6 +30,20 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const tags = [
+    { value: "Software", label: "Software" },
+    { value: "Website", label: "Website" },
+    { value: "Other", label: "Other" },
+  ];
+
+  const handleTags = (e) => {
+    if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
+  };
+
+  const handleRemoveTag = (item) => {
+    setTag((prevTag) => prevTag.filter((tg) => tg !== item));
+  };
 
   useEffect(() => {
     if (fetchedData) {
@@ -205,8 +220,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="notification">
               <div className="add-project-header">
-                <span className='title'>Notification</span>
-
+                <span className="title">Notification</span>
               </div>
             </div>
           </div>
@@ -214,7 +228,9 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="projects">
               <div className="project-header">
-                <span className='title' onClick={() => navigate("projects")}>Project</span>
+                <span className="title" onClick={() => navigate("projects")}>
+                  Project
+                </span>
                 <div className="header-right">
                   <div className="search-bar">
                     <input
@@ -224,40 +240,57 @@ const Dashboard = () => {
                       placeholder="Search"
                       autoComplete="new-off"
                     />
-                    <Icon
-                      title="Search"
-                      name="search-icon"
-                      size="2rem"
-                    />
+                    <Icon title="Search" name="search-icon" size="2rem" />
                   </div>
                   <SelectInput
                     className="tags"
                     placeholder="Tags"
+                    options={tags}
+                    onChange={handleTags}
                   />
-                  <Icon
-                    className="icon"
-                    name="add-outline"
-                    size="3rem"
-                  />
+                  <Icon className="icon" name="add-outline" size="3rem" />
                 </div>
               </div>
+              <div className="selected-tag">
+                  {tag.map((tg, index) => (
+                    <div key={index} className="tag-container">
+                      <p style={{ color: "black" }}>
+                        {tg}
+                        <Icon
+                          name="close"
+                          size="1rem"
+                          onClick={() => handleRemoveTag(tg)}
+                        />
+                      </p>
+                    </div>
+                  ))}
+                </div>
               <div className="project-body-container">
+                
+
                 {project.map((proj) => (
                   <div className="project-items">
                     <div className="project-item-header">
                       <div className="left-content">
-                        <Icon
-                          name="project-outline"
-                          size="3rem"
-                        />
-                        <span className='item-title' style={{ color: "black" }}>{proj.sctProjectName}</span>
+                        <Icon name="project-outline" size="3rem" />
+                        <span className="item-title" style={{ color: "black" }}>
+                          {proj.sctProjectName}
+                        </span>
                       </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
-                      <span style={{ color: "black" }}>Tasks pending:  </span>
-                      <span style={{ color: "black" }}>Tasks in progress: </span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        color: "black",
+                        margin: "0 1rem",
+                      }}
+                    >
+                      <span style={{ color: "black" }}>Tasks pending: </span>
+                      <span style={{ color: "black" }}>
+                        Tasks in progress:{" "}
+                      </span>
                     </div>
-
                   </div>
                 ))}
               </div>
@@ -269,7 +302,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="projects">
               <div className="add-project-header">
-                <span className='dashboard-contenttitle'></span>
+                <span className="dashboard-contenttitle"></span>
               </div>
             </div>
           </div>
@@ -279,7 +312,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="notes">
               <div className="notes-header">
-                <span className='title'>Notes</span>
+                <span className="title">Notes</span>
                 {isLoading ? (
                   <p>Loading...</p>
                 ) : (
@@ -292,11 +325,7 @@ const Dashboard = () => {
                         placeholder="Search"
                         autoComplete="new-off"
                       />
-                      <Icon
-                        title="Search"
-                        name="search-icon"
-                        size="2rem"
-                      />
+                      <Icon title="Search" name="search-icon" size="2rem" />
                     </div>
                     <Icon
                       className="icon"
@@ -304,24 +333,24 @@ const Dashboard = () => {
                       size="3rem"
                       onClick={handleAddNote}
                     />
-                    {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
+                    {/* {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />} */}
                   </div>
                 )}
               </div>
               <div className="notes-body-container">
                 {Object.keys(groupedMessages).map((date) =>
                   groupedMessages[date].map((message) => (
-                    <div className="notes-item"
-                      key={message._id}
-                    >
+                    <div className="notes-item" key={message._id}>
                       <div className="notes-item-header">
                         <div className="left-content">
-                          <Icon
-                            name="notes-outline"
-                            size="3rem"
-                          />
+                          <Icon name="notes-outline" size="3rem" />
                           <div className="item-content">
-                            <span className="item-title" style={{ color: "black" }}>{message.heading}</span>
+                            <span
+                              className="item-title"
+                              style={{ color: "black" }}
+                            >
+                              {message.heading}
+                            </span>
                           </div>
                         </div>
                         <div className="notes-header-right">
@@ -329,21 +358,29 @@ const Dashboard = () => {
                             title="Delete"
                             name="delete-outline"
                             size="3rem"
-                            onClick={() => handleDelete(message._id, message.heading)}
+                            onClick={() =>
+                              handleDelete(message._id, message.heading)
+                            }
                           />
-                          {deleteNoteFlag && (
+                          {/* {deleteNoteFlag && (
                             <DeleteNotes
                               id={noteId}
                               head={noteHead}
                               onCancel={handleDeleteNotesCancel}
                             />
-                          )}
+                          )} */}
                           <Icon
                             name="open-outline"
                             size="3rem"
-                            onClick={() => handleViewNote(message._id, message.heading, message.msg)}
+                            onClick={() =>
+                              handleViewNote(
+                                message._id,
+                                message.heading,
+                                message.msg
+                              )
+                            }
                           />
-                          {viewNoteFlag && !deleteNoteFlag && (
+                          {/* {viewNoteFlag && !deleteNoteFlag && (
                             <View
                               id={noteId}
                               head={noteHead}
@@ -351,12 +388,10 @@ const Dashboard = () => {
                               onCancel={handleViewNotesCancel}
                               onDelete={handleOnDelete}
                             />
-                          )}
+                          )} */}
                         </div>
                       </div>
-                      <div className="note-content">
-                        {message.msg}
-                      </div>
+                      <div className="note-content">{message.msg}</div>
                     </div>
                   ))
                 )}
@@ -365,6 +400,23 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
+      {deleteNoteFlag && (
+        <DeleteNotes
+          id={noteId}
+          head={noteHead}
+          onCancel={handleDeleteNotesCancel}
+        />
+      )}
+      {viewNoteFlag && !deleteNoteFlag && (
+        <View
+          id={noteId}
+          head={noteHead}
+          msg={noteMsg}
+          onCancel={handleViewNotesCancel}
+          onDelete={handleOnDelete}
+        />
+      )}
     </MainContainer>
   );
 };

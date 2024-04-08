@@ -60,7 +60,7 @@ const Task = () => {
                 Created By:{" "}
                 {todoTask.createdBy._id === user._id
                   ? "You"
-                  : sec.createdBy.userName}
+                  : todoTask.createdBy.userName}
               </p>
               <p style={{ color: "black" }}>
                 dueDate:{formatDate(todoTask.dueDate)}
@@ -82,7 +82,7 @@ const Task = () => {
                 Created By:{" "}
                 {inpg.createdBy._id === user._id
                   ? "You"
-                  : sec.createdBy.userName}
+                  : inpg.createdBy.userName}
               </p>
               <p style={{ color: "black" }}>
                 dueDate:{formatDate(inpg.dueDate)}
@@ -104,7 +104,7 @@ const Task = () => {
                 Created By:{" "}
                 {comp.createdBy._id === user._id
                   ? "You"
-                  : sec.createdBy.userName}
+                  : comp.createdBy.userName}
               </p>
               <p style={{ color: "black" }}>
                 dueDate:{formatDate(comp.dueDate)}
@@ -126,7 +126,7 @@ const Task = () => {
                 Created By:{" "}
                 {oth.createdBy._id === user._id
                   ? "You"
-                  : sec.createdBy.userName}
+                  : oth.createdBy.userName}
               </p>
               <p style={{ color: "black" }}>
                 dueDate:{formatDate(oth.dueDate)}
