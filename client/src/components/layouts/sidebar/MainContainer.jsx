@@ -13,6 +13,7 @@ export default function MainContainer({ onGoBack, children, pageName }) {
     const pageIcons = {
         Hi: 'hi-emoji',
         Projects: 'projects',
+        Section:'project-outline'
     };
 
 
