@@ -56,7 +56,6 @@
 } */ 
 .sidebar-outer{
     background-color: #3D405B;
-    overflow-y: auto;
     min-width: 242px;
     border-radius: 24px;
     margin :10px

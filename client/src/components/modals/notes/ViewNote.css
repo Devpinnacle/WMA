@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     padding-bottom: 3rem;
+    fill: #3D405B;
 }
 
 .title-container {
@@ -33,6 +34,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    fill: red;
 }
 
 .body-content {

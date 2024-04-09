@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     padding-bottom: 3rem;
+    fill: red;
 }
 
 .title-container {
@@ -51,13 +52,25 @@
     margin-top: 10px;
     font-weight: bold;
     margin-left: 5px;
+    fill:#FF4848 !important; 
+   
 }
 
 .btn-del:hover {
-    background-color: white;
-    color: black;
-    box-shadow: 2px 2px 8px 0 rgba(255, 60, 60, 0.5);
+    background-color: #F9E3DD;
+    fill: #FF4848 !important; 
 }
+
+.btn-del:active {
+    background-color:#FF4848;
+    color: white;
+    border-color: red;
+}
+
+.btn-del:active svg {
+    fill: var(--text-white-color) !important;
+}
+
 
 .del-content {
     color: black;

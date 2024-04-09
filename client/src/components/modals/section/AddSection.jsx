@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
 import { useSaveSectionMutation } from "../../../redux/api/sectionApi";
+import Icon from "../../ui/Icon";
+import "./AddSection.css"
 
 const AddSection = ({ onCancel }) => {
   const [sectionData, setSectionData] = useState({
@@ -66,7 +68,7 @@ const AddSection = ({ onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
-        <h1 style={{ color: "black" }}>Add Section</h1>
+        {/* <h1 style={{ color: "black" }}>Add Section</h1>
         <input
           type="text"
           name="name"
@@ -90,7 +92,57 @@ const AddSection = ({ onCancel }) => {
         />
         <button style={{ color: "black" }} onClick={handleSaveSection}>
           save
-        </button>
+        </button> */}
+        <div className="add-section-header">
+          <div className='title-container'>
+            <Icon
+              className="notes-icon"
+              name="notes-outline"
+              size="6rem" />
+            <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Add Section</span>
+          </div>
+          <Icon
+            className="close-icon"
+            name="close"
+            size="6rem"
+            onClick={onCancel}
+          />
+        </div>
+        <div className='section-input'>
+          <div>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Section: </label>
+            <input
+              type="text"
+              name="name"
+              onChange={inputHandler}
+            />
+          </div>
+          <div>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Addition date: </label>
+            <input
+              type="date"
+              name="start"
+              onChange={inputHandler}
+            />
+          </div>
+          <div>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Due date: </label>
+            <input
+              type="date"
+              name="due"
+              onChange={inputHandler}
+            />
+          </div>
+          <div className='save-button'>
+            <button className="btn-outline" onClick={handleSaveSection}>
+              <Icon
+                name="save-outline"
+                size="2rem"
+              />
+              Save
+            </button>
+          </div>
+        </div>
       </div>
       {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />

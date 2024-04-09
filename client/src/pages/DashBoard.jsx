@@ -250,8 +250,9 @@ const Dashboard = () => {
                           name="project-outline"
                           size="3rem"
                         />
-                        <span className='item-title' style={{ color: "black" }}>{proj.sctProjectName}</span>
+                        <span className='item-title ml-2' style={{ color: "black" }}>{proj.sctProjectName}</span>
                       </div>
+                      <div className="notify">1</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
                       <span style={{ color: "black" }}>Tasks pending:  </span>
@@ -321,7 +322,8 @@ const Dashboard = () => {
                             size="3rem"
                           />
                           <div className="item-content">
-                            <span className="item-title" style={{ color: "black" }}>{message.heading}</span>
+                            <span className="item-title ml-2" style={{ color: "black" }}>{message.heading}</span>
+                            
                           </div>
                         </div>
                         <div className="notes-header-right">

@@ -9,11 +9,13 @@
     grid-template-columns: 648px 918px;
     gap: 1rem;
 }
+
 .dashboard-lower-grid {
     display: grid;
     grid-template-columns: 918px 648px;
     gap: 1rem;
     margin-top: 2rem;
+
 }
 
 .dashboard-item {
@@ -23,6 +25,7 @@
     padding-top: 1rem;
     padding-left: 1rem;
     min-width: 30rem;
+    height: 370px;
 }
 
 .title {
@@ -42,6 +45,7 @@
     justify-content: space-between;
     align-items: center;
     margin-right: 10px;
+    padding: 0.5rem;
 }
 
 .project-body-container {
@@ -167,6 +171,7 @@
 .notes-header-right {
     display: flex;
     align-items: center;
+    fill: red;
 }
 
 
@@ -187,6 +192,10 @@
     .dashboard-upper-grid,
     .dashboard-lower-grid {
         grid-template-columns: 1fr;
+    }
+
+    .project-body-container {
+        max-height: 250px;
     }
 }
 
@@ -222,4 +231,3 @@
     }
 
 }
-

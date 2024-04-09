@@ -86,26 +86,27 @@ const Projects = () => {
             </div>
           </div>
           <button className="btn-outline">
-            <Icon name="add-outline" size="2rem" />
+            <Icon
+              name="add-outline"
+              size="2rem"
+            />
             Add Project
           </button>
         </div>
       </div>
       <div className="selected-tag">
         {tag.map((tg, index) => (
-          <div key={index} className="tag-container">
-            <p style={{ color: "black" }}>
+          <div key={index} className="tag-container">         
+              <Icon
+                name="close"
+                size="2rem"
+                onClick={() => handleRemoveTag(tg)}
+              />
+              <p style={{ color: "black" }}>
               {tg}
-              {/* <button onClick={() => handleRemoveTag(tg)}>c</button> */}
-                <Icon
-                  name="close"
-                  size="1rem"
-                  onClick={() => handleRemoveTag(tg)}
-                />
             </p>
           </div>
         ))}
-
       </div>
       <div className="project-container">
         {filteredProjects.map((proj) => (
@@ -119,13 +120,16 @@ const Projects = () => {
               {proj.sctProjectName}
             </div>
             <div className="project-info">
-              {proj.tags.map((tg, index) => (
+            Addition By :
+ 
+            </div>
+            <div className="project-tags">
+            {proj.tags.map((tg, index) => (
                 <p key={index} style={{ color: "black" }}>
                   {tg}
                 </p>
               ))}
             </div>
-            <div className="project-tags"></div>
           </div>
         ))}
       </div>

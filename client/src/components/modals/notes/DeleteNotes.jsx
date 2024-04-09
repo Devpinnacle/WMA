@@ -21,7 +21,7 @@ const DeleteNotes = ({ id, head, onCancel }) => {
             <Icon
               name="delete-outline"
               size="6rem" />
-            <span className='delete-title'>Delete notes</span>
+            <span className='delete-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Delete notes</span>
           </div>
           <Icon
             className="close-icon"

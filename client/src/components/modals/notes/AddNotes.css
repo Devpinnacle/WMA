@@ -5,6 +5,7 @@
 .add-note-header{
   display: flex;
   justify-content: space-between;
+  fill:#3D405B;
 }
 .title-container{
   display: flex;
