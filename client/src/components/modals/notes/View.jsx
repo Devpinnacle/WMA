@@ -14,7 +14,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
               className="notes-icon"
               name="notes-outline"
               size="6rem" />
-            <span className='view-title'>Notes</span>
+            <span className='view-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Notes</span>
           </div>
           <Icon
             className="close-icon"
@@ -32,9 +32,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
               onClick={onDelete}
             />
           </div>
-          <div className="body-content">
-            {msg}
-          </div>
+          <textarea className="body-content">{msg}</textarea>
         </div>
       </div>
     </ModalContainer>

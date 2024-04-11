@@ -31,10 +31,9 @@ const AddNotes = ({ onCancel }) => {
         <div className="add-note-header">
           <div className='title-container'>
             <Icon
-              className="notes-icon"
               name="notes-outline"
               size="6rem" />
-            <span className='title'>Notes</span>
+            <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Notes</span>
           </div>
           <Icon
             className="close-icon"

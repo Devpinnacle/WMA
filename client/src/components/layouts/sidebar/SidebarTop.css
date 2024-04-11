@@ -27,10 +27,17 @@
 
 .top-link-item:hover {
     transition: background-color 300ms ease-in-out;
-    background-color: #f2f5ff;
+    background-color: #D3D4DA;
+    /* fill: var(--text-black-color); */
+    color: var(--text-white-color);
+}
+
+.top-link-item:focus{
+    background-color: white;
     fill: var(--text-black-color);
     color: var(--text-black-color);
 }
+
 
 .top-link-item-active {
     background-color: var(--btn-hovered-color) !important;

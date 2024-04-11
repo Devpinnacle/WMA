@@ -1,0 +1,28 @@
+.delete-section-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 3rem;
+    fill: red;
+}
+
+@media only screen and (max-width: 52em) {
+
+    /* 52em = 832px */
+    .modal-container {
+        left: 0 !important;
+        right: 0 !important;
+        top: 60% !important;
+        bottom: 0 !important;
+        height: 100%;
+        width: 100%;
+        border-radius: 0 !important;
+        animation: event-modal-anime 0.5s ease;
+    }
+    .delete-section-header{
+        padding: 0rem;
+        margin-bottom: 2rem;
+    }
+    .delete-title{
+        font-size: 30px !important;
+    }
+}

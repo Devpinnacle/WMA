@@ -42,11 +42,7 @@ const AddProject = () => {
                             isSearchable={false}
 
                         />
-                        {/* <Icon
-                            className="tag"
-                            name="tag-outline"
-                            size="3rem"
-                        /> */}
+   
                     </div>
                     <div className='save-button'>
                         <button className="btn-outline" >
