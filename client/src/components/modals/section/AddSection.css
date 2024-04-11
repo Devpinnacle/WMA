@@ -1,10 +1,16 @@
-.add-section-header{
+.add-section-header {
     display: flex;
     justify-content: space-between;
-    fill:#3D405B;
-  }
+    fill: #3D405B;
+    padding-bottom: 1rem;
+}
+
+.section-input label {
+    width: 20%;
+}
+
 .section-input input {
-    margin-left: 8rem;
+    /* margin-left: 5rem; */
     margin-bottom: 2rem;
     width: 354px;
     color: black;
@@ -23,37 +29,57 @@
         border-radius: 0 !important;
         animation: event-modal-anime 0.5s ease;
     }
-    .section-input input{
+
+    .section-input input {
         margin: 0;
         width: auto;
     }
-    .title{
+
+    .title {
         font-size: 30px !important;
-        
+
     }
-    .add-section-header{
+
+    .add-section-header {
         padding: 1rem;
     }
 
+    .section-input label {
+        width: auto;
+    }
+
+
 }
 
-  @media only screen and (max-width: 414px) {
-    .section-input input{
-        width:auto;
+@media only screen and (max-width: 414px) {
+    .section-input input {
+        width: auto;
         margin-left: 3rem;
         margin-bottom: 0.5rem;
     }
-    .add-section-header{
+
+    .add-section-header {
         padding: 0.5rem;
     }
+
+    .section-input label {
+        width: auto;
+    }
+
 }
+
 @media only screen and (max-width: 860px) {
-    .section-input input{
-        width:auto;
+    .section-input input {
+        width: auto;
         margin-left: 3rem;
         margin-bottom: 2rem;
     }
-    .add-section-header{
+
+    .add-section-header {
         padding: 0.5rem;
+    }
+
+    .section-input label {
+        width: auto;
     }
 }

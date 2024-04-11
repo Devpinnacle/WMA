@@ -110,23 +110,16 @@ const AddSection = ({ onCancel }) => {
         </div>
         <div className='section-input'>
           <div>
-            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Section: </label>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Section :</label>
             <input
               type="text"
               name="name"
               onChange={inputHandler}
             />
           </div>
+ 
           <div>
-            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Addition date: </label>
-            <input
-              type="date"
-              name="start"
-              onChange={inputHandler}
-            />
-          </div>
-          <div>
-            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Due date: </label>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Due date : </label>
             <input
               type="date"
               name="due"
