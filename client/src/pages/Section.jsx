@@ -56,100 +56,100 @@ const Section = () => {
   }
 
   return (
-    //   <>
-    //     <input
-    //       type="text"
-    //       value={searchTerm}
-    //       onChange={handleSearch}
-    //       style={{ color: "black" }}
-    //       placeholder="search for section"
-    //     />
-    //     <button
-    //       style={{ color: "black" }}
-    //       onClick={() => setAddsectionFlag(true)}
-    //     >
-    //       addsection
-    //     </button>
+      <>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          style={{ color: "black" }}
+          placeholder="search for section"
+        />
+        <button
+          style={{ color: "black" }}
+          onClick={() => setAddSectionFlag(true)}
+        >
+          addsection
+        </button>
 
-    //     {filteredSections.map((sec) => (
-    //       <div
-    //         key={sec._id}
-    //         style={{ border: "1px solid black", padding: "10px" }}
-    //         onClick={()=>handleSectionClick(sec._id)}
-    //       >
-    //         <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
-    //         <p style={{ color: "black" }}>
-    //           Start Date: {formatDate(sec.startDate)}
-    //         </p>
-    //         <p style={{ color: "black" }}>Due Date: {formatDate(sec.dueDate)}</p>
-    //         <p style={{ color: "black" }}>
-    //           Created By:{" "}
-    //           {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
-    //         </p>
-    //         <p style={{ color: "black" }}>{sec.progress}</p>
-    //         <button style={{ color: "black" }}>add task</button>
-    //         {sec.totalTask===0 ? (
-    //           <button
-    //             style={{ color: "black" }}
-    //             onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
-    //           >
-    //             delete task
-    //           </button>
-    //         ) : (
-    //           <button style={{ color: "black" }}>View task</button>
-    //         )}
+        {filteredSections.map((sec) => (
+          <div
+            key={sec._id}
+            style={{ border: "1px solid black", padding: "10px" }}
+            onClick={()=>handleSectionClick(sec)}
+          >
+            <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
+            <p style={{ color: "black" }}>
+              Start Date: {formatDate(sec.startDate)}
+            </p>
+            <p style={{ color: "black" }}>Due Date: {formatDate(sec.dueDate)}</p>
+            <p style={{ color: "black" }}>
+              Created By:{" "}
+              {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
+            </p>
+            <p style={{ color: "black" }}>{sec.progress}</p>
+            <button style={{ color: "black" }}>add task</button>
+            {sec.totalTask===0 ? (
+              <button
+                style={{ color: "black" }}
+                onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
+              >
+                delete task
+              </button>
+            ) : (
+              <button style={{ color: "black" }}>View task</button>
+            )}
+          </div>
+        ))}
+
+        {addSectionFlag && (
+          <AddSection
+            onCancel={() => setAddSectionFlag(false)}
+            projectId={selectedProject}
+          />
+        )}
+        {deleteSectionFlag && (
+          <DeleteSection
+            id={sectionId}
+            head={sectionHead}
+            onCancel={handleOnCancelSection}
+          />
+        )}
+      </>
+    );
+    // <MainContainer pageName="Section">
+    //   <div className="section-top">
+    //       <div className="search-box">
+    //         <input
+    //           id="keyword"
+    //           name="keyword"
+    //           type="text"
+    //           placeholder="Search for Section"
+    //           autoComplete="new-off"
+    //           value={searchTerm}
+    //           onChange={handleSearch}
+    //         />
+    //         <Icon
+    //           title="Search"
+    //           name="search-icon"
+    //           size="2rem"
+    //         />
     //       </div>
-    //     ))}
-
-    //     {addSectionFlag && (
-    //       <AddSection
-    //         onCancel={() => setAddsectionFlag(false)}
-    //         projectId={selectedProject}
-    //       />
-    //     )}
-    //     {deleteSectionFlag && (
-    //       <DeleteSection
-    //         id={sectionId}
-    //         head={sectionHead}
-    //         onCancel={handleOnCancelSection}
-    //       />
-    //     )}
-    //   </>
-    // );
-    <MainContainer pageName="Section">
-      <div className="section-top">
-          <div className="search-box">
-            <input
-              id="keyword"
-              name="keyword"
-              type="text"
-              placeholder="Search for Section"
-              autoComplete="new-off"
-              value={searchTerm}
-              onChange={handleSearch}
-            />
-            <Icon
-              title="Search"
-              name="search-icon"
-              size="2rem"
-            />
-          </div>
-          <div className="section-top-right">
-            <button className="btn-outline">
-              Show completed sections
-            </button>
-            <button className="btn-outline">
-              <Icon name="add-outline" size="2rem" />
-              Add Section
-            </button>
-          </div>
-      </div>
-      <div className="section-bottom">
+    //       <div className="section-top-right">
+    //         <button className="btn-outline">
+    //           Show completed sections
+    //         </button>
+    //         <button className="btn-outline">
+    //           <Icon name="add-outline" size="2rem" />
+    //           Add Section
+    //         </button>
+    //       </div>
+    //   </div>
+    //   <div className="section-bottom">
         
-      </div>
+    //   </div>
 
-    </MainContainer>
-  )
+    // </MainContainer>
+  // )
 };
 
 export default Section;

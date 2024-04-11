@@ -21,12 +21,15 @@ const Dashboard = () => {
   const [addNoteFlag, setAddNoteFlag] = useState(false);
   const [deleteNoteFlag, setDeleteNoteFlag] = useState(false);
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [notesSearchTerm, setNotesSearchTerm] = useState("");
 
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,8 +74,25 @@ const Dashboard = () => {
     groupedMessages[date].push(message);
   });
 
+  const filteredProjects = project.filter((proj) => {
+    const isIncludedInTags =
+      tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
+    const isIncludedInSearch = proj.sctProjectName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return isIncludedInTags && isIncludedInSearch;
+  });
+
+  const filteredNotes = notes.filter((note) =>
+    note.heading.toLowerCase().includes(notesSearchTerm.toLocaleLowerCase())
+  );
+
   const handleAddNote = () => {
     setAddNoteFlag(true);
+  };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
 
   const handleDelete = (id, head) => {
@@ -237,6 +257,8 @@ const Dashboard = () => {
                       id="keyword"
                       name="keyword"
                       type="text"
+                      value={searchTerm}
+                      onChange={handleSearch}
                       placeholder="Search"
                       autoComplete="new-off"
                     />
@@ -248,27 +270,27 @@ const Dashboard = () => {
                     options={tags}
                     onChange={handleTags}
                   />
-                  <Icon className="icon" name="add-outline" size="3rem" />
+                  {user.userGroupName !== "Software" && (
+                    <Icon className="icon" name="add-outline" size="3rem" />
+                  )}
                 </div>
               </div>
               <div className="selected-tag">
-                  {tag.map((tg, index) => (
-                    <div key={index} className="tag-container">
-                      <p style={{ color: "black" }}>
-                        {tg}
-                        <Icon
-                          name="close"
-                          size="1rem"
-                          onClick={() => handleRemoveTag(tg)}
-                        />
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                {tag.map((tg, index) => (
+                  <div key={index} className="tag-container">
+                    <p style={{ color: "black" }}>
+                      {tg}
+                      <Icon
+                        name="close"
+                        size="1rem"
+                        onClick={() => handleRemoveTag(tg)}
+                      />
+                    </p>
+                  </div>
+                ))}
+              </div>
               <div className="project-body-container">
-                
-
-                {project.map((proj) => (
+                {filteredProjects.map((proj) => (
                   <div className="project-items">
                     <div className="project-item-header">
                       <div className="left-content">
@@ -322,6 +344,8 @@ const Dashboard = () => {
                         id="keyword"
                         name="keyword"
                         type="text"
+                        value={notesSearchTerm}
+                        onChange={(e) => setNotesSearchTerm(e.target.value)}
                         placeholder="Search"
                         autoComplete="new-off"
                       />
@@ -338,63 +362,45 @@ const Dashboard = () => {
                 )}
               </div>
               <div className="notes-body-container">
-                {Object.keys(groupedMessages).map((date) =>
-                  groupedMessages[date].map((message) => (
-                    <div className="notes-item" key={message._id}>
-                      <div className="notes-item-header">
-                        <div className="left-content">
-                          <Icon name="notes-outline" size="3rem" />
-                          <div className="item-content">
-                            <span
-                              className="item-title"
-                              style={{ color: "black" }}
-                            >
-                              {message.heading}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="notes-header-right">
-                          <Icon
-                            title="Delete"
-                            name="delete-outline"
-                            size="3rem"
-                            onClick={() =>
-                              handleDelete(message._id, message.heading)
-                            }
-                          />
-                          {/* {deleteNoteFlag && (
-                            <DeleteNotes
-                              id={noteId}
-                              head={noteHead}
-                              onCancel={handleDeleteNotesCancel}
-                            />
-                          )} */}
-                          <Icon
-                            name="open-outline"
-                            size="3rem"
-                            onClick={() =>
-                              handleViewNote(
-                                message._id,
-                                message.heading,
-                                message.msg
-                              )
-                            }
-                          />
-                          {/* {viewNoteFlag && !deleteNoteFlag && (
-                            <View
-                              id={noteId}
-                              head={noteHead}
-                              msg={noteMsg}
-                              onCancel={handleViewNotesCancel}
-                              onDelete={handleOnDelete}
-                            />
-                          )} */}
+                {filteredNotes.map((message) => (
+                  <div className="notes-item" key={message._id}>
+                    <div className="notes-item-header">
+                      <div className="left-content">
+                        <Icon name="notes-outline" size="3rem" />
+                        <div className="item-content">
+                          <span
+                            className="item-title"
+                            style={{ color: "black" }}
+                          >
+                            {message.heading}
+                          </span>
                         </div>
                       </div>
-                      <div className="note-content">{message.msg}</div>
+                      <div className="notes-header-right">
+                        <Icon
+                          title="Delete"
+                          name="delete-outline"
+                          size="3rem"
+                          onClick={() =>
+                            handleDelete(message._id, message.heading)
+                          }
+                        />
+                        <Icon
+                          name="open-outline"
+                          size="3rem"
+                          onClick={() =>
+                            handleViewNote(
+                              message._id,
+                              message.heading,
+                              message.msg
+                            )
+                          }
+                        />
+                      </div>
                     </div>
-                  ))
-                )}
+                    <div className="note-content">{message.msg}</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

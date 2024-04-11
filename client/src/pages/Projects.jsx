@@ -15,6 +15,7 @@ const Projects = () => {
   const { data: projectData } = useGetProjectQuery();
 
   const { project } = useSelector((state) => state.project);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,10 +86,10 @@ const Projects = () => {
               </div>
             </div>
           </div>
-          <button className="btn-outline">
+          {user.userGroupName !== "Software"&&<button className="btn-outline">
             <Icon name="add-outline" size="2rem" />
             Add Project
-          </button>
+          </button>}
         </div>
       </div>
       <div className="selected-tag">

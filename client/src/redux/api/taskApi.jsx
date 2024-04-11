@@ -23,6 +23,74 @@ export const taskApi = createApi({
       },
     }),
 
+    //* Update Task settings *********************************************
+    updateTaskStg: builder.mutation({
+      query: (fromData) => ({
+        url: "/task/updatetasksettings",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    //* Update Daily task ************************************************
+    updateDailyTask: builder.mutation({
+      query: (fromData) => ({
+        url: "/task/updatedailytask",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    //* Update Notes *****************************************************
+    updateNotes: builder.mutation({
+      query: (fromData) => ({
+        url: "/task/updatenotes",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    //* Delete Task *****************************************************
+    deleteTask: builder.mutation({
+      query: (fromData) => ({
+        url: "/task/deletetask",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
     //* Get Task *********************************************************
     getTask: builder.query({
       providesTags: (result, error, sectionId) => [
@@ -45,4 +113,11 @@ export const taskApi = createApi({
   }),
 });
 
-export const { useAddTaskMutation, useGetTaskQuery } = taskApi;
+export const {
+  useAddTaskMutation,
+  useUpdateTaskStgMutation,
+  useUpdateDailyTaskMutation,
+  useUpdateNotesMutation,
+  useDeleteTaskMutation,
+  useGetTaskQuery,
+} = taskApi;

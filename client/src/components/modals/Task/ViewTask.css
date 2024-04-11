@@ -1,0 +1,9 @@
+.progress-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .progress-container h2 {
+    margin: 0;
+  }
+  

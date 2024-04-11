@@ -33,7 +33,9 @@ exports.getTasks = catchAsync(async (req, res, next) => {
     deletedDate: 0,
   })
     .populate("createdBy", "userName")
-    .populate("assignedTo", "userName");
+    .populate("assignedTo", "userName")
+    .populate("projectId", "sctProjectName")
+    .populate("sectionId", ["sectionName", "progress"]);
 
   res.status(200).json({
     status: "success",
@@ -103,5 +105,113 @@ exports.addTask = catchAsync(async (req, res, next) => {
     })
   );
 
-  res.status(200).json({ status: "success", data: tasks });
+  res.status(200).json({ status: "success" });
+});
+
+//* Update TasksSettings *****************************************************
+
+exports.tskUpdate = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const {
+    taskid,
+    startDate,
+    dueDate,
+    priority,
+    status,
+    stage,
+    progress,
+    duration,
+    notes,
+  } = req.body;
+
+  // Check if all required parameters are provided
+  const requiredParams = [taskid, startDate, dueDate, priority, status, stage];
+  if (requiredParams.some((param) => !param)) {
+    return next(
+      new AppError("Please provide all the parameters for the task.", 400)
+    );
+  }
+
+  await Task.updateOne(
+    { _id: taskid },
+    {
+      $set: {
+        assignedDate: startDate,
+        dueDate: dueDate,
+        priority: priority,
+        status: status,
+        stage: stage,
+        progress: status === "Completed" ? 100 : progress,
+        duration: duration,
+        notes: notes,
+      },
+    }
+  );
+  res.status(200).json({ status: "success" });
+});
+
+//* Update Daily task (Progress, Duration) *******************************
+
+exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
+  console.log("hit..Daily");
+  const taskId = req.body.id;
+  if (!taskId) {
+    return next(new AppError("Please provide task id.", 400));
+  }
+
+  const status = await Task.find({ _id: taskId }, { status: 1 });
+  await Task.updateOne(
+    { _id: taskId },
+    {
+      $set: {
+        progress: req.body.progress,
+        duration: req.body.duration,
+        status: req.body.progress === 100 ? "Completed" : status,
+      },
+    }
+  );
+
+  res.status(200).json({ status: "success" });
+});
+
+//* Update Notes *********************************************************
+
+exports.updateNotes = catchAsync(async (req, res, next) => {
+  const taskId = req.body.id;
+  if (!taskId) {
+    return next(new AppError("Please provide task id.", 400));
+  }
+
+  await Task.updateOne(
+    { _id: taskId },
+    {
+      $set: {
+        notes: req.body.notes ? req.body.notes : null,
+      },
+    }
+  );
+
+  res.status(200).json({ status: "success" });
+});
+
+//* delete task **********************************************************
+
+exports.deleteTask = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const taskId = req.body.id;
+  if (!taskId) {
+    return next(new AppError("Please provide task id.", 400));
+  }
+
+  await Task.updateOne(
+    { _id: taskId },
+    {
+      $set: {
+        deletedStatus: true,
+        deletedBy: userId,
+        deletedDate: Date.now(),
+      },
+    }
+  );
+  res.status(200).json({ status: "success" });
 });
