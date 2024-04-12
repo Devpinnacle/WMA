@@ -27,7 +27,7 @@ export default function SidebarTop() {
                     <Icon name="projects" size="2rem" />
                     Projects
                 </NavLink>
-                <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
+                <NavLink className="top-link-item" to="reports" style={{ textDecoration: "none" }}>
                     <Icon name="reports" size="2rem" />
                     Reports
                 </NavLink>

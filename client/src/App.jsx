@@ -8,6 +8,9 @@ import DashBoard from "./pages/DashBoard";
 import Projects from "./pages/Projects";
 import Section from "./pages/Section";
 import Task from "./pages/Task";
+import Reports from "./pages/Reports";
+import DailyReport from "./pages/DailyReport";
+import ReportTopComponent from "./pages/ReportTopComponent";
 
 function App() {
   const router = createBrowserRouter([
@@ -59,6 +62,15 @@ function App() {
                 </ProtectedRoute>
               ),
             },
+            {
+              path: "reports",
+              element: (
+                <ProtectedRoute>
+                  <Reports />
+                </ProtectedRoute>
+              ),
+            },
+
           ],
         },
       ],

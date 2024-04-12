@@ -254,7 +254,7 @@ const Dashboard = () => {
                       </div>
                       <div className="notify">1</div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem' }}>
                       <span style={{ color: "black" }}>Tasks pending:  </span>
                       <span style={{ color: "black" }}>Tasks in progress: </span>
                     </div>
@@ -323,7 +323,7 @@ const Dashboard = () => {
                           />
                           <div className="item-content">
                             <span className="item-title ml-2" style={{ color: "black" }}>{message.heading}</span>
-                            
+
                           </div>
                         </div>
                         <div className="notes-header-right">
@@ -333,27 +333,11 @@ const Dashboard = () => {
                             size="3rem"
                             onClick={() => handleDelete(message._id, message.heading)}
                           />
-                          {deleteNoteFlag && (
-                            <DeleteNotes
-                              id={noteId}
-                              head={noteHead}
-                              onCancel={handleDeleteNotesCancel}
-                            />
-                          )}
                           <Icon
                             name="open-outline"
                             size="3rem"
                             onClick={() => handleViewNote(message._id, message.heading, message.msg)}
                           />
-                          {viewNoteFlag && !deleteNoteFlag && (
-                            <View
-                              id={noteId}
-                              head={noteHead}
-                              msg={noteMsg}
-                              onCancel={handleViewNotesCancel}
-                              onDelete={handleOnDelete}
-                            />
-                          )}
                         </div>
                       </div>
                       <div className="note-content">
@@ -361,6 +345,22 @@ const Dashboard = () => {
                       </div>
                     </div>
                   ))
+                )}
+                {deleteNoteFlag && (
+                  <DeleteNotes
+                    id={noteId}
+                    head={noteHead}
+                    onCancel={handleDeleteNotesCancel}
+                  />
+                )}
+                {viewNoteFlag && !deleteNoteFlag && (
+                  <View
+                    id={noteId}
+                    head={noteHead}
+                    msg={noteMsg}
+                    onCancel={handleViewNotesCancel}
+                    onDelete={handleOnDelete}
+                  />
                 )}
               </div>
             </div>
