@@ -15,6 +15,7 @@ const Projects = () => {
   const { data: projectData } = useGetProjectQuery();
 
   const { project } = useSelector((state) => state.project);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Projects = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-
+console.log("projrcts",project)
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
       tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
@@ -85,26 +86,21 @@ const Projects = () => {
               </div>
             </div>
           </div>
-          <button className="btn-outline">
-            <Icon
-              name="add-outline"
-              size="2rem"
-            />
+          {user.userGroupName!=="Software"&&<button className="btn-outline">
+            <Icon name="add-outline" size="2rem" />
             Add Project
-          </button>
+          </button>}
         </div>
       </div>
       <div className="selected-tag">
         {tag.map((tg, index) => (
-          <div key={index} className="tag-container">         
-              <Icon
-                name="close"
-                size="2rem"
-                onClick={() => handleRemoveTag(tg)}
-              />
-              <p style={{ color: "black" }}>
-              {tg}
-            </p>
+          <div key={index} className="tag-container">
+            <Icon
+              name="close"
+              size="2rem"
+              onClick={() => handleRemoveTag(tg)}
+            />
+            <p style={{ color: "black" }}>{tg}</p>
           </div>
         ))}
       </div>
@@ -120,11 +116,28 @@ const Projects = () => {
               {proj.sctProjectName}
             </div>
             <div className="project-info">
-            Addition By :
- 
+              {user.userGroupName!=="Software"&&<p style={{ color: "black" }}>
+                Addition By:{user._id===proj.sctProjectEnteredById._id?`You`:proj.sctProjectEnteredById.userName}
+              </p>}
+              <p style={{ color: "black" }}>
+                Pending tasks:{proj.pendingTasks}
+              </p>
+              <p style={{ color: "black" }}>
+                Tasks in progress:{proj.inProgressTasks}
+              </p>
+              {user.userGroupName!=="Software"&&<p style={{ color: "black" }}>
+                Total Sections:{proj.sectionLen}
+              </p>}
+              <p style={{ color: "black" }}>
+                {user.userGroupName!=="Software"?`Total tasks`:`Total task assigned to you`}:{proj.assigned}
+              </p>
+              <p style={{ color: "black" }}>
+                Completed Taks:{proj.completedTasks}
+              </p>
+              <p style={{ color: proj.overdueTasks===0?`black`:`red` }}>Tasks due:{proj.overdueTasks}</p>
             </div>
             <div className="project-tags">
-            {proj.tags.map((tg, index) => (
+              {proj.tags.map((tg, index) => (
                 <p key={index} style={{ color: "black" }}>
                   {tg}
                 </p>

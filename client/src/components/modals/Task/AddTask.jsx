@@ -88,6 +88,7 @@ const AddTask = ({ onCancel }) => {
     const { stages, status, priority } = list;
     const startDate = sec.startDate.substring(0, 10);
     const dueDate = sec.dueDate.substring(0, 10);
+    const progressInt = progress ? parseInt(progress) : 0;
     let assignee = [];
 
     // Convert hours and minutes to numbers
@@ -147,6 +148,33 @@ const AddTask = ({ onCancel }) => {
       return;
     }
 
+    if (!(progressInt >= 0 && progressInt <= 100)) {
+      setAlertFlag(true);
+      setErrorMsg("Progress Should be in range of 0 to 100");
+      dispatch(
+        setAlert({
+          type: "error",
+          msg: "Progress Should be in range of 0 to 100",
+        })
+      );
+      return;
+    }
+
+    if (
+      (progressInt === 100 && status !== "Completed") ||
+      (progressInt !== 100 && status === "Completed")
+    ) {
+      setAlertFlag(true);
+      setErrorMsg("Progress and status is not matching");
+      dispatch(
+        setAlert({
+          type: "error",
+          msg: "Progress and status is not matching",
+        })
+      );
+      return;
+    }
+
     const fromData = {
       taskName: name,
       startDate: startDt,
@@ -154,7 +182,7 @@ const AddTask = ({ onCancel }) => {
       priority: priority,
       status: status,
       stage: stages,
-      progress: progress ? parseInt(progress) : 0,
+      progress: progressInt,
       duration: totalMinutes,
       notes: notes,
       assignedTo: assignee,
