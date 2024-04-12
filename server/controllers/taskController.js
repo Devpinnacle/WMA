@@ -106,7 +106,7 @@ exports.addTask = catchAsync(async (req, res, next) => {
     })
   );
 
-  await Section.updateOne({_id:sectionId},{$inc:{totalTask:1}})
+  await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: 1 } });
 
   res.status(200).json({ status: "success" });
 });
@@ -202,7 +202,7 @@ exports.updateNotes = catchAsync(async (req, res, next) => {
 exports.deleteTask = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const taskId = req.body.id;
-  const sectionId=req.body.secId;
+  const sectionId = req.body.secId;
   if (!taskId) {
     return next(new AppError("Please provide task id.", 400));
   }
@@ -217,7 +217,43 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
       },
     }
   );
-  await Section.updateOne({_id: sectionId}, {$inc: {totalTask: -1}})
+  await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: -1 } });
+
+  res.status(200).json({ status: "success" });
+});
+
+//* Adjust task **********************************************************
+
+exports.adjustTask = catchAsync(async (req, res, next) => {
+  console.log("hit..adjust")
+  const { initialStartDt, movedStartDt, sectionId } = req.body;
+
+  // Calculate the difference in days between the initial and moved section start dates
+  const initialStartDate = new Date(initialStartDt);
+  const movedStartDate = new Date(movedStartDt);
+  const dateDifference =
+    (movedStartDate - initialStartDate) / (1000 * 60 * 60 * 24); // Difference in days
+
+  // Find all tasks belonging to the specified section
+  const tasks = await Task.find({ sectionId });
+
+  // Adjust task dates
+  const adjustedTasks = tasks.map((task) => {
+    // Calculate new assigned date and due date for each task
+    const newAssignedDate = new Date(task.assignedDate);
+    const newDueDate = new Date(task.dueDate);
+    newAssignedDate.setDate(newAssignedDate.getDate() + dateDifference);
+    newDueDate.setDate(newDueDate.getDate() + dateDifference);
+
+    // Update task with new dates
+    return Task.findByIdAndUpdate(
+      task._id,
+      { assignedDate: newAssignedDate, dueDate: newDueDate },
+    );
+  });
+
+  // Execute all updates and wait for them to complete
+  await Promise.all(adjustedTasks);
 
   res.status(200).json({ status: "success" });
 });

@@ -55,8 +55,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
       totalTask: 1,
       createdBy: 1,
     }
-  )
-    .populate("createdBy", "userName")
+  ).populate("createdBy", "userName");
 
   // Process sections asynchronously and store the results
   if (group === "Software") {
@@ -205,5 +204,31 @@ exports.deleteSections = catchAsync(async (req, res, next) => {
     }
   );
 
+  res.status(200).json({ data: "succsess" });
+});
+
+//* Update Section *************************************************
+
+exports.updateSection = catchAsync(async (req, res, next) => {
+  console.log("hit update section");
+  const userId = req.user._id;
+  const { id, sectionName, startDate, dueDate } = req.body;
+
+  if (!id || !sectionName || !startDate || !dueDate) {
+    return next(new AppError("Please Enter All the fields", 400));
+  }
+
+  await Section.updateOne(
+    { _id: id },
+    {
+      $set: {
+        sectionName: sectionName,
+        startDate: new Date(startDate),
+        dueDate:new Date(dueDate),
+        editedBy: userId,
+        editedDate: Date.now(),
+      },
+    }
+  );
   res.status(200).json({ data: "succsess" });
 });

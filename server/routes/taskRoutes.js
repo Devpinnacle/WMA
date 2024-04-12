@@ -13,5 +13,6 @@ router.post("/updatetasksettings", taskControllers.tskUpdate);
 router.post("/updatedailytask", taskControllers.dailyTaskUpdate);
 router.post("/updatenotes", taskControllers.updateNotes);
 router.post("/deletetask",taskControllers.deleteTask);
+router.post("/adjusttask",taskControllers.adjustTask);
 
 module.exports = router;

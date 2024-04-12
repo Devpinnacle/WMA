@@ -18,7 +18,9 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -36,7 +38,9 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -54,7 +58,9 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -72,6 +78,29 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    //* Update Notes *****************************************************
+    adjustNotes: builder.mutation({
+      query: (fromData) => ({
+        url: "/task/adjusttask",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -89,7 +118,9 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -123,6 +154,7 @@ export const {
   useUpdateTaskStgMutation,
   useUpdateDailyTaskMutation,
   useUpdateNotesMutation,
+  useAdjustNotesMutation,
   useDeleteTaskMutation,
   useGetTaskQuery,
 } = taskApi;

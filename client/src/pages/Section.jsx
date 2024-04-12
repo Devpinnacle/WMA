@@ -9,14 +9,17 @@ import MainContainer from "../components/layouts/sidebar/MainContainer";
 import Icon from "../components/ui/Icon";
 import "./Section.css";
 import AddTask from "../components/modals/Task/AddTask";
+import EditSection from "../components/modals/section/EditSection";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
   const [addTaskFlag, setAddTaskFlag] = useState(false);
+  const [editSectionFlag,setEditSectionFlag]=useState(false)
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
   const [sectionId, setSectionId] = useState(null);
+  const [section,setSection]=useState(null)
 
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
@@ -73,6 +76,16 @@ const Section = () => {
     dispatch(setSelectedSection(null));
     setAddTaskFlag(false);
   };
+
+  const handleEditSection=(sec)=>{
+    setSection(sec);
+    setEditSectionFlag(true)
+  }
+
+  const handleEditCancel=()=>{
+    setSection(null);
+    setEditSectionFlag(false);
+  }
 
   return (
     //   <>
@@ -371,6 +384,7 @@ const Section = () => {
                 name="edit-outline"
                 size="2.5rem"
               /> */}
+              {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>}
               {sec.totalTask === 0 ? (
                 <button
                   className="btn-del"
@@ -412,6 +426,7 @@ const Section = () => {
           />
         )}
         {addTaskFlag && <AddTask onCancel={handleRemoveAddTask} />}
+        {editSectionFlag&&<EditSection onCancel={handleEditCancel} sec={section}/>}
       </div>
     </MainContainer>
   );

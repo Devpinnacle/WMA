@@ -10,5 +10,6 @@ router.use(authMiddlewares.protect);
 router.post("/getsection", sectionControllers.getSection);
 router.post("/savesection", sectionControllers.addSection);
 router.post("/deletesection", sectionControllers.deleteSections);
+router.post("/editsection",sectionControllers.updateSection);
 
 module.exports = router;

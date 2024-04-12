@@ -25,6 +25,25 @@ export const sectionApi = createApi({
       },
     }),
 
+    //* Edit Section ******************************************************
+    editSection: builder.mutation({
+      query: (fromData) => ({
+        url: "/section/editsection",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(
+            sectionApi.util.invalidateTags([{ type: "bringsection" }])
+          );
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
     //* Delete Section ***************************************************
     deleteSection: builder.mutation({
       query: (fromData) => ({
@@ -68,6 +87,7 @@ export const sectionApi = createApi({
 
 export const {
   useSaveSectionMutation,
+  useEditSectionMutation,
   useDeleteSectionMutation,
   useGetSectionQuery,
 } = sectionApi;
