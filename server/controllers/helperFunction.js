@@ -27,3 +27,20 @@ exports.saveLoginHistory=catchAsync(async(user,ipAddress)=>{
   });
   await newLoginHistory.save();
 })
+
+//* date ***************************************************************
+
+exports.formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB");
+};
+
+exports.dashedFormatDate = (dateString,minus) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  console.log("day",day-minus)
+  console.log("day actual",day)
+  return `${year}-${month}-${day-minus}`.toString();
+}

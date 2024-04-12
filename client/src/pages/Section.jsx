@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { setSelectedSection } from "../redux/slice/sectionSlice";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import Icon from "../components/ui/Icon";
-import "./Section.css"
+import "./Section.css";
+import AddTask from "../components/modals/Task/AddTask";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
+  const [addTaskFlag, setAddTaskFlag] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
   const [sectionId, setSectionId] = useState(null);
@@ -19,7 +21,7 @@ const Section = () => {
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-
+  console.log("section",sections[0])
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();
@@ -35,12 +37,11 @@ const Section = () => {
   // };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
-};
-
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -53,15 +54,25 @@ const Section = () => {
   };
 
   const handleDeleteSection = (id, head) => {
-    setSectionId(id)
-    setSectionHead(head)
+    setSectionId(id);
+    setSectionHead(head);
     setDeleteSectionFlag(true);
   };
 
   const handleSectionClick = (id) => {
     dispatch(setSelectedSection(id));
-    navigate("/task")
-  }
+    navigate("/task");
+  };
+
+  const handleAddTask = (sec) => {
+    dispatch(setSelectedSection(sec));
+    setAddTaskFlag(true);
+  };
+
+  const handleRemoveAddTask = () => {
+    dispatch(setSelectedSection(null));
+    setAddTaskFlag(false);
+  };
 
   return (
     //   <>
@@ -136,17 +147,14 @@ const Section = () => {
             value={searchTerm}
             onChange={handleSearch}
           />
-          <Icon
-            title="Search"
-            name="search-icon"
-            size="2rem"
-          />
+          <Icon title="Search" name="search-icon" size="2rem" />
         </div>
         <div className="section-top-right">
-          <button className="btn-outline">
-            Show completed sections
-          </button>
-          <button className="btn-outline" onClick={() => setAddSectionFlag(true)}>
+          <button className="btn-outline">Show completed sections</button>
+          <button
+            className="btn-outline"
+            onClick={() => setAddSectionFlag(true)}
+          >
             <Icon name="add-outline" size="2rem" />
             Add Section
           </button>
@@ -154,14 +162,17 @@ const Section = () => {
       </div>
       <div className="section-bottom">
         {filteredSections.map((sec) => (
-          <div className="section-item"
+          <div
+            className="section-item"
             key={sec._id}
-            onClick={() => handleSectionClick(sec._id)}
+            // onClick={() => handleSectionClick(sec)}
           >
             <div className="section-item-top">
               <div className="section-item-top-left">
                 <Icon name="notes-outline" size="2.5rem" />
-                <span className="ml-2" style={{ fontSize: '16px' }}>{sec.sectionName}</span>
+                <span className="ml-2" style={{ fontSize: "16px" }}>
+                  {sec.sectionName}
+                </span>
               </div>
               <div className="section-item-top-right">
                 <div className="notify">1</div>
@@ -172,92 +183,219 @@ const Section = () => {
               <div className="section-details-left">
                 <span style={{ color: "black", fontSize: "16px" }}>
                   Addition date:
-                  <span style={{ fontWeight: "bold", color: "black", fontSize: "16px" }} className="ml-2">{formatDate(sec.startDate)}</span>
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {formatDate(sec.startDate)}
+                  </span>
                 </span>
                 <span style={{ color: "black", fontSize: "16px" }}>
                   Due date:
-                  <span style={{ fontWeight: "bold", color: "black", fontSize: "16px" }} className="ml-2">{formatDate(sec.dueDate)}</span>
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {formatDate(sec.dueDate)}
+                  </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>Completed tasks:</span>
-                <span style={{ color: "black", fontSize: "16px" }}>Tasks in progress:</span>
-                <span style={{ color: "black", fontSize: "16px" }}>Tasks due:</span>
+                <span style={{ color: "black", fontSize: "16px" }}>
+                  Completed tasks:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.completedTasks}
+                  </span>
+                </span>
+                {user.userGroupName==="Software"&&<span style={{ color: "black", fontSize: "16px" }}>
+                  Tasks in progress:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.inProgressTasks}
+                  </span>
+                </span>}
+                <span style={{ color: sec.overdueTasks===0?`black`:`red`, fontSize: "16px" }}>
+                  Tasks due:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: sec.overdueTasks===0?`black`:`red`,
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.overdueTasks}
+                  </span>
+                </span>
               </div>
               <div className="section-details-right">
-                <span style={{ color: "black", fontSize: "16px" }}>Addition by:
-                  <span style={{ fontWeight: "bold", color: "black", fontSize: "16px" }} className="ml-2">{sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}</span>
+                <span style={{ color: "black", fontSize: "16px" }}>
+                  Addition by:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.createdBy._id === user._id
+                      ? "You"
+                      : sec.createdBy.userName}
+                  </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>Task assigned to you:</span>
-                <span style={{ color: "black", fontSize: "16px" }}>Pending tasks:</span>
-                <span style={{ color: "black", fontSize: "16px" }}>Tasks on hold:</span>
-                <span style={{ color: "black", fontSize: "16px" }}>Your total progress:</span>
+                <span style={{ color: "black", fontSize: "16px" }}>
+                  {user.userGroupName==="Software"?`Task assigned to you:`:`Total task:`}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.assigned}
+                  </span>
+                </span>
+                <span style={{ color: "black", fontSize: "16px" }}>
+                  Pending tasks:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.pendingTasks}
+                  </span>
+                </span>
+                <span style={{ color: "black", fontSize: "16px" }}>
+                  Tasks on hold:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.onHoldTasks}
+                  </span>
+                </span>
+                {user.userGroupName==="Software"&&<span style={{ color: "black", fontSize: "16px" }}>
+                  Your total progress:
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      color: "black",
+                      fontSize: "16px",
+                    }}
+                    className="ml-2"
+                  >
+                    {sec.totalProgress}
+                  </span>
+                </span>}
               </div>
             </div>
-            <div className="section-task-container">
+            {user.userGroupName==="Software"&&<div className="section-task-container">
               <div className="section-task-body">
                 <div className="section-task-header">
-                  <span className="ml-2" style={{ fontSize: '16px', color: 'black' }}>Backend development</span>
+                  <span
+                    className="ml-2"
+                    style={{ fontSize: "16px", color: "black" }}
+                  >
+                    Backend development
+                  </span>
                   <div className="section-item-top-right">
                     <div className="notify"></div>
-                    <div className="section-progress" style={{ color: 'black' }}>70%</div>
+                    <div
+                      className="section-progress"
+                      style={{ color: "black" }}
+                    >
+                      70%
+                    </div>
                   </div>
                 </div>
 
                 <div className="section-task-details">
                   <div className="task-details">
                     <Icon name="employee-outline" size="2rem" />
-                    <span style={{ color: 'black' }} className="ml-2">Rakshith</span>
+                    <span style={{ color: "black" }} className="ml-2">
+                      Rakshith
+                    </span>
                   </div>
                   <div className="task-details">
                     <Icon name="calender-outline" size="2rem" />
-                    <span style={{ color: 'black' }} className="ml-2">24-3-2024</span>
+                    <span style={{ color: "black" }} className="ml-2">
+                      24-3-2024
+                    </span>
                   </div>
                   <div className="task-details">
                     <Icon name="priority-outline" size="2rem" />
-                    <span style={{ color: 'black' }} className="ml-2">High</span>
+                    <span style={{ color: "black" }} className="ml-2">
+                      High
+                    </span>
                   </div>
-                  <div className="task-details" >
+                  <div className="task-details">
                     <Icon name="status-outline" size="2rem" />
-                    <span style={{ color: 'black' }} className="ml-2">To Do</span>
+                    <span style={{ color: "black" }} className="ml-2">
+                      To Do
+                    </span>
                   </div>
                 </div>
               </div>
-              
-              
-            </div>
-            
+            </div>}
+
             <div className="section-details-bottom">
               {/* <Icon
                 name="edit-outline"
                 size="2.5rem"
               /> */}
               {sec.totalTask === 0 ? (
-                <button className="btn-del" onClick={() => handleDeleteSection(sec._id, sec.sectionName)}>
-                  <Icon
-                    name="delete-outline"
-                    size="2rem"
-                  />
+                <button
+                  className="btn-del"
+                  onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
+                >
+                  <Icon name="delete-outline" size="2rem" />
                   Delete section
                 </button>
               ) : (
-                <button className="btn-outline">
-                  <Icon
-                    name="task-outline"
-                    size="2rem"
-                    title="task"
-                  />
+                <button
+                  className="btn-outline"
+                  onClick={() => handleSectionClick(sec)}
+                >
+                  <Icon name="task-outline" size="2rem" title="task" />
                   View all task
                 </button>
               )}
-              <button className="btn-outline">
-                <Icon
-                  name="add-outline"
-                  size="2rem"
-                />
+              <button
+                className="btn-outline"
+                onClick={() => handleAddTask(sec)}
+              >
+                <Icon name="add-outline" size="2rem" />
                 Add Task
               </button>
-
             </div>
-
           </div>
         ))}
         {addSectionFlag && (
@@ -273,10 +411,10 @@ const Section = () => {
             onCancel={handleOnCancelSection}
           />
         )}
+        {addTaskFlag && <AddTask onCancel={handleRemoveAddTask} />}
       </div>
-
-    // </MainContainer>
-  // )
+    </MainContainer>
+  );
 };
 
 export default Section;

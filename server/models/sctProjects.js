@@ -11,6 +11,7 @@ const SctProjectSchema = new mongoose.Schema({
   },
   sctProjectEnteredById: {
     type: ObjectId,
+    ref: "empdetails",
   },
   sctProjectDate: {
     type: String,

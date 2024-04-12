@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
 import { getTasks } from "../slice/taskSlice";
+import { sectionApi } from "./sectionApi";
 
 export const taskApi = createApi({
   reducerPath: "taskApi",
@@ -17,6 +18,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
         } catch (error) {
           console.error("Error....", error);
         }
@@ -34,6 +36,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
         } catch (error) {
           console.error("Error....", error);
         }
@@ -51,6 +54,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
         } catch (error) {
           console.error("Error....", error);
         }
@@ -85,6 +89,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(sectionApi.util.invalidateTags([{ type: "bringsection" }]));
         } catch (error) {
           console.error("Error....", error);
         }

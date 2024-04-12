@@ -288,6 +288,7 @@ const ViewTask = ({ onCancel, task, section }) => {
   const handleDelete = () => {
     const fromData = {
       id: task._id,
+      secId:task.sectionId._id
     };
     deleteTask(fromData);
     onCancel();

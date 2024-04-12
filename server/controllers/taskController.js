@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Task = require("../models/Tasks");
+const Section = require("../models/Sections");
 
 //* Get Tasks **********************************************************
 
@@ -11,7 +12,7 @@ exports.getTasks = catchAsync(async (req, res, next) => {
   const { sectionId } = req.body;
 
   if (!sectionId) {
-    return next(new AppError("Please provide Project ID.", 400));
+    return next(new AppError("Please provide Section ID.", 400));
   }
 
   let query = { sectionId, deletedStatus: false };
@@ -104,6 +105,8 @@ exports.addTask = catchAsync(async (req, res, next) => {
       return await newTask.save();
     })
   );
+
+  await Section.updateOne({_id:sectionId},{$inc:{totalTask:1}})
 
   res.status(200).json({ status: "success" });
 });
@@ -199,6 +202,7 @@ exports.updateNotes = catchAsync(async (req, res, next) => {
 exports.deleteTask = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const taskId = req.body.id;
+  const sectionId=req.body.secId;
   if (!taskId) {
     return next(new AppError("Please provide task id.", 400));
   }
@@ -213,5 +217,7 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
       },
     }
   );
+  await Section.updateOne({_id: sectionId}, {$inc: {totalTask: -1}})
+
   res.status(200).json({ status: "success" });
 });

@@ -8,7 +8,7 @@ import { getNotes } from "../redux/slice/notesSlice";
 import DeleteNotes from "../components/modals/notes/DeleteNotes";
 import View from "../components/modals/notes/View";
 import { useGetProjectQuery } from "../redux/api/projectApi";
-import { getProject } from "../redux/slice/projectSlice";
+import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import "./DashBoard.css"
@@ -28,6 +28,7 @@ const Dashboard = () => {
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -97,8 +98,13 @@ const Dashboard = () => {
     setDeleteNoteFlag(true);
   };
 
+  const handleProjectClick=(id)=>{
+    dispatch(setSelectedProject(id));
+    navigate("/sections");
+  }
+
   return (
-    <MainContainer pageName="Hi">
+    <MainContainer pageName={`Hi`}>
       {/*{/* <div
         style={{
           color: "black",
@@ -245,7 +251,7 @@ const Dashboard = () => {
               </div>
               <div className="project-body-container">
                 {project.map((proj) => (
-                  <div className="project-items">
+                  <div className="project-items" onClick={()=>handleProjectClick(proj._id)}>
                     <div className="project-item-header">
                       <div className="left-content">
                         <Icon
@@ -257,8 +263,8 @@ const Dashboard = () => {
                       <div className="notify">1</div>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
-                      <span style={{ color: "black" }}>Tasks pending:  </span>
-                      <span style={{ color: "black" }}>Tasks in progress: </span>
+                      <span style={{ color: "black" }}>Tasks pending: <b>{proj.pendingTasks}</b> </span>
+                      <span style={{ color: "black" }}>Tasks in progress:<b>{proj.inProgressTasks}</b> </span>
                     </div>
 
                   </div>
