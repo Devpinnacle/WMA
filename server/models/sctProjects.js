@@ -19,9 +19,11 @@ const SctProjectSchema = new mongoose.Schema({
   agreementTemplate: {},
   sctProjectEditedById: {
     type: ObjectId,
+    default:null
   },
   sctProjectEditedDateTime: {
     type: String,
+    default:null
   },
   tags:{
     type:[String],

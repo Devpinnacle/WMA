@@ -29,6 +29,7 @@
 .project-input-box{
     width: 35rem;
     margin-left: 50px;
+    color: black;
     
 }
 .project-tags {
@@ -42,6 +43,21 @@
 .tag{
     position: absolute !important;
 }
+
+.selected-tag{
+    display:flex
+}
+
+.tag-container{
+    border:2px solid #F3CF96;
+   padding-left: 10px;
+   padding-right: 10px;
+   padding-top: 5px;
+   height: 4vh;
+   margin-right: 5px;
+   margin-left: 5px;
+   border-radius: 50px 50px 
+} 
 
 @media only screen and (max-width: 52em) {
     /* 52em = 832px */

@@ -122,3 +122,25 @@ exports.getProjects = catchAsync(async (req, res, next) => {
       });
   }
 });
+
+//* Add Projects ***********************************************************
+
+exports.addProject=catchAsync(async(req,res,next)=>{
+  const userId = req.user._id;
+  const {projectName,description,tags}=req.body;
+
+  if(!projectName||!description||!tags){
+    return next(new AppError("Enter all the Fields", 401));
+  }
+
+  const newProject=new Project({
+    sctProjectName:projectName,
+    sctProjectDesc:description,
+    sctProjectEnteredById:userId,
+    sctProjectDate:Date.now().toLocaleString(),
+    tags:tags
+  })
+  await newProject.save();
+
+  res.status(200).json({ data: "success" });
+})

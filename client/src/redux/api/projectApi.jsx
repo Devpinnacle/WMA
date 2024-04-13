@@ -7,6 +7,7 @@ export const projectApi = createApi({
   baseQuery: customFetchBase,
   endpoints: (builder) => ({
     getProject: builder.query({
+      providesTags:()=>[{type:"bringprojects"}],
       query: () => ({
         url: "/project/getproject",
         method: "GET",
@@ -20,7 +21,23 @@ export const projectApi = createApi({
         }
       },
     }),
+
+    addProject: builder.mutation({
+      query: (fromData) => ({
+        url: "/project/addproject",
+        method: "POST",
+        body:fromData
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+         obj.dispatch(projectApi.util.invalidateTags([{type:"bringprojects"}]))
+        } catch (error) {
+          console.log("Error....", error);
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetProjectQuery } = projectApi;
+export const { useGetProjectQuery,useAddProjectMutation } = projectApi;

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddNotes from "../components/modals/notes/AddNotes";
@@ -11,9 +9,10 @@ import { useGetProjectQuery } from "../redux/api/projectApi";
 import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
-import "./DashBoard.css"
+import "./DashBoard.css";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
+import AddProject from "../components/modals/projects/AddProject";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -22,6 +21,9 @@ const Dashboard = () => {
   const [addNoteFlag, setAddNoteFlag] = useState(false);
   const [deleteNoteFlag, setDeleteNoteFlag] = useState(false);
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
+  const [addProjectFlag, setAddProjectFlag] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tag, setTag] = useState([]);
 
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
@@ -32,6 +34,13 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const tags = [
+    { label: "Software", value: "Software" },
+    { label: "Website", value: "Website" },
+    { label: "Mobile", value: "Mobile" },
+    { label: "Others", value: "Others" },
+  ];
 
   useEffect(() => {
     if (fetchedData) {
@@ -50,6 +59,23 @@ const Dashboard = () => {
     (a, b) => new Date(a.created_date) - new Date(b.created_date)
   );
 
+  const handleTags = (e) => {
+    if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
+  };
+
+  const handleRemoveTag = (item) => {
+    setTag((prevTag) => prevTag.filter((tg) => tg !== item));
+  };
+
+  const filteredProjects = project.filter((proj) => {
+    const isIncludedInTags =
+      tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
+    const isIncludedInSearch = proj.sctProjectName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return isIncludedInTags && isIncludedInSearch;
+  });
+
   const groupedMessages = {};
   sortedNotes.forEach((message) => {
     const date = new Date(message.created_date).toLocaleDateString();
@@ -58,6 +84,10 @@ const Dashboard = () => {
     }
     groupedMessages[date].push(message);
   });
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleAddNote = () => {
     setAddNoteFlag(true);
@@ -101,7 +131,7 @@ const Dashboard = () => {
   const handleProjectClick = (id) => {
     dispatch(setSelectedProject(id));
     navigate("/sections");
-  }
+  };
 
   return (
     <MainContainer pageName={`Hi`}>
@@ -213,8 +243,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="notification">
               <div className="add-project-header">
-                <span className='title'>Notification</span>
-
+                <span className="title">Notification</span>
               </div>
             </div>
           </div>
@@ -222,7 +251,9 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="projects">
               <div className="project-header">
-                <span className='title' onClick={() => navigate("projects")}>Project</span>
+                <span className="title" onClick={() => navigate("projects")}>
+                  Project
+                </span>
                 <div className="header-right">
                   <div className="search-bar">
                     <input
@@ -230,47 +261,90 @@ const Dashboard = () => {
                       name="keyword"
                       type="text"
                       placeholder="Search"
+                      onChange={handleSearch}
                       autoComplete="new-off"
                     />
-                    <Icon
-                      title="Search"
-                      name="search-icon"
-                      size="2rem"
-                    />
+                    <Icon title="Search" name="search-icon" size="2rem" />
                   </div>
                   <SelectInput
                     className="tags"
                     placeholder="Tags"
+                    onChange={handleTags}
+                    options={tags}
                   />
-                  <Icon
-                    className="icon"
-                    name="add-outline"
-                    size="3rem"
-                  />
+                  {user.userGroupName !== "Software" && (
+                    <Icon
+                      className="icon"
+                      name="add-outline"
+                      onClick={() => setAddProjectFlag(true)}
+                      size="3rem"
+                    />
+                  )}
                 </div>
               </div>
+              <div className="selected-tag">
+                {tag.map((tg, index) => (
+                  <div key={index} className="tag-container">
+                    <Icon
+                      name="close"
+                      size="2rem"
+                      onClick={() => handleRemoveTag(tg)}
+                    />
+                    <p style={{ color: "black" }}>{tg}</p>
+                  </div>
+                ))}
+              </div>
               <div className="project-body-container">
-                {project.map((proj) => (
-                  <div className="project-items" onClick={() => handleProjectClick(proj._id)}>
+                {filteredProjects.map((proj) => (
+                  <div
+                    className="project-items"
+                    onClick={() => handleProjectClick(proj._id)}
+                  >
                     <div className="project-item-header">
                       <div className="left-content">
-                        <Icon
-                          name="project-outline"
-                          size="3rem"
-                        />
-                        <span className='item-title ml-2' style={{ color: "black" }}>{proj.sctProjectName}</span>
+                        <Icon name="project-outline" size="3rem" />
+                        <span
+                          className="item-title ml-2"
+                          style={{ color: "black" }}
+                        >
+                          {proj.sctProjectName}
+                        </span>
                       </div>
                       <div className="notify">1</div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem' }}>
-                      <span style={{ color: "black" }}>Tasks pending:
-                        <span style={{ color: "black", fontWeight: "bold", marginLeft: "3px" }}>{proj.pendingTasks}</span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        color: "black",
+                        margin: "0 1rem",
+                      }}
+                    >
+                      <span style={{ color: "black" }}>
+                        Tasks pending:
+                        <span
+                          style={{
+                            color: "black",
+                            fontWeight: "bold",
+                            marginLeft: "3px",
+                          }}
+                        >
+                          {proj.pendingTasks}
+                        </span>
                       </span>
-                      <span style={{ color: "black" }}>Tasks in progress:
-                        <span style={{ color: "black", fontWeight: "bold", marginLeft: "3px" }}>{proj.inProgressTasks}</span>
+                      <span style={{ color: "black" }}>
+                        Tasks in progress:
+                        <span
+                          style={{
+                            color: "black",
+                            fontWeight: "bold",
+                            marginLeft: "3px",
+                          }}
+                        >
+                          {proj.inProgressTasks}
+                        </span>
                       </span>
                     </div>
-
                   </div>
                 ))}
               </div>
@@ -282,7 +356,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="projects">
               <div className="add-project-header">
-                <span className='dashboard-contenttitle'></span>
+                <span className="dashboard-contenttitle"></span>
               </div>
             </div>
           </div>
@@ -292,7 +366,7 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="notes">
               <div className="notes-header">
-                <span className='title'>Notes</span>
+                <span className="title">Notes</span>
                 {isLoading ? (
                   <p>Loading...</p>
                 ) : (
@@ -305,11 +379,7 @@ const Dashboard = () => {
                         placeholder="Search"
                         autoComplete="new-off"
                       />
-                      <Icon
-                        title="Search"
-                        name="search-icon"
-                        size="2rem"
-                      />
+                      <Icon title="Search" name="search-icon" size="2rem" />
                     </div>
                     <Icon
                       className="icon"
@@ -317,25 +387,26 @@ const Dashboard = () => {
                       size="3rem"
                       onClick={handleAddNote}
                     />
-                    {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
+                    {addNoteFlag && (
+                      <AddNotes onCancel={() => setAddNoteFlag(false)} />
+                    )}
                   </div>
                 )}
               </div>
               <div className="notes-body-container">
                 {Object.keys(groupedMessages).map((date) =>
                   groupedMessages[date].map((message) => (
-                    <div className="notes-item"
-                      key={message._id}
-                    >
+                    <div className="notes-item" key={message._id}>
                       <div className="notes-item-header">
                         <div className="left-content">
-                          <Icon
-                            name="notes-outline"
-                            size="3rem"
-                          />
+                          <Icon name="notes-outline" size="3rem" />
                           <div className="item-content">
-                            <span className="item-title ml-2" style={{ color: "black" }}>{message.heading}</span>
-
+                            <span
+                              className="item-title ml-2"
+                              style={{ color: "black" }}
+                            >
+                              {message.heading}
+                            </span>
                           </div>
                         </div>
                         <div className="notes-header-right">
@@ -343,18 +414,24 @@ const Dashboard = () => {
                             title="Delete"
                             name="delete-outline"
                             size="3rem"
-                            onClick={() => handleDelete(message._id, message.heading)}
+                            onClick={() =>
+                              handleDelete(message._id, message.heading)
+                            }
                           />
                           <Icon
                             name="open-outline"
                             size="3rem"
-                            onClick={() => handleViewNote(message._id, message.heading, message.msg)}
+                            onClick={() =>
+                              handleViewNote(
+                                message._id,
+                                message.heading,
+                                message.msg
+                              )
+                            }
                           />
                         </div>
                       </div>
-                      <div className="note-content">
-                        {message.msg}
-                      </div>
+                      <div className="note-content">{message.msg}</div>
                     </div>
                   ))
                 )}
@@ -379,6 +456,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {addProjectFlag && (
+        <AddProject onCancel={() => setAddProjectFlag(false)} />
+      )}
     </MainContainer>
   );
 };
