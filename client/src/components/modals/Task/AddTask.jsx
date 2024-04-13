@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
 import "./AddTask.css";
 import Alert from "../../ui/Alert";
+import Icon from "../../ui/Icon";
 import { useAddTaskMutation } from "../../../redux/api/taskApi";
 
 const AddTask = ({ onCancel }) => {
@@ -70,6 +71,7 @@ const AddTask = ({ onCancel }) => {
   };
 
   const inputHandler = (e) => {
+
     setTaskData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -201,7 +203,7 @@ const AddTask = ({ onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
-        <h1 style={{ color: "black" }}>Add Task</h1>
+        {/* <h1 style={{ color: "black" }}>Add Task</h1>
         <input
           type="text"
           style={{ color: "black" }}
@@ -232,7 +234,8 @@ const AddTask = ({ onCancel }) => {
         <input
           type="date"
           style={{ color: "black" }}
-          placeholder="startdate"
+          placeholder=""
+          
           name="startDt"
           onChange={inputHandler}
           value={taskData.startDt}
@@ -291,11 +294,69 @@ const AddTask = ({ onCancel }) => {
         </button>
         <button style={{ color: "black" }} onClick={onCancel}>
           cancel
-        </button>
+        </button> */}
+        <div className="modal-header">
+          <div className='title-container'>
+            <Icon
+              name="task-outline"
+              size="6rem" />
+            <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Add task</span>
+          </div>
+          <Icon
+            className="close-icon"
+            name="close"
+            size="6rem"
+            onClick={onCancel}
+          />
+        </div>
+        <div className="section-item-top">
+          <div className="section-item-top-left">
+            <Icon name="section-outline" size="2.5rem" />
+            <span className="ml-2" style={{ fontSize: "16px" }}>
+              Section name
+            </span>
+          </div>
+        </div>
+        <div style={{ padding: "1rem" }}>
+          <label htmlFor='task' style={{ color: "black", fontWeight: "bold", marginRight: "8rem" }}>Task :</label>
+          <input
+            type="text"
+            name="name"
+            onChange={inputHandler}
+            style={{ width: "25rem" }}
+          />
+        </div>
+        <div className="assignee-details">
+          <div className="select-box">
+            <Icon
+              name="employee-outline"
+            />
+            <SelectInput
+              placeholder="Assignee"
+              onChange={handleTags}
+              isSearchable={false}
+              options={tags}
+            />
+          </div>
+          <div className="tag-container">
+
+          </div>
+        </div>
+        <div className="task-details-input">
+          <div className="date-box">
+            <Icon
+              name="calender-outline"
+              size="2rem"
+            />
+            <input
+              type="date"
+            />
+          </div>
+        </div>
       </div>
-      {alertFlage && (
+      {/* {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
-      )}
+      )} */}
     </ModalContainer>
   );
 };
