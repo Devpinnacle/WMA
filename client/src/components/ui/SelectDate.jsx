@@ -1,7 +1,7 @@
 import React from 'react'
-import DatePicker from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
 import Icon from "./Icon";
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 const SelectDate = ({selected,onChange,placeholder}) => {
 
   return (

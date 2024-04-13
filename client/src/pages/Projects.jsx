@@ -7,10 +7,12 @@ import { useGetProjectQuery } from "../redux/api/projectApi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
+import AddProject from "../components/modals/projects/AddProject";
 
 const Projects = () => {
   const [tag, setTag] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [addProjectFlag, setAddProjectFlag] = useState(false);
 
   const { data: projectData } = useGetProjectQuery();
 
@@ -21,9 +23,10 @@ const Projects = () => {
   const navigate = useNavigate();
 
   const tags = [
-    { value: "Software", label: "Software" },
-    { value: "Website", label: "Website" },
-    { value: "Other", label: "Other" },
+    { label: "Software", value: "Software" },
+    { label: "Website", value: "Website" },
+    { label: "Mobile", value: "Mobile" },
+    { label: "Others", value: "Others" },
   ];
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const Projects = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-  console.log("projrcts", project)
+  
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
       tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
@@ -76,21 +79,22 @@ const Projects = () => {
                 />
                 <Icon title="Search" name="search-icon" size="2rem" />
               </div>
-              <div className="project-tags" style={{width:'12rem'}}>
+              <div className="project-tags" style={{ width: "12rem" }}>
                 <SelectInput
                   placeholder="Tags"
                   isSearchable={false}
                   options={tags}
                   onChange={handleTags}
-                  
                 />
               </div>
             </div>
           </div>
-          {user.userGroupName !== "Software" && <button className="btn-outline">
-            <Icon name="add-outline" size="2rem" />
-            Add Project
-          </button>}
+          {user.userGroupName !== "Software" && (
+            <button className="btn-outline" onClick={()=>setAddProjectFlag(true)}>
+              <Icon name="add-outline" size="2rem" />
+              Add Project
+            </button>
+          )}
         </div>
       </div>
       <div className="selected-tag">
@@ -117,35 +121,65 @@ const Projects = () => {
               {proj.sctProjectName}
             </div>
             <div className="project-info">
-              {user.userGroupName !== "Software" &&
+              {user.userGroupName !== "Software" && (
                 <span>
                   Addition By :
-                  <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{user._id === proj.sctProjectEnteredById._id ? `You` : proj.sctProjectEnteredById.userName}</span>
-                </span>}
+                  <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                    {user._id === proj.sctProjectEnteredById._id
+                      ? `You`
+                      : proj.sctProjectEnteredById.userName}
+                  </span>
+                </span>
+              )}
               <span>
                 Pending tasks :
-                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.pendingTasks}</span>
+                <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                  {proj.pendingTasks}
+                </span>
               </span>
               <span>
                 Tasks in progress:
-                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.inProgressTasks}</span>
+                <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                  {proj.inProgressTasks}
+                </span>
               </span>
-              {user.userGroupName !== "Software" &&
+              {user.userGroupName !== "Software" && (
                 <span>
                   Total Sections:
-                  <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.sectionLen}</span>
-                </span>}
+                  <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                    {proj.sectionLen}
+                  </span>
+                </span>
+              )}
               <span>
-                {user.userGroupName !== "Software" ? `Total tasks` : `Total task assigned to you`}: <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.assigned}</span>
+                {user.userGroupName !== "Software"
+                  ? `Total tasks`
+                  : `Total task assigned to you`}
+                :{" "}
+                <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                  {proj.assigned}
+                </span>
               </span>
               <span>
                 Completed Taks:
-                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.completedTasks}</span>
+                <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
+                  {proj.completedTasks}
+                </span>
               </span>
-              <span style={{ color: proj.overdueTasks === 0 ? `black` : `red` }}>Tasks due:
-                <span style={{ color: proj.overdueTasks === 0 ? `black` : `red`, fontWeight: 'bold', marginLeft: '3px' }}>{proj.overdueTasks}</span>
+              <span
+                style={{ color: proj.overdueTasks === 0 ? `black` : `red` }}
+              >
+                Tasks due:
+                <span
+                  style={{
+                    color: proj.overdueTasks === 0 ? `black` : `red`,
+                    fontWeight: "bold",
+                    marginLeft: "3px",
+                  }}
+                >
+                  {proj.overdueTasks}
+                </span>
               </span>
-
             </div>
             {/* <div className="project-tags">
               {proj.tags.map((tg, index) => (
@@ -158,11 +192,20 @@ const Projects = () => {
             </div> */}
             <div className="project-tags">
               {proj.tags.map((tg, index) => (
-                <span className="tag-list" key={index} style={{ color: "black" }}>{tg}</span>
+                <span
+                  className="tag-list"
+                  key={index}
+                  style={{ color: "black" }}
+                >
+                  {tg}
+                </span>
               ))}
             </div>
           </div>
         ))}
+        {addProjectFlag && (
+          <AddProject onCancel={() => setAddProjectFlag(false)} />
+        )}
       </div>
     </MainContainer>
   );

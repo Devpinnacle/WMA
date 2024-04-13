@@ -1,62 +1,143 @@
-import React from 'react'
-import ModalContainer from '../ModalContainer'
-import Icon from '../../ui/Icon'
-import "./AddProject.css"
-import SelectInput from '../../ui/SelectInput'
+import React, { useState } from "react";
+import ModalContainer from "../ModalContainer";
+import Icon from "../../ui/Icon";
+import "./AddProject.css";
+import SelectInput from "../../ui/SelectInput";
+import { useDispatch } from "react-redux";
+import Alert from "../../ui/Alert";
+import { useAddProjectMutation } from "../../../redux/api/projectApi";
 
-const AddProject = () => {
-    
+const AddProject = ({ onCancel }) => {
+  const [project, setProject] = useState({ name: "", decs: "" });
+  const [tag, setTag] = useState([]);
+  const [alertFlage, setAlertFlag] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-    return (
-        <ModalContainer>
-            <div className="modal-container modal-centered user-modal">
-                <div className="add-project-header">
-                    <div className='add-title-container'>
-                        <Icon
-                            className="projects-icon"
-                            name="projects"
-                            size="6rem" />
-                        <span className='add-title'>Add project</span>
-                    </div>
-                    <Icon
-                        className="close-icon"
-                        name="close"
-                        size="6rem"
-                        // onClick={onCancel}
-                    />
+  const [addProject]=useAddProjectMutation()
+
+  const tags = [
+    { label: "Software", value: "Software" },
+    { label: "Website", value: "Website" },
+    { label: "Mobile", value: "Mobile" },
+    { label: "Others", value: "Others" },
+  ];
+
+  const dispatch = useDispatch();
+
+  const handleTags = (e) => {
+    if (!tag.includes(e.value)) {
+      setTag((prevTag) => [...prevTag, e.value]);
+    }
+  };
+
+  const handleRemoveTag = (item) => {
+    setTag((prevTag) => prevTag.filter((tg) => tg !== item));
+  };
+
+  const inputHandler = (e) => {
+    setProject((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSaveProject = (e) => {
+    e.preventDefault();
+    const { name, decs } = project;
+    console.log("project",project)
+    console.log("tag",tag)
+    if (!name || !decs || tag.length === 0) {
+      setAlertFlag(true);
+      setErrorMsg("Enter all the Fields");
+      dispatch(setAlert({ type: "error", msg: "Enter all the Fields" }));
+      return;
+    }
+    const fromData={
+        projectName:name,
+        description:decs,
+        tags:tag
+    }
+    addProject(fromData);
+    onCancel();
+  };
+
+  const handleOnExit = () => {
+    setErrorMsg(null);
+    setAlertFlag(false);
+  };
+
+  return (
+    <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
+      <div className="modal-container modal-centered user-modal">
+        <div className="add-project-header">
+          <div className="add-title-container">
+            <Icon className="projects-icon" name="projects" size="6rem" />
+            <span className="add-title">Add project</span>
+          </div>
+          <Icon
+            className="close-icon"
+            name="close"
+            size="6rem"
+            onClick={onCancel}
+          />
+        </div>
+        <form onSubmit={handleSaveProject}>
+          <div className="project-input">
+            <label htmlFor="Project" style={{ color: "black" }}>
+              Projects:
+            </label>
+            <input
+              className="project-input-box"
+              type="text"
+              name="name"
+              value={project.name}
+              onChange={inputHandler}
+            />
+          </div>
+          <div className="project-input">
+            <label htmlFor="Project" style={{ color: "black" }}>
+              Description :
+            </label>
+            <textarea
+              className="project-input-box"
+              name="decs"
+              value={project.decs}
+              rows={4}
+              onChange={inputHandler}
+            />
+          </div>
+          <div className="project-tags">
+            <SelectInput
+              className="select-tag"
+              placeholder="Tags"
+              options={tags}
+              onChange={handleTags}
+              isSearchable={false}
+            />
+          </div>
+          <div className="selected-tag">
+              {tag.map((tg, index) => (
+                <div key={index} className="tag-container">
+                  <p style={{ color: "black" }}>
+                    {tg}
+                    <button onClick={() => handleRemoveTag(tg)}>c</button>
+                  </p>
                 </div>
-                <form>
-                    <div className='project-input'>
-                        <label htmlFor='Project' style={{ color: "black" }}>Projects:</label>
-                        <input
-                            className='project-input-box'
-                            type="text"
-                            name="head"
-                        // onChange={inputHandler}
-                        />
-                    </div>
-                    <div className='project-tags'>
-                        <SelectInput
-                            className="select-tag"
-                            placeholder="Tags"
-                            isSearchable={false}
-
-                        />
-   
-                    </div>
-                    <div className='save-button'>
-                        <button className="btn-outline" >
-                            <Icon
-                                name="save-outline"
-                                size="2rem"
-                            />
-                            Save
-                        </button>
-                    </div>
-                </form>
+              ))}
             </div>
-        </ModalContainer>
-    )
-}
+          <div className="save-button">
+            <button className="btn-outline">
+              <Icon name="save-outline" size="2rem" />
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+      {alertFlage && (
+        <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
+      )}
+    </ModalContainer>
+  );
+};
 
-export default AddProject
+export default AddProject;
