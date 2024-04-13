@@ -142,6 +142,8 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
+    console.log("section start due",startDate,dueDate);
+    console.log("task start due",startDt,dueDt);
 
     if (startDt < startDate || dueDt > dueDate) {
       setAlertFlag(true);
@@ -201,6 +203,7 @@ const ViewTask = ({ onCancel, task, section }) => {
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
       notes: notes,
+      sectionId:section._id
     };
     updateTaskStg(fromData);
     setEditFlag(false);
@@ -262,6 +265,7 @@ const ViewTask = ({ onCancel, task, section }) => {
       id: task._id,
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
+      sectionId:section._id
     };
 
     updateDailyTask(fromData);

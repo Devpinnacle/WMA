@@ -10,21 +10,25 @@ import Icon from "../components/ui/Icon";
 import "./Section.css";
 import AddTask from "../components/modals/Task/AddTask";
 import EditSection from "../components/modals/section/EditSection";
+import ViewTask from "../components/modals/Task/ViewTask";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
   const [addTaskFlag, setAddTaskFlag] = useState(false);
-  const [editSectionFlag, setEditSectionFlag] = useState(false)
+  const [editSectionFlag, setEditSectionFlag] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [taskFlag,setTaskFlag]=useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
   const [sectionId, setSectionId] = useState(null);
-  const [section, setSection] = useState(null)
+  const [section, setSection] = useState(null);
+  const [task,setTask]=useState(null);
 
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  console.log("section", sections[0])
+  console.log("section", sections[0]);
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();
@@ -33,6 +37,10 @@ const Section = () => {
   const filteredSections = sections.filter((section) =>
     section.sectionName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const displayedSections = showCompleted
+    ? filteredSections.filter((section) => section.completed)
+    : filteredSections.filter((section) => !section.completed);
 
   // const formatDate = (dateString) => {
   //   const date = new Date(dateString);
@@ -79,12 +87,24 @@ const Section = () => {
 
   const handleEditSection = (sec) => {
     setSection(sec);
-    setEditSectionFlag(true)
-  }
+    setEditSectionFlag(true);
+  };
 
   const handleEditCancel = () => {
     setSection(null);
     setEditSectionFlag(false);
+  };
+
+  const handleTaskViewCancel=()=>{
+    setTask(null);
+    setSection(null);
+    setTaskFlag(false);
+  }
+
+  const handleTaskView=(task,sec)=>{
+    setTask(task);
+    setSection(sec);
+    setTaskFlag(true);
   }
 
   return (
@@ -163,7 +183,9 @@ const Section = () => {
           <Icon title="Search" name="search-icon" size="2rem" />
         </div>
         <div className="section-top-right">
-          <button className="btn-outline">Show completed sections</button>
+          <button className="btn-outline" onClick={()=>setShowCompleted(!showCompleted)}>
+            {showCompleted ? "Show Sections" : "Show Completed Sections"}
+          </button>
           <button
             className="btn-outline"
             onClick={() => setAddSectionFlag(true)}
@@ -174,11 +196,11 @@ const Section = () => {
         </div>
       </div>
       <div className="section-bottom">
-        {filteredSections.map((sec) => (
+        {displayedSections.map((sec) => (
           <div
             className="section-item"
             key={sec._id}
-          // onClick={() => handleSectionClick(sec)}
+            // onClick={() => handleSectionClick(sec)}
           >
             <div className="section-item-top">
               <div className="section-item-top-left">
@@ -233,20 +255,27 @@ const Section = () => {
                     {sec.completedTasks}
                   </span>
                 </span>
-                {user.userGroupName === "Software" && <span style={{ color: "black", fontSize: "16px" }}>
-                  Tasks in progress:
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      color: "black",
-                      fontSize: "16px",
-                    }}
-                    className="ml-2"
-                  >
-                    {sec.inProgressTasks}
+                {user.userGroupName === "Software" && (
+                  <span style={{ color: "black", fontSize: "16px" }}>
+                    Tasks in progress:
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "black",
+                        fontSize: "16px",
+                      }}
+                      className="ml-2"
+                    >
+                      {sec.inProgressTasks}
+                    </span>
                   </span>
-                </span>}
-                <span style={{ color: sec.overdueTasks === 0 ? `black` : `red`, fontSize: "16px" }}>
+                )}
+                <span
+                  style={{
+                    color: sec.overdueTasks === 0 ? `black` : `red`,
+                    fontSize: "16px",
+                  }}
+                >
                   Tasks due:
                   <span
                     style={{
@@ -277,7 +306,9 @@ const Section = () => {
                   </span>
                 </span>
                 <span style={{ color: "black", fontSize: "16px" }}>
-                  {user.userGroupName === "Software" ? `Task assigned to you:` : `Total task:`}
+                  {user.userGroupName === "Software"
+                    ? `Task assigned to you:`
+                    : `Total task:`}
                   <span
                     style={{
                       fontWeight: "bold",
@@ -315,79 +346,84 @@ const Section = () => {
                     {sec.onHoldTasks}
                   </span>
                 </span>
-                {user.userGroupName === "Software" && <span style={{ color: "black", fontSize: "16px" }}>
-                  Your total progress:
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      color: "black",
-                      fontSize: "16px",
-                    }}
-                    className="ml-2"
-                  >
-                    {sec.totalProgress}
+                {user.userGroupName === "Software" && (
+                  <span style={{ color: "black", fontSize: "16px" }}>
+                    Your total progress:
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        color: "black",
+                        fontSize: "16px",
+                      }}
+                      className="ml-2"
+                    >
+                      {sec.totalProgress}
+                    </span>
                   </span>
-                </span>}
+                )}
               </div>
             </div>
-            {user.userGroupName === "Software" && <div className="section-task-container">
-              <div className="section-task-body">
-                <div className="section-task-header">
-                  <span
-                    className="ml-2"
-                    style={{ fontSize: "16px", color: "black" }}
-                  >
-                    Backend development
-                  </span>
-                  <div className="section-item-top-right">
-                    <div className="notify"></div>
-                    <div
-                      className="section-progress"
-                      style={{ color: "black" }}
+            {user.userGroupName === "Software" && (
+              <div className="section-task-container">
+                {sec.tasks.map((task)=>(
+                  <div className="section-task-body" onClick={()=>handleTaskView(task,sec)}>
+                  <div className="section-task-header">
+                    <span
+                      className="ml-2"
+                      style={{ fontSize: "16px", color: "black" }}
                     >
-                      70%
+                      {task.taskName}
+                    </span>
+                    <div className="section-item-top-right">
+                      <div className="notify"></div>
+                      <div
+                        className="section-progress"
+                        style={{ color: "black" }}
+                      >
+                        {task.progress}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="section-task-details">
-                  <div className="task-details">
-                    <Icon name="employee-outline" size="2rem" />
-                    <span style={{ color: "black" }} className="ml-2">
-                      Rakshith
-                    </span>
+                  <div className="section-task-details">
+                    <div className="task-details">
+                      <Icon name="employee-outline" size="2rem" />
+                      <span style={{ color: "black" }} className="ml-2">
+                        {user._id===task.createdBy._id?`You`:task.createdBy.userName}
+                      </span>
+                    </div>
+                    <div className="task-details">
+                      <Icon name="calender-outline" size="2rem" />
+                      <span style={{ color: "black" }} className="ml-2">
+                        {formatDate(task.assignedDate)}
+                      </span>
+                    </div>
+                    <div className="task-details">
+                      <Icon name="priority-outline" size="2rem" />
+                      <span style={{ color: "black" }} className="ml-2">
+                        {task.priority}
+                      </span>
+                    </div>
+                    <div className="task-details">
+                      <Icon name="status-outline" size="2rem" />
+                      <span style={{ color: "black" }} className="ml-2">
+                        {task.status}
+                      </span>
+                    </div>
                   </div>
-                  <div className="task-details">
-                    <Icon name="calender-outline" size="2rem" />
-                    <span style={{ color: "black" }} className="ml-2">
-                      24-3-2024
-                    </span>
-                  </div>
-                  <div className="task-details">
-                    <Icon name="priority-outline" size="2rem" />
-                    <span style={{ color: "black" }} className="ml-2">
-                      High
-                    </span>
-                  </div>
-                  <div className="task-details">
-                    <Icon name="status-outline" size="2rem" />
-                    <span style={{ color: "black" }} className="ml-2">
-                      To Do
-                    </span>
-                  </div>
-                </div>
+                </div>))}
               </div>
-            </div>}
+            )}
 
             <div className="section-details-bottom">
               {/* {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>} */}
-              {user.userGroupName !== "Software" &&
+              {user.userGroupName !== "Software" && (
                 <Icon
                   name="edit-outline"
                   size="2.5rem "
                   onClick={() => handleEditSection(sec)}
                 />
-              }
+              )}
               {sec.totalTask === 0 ? (
                 <button
                   className="btn-del"
@@ -429,7 +465,10 @@ const Section = () => {
           />
         )}
         {addTaskFlag && <AddTask onCancel={handleRemoveAddTask} />}
-        {editSectionFlag && <EditSection onCancel={handleEditCancel} sec={section} />}
+        {editSectionFlag && (
+          <EditSection onCancel={handleEditCancel} sec={section} />
+        )}
+        {taskFlag&&<ViewTask onCancel={handleTaskViewCancel} task={task} section={section}/>}
       </div>
     </MainContainer>
   );
