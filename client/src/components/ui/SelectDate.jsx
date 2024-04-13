@@ -2,31 +2,41 @@ import React from 'react'
 import DatePicker from 'react-datepicker';
 import Icon from "./Icon";
 import 'react-datepicker/dist/react-datepicker.css';
-const SelectDate = ({selected,onChange,placeholder}) => {
+import "./SelectDate.css"
+const SelectDate = ({ selected, onChange, placeholder }) => {
+    
+    const formatedDate=(data)=>{
+        try{
+            return data.toISOString().split("T")[0].split("-").reverse().join("-");
+        }catch(er){
 
-  return (
-    <div class="datePicker">
-         <DatePicker 
-            selected={selected} placeholderText={placeholder}
-         onChange={onChange}
-         
-         customInput={
-            <div className="">
-              <input
-                type="text"
-                value={selected}
-                readOnly
-                className="date-input"
-              />
-               <Icon
-              name="calender-outline"
-              size="2rem"
+            return "";
+        }
+    }
+   
+    return (
+            <DatePicker
+                selected={selected} placeholderText={placeholder}
+                onChange={onChange}
+
+                customInput={
+                    <div className="date-picker">
+                        <input
+                            type="text"
+                            value={formatedDate(selected)}
+                            
+                            className="date-input"
+
+                            placeholder={placeholder}
+                        />
+                        <Icon
+                            name="date-picker-outline"
+                            size="2rem"
+                        />
+                    </div>
+                }
             />
-            </div>
-          }
-         />
-    </div>
-  )
+    )
 }
 
 export default SelectDate

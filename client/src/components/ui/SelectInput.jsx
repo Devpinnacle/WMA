@@ -26,7 +26,7 @@ export default function SelectInput(props) {
                     backgroundColor: "#fff",
                     cursor: "pointer",
                     position: "relative",
-                     border: props.noBorder && "none"
+                    border: props.noBorder && "none"
 
                 }),
                 option: (provided, state) => ({

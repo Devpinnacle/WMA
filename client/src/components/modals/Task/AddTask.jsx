@@ -206,8 +206,8 @@ const AddTask = ({ onCancel }) => {
     setAlertFlag(false);
   };
 
- 
-  console.log("xp",DateinputType)
+
+  console.log("xp", DateinputType)
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
@@ -331,6 +331,7 @@ const AddTask = ({ onCancel }) => {
             type="text"
             name="name"
             onChange={inputHandler}
+            value={taskData.name}
             style={{ width: "25rem" }}
           />
         </div>
@@ -348,21 +349,25 @@ const AddTask = ({ onCancel }) => {
               noBorder={true}
             />
           </div>
-          <div className="selected-tag">
-            {tag.map((tg, index) => (
-              <div key={index} className="tag-container">
-                <Icon
-                  name="close"
-                  size="2rem"
-                  onClick={() => handleRemoveTag(tg)}
-                />
-                <p style={{ color: "black" }}>
-                  {tg.label}
-                </p>
-              </div>
-            ))}
-          </div>
+
+          {!(user.userGroupName == "Software") && (
+            <div className="selected-tag">
+              {tag.map((tg, index) => (
+                <div key={index} className="tag-container">
+                  <Icon
+                    name="close"
+                    size="2rem"
+                    onClick={() => handleRemoveTag(tg)}
+                  />
+                  <p style={{ color: "black" }}>
+                    {tg.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
         <div className="task-details-input">
           <div className="date-box">
             <Icon
@@ -378,10 +383,12 @@ const AddTask = ({ onCancel }) => {
               name="calender-outline"
               size="2rem"
             />
+            <SelectDate
+              placeholder="Due Date"
+              selected={taskData.startDt}
+              onChange={date => setTaskData({ ...taskData, startDt: date })}
+            />
 
-<SelectDate placeholder="due Date"  selected={taskData.startDt}
-      onChange={date => setTaskData({...taskData,startDt:date})} />
-           
             {/* <input
             id="EndDate"
             name="EndDate"
@@ -458,12 +465,16 @@ const AddTask = ({ onCancel }) => {
             size="2rem"
           />
         </div>
-        <div className="task-note">
-          <Icon 
-            name="task-note-outline"
-            size="2rem"
+        <div className="task-note-container">
+          <div className="task-note">
+            <Icon
+              name="task-note-outline"
+              size="2rem"
             />
+            <span style={{ color: "black",fontSize:"22px",marginRight:"1rem",fontWeight:"500" }}>Notes</span>
+          </div>
         </div>
+
       </div>
       {/* {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />

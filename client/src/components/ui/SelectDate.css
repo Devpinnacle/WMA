@@ -1,0 +1,7 @@
+.date-picker{
+    display: flex;
+    border: none;
+}
+.date-picker input{
+    border: none;
+}

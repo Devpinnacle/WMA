@@ -69,3 +69,19 @@
     align-items: center;
     padding: 1rem;
 }
+.task-notes{
+    display: flex;
+    align-items: center;
+    padding: 1rem; 
+}
+.task-note-container {
+    display: flex;
+    align-items: center; 
+}
+
+.task-note {
+    display: flex;
+    align-items: center; 
+    margin-right: 10px; 
+}
+
