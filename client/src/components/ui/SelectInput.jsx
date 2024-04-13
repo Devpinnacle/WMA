@@ -1,7 +1,10 @@
 import ReactSelect from "react-select"
+
 export default function SelectInput(props) {
     const height = props.height || "36px";
+   
     return (
+
         <ReactSelect
             {...props}
             menuPlacement="auto"
@@ -23,6 +26,8 @@ export default function SelectInput(props) {
                     backgroundColor: "#fff",
                     cursor: "pointer",
                     position: "relative",
+                     border: props.noBorder && "none"
+
                 }),
                 option: (provided, state) => ({
                     ...provided,

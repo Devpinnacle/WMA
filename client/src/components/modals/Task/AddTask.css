@@ -55,4 +55,17 @@
     width: 100%;
 }
 
-
+.assignee-details {
+    display: flex;
+    align-items: center;
+  }
+  .task-details-input {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+  }
+.progress-duration-details{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}

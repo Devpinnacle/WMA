@@ -68,6 +68,12 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* input::-webkit-datetime-edit{   display: none; } */
+
+/* input[type="date"]::before {
+	content: attr(placeholder);
+} */
+
 button {
   font-family: inherit;
 }

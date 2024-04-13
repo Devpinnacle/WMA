@@ -24,7 +24,7 @@ const Section = () => {
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  console.log("section", sections[0])
+  // console.log("section", sections[0])
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();

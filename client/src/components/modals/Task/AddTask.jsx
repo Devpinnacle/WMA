@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import SelectInput from "../../ui/SelectInput";
+// import DatePicker from 'react-datepicker';
+import SelectDate from "../../ui/SelectDate";
+import 'react-datepicker/dist/react-datepicker.css';
 import { useGetSwUsersQuery } from "../../../redux/api/userApi";
 import { useSelector, useDispatch } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
@@ -17,6 +20,9 @@ const AddTask = ({ onCancel }) => {
   const [tag, setTag] = useState([]);
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const [DateinputType, setDateInputType] = useState("text");
+
   const [taskData, setTaskData] = useState({
     name: "",
     startDt: "",
@@ -200,6 +206,8 @@ const AddTask = ({ onCancel }) => {
     setAlertFlag(false);
   };
 
+ 
+  console.log("xp",DateinputType)
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
@@ -330,16 +338,29 @@ const AddTask = ({ onCancel }) => {
           <div className="select-box">
             <Icon
               name="employee-outline"
+              size="2rem"
             />
             <SelectInput
               placeholder="Assignee"
               onChange={handleTags}
               isSearchable={false}
               options={tags}
+              noBorder={true}
             />
           </div>
-          <div className="tag-container">
-
+          <div className="selected-tag">
+            {tag.map((tg, index) => (
+              <div key={index} className="tag-container">
+                <Icon
+                  name="close"
+                  size="2rem"
+                  onClick={() => handleRemoveTag(tg)}
+                />
+                <p style={{ color: "black" }}>
+                  {tg.label}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="task-details-input">
@@ -352,6 +373,96 @@ const AddTask = ({ onCancel }) => {
               type="date"
             />
           </div>
+          <div className="date-box">
+            <Icon
+              name="calender-outline"
+              size="2rem"
+            />
+
+<SelectDate placeholder="due Date"  selected={taskData.startDt}
+      onChange={date => setTaskData({...taskData,startDt:date})} />
+           
+            {/* <input
+            id="EndDate"
+            name="EndDate"
+              placeholder="Due date"
+              // value={(e)=>e.target.value?.split("-").reverse().join("-")}
+            type= {DateinputType}
+              onFocus={(e)=>{setDateInputType("date"), console.log("hit",DateinputType)}}
+              onBlur={(e)=>{setDateInputType("text"), console.log("hit 22",DateinputType)}}
+            /> */}
+          </div>
+          <div className="select-box">
+            <Icon
+              name="priority-outline"
+              size="2rem"
+            />
+            <SelectInput
+              placeholder="Priority"
+              onChange={(e) => listHandleTags(e, "priority")}
+              isSearchable={false}
+              options={priorityTags}
+              noBorder={true}
+            />
+          </div>
+          <div className="select-box">
+            <Icon
+              name="status-outline"
+              size="2rem"
+            />
+            <SelectInput
+              placeholder="Status"
+              onChange={(e) => listHandleTags(e, "status")}
+              isSearchable={false}
+              options={statusTags}
+              noBorder={true}
+            />
+
+          </div>
+          <div className="select-box">
+            <Icon
+              name="stage-outline"
+              size="2rem"
+            />
+            <SelectInput
+              placeholder="Stages"
+              onChange={(e) => listHandleTags(e, "stages")}
+              isSearchable={false}
+              options={stagesTags}
+              noBorder={true}
+            />
+          </div>
+        </div>
+        <div className="progress-duration-details">
+          <Icon name="progress-outline"
+            size="2rem" />
+          <label htmlFor='progress  ' style={{ color: "black", fontWeight: "bold", marginRight: "1rem" }}>Progress :</label>
+          <input
+            type="number"
+            style={{ color: "black" }}
+            name="progress"
+            value={taskData.progress}
+            onChange={inputHandler}
+          />
+          <Icon name="duration-outline"
+            size="2rem"
+          />
+          <label htmlFor='progress' style={{ color: "black", fontWeight: "bold", marginRight: "1rem" }}>Duration :</label>
+          <input
+            type="time"
+            style={{ color: "black" }}
+            name="time"
+            onChange={inputHandler}
+          />
+          <Icon name="checkmark-outline"
+            size="2rem"
+          />
+        </div>
+        <div className="task-note">
+          <Icon 
+            name="task-note-outline"
+            size="2rem"
+            />
         </div>
       </div>
       {/* {alertFlage && (
