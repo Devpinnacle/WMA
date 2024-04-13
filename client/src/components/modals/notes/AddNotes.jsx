@@ -28,7 +28,7 @@ const AddNotes = ({ onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
-        <div className="add-note-header">
+        <div className="modal-header">
           <div className='title-container'>
             <Icon
               name="notes-outline"

@@ -15,16 +15,16 @@ const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
   const [deleteSectionFlag, setDeleteSectionFlag] = useState(false);
   const [addTaskFlag, setAddTaskFlag] = useState(false);
-  const [editSectionFlag,setEditSectionFlag]=useState(false)
+  const [editSectionFlag, setEditSectionFlag] = useState(false)
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
   const [sectionId, setSectionId] = useState(null);
-  const [section,setSection]=useState(null)
+  const [section, setSection] = useState(null)
 
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  console.log("section",sections[0])
+  console.log("section", sections[0])
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();
@@ -77,12 +77,12 @@ const Section = () => {
     setAddTaskFlag(false);
   };
 
-  const handleEditSection=(sec)=>{
+  const handleEditSection = (sec) => {
     setSection(sec);
     setEditSectionFlag(true)
   }
 
-  const handleEditCancel=()=>{
+  const handleEditCancel = () => {
     setSection(null);
     setEditSectionFlag(false);
   }
@@ -178,11 +178,11 @@ const Section = () => {
           <div
             className="section-item"
             key={sec._id}
-            // onClick={() => handleSectionClick(sec)}
+          // onClick={() => handleSectionClick(sec)}
           >
             <div className="section-item-top">
               <div className="section-item-top-left">
-                <Icon name="notes-outline" size="2.5rem" />
+                <Icon name="section-outline" size="2.5rem" />
                 <span className="ml-2" style={{ fontSize: "16px" }}>
                   {sec.sectionName}
                 </span>
@@ -233,7 +233,7 @@ const Section = () => {
                     {sec.completedTasks}
                   </span>
                 </span>
-                {user.userGroupName==="Software"&&<span style={{ color: "black", fontSize: "16px" }}>
+                {user.userGroupName === "Software" && <span style={{ color: "black", fontSize: "16px" }}>
                   Tasks in progress:
                   <span
                     style={{
@@ -246,12 +246,12 @@ const Section = () => {
                     {sec.inProgressTasks}
                   </span>
                 </span>}
-                <span style={{ color: sec.overdueTasks===0?`black`:`red`, fontSize: "16px" }}>
+                <span style={{ color: sec.overdueTasks === 0 ? `black` : `red`, fontSize: "16px" }}>
                   Tasks due:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: sec.overdueTasks===0?`black`:`red`,
+                      color: sec.overdueTasks === 0 ? `black` : `red`,
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -277,7 +277,7 @@ const Section = () => {
                   </span>
                 </span>
                 <span style={{ color: "black", fontSize: "16px" }}>
-                  {user.userGroupName==="Software"?`Task assigned to you:`:`Total task:`}
+                  {user.userGroupName === "Software" ? `Task assigned to you:` : `Total task:`}
                   <span
                     style={{
                       fontWeight: "bold",
@@ -315,7 +315,7 @@ const Section = () => {
                     {sec.onHoldTasks}
                   </span>
                 </span>
-                {user.userGroupName==="Software"&&<span style={{ color: "black", fontSize: "16px" }}>
+                {user.userGroupName === "Software" && <span style={{ color: "black", fontSize: "16px" }}>
                   Your total progress:
                   <span
                     style={{
@@ -330,7 +330,7 @@ const Section = () => {
                 </span>}
               </div>
             </div>
-            {user.userGroupName==="Software"&&<div className="section-task-container">
+            {user.userGroupName === "Software" && <div className="section-task-container">
               <div className="section-task-body">
                 <div className="section-task-header">
                   <span
@@ -380,11 +380,14 @@ const Section = () => {
             </div>}
 
             <div className="section-details-bottom">
-              {/* <Icon
-                name="edit-outline"
-                size="2.5rem"
-              /> */}
-              {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>}
+              {/* {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>} */}
+              {user.userGroupName !== "Software" &&
+                <Icon
+                  name="edit-outline"
+                  size="2.5rem "
+                  onClick={() => handleEditSection(sec)}
+                />
+              }
               {sec.totalTask === 0 ? (
                 <button
                   className="btn-del"
@@ -426,7 +429,7 @@ const Section = () => {
           />
         )}
         {addTaskFlag && <AddTask onCancel={handleRemoveAddTask} />}
-        {editSectionFlag&&<EditSection onCancel={handleEditCancel} sec={section}/>}
+        {editSectionFlag && <EditSection onCancel={handleEditCancel} sec={section} />}
       </div>
     </MainContainer>
   );

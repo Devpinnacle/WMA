@@ -8,7 +8,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal">
-        <div className="view-note-header">
+        <div className="modal-header">
           <div className='title-container'>
             <Icon
               className="notes-icon"

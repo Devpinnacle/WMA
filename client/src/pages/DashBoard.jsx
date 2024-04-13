@@ -98,7 +98,7 @@ const Dashboard = () => {
     setDeleteNoteFlag(true);
   };
 
-  const handleProjectClick=(id)=>{
+  const handleProjectClick = (id) => {
     dispatch(setSelectedProject(id));
     navigate("/sections");
   }
@@ -251,7 +251,7 @@ const Dashboard = () => {
               </div>
               <div className="project-body-container">
                 {project.map((proj) => (
-                  <div className="project-items" onClick={()=>handleProjectClick(proj._id)}>
+                  <div className="project-items" onClick={() => handleProjectClick(proj._id)}>
                     <div className="project-item-header">
                       <div className="left-content">
                         <Icon
@@ -262,9 +262,13 @@ const Dashboard = () => {
                       </div>
                       <div className="notify">1</div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem'}}>
-                      <span style={{ color: "black" }}>Tasks pending: <b>{proj.pendingTasks}</b> </span>
-                      <span style={{ color: "black" }}>Tasks in progress:<b>{proj.inProgressTasks}</b> </span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: 'black', margin: '0 1rem' }}>
+                      <span style={{ color: "black" }}>Tasks pending:
+                        <span style={{ color: "black", fontWeight: "bold", marginLeft: "3px" }}>{proj.pendingTasks}</span>
+                      </span>
+                      <span style={{ color: "black" }}>Tasks in progress:
+                        <span style={{ color: "black", fontWeight: "bold", marginLeft: "3px" }}>{proj.inProgressTasks}</span>
+                      </span>
                     </div>
 
                   </div>

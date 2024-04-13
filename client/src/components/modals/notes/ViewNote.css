@@ -3,13 +3,6 @@
     width: 50%;
 }
 
-.view-note-header {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 3rem;
-    fill: #3D405B;
-}
-
 .title-container {
     display: flex;
     font-weight: 700;

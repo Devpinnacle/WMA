@@ -2,7 +2,7 @@
   border-radius: 48px !important;
   width: 50%;
 }
-.add-note-header{
+.modal-header{
   display: flex;
   justify-content: space-between;
   fill:#3D405B;

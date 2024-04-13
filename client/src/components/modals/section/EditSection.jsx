@@ -115,7 +115,7 @@ const EditSection = ({ onCancel, sec }) => {
       <div className="modal-container modal-centered user-modal">
         <div className="add-section-header">
           <div className="title-container">
-            <Icon className="notes-icon" name="notes-outline" size="6rem" />
+            <Icon className="section-icon" name="notes-outline" size="6rem" />
             <span
               className="title"
               style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}

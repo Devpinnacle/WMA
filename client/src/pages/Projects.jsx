@@ -43,7 +43,7 @@ const Projects = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-console.log("projrcts",project)
+  console.log("projrcts", project)
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
       tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
@@ -76,17 +76,18 @@ console.log("projrcts",project)
                 />
                 <Icon title="Search" name="search-icon" size="2rem" />
               </div>
-              <div className="project-tags">
+              <div className="project-tags" style={{width:'12rem'}}>
                 <SelectInput
                   placeholder="Tags"
                   isSearchable={false}
                   options={tags}
                   onChange={handleTags}
+                  
                 />
               </div>
             </div>
           </div>
-          {user.userGroupName!=="Software"&&<button className="btn-outline">
+          {user.userGroupName !== "Software" && <button className="btn-outline">
             <Icon name="add-outline" size="2rem" />
             Add Project
           </button>}
@@ -116,31 +117,48 @@ console.log("projrcts",project)
               {proj.sctProjectName}
             </div>
             <div className="project-info">
-              {user.userGroupName!=="Software"&&<p style={{ color: "black" }}>
-                Addition By:{user._id===proj.sctProjectEnteredById._id?`You`:proj.sctProjectEnteredById.userName}
-              </p>}
-              <p style={{ color: "black" }}>
-                Pending tasks:{proj.pendingTasks}
-              </p>
-              <p style={{ color: "black" }}>
-                Tasks in progress:{proj.inProgressTasks}
-              </p>
-              {user.userGroupName!=="Software"&&<p style={{ color: "black" }}>
-                Total Sections:{proj.sectionLen}
-              </p>}
-              <p style={{ color: "black" }}>
-                {user.userGroupName!=="Software"?`Total tasks`:`Total task assigned to you`}:{proj.assigned}
-              </p>
-              <p style={{ color: "black" }}>
-                Completed Taks:{proj.completedTasks}
-              </p>
-              <p style={{ color: proj.overdueTasks===0?`black`:`red` }}>Tasks due:{proj.overdueTasks}</p>
+              {user.userGroupName !== "Software" &&
+                <span>
+                  Addition By :
+                  <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{user._id === proj.sctProjectEnteredById._id ? `You` : proj.sctProjectEnteredById.userName}</span>
+                </span>}
+              <span>
+                Pending tasks :
+                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.pendingTasks}</span>
+              </span>
+              <span>
+                Tasks in progress:
+                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.inProgressTasks}</span>
+              </span>
+              {user.userGroupName !== "Software" &&
+                <span>
+                  Total Sections:
+                  <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.sectionLen}</span>
+                </span>}
+              <span>
+                {user.userGroupName !== "Software" ? `Total tasks` : `Total task assigned to you`}: <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.assigned}</span>
+              </span>
+              <span>
+                Completed Taks:
+                <span style={{ fontWeight: 'bold', marginLeft: '3px' }}>{proj.completedTasks}</span>
+              </span>
+              <span style={{ color: proj.overdueTasks === 0 ? `black` : `red` }}>Tasks due:
+                <span style={{ color: proj.overdueTasks === 0 ? `black` : `red`, fontWeight: 'bold', marginLeft: '3px' }}>{proj.overdueTasks}</span>
+              </span>
+
             </div>
-            <div className="project-tags">
+            {/* <div className="project-tags">
               {proj.tags.map((tg, index) => (
                 <p key={index} style={{ color: "black" }}>
-                  {tg}
+                  <span className="tag-container" style={{ color: 'black'}}>
+                    {tg}
+                  </span>
                 </p>
+              ))}
+            </div> */}
+            <div className="project-tags">
+              {proj.tags.map((tg, index) => (
+                <span className="tag-list" key={index} style={{ color: "black" }}>{tg}</span>
               ))}
             </div>
           </div>

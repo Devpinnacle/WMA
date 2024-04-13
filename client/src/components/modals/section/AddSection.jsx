@@ -97,7 +97,7 @@ const AddSection = ({ onCancel }) => {
           <div className='title-container'>
             <Icon
               className="notes-icon"
-              name="notes-outline"
+              name="section-outline"
               size="6rem" />
             <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Add Section</span>
           </div>
@@ -114,6 +114,14 @@ const AddSection = ({ onCancel }) => {
             <input
               type="text"
               name="name"
+              onChange={inputHandler}
+            />
+          </div>
+          <div>
+            <label htmlFor='section' style={{ color: "black", fontWeight: "bold" }}>Addition date : </label>
+            <input
+              type="date"
+              name="start"
               onChange={inputHandler}
             />
           </div>

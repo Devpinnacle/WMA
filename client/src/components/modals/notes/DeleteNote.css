@@ -58,16 +58,16 @@
 
 .btn-del:hover {
     background-color: #F9E3DD;
-    fill: #FF4848 !important; 
+    fill: #FF4848 !important;
 }
 
-.btn-del:active {
+.btn-del:focus {
     background-color:#FF4848;
     color: white;
     border-color: red;
 }
 
-.btn-del:active svg {
+.btn-del:focus svg {
     fill: var(--text-white-color) !important;
 }
 
