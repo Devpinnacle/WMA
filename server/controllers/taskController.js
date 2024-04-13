@@ -106,6 +106,28 @@ exports.addTask = catchAsync(async (req, res, next) => {
     })
   );
 
+  const userTasks = await Task.find({
+    sectionId: sectionId,
+    deletedStatus: false,
+  });
+
+  const totalProgress =
+    userTasks.length > 0
+      ? parseFloat(
+          (
+            userTasks.reduce((sum, task) => sum + task.progress, 0) /
+            userTasks.length
+          ).toFixed(2)
+        )
+      : 0;
+  if (totalProgress === 100) {
+    await Section.updateOne(
+      { _id: sectionId },
+      { progress: totalProgress, completed: true }
+    );
+  } else {
+    await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
+  }
   await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: 1 } });
 
   res.status(200).json({ status: "success" });
@@ -125,10 +147,11 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
     progress,
     duration,
     notes,
+    sectionId
   } = req.body;
 
   // Check if all required parameters are provided
-  const requiredParams = [taskid, startDate, dueDate, priority, status, stage];
+  const requiredParams = [taskid, startDate, dueDate, priority, status, stage,sectionId];
   if (requiredParams.some((param) => !param)) {
     return next(
       new AppError("Please provide all the parameters for the task.", 400)
@@ -150,6 +173,29 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
       },
     }
   );
+
+  const userTasks = await Task.find({
+    sectionId: sectionId,
+    deletedStatus: false,
+  });
+
+  const totalProgress =
+    userTasks.length > 0
+      ? parseFloat(
+          (
+            userTasks.reduce((sum, task) => sum + task.progress, 0) /
+            userTasks.length
+          ).toFixed(2)
+        )
+      : 0;
+  if (totalProgress === 100) {
+    await Section.updateOne(
+      { _id: sectionId },
+      { progress: totalProgress, completed: true }
+    );
+  } else {
+    await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
+  }
   res.status(200).json({ status: "success" });
 });
 
@@ -173,6 +219,29 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
       },
     }
   );
+
+  const userTasks = await Task.find({
+    sectionId: req.body.sectionId,
+    deletedStatus: false,
+  });
+
+  const totalProgress =
+    userTasks.length > 0
+      ? parseFloat(
+          (
+            userTasks.reduce((sum, task) => sum + task.progress, 0) /
+            userTasks.length
+          ).toFixed(2)
+        )
+      : 0;
+  if (totalProgress === 100) {
+    await Section.updateOne(
+      { _id: req.body.sectionId },
+      { progress: totalProgress, completed: true }
+    );
+  } else {
+    await Section.updateOne({ _id: req.body.sectionId }, { progress: totalProgress });
+  }
 
   res.status(200).json({ status: "success" });
 });
@@ -225,7 +294,7 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
 //* Adjust task **********************************************************
 
 exports.adjustTask = catchAsync(async (req, res, next) => {
-  console.log("hit..adjust")
+  console.log("hit..adjust");
   const { initialStartDt, movedStartDt, sectionId } = req.body;
 
   // Calculate the difference in days between the initial and moved section start dates
@@ -246,10 +315,10 @@ exports.adjustTask = catchAsync(async (req, res, next) => {
     newDueDate.setDate(newDueDate.getDate() + dateDifference);
 
     // Update task with new dates
-    return Task.findByIdAndUpdate(
-      task._id,
-      { assignedDate: newAssignedDate, dueDate: newDueDate },
-    );
+    return Task.findByIdAndUpdate(task._id, {
+      assignedDate: newAssignedDate,
+      dueDate: newDueDate,
+    });
   });
 
   // Execute all updates and wait for them to complete

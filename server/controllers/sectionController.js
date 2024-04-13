@@ -54,6 +54,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
       progress: 1,
       totalTask: 1,
       createdBy: 1,
+      completed: 1,
     }
   ).populate("createdBy", "userName");
 
@@ -61,11 +62,14 @@ exports.getSection = catchAsync(async (req, res, next) => {
   if (group === "Software") {
     const updatedSections = await Promise.all(
       sections.map(async (section) => {
-        const userTasks = await Task.find({
-          sectionId: section._id,
-          assignedTo: userId,
-          deletedStatus: false,
-        });
+        const userTasks = await Task.find(
+          {
+            sectionId: section._id,
+            assignedTo: userId,
+            deletedStatus: false,
+          },
+          { createdDate: 0, deletedStatus: 0, deletedBy: 0, deletedDate: 0 }
+        ).populate("createdBy","userName").populate("projectId","sctProjectName").populate("sectionId","sectionName");
 
         const assigned = userTasks.length;
 
@@ -104,6 +108,15 @@ exports.getSection = catchAsync(async (req, res, next) => {
           return now > dueDateTimestamp && task.status !== "Completed";
         }).length;
 
+        const tasks = userTasks.filter((task) => {
+          const now = Date.now();
+          const assignedDateTimestamp = new Date(task.assignedDate).getTime();
+          return (
+            now >= assignedDateTimestamp &&
+            (task.status === "To Do" || task.status === "In Progress")
+          );
+        });
+
         // Create a new object with updated data
         const updatedSection = {
           _id: section._id,
@@ -121,6 +134,8 @@ exports.getSection = catchAsync(async (req, res, next) => {
           onHoldTasks,
           totalProgress: totalProgress ? totalProgress : 0,
           overdueTasks,
+          completed: section.completed,
+          tasks,
         };
 
         return updatedSection; // Return the newly created updated section
@@ -177,6 +192,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
           pendingTasks,
           onHoldTasks,
           overdueTasks,
+          completed: section.completed,
         };
         return updatedSection;
       })
@@ -224,7 +240,7 @@ exports.updateSection = catchAsync(async (req, res, next) => {
       $set: {
         sectionName: sectionName,
         startDate: new Date(startDate),
-        dueDate:new Date(dueDate),
+        dueDate: new Date(dueDate),
         editedBy: userId,
         editedDate: Date.now(),
       },

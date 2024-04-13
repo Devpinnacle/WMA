@@ -57,6 +57,10 @@ const sectionSchema = new mongoose.Schema({
     type: Date,
     default:null
   },
+  completed:{
+    type:Boolean,
+    default:false
+  }
 });
 
 module.exports = sections = mongoose.model("sections", sectionSchema);
