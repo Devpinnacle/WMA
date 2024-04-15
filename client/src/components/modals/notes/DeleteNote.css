@@ -82,81 +82,42 @@
     font-size: 25px;
     font-weight: bold;
 }
-
 @media only screen and (max-width: 52em) {
-
     /* 52em = 832px */
-    .modal-container {
-        left: 0 !important;
-        right: 0 !important;
-        top: 60% !important;
-        bottom: 0 !important;
-        height: 100%;
-        width: 100%;
-        border-radius: 0 !important;
-        animation: event-modal-anime 0.5s ease;
+    .delete-note-modal {
+      left: 0 !important;
+      right: 0 !important;
+      top: 55% !important;
+      bottom: 0 !important;
+      height: 100%;
+      width: 100% !important;
+      border-radius: 0 !important;
+      animation: event-modal-anime 0.5s ease;
     }
-
-    .title-container {
-        font-size: 40px;
+  }
+  @media only screen and (max-width: 820px) {
+    .delete-note-modal {
+      top:70% !important;
     }
-}
-
-@media only screen and (max-width: 280px) {
-
-    /* 52em = 832px */
-    .modal-container {
-        left: 0 !important;
-        right: 0 !important;
-        top: 60% !important;
-        bottom: 0 !important;
-        height: 100%;
-        width: 100%;
-        border-radius: 0 !important;
-        animation: event-modal-anime 0.5s ease;
+  }
+  @media only screen and (max-width: 540px) {
+    .delete-note-modal {
+      top: 45% !important;
     }
-
-    .title-container {
-        font-size: 20px;
-        font-weight: 1000;
+  }
+  @media only screen and (max-width: 430px) {
+    .delete-note-modal {
+      top: 70% !important;
     }
-
-    .del-content,
-    .del-content span {
-        font-size: 18px;
+    .delete-title{
+        font-size: 37px !important;
     }
-}
-
-@media only screen and (max-width: 375px) {
-
-    /* 52em = 832px */
-    .modal-container {
-        left: 0 !important;
-        right: 0 !important;
-        top: 60% !important;
-        bottom: 0 !important;
-        height: 100%;
-        width: 100%;
-        border-radius: 0 !important;
-        animation: event-modal-anime 0.5s ease;
+  }
+  @media only screen and (max-width: 375px) {
+    .delete-note-modal {
+      top: 60% !important;
     }
-
-    .delete-title {
-        font-size: 18px;
+    .delete-title{
+        font-size: 37px !important;
     }
-
-    .del-content,
-    .del-content span {
-        font-size: 18px;
-    }
-}
-
-@keyframes event-modal-anime {
-    0% {
-        transform: translateY(100%);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
+  }

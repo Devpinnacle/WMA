@@ -19,7 +19,7 @@
 @media only screen and (max-width: 52em) {
 
     /* 52em = 832px */
-    .modal-container {
+    .add-section-modal{
         left: 0 !important;
         right: 0 !important;
         top: 60% !important;
@@ -29,7 +29,6 @@
         border-radius: 0 !important;
         animation: event-modal-anime 0.5s ease;
     }
-
     .section-input input {
         margin: 0;
         width: auto;
@@ -39,7 +38,6 @@
         font-size: 30px !important;
 
     }
-
     .add-section-header {
         padding: 1rem;
     }

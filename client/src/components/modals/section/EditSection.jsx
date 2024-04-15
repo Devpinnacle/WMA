@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import Alert from "../../ui/Alert";
 import { useAdjustNotesMutation } from "../../../redux/api/taskApi";
 import { useEditSectionMutation } from "../../../redux/api/sectionApi";
+import "./EditSection.css"
 
 const EditSection = ({ onCancel, sec }) => {
   const [sectionName, setSectionName] = useState(sec.sectionName);
@@ -112,7 +113,7 @@ const EditSection = ({ onCancel, sec }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal edit-section-modal">
         <div className="add-section-header">
           <div className="title-container">
             <Icon className="section-icon" name="notes-outline" size="6rem" />

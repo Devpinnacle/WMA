@@ -17,7 +17,7 @@ const DeleteSection = ({ id, head, onCancel }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal delete-section-modal">
         {/* <div className="confirm-modal-header" style={{ color: "black" }}>
           Delete Section
         </div>

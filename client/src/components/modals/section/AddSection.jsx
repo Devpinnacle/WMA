@@ -67,7 +67,7 @@ const AddSection = ({ onCancel }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal add-section-modal">
         {/* <h1 style={{ color: "black" }}>Add Section</h1>
         <input
           type="text"

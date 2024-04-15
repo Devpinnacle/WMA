@@ -1,15 +1,9 @@
-.delete-section-header {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 3rem;
-    fill: red;
-}
 @media only screen and (max-width: 52em) {
     /* 52em = 832px */
-    .delete-section-modal {
+    .edit-section-modal {
       left: 0 !important;
       right: 0 !important;
-      top: 55% !important;
+      top: 50% !important;
       bottom: 0 !important;
       height: 100%;
       width: 100% !important;
@@ -18,29 +12,24 @@
     }
   }
   @media only screen and (max-width: 820px) {
-    .delete-section-modal {
+    .edit-section-modal {
       top:70% !important;
     }
-  }
+  } 
   @media only screen and (max-width: 540px) {
-    .delete-section-modal {
+    .edit-section-modal {
       top: 45% !important;
     }
   }
   @media only screen and (max-width: 430px) {
-    .delete-section-modal {
-      top: 70% !important;
+    .edit-section-modal {
+      top: 60% !important;
     }
-    .delete-title{
-        font-size: 37px !important;
-    }
+
   }
   @media only screen and (max-width: 375px) {
-    .delete-section-modal {
-      top: 55% !important;
+    .edit-section-modal {
+      top: 50% !important;
     }
-    .delete-title{
-        font-size: 37px !important;
-    }
-  }
 
+  }

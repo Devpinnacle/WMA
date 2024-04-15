@@ -43,11 +43,37 @@
     overflow-y: auto;
 }
 
-@media only screen and (max-width: 280px) {
-
+@media only screen and (max-width: 52em) {
     /* 52em = 832px */
-    .body-content {
-        height: 70px;
+    .view-note-modal {
+      left: 0 !important;
+      right: 0 !important;
+      top: 55% !important;
+      bottom: 0 !important;
+      height: 100%;
+      width: 100% !important;
+      border-radius: 0 !important;
+      animation: event-modal-anime 0.5s ease;
     }
-
-}
+  
+  }
+  @media only screen and (max-width: 820px) {
+    .view-note-modal {
+      top: 70% !important;
+    }
+  }
+  @media only screen and (max-width: 540px) {
+    .view-note-modal {
+      top: 45% !important;
+    }
+  }
+  @media only screen and (max-width: 430px) {
+    .view-note-modal {
+      top: 60% !important;
+    }
+  }
+  @media only screen and (max-width: 375px) {
+    .view-note-modal {
+      top: 55% !important;
+    }
+  }

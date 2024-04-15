@@ -15,7 +15,7 @@ const DeleteNotes = ({ id, head, onCancel }) => {
   };
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal delete-note-modal">
         <div className="delete-note-header">
           <div className='title-container'>
             <Icon

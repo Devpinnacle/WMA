@@ -27,7 +27,7 @@ const AddNotes = ({ onCancel }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal add-note-modal">
         <div className="modal-header">
           <div className='title-container'>
             <Icon
@@ -57,6 +57,7 @@ const AddNotes = ({ onCancel }) => {
               className="notes-input-box"
               type="text"
               name="msg"
+              placeholder="Notes "
               onChange={inputHandler}
             />
           </div>
