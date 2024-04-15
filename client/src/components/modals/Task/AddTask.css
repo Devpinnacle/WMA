@@ -22,7 +22,7 @@
     border-radius: 8px;
     height: 3.8rem;
     font-size: 1.3rem;
-    width:18rem;
+    width: 18rem;
     margin-top: 10px;
     margin-right: 1rem;
     margin-left: 1rem;
@@ -35,6 +35,7 @@
     width: 100%;
     color: black;
 }
+
 .select-box {
     position: relative;
     display: flex;
@@ -45,11 +46,12 @@
     border-radius: 8px;
     height: 3.8rem;
     font-size: 1.3rem;
-    width:18rem;
+    width: 18rem;
     margin-top: 10px;
     margin-right: 1rem;
     margin-left: 1rem;
 }
+
 .select-box input {
     height: 100%;
     width: 100%;
@@ -58,30 +60,74 @@
 .assignee-details {
     display: flex;
     align-items: center;
-  }
-  .task-details-input {
+}
+
+.task-details-input {
     display: flex;
     align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.progress-duration-details {
+    display: grid;
+    /* grid-template-columns: repeat(2, 1fr); */
+    grid-template-columns: repeat(3, minmax(0, 260px));
     padding: 1rem;
-  }
-.progress-duration-details{
+}
+.progress-duration{
+    display: flex;
+}
+.progress-duration-details input {
+    width: 107px;
+}
+.task-notes {
     display: flex;
     align-items: center;
     padding: 1rem;
 }
-.task-notes{
-    display: flex;
-    align-items: center;
-    padding: 1rem; 
-}
+
 .task-note-container {
     display: flex;
-    align-items: center; 
+    align-items: center;
+    padding: 1rem;
 }
 
 .task-note {
     display: flex;
-    align-items: center; 
-    margin-right: 10px; 
+    align-items: center;
+    margin-right: 10px;
 }
 
+.note {
+    border-radius: 40px;
+    border: 1px solid #D6D6D6;
+    box-shadow: 2px 2px 21px 2px #3D405B33;
+    padding: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 52em) {
+
+    /* 52em = 832px */
+    .add-task-modal {
+        left: 0 !important;
+        right: 0 !important;
+        top: 10% !important;
+        bottom: 0 !important;
+        height: 100%;
+        width: 100%;
+        border-radius: 0 !important;
+        animation: event-modal-anime 0.5s ease;
+    }
+
+    .task-details-input {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .progress-duration-details{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

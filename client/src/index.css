@@ -73,6 +73,9 @@ input[type="number"] {
 /* input[type="date"]::before {
 	content: attr(placeholder);
 } */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
 
 button {
   font-family: inherit;

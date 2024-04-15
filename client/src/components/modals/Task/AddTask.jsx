@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import SelectInput from "../../ui/SelectInput";
-// import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import SelectDate from "../../ui/SelectDate";
 //import 'react-datepicker/dist/react-datepicker.css';
 import { useGetSwUsersQuery } from "../../../redux/api/userApi";
@@ -210,7 +210,7 @@ const AddTask = ({ onCancel }) => {
   console.log("xp", DateinputType)
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal add-task-modal">
         {/* <h1 style={{ color: "black" }}>Add Task</h1>
         <input
           type="text"
@@ -319,20 +319,22 @@ const AddTask = ({ onCancel }) => {
         </div>
         <div className="section-item-top">
           <div className="section-item-top-left">
-            <Icon name="section-outline" size="2.5rem" />
-            <span className="ml-2" style={{ fontSize: "16px" }}>
+            <Icon name="section-outline" size="2rem" />
+            <span className="ml-2" style={{ fontSize: "22px" }}>
               Section name
             </span>
           </div>
         </div>
+
         <div style={{ padding: "1rem" }}>
           <label htmlFor='task' style={{ color: "black", fontWeight: "bold", marginRight: "8rem" }}>Task :</label>
           <input
             type="text"
             name="name"
+            id="task"
             onChange={inputHandler}
             value={taskData.name}
-            style={{ width: "25rem" }}
+            style={{ width: "31rem" }}
           />
         </div>
         <div className="assignee-details">
@@ -349,9 +351,8 @@ const AddTask = ({ onCancel }) => {
               noBorder={true}
             />
           </div>
-
           {!(user.userGroupName == "Software") && (
-            <div className="selected-tag">
+            <div className="selected-tag pb-0">
               {tag.map((tg, index) => (
                 <div key={index} className="tag-container">
                   <Icon
@@ -374,8 +375,12 @@ const AddTask = ({ onCancel }) => {
               name="calender-outline"
               size="2rem"
             />
-            <input
-              type="date"
+            <SelectDate
+              placeholder="Start Date"
+              selected={taskData.startDt}
+              onChange={date => setTaskData({ ...taskData, startDt: date })}
+              name="startDt"
+              value={taskData.startDt}
             />
           </div>
           <div className="date-box">
@@ -386,18 +391,11 @@ const AddTask = ({ onCancel }) => {
             <SelectDate
               placeholder="Due Date"
               selected={taskData.startDt}
-              onChange={date => setTaskData({ ...taskData, startDt: date })}
+              onChange={date => setTaskData({ ...taskData, DueDt: date })}
+              name="dueDt"
+              // onChange={inputHandler}
+              value={taskData.dueDt}
             />
-
-            {/* <input
-            id="EndDate"
-            name="EndDate"
-              placeholder="Due date"
-              // value={(e)=>e.target.value?.split("-").reverse().join("-")}
-            type= {DateinputType}
-              onFocus={(e)=>{setDateInputType("date"), console.log("hit",DateinputType)}}
-              onBlur={(e)=>{setDateInputType("text"), console.log("hit 22",DateinputType)}}
-            /> */}
           </div>
           <div className="select-box">
             <Icon
@@ -441,29 +439,39 @@ const AddTask = ({ onCancel }) => {
           </div>
         </div>
         <div className="progress-duration-details">
-          <Icon name="progress-outline"
-            size="2rem" />
-          <label htmlFor='progress  ' style={{ color: "black", fontWeight: "bold", marginRight: "1rem" }}>Progress :</label>
-          <input
-            type="number"
-            style={{ color: "black" }}
-            name="progress"
-            value={taskData.progress}
-            onChange={inputHandler}
-          />
-          <Icon name="duration-outline"
-            size="2rem"
-          />
-          <label htmlFor='progress' style={{ color: "black", fontWeight: "bold", marginRight: "1rem" }}>Duration :</label>
-          <input
-            type="time"
-            style={{ color: "black" }}
-            name="time"
-            onChange={inputHandler}
-          />
-          <Icon name="checkmark-outline"
-            size="2rem"
-          />
+          <div className="progress-duration">
+            <Icon name="progress-outline"
+              size="2rem" />
+            <label htmlFor='progress' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Progress :</label>
+            <input
+              type="number"
+              id="progress"
+              style={{ color: "black" }}
+              name="progress"
+              value={taskData.progress}
+              onChange={inputHandler}
+            />
+          </div>
+          <div className="progress-duration">
+            <Icon name="duration-outline"
+              size="2rem"
+            />
+            <label htmlFor='duration' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Duration :</label>
+            <input
+              type="time"
+              style={{ color: "black" }}
+              name="time"
+              id="duration"
+              placeholder="aa"
+              onChange={inputHandler}
+            />
+            <div style={{ padding: "1rem" }}>
+              <Icon name="checkmark-outline"
+                size="2rem"
+              />
+            </div>
+          </div>
+
         </div>
         <div className="task-note-container">
           <div className="task-note">
@@ -471,14 +479,32 @@ const AddTask = ({ onCancel }) => {
               name="task-note-outline"
               size="2rem"
             />
-            <span style={{ color: "black",fontSize:"22px",marginRight:"1rem",fontWeight:"500" }}>Notes</span>
+            <span style={{ color: "black", fontSize: "22px", marginLeft: "8px", fontWeight: "500" }}>Notes</span>
           </div>
-        </div>
 
+        </div>
+        <input
+          type="text"
+          name="name"
+          id="task-note"
+          className="note"
+          placeholder="Add Instruction"
+          onChange={inputHandler}
+          value={taskData.notes}
+        />
+        <div className='save-button' style={{ paddingBottom: "1rem" }}>
+          <button className="btn-outline" onClick={handleSave}>
+            <Icon
+              name="save-outline"
+              size="2rem"
+            />
+            Save
+          </button>
+        </div>
       </div>
-      {/* {alertFlage && (
+      {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
-      )} */}
+      )}
     </ModalContainer>
   );
 };
