@@ -60,7 +60,7 @@ export default function MainContainer({ onGoBack, children, pageName }) {
                     <div className="page-name">
                         <Icon
                             name={pageIcons[pageName]}
-                            size="5.9rem"
+                            size="54px"
                         />
                         <span className="ml-4" style={{color:"#3D405B"}}>{pageName}</span>
                         

@@ -180,22 +180,13 @@ const Projects = () => {
                   {proj.overdueTasks}
                 </span>
               </span>
-            </div>
-            {/* <div className="project-tags">
-              {proj.tags.map((tg, index) => (
-                <p key={index} style={{ color: "black" }}>
-                  <span className="tag-container" style={{ color: 'black'}}>
-                    {tg}
-                  </span>
-                </p>
-              ))}
-            </div> */}
+            </div>  
             <div className="project-tags">
               {proj.tags.map((tg, index) => (
                 <span
                   className="tag-list"
                   key={index}
-                  style={{ color: "black" }}
+                  style={{ color: "black"}}
                 >
                   {tg}
                 </span>

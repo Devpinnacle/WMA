@@ -12,6 +12,7 @@ import MainContainer from "../components/layouts/sidebar/MainContainer";
 import "./DashBoard.css";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
+import DatePicker from 'react-datepicker';
 import AddProject from "../components/modals/projects/AddProject";
 
 const Dashboard = () => {
@@ -133,6 +134,7 @@ const Dashboard = () => {
     navigate("/sections");
   };
 
+
   return (
     <MainContainer pageName={`Hi`}>
       {/*{/* <div
@@ -242,8 +244,109 @@ const Dashboard = () => {
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
-              <div className="add-project-header">
-                <span className="title">Notification</span>
+              <div className="project-header">
+                <span className="title">
+                  Notification
+                </span>
+                <div className="header-right">
+                  <SelectInput
+                    className="tags"
+                    placeholder="Type"
+                  />
+                  <div className="date-box" style={{ padding: "1rem", margin: "1rem" }}>
+                    <DatePicker
+                      customInput={
+                        <div className="date-picker">
+                          <input
+                            type="text"
+                            className="date-input"
+                            placeholder="Day dd/mm/yyyy"
+                          />
+                          <Icon
+                            name="date-picker-outline"
+                            size="2rem"
+                          />
+                        </div>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="notification-container">
+                <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
+                  <div className="left-content">
+                    <Icon name="log-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Rakshith</span> has logged in
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
+                  <div className="left-content">
+                    <Icon name="add-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Rakshith</span> added a task in <span style={{ fontWeight: "700" }}>Bookbetter (Development)</span>
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
+                  <div className="left-content">
+                    <Icon name="progress-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Rakshith</span> updated progress in <span style={{ fontWeight: "700" }}>Bookbetter (Development)</span>
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
+                  <div className="left-content">
+                    <Icon name="edit-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Joel </span>edited a task in <span style={{ fontWeight: "700" }}>JT application (Updates)</span>
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
+                  <div className="left-content">
+                    <Icon name="delete-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Rolin </span>deleted a task
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
+                  <div className="left-content">
+                    <Icon name="due-outline" size="24px" />
+                    <span className="ml-3">
+                      Task is due in
+                      <span style={{ fontWeight: "700" }}>JT application(Updates) </span>
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
+                  <div className="left-content">
+                    <Icon name="critical-note-outline" size="24px" />
+                    <span className="ml-3">
+                      <span style={{ fontWeight: "700" }}>Rakshith </span>added a critical note in <span style={{ fontWeight: "700" }}>JT application (Updates)</span>
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
+                <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
+                  <div className="left-content">
+                    <Icon name="task-outline" size="24px" />
+                    <span className="ml-3">
+                      Task in 
+                      <span style={{ fontWeight: "700" }}>JT application (Updates) </span> 
+                    </span>
+                  </div>
+                  <span>8:00am </span>
+                </div>
               </div>
             </div>
           </div>

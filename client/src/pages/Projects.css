@@ -166,7 +166,7 @@
 .project-tags {
     width: 100%;
     height: 15%;
-    /* padding-bottom: 20px; */
+    padding-bottom: 20px;
 }
 
 .project-item:hover,

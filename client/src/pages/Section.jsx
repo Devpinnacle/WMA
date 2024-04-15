@@ -169,6 +169,7 @@ const Section = () => {
     //   </>
     // );
     <MainContainer pageName="Section">
+      <div className="project-name" style={{fontWeight:"600",fontSize:"20px"}}>Project name</div>
       <div className="section-top">
         <div className="search-box">
           <input
