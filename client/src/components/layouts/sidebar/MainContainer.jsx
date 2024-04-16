@@ -14,7 +14,8 @@ export default function MainContainer({ onGoBack, children, pageName }) {
         Hi: 'hi-emoji',
         Projects: 'projects',
         Section:'project-outline',  
-        Reports:'reports'
+        Reports:'reports',
+        Task:'task-outline'
     };
 
 

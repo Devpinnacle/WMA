@@ -253,7 +253,7 @@ const AddTask = ({ onCancel }) => {
           style={{ color: "black" }}
           placeholder="enddate"
           name="dueDt"
-          onChange={inputHandler}
+          onChange={F}
           value={taskData.dueDt}
         />
         <SelectInput
@@ -334,7 +334,7 @@ const AddTask = ({ onCancel }) => {
             id="task"
             onChange={inputHandler}
             value={taskData.name}
-            style={{ width: "31rem" }}
+            style={{ width: "31rem", color: "black" }}
           />
         </div>
         <div className="assignee-details">
@@ -382,6 +382,8 @@ const AddTask = ({ onCancel }) => {
               name="startDt"
               value={taskData.startDt}
             />
+
+
           </div>
           <div className="date-box">
             <Icon
@@ -390,12 +392,12 @@ const AddTask = ({ onCancel }) => {
             />
             <SelectDate
               placeholder="Due Date"
-              selected={taskData.startDt}
+              selected={taskData.dueDt}
               onChange={date => setTaskData({ ...taskData, DueDt: date })}
               name="dueDt"
-              // onChange={inputHandler}
               value={taskData.dueDt}
             />
+
           </div>
           <div className="select-box">
             <Icon
@@ -451,6 +453,7 @@ const AddTask = ({ onCancel }) => {
               value={taskData.progress}
               onChange={inputHandler}
             />
+            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>%</span>
           </div>
           <div className="progress-duration">
             <Icon name="duration-outline"
@@ -459,12 +462,13 @@ const AddTask = ({ onCancel }) => {
             <label htmlFor='duration' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Duration :</label>
             <input
               type="time"
-              style={{ color: "black" }}
+              style={{ color: "black", }}
               name="time"
               id="duration"
               placeholder="aa"
               onChange={inputHandler}
             />
+            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>hrs</span>
             <div style={{ padding: "1rem" }}>
               <Icon name="checkmark-outline"
                 size="2rem"
