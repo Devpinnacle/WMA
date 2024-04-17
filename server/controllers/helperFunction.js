@@ -14,6 +14,7 @@ exports.sendTokensAndCookies = async (req, res, user, statusCode) => {
   res.status(statusCode).json({
     status: "SUCCESS",
     accessToken,
+    userId:user._id,
   });
 };
 

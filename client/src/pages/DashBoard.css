@@ -65,6 +65,21 @@
     margin: 0;
 }
 
+.green{
+    background-color: #DCEAE3;
+    border: 2px solid #AACBBA ;
+}
+
+.yello{
+    background-color: #FBEFDA;
+    border: 2px solid #F3CF96 ;
+}
+
+.red{
+    background-color: #F9E3DD;
+    border: 2px solid #EDB1A1 ;
+}
+
 /* Projects */
 .project-header {
     display: flex;

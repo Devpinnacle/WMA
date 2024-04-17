@@ -12,8 +12,11 @@ import MainContainer from "../components/layouts/sidebar/MainContainer";
 import "./DashBoard.css";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
-import DatePicker from 'react-datepicker';
+import DatePicker from "react-datepicker";
 import AddProject from "../components/modals/projects/AddProject";
+import io from "socket.io-client";
+import { getNotifications } from "../redux/slice/notificationSlice";
+import { useGetNotificationQuery } from "../redux/api/notificationApi";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -28,10 +31,12 @@ const Dashboard = () => {
 
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
+  const { data: nofify } = useGetNotificationQuery();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
+  const { notifications } = useSelector((state) => state.notifications);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +47,16 @@ const Dashboard = () => {
     { label: "Mobile", value: "Mobile" },
     { label: "Others", value: "Others" },
   ];
+  const socket = io("http://localhost:3001");
+
+  useEffect(() => {
+    socket.on("Notifie", (data) => {
+      if (user.userGroupName !== "Software") {
+        dispatch(getNotifications(data));
+      }
+    });
+    return () => socket?.off("N");
+  }, []);
 
   useEffect(() => {
     if (fetchedData) {
@@ -133,7 +148,6 @@ const Dashboard = () => {
     dispatch(setSelectedProject(id));
     navigate("/sections");
   };
-
 
   return (
     <MainContainer pageName={`Hi`}>
@@ -244,36 +258,61 @@ const Dashboard = () => {
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
-              <div className="project-header">
-                <span className="title">
-                  Notification
-                </span>
-                <div className="header-right">
-                  <SelectInput
-                    className="tags"
-                    placeholder="Type"
-                  />
-                  <div className="date-box" style={{ padding: "1rem", margin: "1rem" }}>
-                    <DatePicker
-                      customInput={
-                        <div className="date-picker">
-                          <input
-                            type="text"
-                            className="date-input"
-                            placeholder="Day dd/mm/yyyy"
-                          />
-                          <Icon
-                            name="date-picker-outline"
-                            size="2rem"
-                          />
-                        </div>
-                      }
-                    />
+              {user.userGroupName === "Software" ? (
+                <></>
+              ) : (
+                <>
+                  <div className="project-header">
+                    <span className="title">Notification</span>
+                    <div className="header-right">
+                      <SelectInput className="tags" placeholder="Type" />
+                      <div
+                        className="date-box"
+                        style={{ padding: "1rem", margin: "1rem" }}
+                      >
+                        <DatePicker
+                          customInput={
+                            <div className="date-picker">
+                              <input
+                                type="text"
+                                className="date-input"
+                                placeholder="Day dd/mm/yyyy"
+                              />
+                              <Icon name="date-picker-outline" size="2rem" />
+                            </div>
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="notification-container">
-                <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
+                  <div className="notification-container">
+                    {notifications.map((notification) => (
+                      <div
+                        className={
+                          notification.priority === "low"
+                            ? `notification-item green`
+                            : notification.priority === "high"
+                            ? `notification-item red`
+                            : `notification-item yello`
+                        }
+                      >
+                        <div className="left-content">
+                          <Icon name="log-outline" size="24px" />
+                          <span className="ml-3">
+                            <span style={{ fontWeight: "700" }}>
+                              {notification.userId.userName}
+                            </span>{" "}
+                            {notification.action}{" "}
+                            {notification?.projectId?.sctProjectName}
+                            {notification.sectionId!==null
+                              ? `(${notification?.sectionId?.sectionName})`
+                              : ``}
+                          </span>
+                        </div>
+                        <span>{notification.time}</span>
+                      </div>
+                    ))}
+                    {/* <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
                   <div className="left-content">
                     <Icon name="log-outline" size="24px" />
                     <span className="ml-3">
@@ -346,8 +385,10 @@ const Dashboard = () => {
                     </span>
                   </div>
                   <span>8:00am </span>
-                </div>
-              </div>
+                </div> */}
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {/* PROJECT */}
