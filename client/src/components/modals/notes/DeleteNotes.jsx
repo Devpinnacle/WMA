@@ -18,28 +18,32 @@ const DeleteNotes = ({ id, head, onCancel }) => {
       <div className="modal-container modal-centered user-modal delete-note-modal">
         <div className="delete-note-header">
           <div className='title-container'>
-            <Icon
-              name="delete-outline"
-              size="6rem" />
+            <div className="header-icon">
+              <Icon
+                name="delete-outline"
+                size="50px" />
+            </div>
             <span className='delete-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Delete notes</span>
           </div>
-          <Icon
-            className="close-icon"
-            name="close"
-            size="6rem"
-            onClick={onCancel}
-          />
+          <div className="header-icon">
+            <Icon
+              className="close-icon"
+              name="close"
+              size="45px"
+              onClick={onCancel}
+            />
+          </div>
         </div>
         <div className="del-content">Are you sure you want to delete <span>"{head}"</span> notes?</div>
         <div className="del-can-btn">
           <button
-            className="btn-outline" 
+            className="btn-outline"
             onClick={onCancel}>
             Cancel
           </button>
-          <button 
-          className="btn-del"
-          onClick={handleDeleteNote}>
+          <button
+            className="btn-del"
+            onClick={handleDeleteNote}>
             <Icon
               name="delete-outline"
               size="2rem"

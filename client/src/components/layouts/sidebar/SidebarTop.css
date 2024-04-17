@@ -11,7 +11,9 @@
     flex-direction: column;
     gap: 0.2rem;
     padding-left: 1rem;
-    font-size: 1.6rem;
+    /* font-size: 1.6rem; */
+    font-size: 22px;
+    font-weight: 500;
 }
 
 .top-link-item {
@@ -19,7 +21,7 @@
     align-items: center;
     gap: 0.5rem;
     color: inherit;
-    padding: 0.4rem 0.5rem;
+    padding: 8px;
     border-radius: 8px;
     fill: var(--text-white-color);
     color: var(--text-white-color);

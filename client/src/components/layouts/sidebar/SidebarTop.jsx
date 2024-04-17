@@ -19,20 +19,20 @@ export default function SidebarTop() {
         <div className="">
             <div className="sidebar-top-links">
                 <NavLink className="top-link-item" to="/" style={{ textDecoration: "none" }}>
-                    <Icon name="dashboard" size="2rem" />
+                    <Icon name="dashboard" size="24px" />
                     Dashboard
                 </NavLink>
 
                 <NavLink className="top-link-item" to="projects" style={{ textDecoration: "none" }}>
-                    <Icon name="projects" size="2rem" />
+                    <Icon name="projects" size="24px" />
                     Projects
                 </NavLink>
                 <NavLink className="top-link-item" to="reports" style={{ textDecoration: "none" }}>
-                    <Icon name="reports" size="2rem" />
+                    <Icon name="reports" size="24px" />
                     Reports
                 </NavLink>
                 <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
-                    <Icon name="users" size="2rem" />
+                    <Icon name="users" size="24px" />
                     Users
                 </NavLink>
             </div>

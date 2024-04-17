@@ -253,7 +253,7 @@ const AddTask = ({ onCancel }) => {
           style={{ color: "black" }}
           placeholder="enddate"
           name="dueDt"
-          onChange={F}
+          onChange={inputHandler}
           value={taskData.dueDt}
         />
         <SelectInput

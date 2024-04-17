@@ -53,21 +53,24 @@
     font-weight: bold;
     margin-left: 5px;
     fill:#FF4848 !important; 
+    outline: red;
    
 }
 
 .btn-del:hover {
     background-color: #F9E3DD;
     fill: #FF4848 !important;
+    outline: #FF4848;
 }
 
-.btn-del:focus {
+.btn-del:active {
     background-color:#FF4848;
     color: white;
     border-color: red;
+    outline: red;
 }
 
-.btn-del:focus svg {
+.btn-del:active svg {
     fill: var(--text-white-color) !important;
 }
 
@@ -109,15 +112,15 @@
     .delete-note-modal {
       top: 70% !important;
     }
-    .delete-title{
+    /* .delete-title{
         font-size: 37px !important;
-    }
+    } */
   }
   @media only screen and (max-width: 375px) {
     .delete-note-modal {
       top: 60% !important;
     }
-    .delete-title{
+    /* .delete-title{
         font-size: 37px !important;
-    }
+    } */
   }

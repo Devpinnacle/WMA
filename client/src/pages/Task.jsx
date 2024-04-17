@@ -203,7 +203,7 @@ const Task = () => {
             name="arrow-outline"
             size="24px"
           />
-          <span style={{ color: "black", marginLeft: "5px", fontWeight: "bold", fontSize: "25px" }}>project name</span>
+          <span style={{ color: "black", marginLeft: "5px", fontWeight: "bold", fontSize: "25px" }}>project name </span>
         </div>
         <div className="section-item-top">
           <div className="section-item-top-left">

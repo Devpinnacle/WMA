@@ -13,7 +13,7 @@ const AddProject = ({ onCancel }) => {
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const [addProject]=useAddProjectMutation()
+  const [addProject] = useAddProjectMutation()
 
   const tags = [
     { label: "Software", value: "Software" },
@@ -44,18 +44,18 @@ const AddProject = ({ onCancel }) => {
   const handleSaveProject = (e) => {
     e.preventDefault();
     const { name, decs } = project;
-    console.log("project",project)
-    console.log("tag",tag)
+    console.log("project", project)
+    console.log("tag", tag)
     if (!name || !decs || tag.length === 0) {
       setAlertFlag(true);
       setErrorMsg("Enter all the Fields");
       dispatch(setAlert({ type: "error", msg: "Enter all the Fields" }));
       return;
     }
-    const fromData={
-        projectName:name,
-        description:decs,
-        tags:tag
+    const fromData = {
+      projectName: name,
+      description: decs,
+      tags: tag
     }
     addProject(fromData);
     onCancel();
@@ -68,16 +68,16 @@ const AddProject = ({ onCancel }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
+      <div className="modal-container modal-centered user-modal add-project-modal">
         <div className="add-project-header">
           <div className="add-title-container">
-            <Icon className="projects-icon" name="projects" size="6rem" />
-            <span className="add-title">Add project</span>
+           <div className="header-icon"> <Icon className="projects-icon" name="projects" size="45px" /></div>
+            <span className="add-title" style={{ color: "#3D405B", fontSize: "57px", fontWeight: "700" }}>Add project</span>
           </div>
           <Icon
             className="close-icon"
             name="close"
-            size="6rem"
+            size="45px"
             onClick={onCancel}
           />
         </div>
@@ -94,39 +94,55 @@ const AddProject = ({ onCancel }) => {
               onChange={inputHandler}
             />
           </div>
-          <div className="project-input">
+          <div className="project-input pb-0">
             <label htmlFor="Project" style={{ color: "black" }}>
-              Description :
+              Description:
             </label>
-            <textarea
+            <input
+              className="project-input-box"
+              type="text"
+              name="name"
+              value={project.desc}
+              onChange={inputHandler}
+            />
+            {/* <textarea
               className="project-input-box"
               name="decs"
               value={project.decs}
-              rows={4}
               onChange={inputHandler}
-            />
+            /> */}
           </div>
-          <div className="project-tags">
-            <SelectInput
-              className="select-tag"
-              placeholder="Tags"
-              options={tags}
-              onChange={handleTags}
-              isSearchable={false}
-            />
-          </div>
-          <div className="selected-tag">
+
+          <div className="project-tags add-project-tags">
+            <div className="select-box mt-0">
+              <Icon
+                name="tag-outline"
+                size="24px"
+              />
+              <SelectInput
+                className="select-tag"
+                placeholder="Tags"
+                options={tags}
+                onChange={handleTags}
+                isSearchable={false}
+                noBorder={true}
+              />
+            </div>
+            <div className="selected-tag">
               {tag.map((tg, index) => (
                 <div key={index} className="tag-container">
-                  <p style={{ color: "black" }}>
-                    {tg}
-                    <button onClick={() => handleRemoveTag(tg)}>c</button>
-                  </p>
+                  <Icon
+                    name="close"
+                    size="2rem"
+                    onClick={() => handleRemoveTag(tg)}
+                  />
+                  <p style={{ color: "black" }}>{tg}</p>
                 </div>
               ))}
             </div>
-          <div className="save-button">
-            <button className="btn-outline">
+          </div>
+          <div className="save-button add-project-save">
+            <button className="btn-outline mt-0">
               <Icon name="save-outline" size="2rem" />
               Save
             </button>

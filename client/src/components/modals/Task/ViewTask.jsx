@@ -432,6 +432,7 @@ const ViewTask = ({ onCancel, task, section }) => {
         <button style={{ color: "black" }} onClick={handleNotes}>
           save
         </button> */}
+
         <div className="modal-header">
           <div className='title-container'>
             <Icon
@@ -449,11 +450,11 @@ const ViewTask = ({ onCancel, task, section }) => {
         <div className="section-item-top">
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
-            <span className="ml-2" style={{ fontSize: "22px",fontWeight:"400" }}>
+            <span className="ml-2" style={{ fontSize: "22px", fontWeight: "400" }}>
               {task.sectionId.sectionName}
             </span>
           </div>
-          <div className="section-item-top-right" style={{ fontSize: "22px",fontWeight:"400" }} >
+          <div className="section-item-top-right" style={{ fontSize: "22px", fontWeight: "400" }} >
             <div className="section-progress">{task.sectionId.progress}%</div>
           </div>
         </div>
@@ -462,67 +463,161 @@ const ViewTask = ({ onCancel, task, section }) => {
             <span>{task.taskName}</span>
             <span>
               {task.progress}%
+
             </span>
           </div>
-          <div className="view-task-body">
-            <div className="employee-info">
-              <Icon
-                name="employee-outline"
-                size="24px"
-              />
-              <span>Rakshith</span>
-            </div>
-            <div className="ta-td-date">
-              <span>TA Date :</span>
-              <Icon
-                name="calender-outline"
-                size="24px"
-              />
-              <span>16-04-2024</span>
-            </div>
-            <div className="ta-td-date">
-              <span>TD Date :</span>
-              <Icon
-                name="calender-outline"
-                size="24px"
-              />
-              <span>16-04-2024</span>
-            </div>
-            <div className="priority-info">
-              <Icon
-                name="priority-outline"
-                size="24px"
-              />
-              <span>Low</span>
-            </div>
-            <div className="status-info">
-              <Icon
-                name="status-outline"
-                size="24px"
-              />
-              <span>completed</span>
-            </div>
-            <div className="stage-info">
-              <Icon
-                name="stage-outline"
-                size="24px"
-              />
-              <span>development</span>
-            </div>
-            <div className="del-edit-btn">
-              <div className="del-btn">
+          {editFlag ? (
+            <>
+              <div className="employee-assigned">
                 <Icon
-                  name="delete-outline"
+                  name="employee-outline"
                   size="24px"
                 />
+                <span style={{ color: "black" }}>
+                  {user._id === task.createdBy._id
+                    ? `You`
+                    : task.createdBy.userName}</span>
               </div>
-              <Icon
-                name="edit-outline"
-                size="24px"
-              />
+              <div className="view-task-body">
+                <div className="ta-td-date">
+                  <span>TA Date :</span>
+                  <Icon
+                    name="calender-outline"
+                    size="24px"
+                  />
+                  <span>{formatDate(task.assignedDate)}</span>
+                </div>
+                <div className="ta-td-date">
+                  <span>TD Date :</span>
+                  <Icon
+                    name="calender-outline"
+                    size="24px"
+                  />
+                  <span>{formatDate(task.dueDate)}</span>
+                </div>
+                <div className="priority-info">
+                  <div className="select-box mb-3" >
+                    <Icon
+                      name="priority-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Priority"
+                      onChange={(e) => listHandleTags(e, "priority")}
+                      isSearchable={false}
+                      options={priorityTags}
+                      noBorder={true}
+                      value={{ label: list.priority, value: list.priority }}
+                    />
+                  </div>
+                </div>
+                <div className="status-info">
+                  <div className="select-box mb-3">
+                    <Icon
+                      name="status-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Status"
+                      onChange={(e) => listHandleTags(e, "status")}
+                      isSearchable={false}
+                      options={statusTags}
+                      noBorder={true}
+                      value={{ label: list.status, value: list.status }}
+                    />
+
+                  </div>
+                </div>
+                <div className="stage-info">
+                  <div className="select-box mb-3">
+                    <Icon
+                      name="stage-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Stages"
+                      onChange={(e) => listHandleTags(e, "stages")}
+                      isSearchable={false}
+                      options={stagesTags}
+                      noBorder={true}
+                      value={{ label: list.stages, value: list.stages }}
+                    />
+                  </div>
+                </div>
+                <Icon
+                  name="checkmark-outline"
+                  size="24px"
+                  onClick={handleUpdateTask}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="view-task-body">
+              <div className="employee-info">
+                <Icon
+                  name="employee-outline"
+                  size="24px"
+                />
+                <span>
+                  {user._id === task.createdBy._id
+                    ? `You`
+                    : task.createdBy.userName}</span>
+              </div>
+              <div className="ta-td-date">
+                <span>TA Date :</span>
+                <Icon
+                  name="calender-outline"
+                  size="24px"
+                />
+                <span>{formatDate(task.assignedDate)}</span>
+              </div>
+              <div className="ta-td-date">
+                <span>TD Date :</span>
+                <Icon
+                  name="calender-outline"
+                  size="24px"
+                />
+                <span>{formatDate(task.dueDate)}</span>
+              </div>
+              <div className="priority-info">
+                <Icon
+                  name="priority-outline"
+                  size="24px"
+                />
+                <span>{task.priority}</span>
+              </div>
+              <div className="status-info">
+                <Icon
+                  name="status-outline"
+                  size="24px"
+                />
+                <span>{task.status}</span>
+              </div>
+              <div className="stage-info">
+                <Icon
+                  name="stage-outline"
+                  size="24px"
+                />
+                <span>{task.stage}</span>
+              </div>
+              <div className="del-edit-btn">
+                <div className="del-btn">
+                  <Icon
+                    name="delete-outline"
+                    size="24px"
+                  />
+                </div>
+                <Icon
+                  name="edit-outline"
+                  size="24px"
+                  onClick={() => setEditFlag(true)}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
+
+
         <div className="progress-duration-details">
           <div className="progress-duration">
             <Icon name="progress-outline"
@@ -533,7 +628,6 @@ const ViewTask = ({ onCancel, task, section }) => {
               id="progress"
               style={{ color: "black" }}
               name="progress"
-              // value={taskData.progress}
               onChange={inputHandler}
             />
             <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>%</span>
@@ -555,6 +649,7 @@ const ViewTask = ({ onCancel, task, section }) => {
             <div style={{ padding: "1rem" }}>
               <Icon name="checkmark-outline"
                 size="2rem"
+                onClick={handleNotes}
               />
             </div>
           </div>
@@ -577,14 +672,68 @@ const ViewTask = ({ onCancel, task, section }) => {
           placeholder="Add Instruction"
           onChange={inputHandler}
         />
-        <div className='save-button' style={{ paddingBottom: "1rem" }}>
-          <button className="btn-outline">
+        <div className='save-button'>
+          {user._id === task.createdBy._id &&
+            <button className="btn-outline" onClick={handleDelete}>
+              <Icon
+                name="save-outline"
+                size="2rem"
+              />
+              Save
+            </button>
+          }
+        </div>
+        <div className="updates-container">
+          <div className="update-header">
             <Icon
-              name="save-outline"
-              size="2rem"
+              name="info-outline"
+              size="24px"
             />
-            Save
-          </button>
+            <span>Updates</span>
+          </div>
+          <div className="update-body">
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Rakshith </span>
+                <span style={{ color: "black" }}>updated the progress to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>20%</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the due date to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>dd-mm-yyyy</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the priority to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the priority to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {durationFlag && (

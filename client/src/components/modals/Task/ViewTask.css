@@ -25,7 +25,7 @@
 .view-task-body {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 }
 
 .view-task-body span {
@@ -45,12 +45,12 @@
   align-items: center;
 }
 
-.ta-td-date,
+/* .ta-td-date,
 .priority-info,
 .status-info,
 .stage-info {
   margin-left: 20px;
-}
+} */
 
 .del-edit-btn {
   margin-left: 180px;
@@ -59,6 +59,42 @@
 .del-btn {
   fill: red;
 
+}
+
+.employee-assigned{
+  display: flex;
+  align-content: center;
+}
+.employee-assigned span{
+  margin: 10px;
+  margin-left: 10px;
+  color: black;
+}
+
+
+.update-header{
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.update-header span{
+ color: black;
+ margin: 8px; 
+ font-size: 22px;
+ font-weight: 500;
+}
+
+.update-content{
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.update-body{
+  overflow-y: auto;
+  max-height: 100px;
 }
 
 @media only screen and (max-width: 52em) {

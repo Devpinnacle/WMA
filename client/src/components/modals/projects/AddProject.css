@@ -5,6 +5,7 @@
 .add-project-header{
     display: flex;
     justify-content: space-between;
+    fill:#3D405B;
 }
 .add-title-container{
     display: flex;
@@ -59,3 +60,35 @@
    border-radius: 50px 50px 
 } 
 
+.add-project-tags{
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width: 52em) {
+    /* 52em = 832px */
+    .add-project-modal {
+      left: 0 !important;
+      right: 0 !important;
+      top: 50% !important;
+      bottom: 0 !important;
+      height: 100%;
+      width: 100% !important;
+      border-radius: 0 !important;
+      animation: event-modal-anime 0.5s ease;
+    }
+    .add-title{
+        font-size: 42px !important;
+    }
+    .add-project-tags{
+        display: block;
+    }
+    .add-project-save{
+        margin-top: 50px;
+    }
+  }
+  @media only screen and (max-width: 23em) {
+    .add-project-modal{
+        top:50% !important;
+    }
+  }
