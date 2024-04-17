@@ -1,9 +1,128 @@
-.progress-container {
-    display: flex;
+.task-container {
+  /* height: 82px; */
+  border-radius: 16px;
+  padding: 8px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background-color: #FBEFDA;
+}
+
+.view-task-header {
+  height: 32px;
+  padding: 4px 8px 4px 8px;
+  border-radius: 8px;
+  background-color: #F3CF96;
+  display: flex;
+  justify-content: space-between;
+}
+
+.view-task-header span {
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.view-task-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.view-task-body span {
+  color: black;
+  margin: 10px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.employee-info,
+.ta-td-date,
+.priority-info,
+.status-info,
+.stage-info,
+.del-edit-btn {
+  display: flex;
+  align-items: center;
+}
+
+/* .ta-td-date,
+.priority-info,
+.status-info,
+.stage-info {
+  margin-left: 20px;
+} */
+
+.del-edit-btn {
+  margin-left: 180px;
+}
+
+.del-btn {
+  fill: red;
+
+}
+
+.employee-assigned{
+  display: flex;
+  align-content: center;
+}
+.employee-assigned span{
+  margin: 10px;
+  margin-left: 10px;
+  color: black;
+}
+
+
+.update-header{
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.update-header span{
+ color: black;
+ margin: 8px; 
+ font-size: 22px;
+ font-weight: 500;
+}
+
+.update-content{
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.update-body{
+  overflow-y: auto;
+  max-height: 100px;
+}
+
+@media only screen and (max-width: 52em) {
+
+  /* 52em = 832px */
+  .view-task-modal {
+    left: 0 !important;
+    right: 0 !important;
+    top: 10% !important;
+    bottom: 0 !important;
+    height: 100%;
+    width: 100% !important;
+    border-radius: 0 !important;
+    animation: event-modal-anime 0.5s ease;
+    overflow: scroll;
+  }
+
+  .view-task-body {
+    display: block;
     align-items: center;
   }
-  
-  .progress-container h2 {
+
+  .employee-info,
+  .ta-td-date,
+  .priority-info,
+  .status-info,
+  .stage-info,
+  .del-edit-btn {
     margin: 0;
   }
-  
+}

@@ -71,8 +71,8 @@
 
 .progress-duration-details {
     display: grid;
-    /* grid-template-columns: repeat(2, 1fr); */
-    grid-template-columns: repeat(3, minmax(0, 260px));
+    grid-template-columns: repeat(2, 1fr);
+    /* grid-template-columns: repeat(3, minmax(0, 300px)); */
     padding: 1rem;
 }
 .progress-duration{

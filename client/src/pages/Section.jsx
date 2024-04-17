@@ -418,6 +418,7 @@ const Section = () => {
 
             <div className="section-details-bottom">
               {/* {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>} */}
+              <div className="mt-4">
               {user.userGroupName !== "Software" && (
                 <Icon
                   name="edit-outline"
@@ -425,6 +426,7 @@ const Section = () => {
                   onClick={() => handleEditSection(sec)}
                 />
               )}
+              </div>
               {sec.totalTask === 0 ? (
                 <button
                   className="btn-del"

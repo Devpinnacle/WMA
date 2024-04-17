@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ModalContainer from "../ModalContainer";
 import { useSelector, useDispatch } from "react-redux";
-import "./AddTask.css";
+// import "./AddTask.css";
+import "./ViewTask.css"
 import {
   dashedFormatDate,
   formatDate,
@@ -17,6 +18,7 @@ import {
 } from "../../../redux/api/taskApi";
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
+import Icon from "../../ui/Icon";
 
 const ViewTask = ({ onCancel, task, section }) => {
   console.log("task...", task);
@@ -142,8 +144,8 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
-    console.log("section start due",startDate,dueDate);
-    console.log("task start due",startDt,dueDt);
+    console.log("section start due", startDate, dueDate);
+    console.log("task start due", startDt, dueDt);
 
     if (startDt < startDate || dueDt > dueDate) {
       setAlertFlag(true);
@@ -203,7 +205,7 @@ const ViewTask = ({ onCancel, task, section }) => {
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
       notes: notes,
-      sectionId:section._id
+      sectionId: section._id
     };
     updateTaskStg(fromData);
     setEditFlag(false);
@@ -265,7 +267,7 @@ const ViewTask = ({ onCancel, task, section }) => {
       id: task._id,
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
-      sectionId:section._id
+      sectionId: section._id
     };
 
     updateDailyTask(fromData);
@@ -292,7 +294,7 @@ const ViewTask = ({ onCancel, task, section }) => {
   const handleDelete = () => {
     const fromData = {
       id: task._id,
-      secId:task.sectionId._id
+      secId: task.sectionId._id
     };
     deleteTask(fromData);
     onCancel();
@@ -300,8 +302,8 @@ const ViewTask = ({ onCancel, task, section }) => {
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal">
-        <h1 style={{ color: "black" }}>{task.projectId.sctProjectName}</h1>
+      <div className="modal-container modal-centered user-modal view-task-modal" style={{ width: "1287px" }}>
+        {/* <h1 style={{ color: "black" }}>{task.projectId.sctProjectName}</h1>
         <div className="progress-container">
           <h2 style={{ width: "100%", background: "black", flexGrow: 1 }}>
             {task.sectionId.sectionName}
@@ -429,7 +431,310 @@ const ViewTask = ({ onCancel, task, section }) => {
         />
         <button style={{ color: "black" }} onClick={handleNotes}>
           save
-        </button>
+        </button> */}
+
+        <div className="modal-header">
+          <div className='title-container'>
+            <Icon
+              name="project-outline"
+              size="56px" />
+            <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>{task.projectId.sctProjectName}</span>
+          </div>
+          <Icon
+            className="close-icon"
+            name="close"
+            size="56px"
+            onClick={onCancel}
+          />
+        </div>
+        <div className="section-item-top">
+          <div className="section-item-top-left">
+            <Icon name="section-outline" size="2.5rem" />
+            <span className="ml-2" style={{ fontSize: "22px", fontWeight: "400" }}>
+              {task.sectionId.sectionName}
+            </span>
+          </div>
+          <div className="section-item-top-right" style={{ fontSize: "22px", fontWeight: "400" }} >
+            <div className="section-progress">{task.sectionId.progress}%</div>
+          </div>
+        </div>
+        <div className="task-container">
+          <div className="view-task-header">
+            <span>{task.taskName}</span>
+            <span>
+              {task.progress}%
+
+            </span>
+          </div>
+          {editFlag ? (
+            <>
+              <div className="employee-assigned">
+                <Icon
+                  name="employee-outline"
+                  size="24px"
+                />
+                <span style={{ color: "black" }}>
+                  {user._id === task.createdBy._id
+                    ? `You`
+                    : task.createdBy.userName}</span>
+              </div>
+              <div className="view-task-body">
+                <div className="ta-td-date">
+                  <span>TA Date :</span>
+                  <Icon
+                    name="calender-outline"
+                    size="24px"
+                  />
+                  <span>{formatDate(task.assignedDate)}</span>
+                </div>
+                <div className="ta-td-date">
+                  <span>TD Date :</span>
+                  <Icon
+                    name="calender-outline"
+                    size="24px"
+                  />
+                  <span>{formatDate(task.dueDate)}</span>
+                </div>
+                <div className="priority-info">
+                  <div className="select-box mb-3" >
+                    <Icon
+                      name="priority-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Priority"
+                      onChange={(e) => listHandleTags(e, "priority")}
+                      isSearchable={false}
+                      options={priorityTags}
+                      noBorder={true}
+                      value={{ label: list.priority, value: list.priority }}
+                    />
+                  </div>
+                </div>
+                <div className="status-info">
+                  <div className="select-box mb-3">
+                    <Icon
+                      name="status-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Status"
+                      onChange={(e) => listHandleTags(e, "status")}
+                      isSearchable={false}
+                      options={statusTags}
+                      noBorder={true}
+                      value={{ label: list.status, value: list.status }}
+                    />
+
+                  </div>
+                </div>
+                <div className="stage-info">
+                  <div className="select-box mb-3">
+                    <Icon
+                      name="stage-outline"
+                      size="2rem"
+                    />
+                    <SelectInput
+                      placeholder="Stages"
+                      onChange={(e) => listHandleTags(e, "stages")}
+                      isSearchable={false}
+                      options={stagesTags}
+                      noBorder={true}
+                      value={{ label: list.stages, value: list.stages }}
+                    />
+                  </div>
+                </div>
+                <Icon
+                  name="checkmark-outline"
+                  size="24px"
+                  onClick={handleUpdateTask}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="view-task-body">
+              <div className="employee-info">
+                <Icon
+                  name="employee-outline"
+                  size="24px"
+                />
+                <span>
+                  {user._id === task.createdBy._id
+                    ? `You`
+                    : task.createdBy.userName}</span>
+              </div>
+              <div className="ta-td-date">
+                <span>TA Date :</span>
+                <Icon
+                  name="calender-outline"
+                  size="24px"
+                />
+                <span>{formatDate(task.assignedDate)}</span>
+              </div>
+              <div className="ta-td-date">
+                <span>TD Date :</span>
+                <Icon
+                  name="calender-outline"
+                  size="24px"
+                />
+                <span>{formatDate(task.dueDate)}</span>
+              </div>
+              <div className="priority-info">
+                <Icon
+                  name="priority-outline"
+                  size="24px"
+                />
+                <span>{task.priority}</span>
+              </div>
+              <div className="status-info">
+                <Icon
+                  name="status-outline"
+                  size="24px"
+                />
+                <span>{task.status}</span>
+              </div>
+              <div className="stage-info">
+                <Icon
+                  name="stage-outline"
+                  size="24px"
+                />
+                <span>{task.stage}</span>
+              </div>
+              <div className="del-edit-btn">
+                <div className="del-btn">
+                  <Icon
+                    name="delete-outline"
+                    size="24px"
+                  />
+                </div>
+                <Icon
+                  name="edit-outline"
+                  size="24px"
+                  onClick={() => setEditFlag(true)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+
+        <div className="progress-duration-details">
+          <div className="progress-duration">
+            <Icon name="progress-outline"
+              size="2rem" />
+            <label htmlFor='progress' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Progress :</label>
+            <input
+              type="number"
+              id="progress"
+              style={{ color: "black" }}
+              name="progress"
+              onChange={inputHandler}
+            />
+            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>%</span>
+          </div>
+          <div className="progress-duration">
+            <Icon name="duration-outline"
+              size="2rem"
+            />
+            <label htmlFor='duration' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Duration :</label>
+            <input
+              type="time"
+              style={{ color: "black", }}
+              name="time"
+              id="duration"
+              placeholder="aa"
+              onChange={inputHandler}
+            />
+            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>hrs</span>
+            <div style={{ padding: "1rem" }}>
+              <Icon name="checkmark-outline"
+                size="2rem"
+                onClick={handleNotes}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="task-note-container">
+          <div className="task-note">
+            <Icon
+              name="task-note-outline"
+              size="2rem"
+            />
+            <span style={{ color: "black", fontSize: "22px", marginLeft: "8px", fontWeight: "500" }}>Notes</span>
+          </div>
+
+        </div>
+        <input
+          type="text"
+          name="name"
+          id="task-note"
+          className="note"
+          placeholder="Add Instruction"
+          onChange={inputHandler}
+        />
+        <div className='save-button'>
+          {user._id === task.createdBy._id &&
+            <button className="btn-outline" onClick={handleDelete}>
+              <Icon
+                name="save-outline"
+                size="2rem"
+              />
+              Save
+            </button>
+          }
+        </div>
+        <div className="updates-container">
+          <div className="update-header">
+            <Icon
+              name="info-outline"
+              size="24px"
+            />
+            <span>Updates</span>
+          </div>
+          <div className="update-body">
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Rakshith </span>
+                <span style={{ color: "black" }}>updated the progress to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>20%</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the due date to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>dd-mm-yyyy</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the priority to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+            <div className="update-content">
+              <span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
+                <span style={{ color: "black" }}>edited the priority to</span>
+                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
+              </span>
+              <div className="date-time">
+                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {durationFlag && (
         <DurationWarn head={task.taskName} yes={funct} no={handleNo} />
@@ -437,6 +742,7 @@ const ViewTask = ({ onCancel, task, section }) => {
       {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
       )}
+
     </ModalContainer>
   );
 };

@@ -22,7 +22,7 @@
     display: none;
 }
 
-.profile {
+/* .profile {
     position: relative;
     display: flex;
     gap: 1rem;
@@ -69,7 +69,7 @@
 .profile-details_post {
     font-size: 1.2rem;
     color: #ccc;
-}
+} */
 
 @media only screen and (max-width: 62em) {
 

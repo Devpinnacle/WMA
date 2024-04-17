@@ -1,0 +1,108 @@
+.view-all-task-container {
+    box-shadow: 2px 2px 21px 2px #3D405B33;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 16px;
+    height: 100%;
+}
+
+.project-back {
+    display: flex;
+    align-items: center;
+    margin: 8px;
+}
+
+.btn-right {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 16px;
+}
+
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    overflow: auto;
+    max-height: 500px;
+}
+
+.stages-heading {
+    border: 2px solid #3D405B;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.stages-heading span {
+    font-size: 16px;
+    font-weight: 700;
+    color: black;
+}
+
+.stage-task {
+    height: 116px;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+    background: #F9E3DD;
+
+}
+
+.stage-task-header {
+    height: 32px;
+    padding: 4px 8px 4px 8px;
+    gap: 0px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #EDB1A1;
+    border: 2px solid #EDB1A1;
+}
+
+.stage-task-header span {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+
+.stage-body-grid {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 5px;
+}
+
+.stage-task-body {
+    display: flex;
+    align-items: center;
+}
+
+.stage-task-body span {
+    color: black;
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.stage-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 90em) {
+    .task-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media only screen and (max-width: 40em) {
+    .task-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
