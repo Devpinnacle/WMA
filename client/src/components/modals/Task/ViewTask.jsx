@@ -19,6 +19,7 @@ import {
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
 import Icon from "../../ui/Icon";
+import SelectDate from "../../ui/SelectDate";
 
 const ViewTask = ({ onCancel, task, section }) => {
   console.log("task...", task);
@@ -481,19 +482,37 @@ const ViewTask = ({ onCancel, task, section }) => {
               <div className="view-task-body">
                 <div className="ta-td-date">
                   <span>TA Date :</span>
-                  <Icon
-                    name="calender-outline"
-                    size="24px"
-                  />
-                  <span>{formatDate(task.assignedDate)}</span>
+                  <div className="date-box m-0">
+                    <Icon
+                      name="calender-outline"
+                      size="24px"
+                    />
+                    <input
+                      type="date"
+                      style={{ color: "black" }}
+                      value={date.startDt}
+                      name="startDt"
+                      onChange={inputHandler}
+                    />
+                  </div>
+                  {/* <span>{formatDate(task.assignedDate)}</span> */}
                 </div>
                 <div className="ta-td-date">
                   <span>TD Date :</span>
-                  <Icon
-                    name="calender-outline"
-                    size="24px"
-                  />
-                  <span>{formatDate(task.dueDate)}</span>
+                  <div className="date-box m-0">
+                    <Icon
+                      name="calender-outline"
+                      size="24px"
+                    />
+                    <input
+                      type="date"
+                      style={{ color: "black" }}
+                      value={date.dueDt}
+                      name="dueDt"
+                      onChange={inputHandler}
+                    />
+                  </div>
+                  {/* <span>{formatDate(task.dueDate)}</span> */}
                 </div>
                 <div className="priority-info">
                   <div className="select-box mb-3" >
@@ -666,11 +685,12 @@ const ViewTask = ({ onCancel, task, section }) => {
         </div>
         <input
           type="text"
-          name="name"
+          name="notes"
           id="task-note"
           className="note"
           placeholder="Add Instruction"
           onChange={inputHandler}
+          style={{color:"black"}}
         />
         <div className='save-button'>
           {user._id === task.createdBy._id &&

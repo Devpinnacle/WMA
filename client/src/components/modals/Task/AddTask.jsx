@@ -76,12 +76,15 @@ const AddTask = ({ onCancel }) => {
     setTag((prevTag) => prevTag.filter((tg) => tg.value !== item.value));
   };
 
-  const inputHandler = (e) => {
-
-    setTaskData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
+  const inputHandler = (e,label) => { 
+    if(label){
+      setTaskData({ ...taskData, [label]: e })
+    }else{
+      setTaskData((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
+    }
   };
 
   const listHandleTags = (e, name) => {
@@ -132,16 +135,21 @@ const AddTask = ({ onCancel }) => {
     }
 
     if (startDt > dueDt) {
+      console.log(startDt > dueDt," came inside ")
       setAlertFlag(true);
+      // alert("1")
       setErrorMsg("Due date must be greater than start Date");
+      // alert("2")
       dispatch(
         setAlert({
           type: "error",
           msg: "Due date must be greater than start Date",
         })
       );
+      // alert("3")
     }
 
+    useEffect(()=>{},[errorMsg])
     if (startDt < startDate || dueDt > dueDate) {
       setAlertFlag(true);
       setErrorMsg(
@@ -207,7 +215,7 @@ const AddTask = ({ onCancel }) => {
   };
 
 
-  console.log("xp", DateinputType)
+
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal add-task-modal">
@@ -243,7 +251,6 @@ const AddTask = ({ onCancel }) => {
           type="date"
           style={{ color: "black" }}
           placeholder=""
-          
           name="startDt"
           onChange={inputHandler}
           value={taskData.startDt}
@@ -303,6 +310,8 @@ const AddTask = ({ onCancel }) => {
         <button style={{ color: "black" }} onClick={onCancel}>
           cancel
         </button> */}
+
+
         <div className="modal-header">
           <div className='title-container'>
             <Icon
@@ -375,29 +384,30 @@ const AddTask = ({ onCancel }) => {
               name="calender-outline"
               size="2rem"
             />
+           
             <SelectDate
               placeholder="Start Date"
               selected={taskData.startDt}
-              onChange={date => setTaskData({ ...taskData, startDt: date })}
+             
+              onChange={date =>{ inputHandler(date,"startDt") } }
               name="startDt"
               value={taskData.startDt}
             />
-
-
           </div>
           <div className="date-box">
             <Icon
               name="calender-outline"
               size="2rem"
-            />
+            />     
             <SelectDate
               placeholder="Due Date"
               selected={taskData.dueDt}
-              onChange={date => setTaskData({ ...taskData, DueDt: date })}
+              onChange={date => inputHandler(date,"dueDt") }
               name="dueDt"
+              min={taskData.startDt}
               value={taskData.dueDt}
             />
-
+           
           </div>
           <div className="select-box">
             <Icon
@@ -489,12 +499,13 @@ const AddTask = ({ onCancel }) => {
         </div>
         <input
           type="text"
-          name="name"
+          name="notes"
           id="task-note"
           className="note"
           placeholder="Add Instruction"
           onChange={inputHandler}
           value={taskData.notes}
+          style={{color:"black"}}
         />
         <div className='save-button' style={{ paddingBottom: "1rem" }}>
           <button className="btn-outline" onClick={handleSave}>
