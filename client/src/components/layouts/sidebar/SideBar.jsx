@@ -2,10 +2,10 @@ import React from "react";
 import "./SideBar.css";
 import SidebarTop from "./SidebarTop";
 import Icon from "../../ui/Icon";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function SideBar() {
-  // const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   return (
     <div className="sidebar-outer">
       <div className="sidebar">
@@ -13,14 +13,14 @@ export default function SideBar() {
           <div className="profile">
             <div className="profile-img-container">
               <div className="profile-letter flex-center">
-                {/* {user?.name.slice(0, 1)} */}U
+                {user?.userName.slice(0, 1)}
               </div>
             </div>
             <div className="profile-details">
               <span className="profile-details_name">
-                {/* {user?.name.split(" ")[0]} */}User
+                 {user.userName}
               </span>
-              <span className="profile-details_post">role</span>
+              <span className="profile-details_post">{user.designationName}</span>
             </div>
           </div>
           <div className="bell-icon">

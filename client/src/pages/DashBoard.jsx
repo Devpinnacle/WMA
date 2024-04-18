@@ -150,7 +150,7 @@ const Dashboard = () => {
   };
 
   return (
-    <MainContainer pageName={`Hi`}>
+    <MainContainer pageName={`Hi`} userName={user.userName}>
       {/*{/* <div
         style={{
           color: "black",
@@ -288,16 +288,10 @@ const Dashboard = () => {
                   <div className="notification-container">
                     {notifications.map((notification) => (
                       <div
-                        className={
-                          notification.priority === "low"
-                            ? `notification-item green`
-                            : notification.priority === "high"
-                            ? `notification-item red`
-                            : `notification-item yello`
-                        }
+                        className={`notification-item ${notification.priority}`}
                       >
                         <div className="left-content">
-                          <Icon name="log-outline" size="24px" />
+                          <Icon name={notification.symbol} size="24px" />
                           <span className="ml-3">
                             <span style={{ fontWeight: "700" }}>
                               {notification.userId.userName}

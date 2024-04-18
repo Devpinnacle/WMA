@@ -6,7 +6,7 @@ import useOutsideClick from "../../../hooks/useOutsideClick";
 import SidebarModal from "./SidebarModal";
 import "./MainContainer.css";
 
-export default function MainContainer({ onGoBack, children, pageName }) {
+export default function MainContainer({ onGoBack, children, pageName, userName }) {
     const wrappedRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     // const { user } = useSelector((state) => state.user);
@@ -63,7 +63,7 @@ export default function MainContainer({ onGoBack, children, pageName }) {
                             name={pageIcons[pageName]}
                             size="54px"
                         />
-                        <span className="ml-4" style={{color:"#3D405B"}}>{pageName}</span>
+                        <span className="ml-4" style={{color:"#3D405B"}}>{pageName}{" "}{userName}</span>
                         
                     </div>
 

@@ -59,14 +59,12 @@ const Section = () => {
   };
 
   const handleOnCancelSection = () => {
-    setSectionHead(null);
-    setSectionId(null);
+    setSection(null)
     setDeleteSectionFlag(false);
   };
 
-  const handleDeleteSection = (id, head) => {
-    setSectionId(id);
-    setSectionHead(head);
+  const handleDeleteSection = (sec) => {
+    setSection(sec)
     setDeleteSectionFlag(true);
   };
 
@@ -430,7 +428,7 @@ const Section = () => {
               {sec.totalTask === 0 ? (
                 <button
                   className="btn-del"
-                  onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
+                  onClick={() => handleDeleteSection(sec)}
                 >
                   <Icon name="delete-outline" size="2rem" />
                   Delete section
@@ -462,8 +460,7 @@ const Section = () => {
         )}
         {deleteSectionFlag && (
           <DeleteSection
-            id={sectionId}
-            head={sectionHead}
+            sec={section}
             onCancel={handleOnCancelSection}
           />
         )}

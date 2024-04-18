@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import Alert from "../../ui/Alert";
 import { useAdjustNotesMutation } from "../../../redux/api/taskApi";
 import { useEditSectionMutation } from "../../../redux/api/sectionApi";
-import "./EditSection.css"
+import "./EditSection.css";
+import { useNotifiySectionEditMutation } from "../../../redux/api/notificationApi";
 
 const EditSection = ({ onCancel, sec }) => {
   const [sectionName, setSectionName] = useState(sec.sectionName);
@@ -16,6 +17,7 @@ const EditSection = ({ onCancel, sec }) => {
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [adjustFlag, setAdjustFlag] = useState(true);
+  const [madeChange, setMadeChange] = useState(false);
   const [initialDates, setInitialDates] = useState({
     start: sec.startDate,
     due: sec.dueDate,
@@ -23,6 +25,7 @@ const EditSection = ({ onCancel, sec }) => {
 
   const [adjustNotes] = useAdjustNotesMutation();
   const [editSection] = useEditSectionMutation();
+  const [notifiySectionEdit]=useNotifiySectionEditMutation();
 
   const dispatch = useDispatch();
 
@@ -97,6 +100,7 @@ const EditSection = ({ onCancel, sec }) => {
       dueDate: dueDate,
     };
     editSection(fromData);
+    notifiySectionEdit({sectionId:sec._id,projectId:sec.projectId})
     onCancel();
   };
 
@@ -108,11 +112,29 @@ const EditSection = ({ onCancel, sec }) => {
       movedStartDt: startDate,
       initialStartDt: initialDates.start,
     };
+    setMadeChange(true);
     adjustNotes(fromData);
   };
 
+  const onExit=()=>{
+    if(madeChange){
+      setAlertFlag(true);
+      setErrorMsg(
+        "Please save the Changes before Exiting."
+      );
+      dispatch(
+        setAlert({
+          type: "error",
+          msg: "Please save the Changes before Exiting.",
+        })
+      );
+    }
+    else
+    onCancel();
+  }
+
   return (
-    <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
+    <ModalContainer onCancel={onExit} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal edit-section-modal">
         <div className="add-section-header">
           <div className="title-container">
@@ -128,7 +150,7 @@ const EditSection = ({ onCancel, sec }) => {
             className="close-icon"
             name="close"
             size="6rem"
-            onClick={onCancel}
+            onClick={onExit}
           />
         </div>
         <div className="section-input">

@@ -35,8 +35,6 @@ io.on("connection",async (socket) => {
   // console.log(`User connected: ${socket.id}`);
 
   socket.on("login", async (data) => {
-    console.log(`User seeeeeee logged in`);
-    
     const notifications = await Notification.find({})
     .populate("userId","userName")
       .populate("projectId", "sctProjectName")
@@ -44,10 +42,32 @@ io.on("connection",async (socket) => {
     io.sockets.emit("Notifie",notifications );
   });
 
-  // Other socket event listeners can be added here
+  socket.on("addsection", async (data) => {
+    const notifications = await Notification.find({})
+    .populate("userId","userName")  
+      .populate("projectId", "sctProjectName")
+      .populate("sectionId", "sectionName"); 
+    io.sockets.emit("Notifie",notifications );
+  });
+
+  socket.on("deletesection", async (data) => {
+    const notifications = await Notification.find({})
+    .populate("userId","userName")  
+      .populate("projectId", "sctProjectName")
+      .populate("sectionId", "sectionName"); 
+    io.sockets.emit("Notifie",notifications );
+  });
+
+  socket.on("editsection", async (data) => {
+    const notifications = await Notification.find({})
+    .populate("userId","userName")  
+      .populate("projectId", "sctProjectName")
+      .populate("sectionId", "sectionName"); 
+    io.sockets.emit("Notifie",notifications );
+  });
 
   socket.on("disconnect", () => {
-    console.log(`User disconnected: ${socket.id}`);
+   // console.log(`User disconnected: ${socket.id}`);
     // Add your disconnect logic here
   });
 });

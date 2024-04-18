@@ -3,15 +3,19 @@ import ModalContainer from "../ModalContainer";
 import { useDeleteSectionMutation } from "../../../redux/api/sectionApi";
 import Icon from "../../ui/Icon";
 import "./DeleteSection.css"
+import { useNotifiySectionDeleteMutation } from "../../../redux/api/notificationApi";
 
-const DeleteSection = ({ id, head, onCancel }) => {
+const DeleteSection = ({ sec, onCancel }) => {
   const [deleteSection] = useDeleteSectionMutation();
+  const [notifiySectionDelete]=useNotifiySectionDeleteMutation();
+  console.log("section",sec)
 
   const handleDeleteSection = () => {
     const fromData = {
-      id: id,
+      id: sec._id,
     };
     deleteSection(fromData);
+    notifiySectionDelete({projectId:sec.projectId,sectionId:sec._id})
     onCancel();
   };
 
@@ -47,7 +51,7 @@ const DeleteSection = ({ id, head, onCancel }) => {
             onClick={onCancel}
           />
         </div>
-        <div className="del-content">Are you sure you want to delete <span>"{head}"</span> section?</div>
+        <div className="del-content">Are you sure you want to delete <span>"{sec.sectionName}"</span> section?</div>
         <div className="del-can-btn">
           <button
             className="btn-outline" 

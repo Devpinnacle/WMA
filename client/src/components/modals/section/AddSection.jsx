@@ -6,6 +6,7 @@ import Alert from "../../ui/Alert";
 import { useSaveSectionMutation } from "../../../redux/api/sectionApi";
 import Icon from "../../ui/Icon";
 import "./AddSection.css"
+import { useNotifiySectionAddMutation } from "../../../redux/api/notificationApi";
 
 const AddSection = ({ onCancel }) => {
   const [sectionData, setSectionData] = useState({
@@ -16,6 +17,7 @@ const AddSection = ({ onCancel }) => {
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [saveSection] = useSaveSectionMutation();
+  const [notifiySectionAdd]=useNotifiySectionAddMutation();
 
   const { selectedProject: projectId } = useSelector((state) => state.project);
 
@@ -28,7 +30,7 @@ const AddSection = ({ onCancel }) => {
     }));
   };
 
-  const handleSaveSection = () => {
+  const handleSaveSection = async() => {
     const { name, start, due } = sectionData;
 
     if (!name || !start || !due) {
@@ -57,6 +59,7 @@ const AddSection = ({ onCancel }) => {
       dueDate: due,
     };
     saveSection(fromData);
+    notifiySectionAdd({projectId:projectId})
     onCancel();
   };
 

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-ObjectId = mongoose.Schema.ObjectId;
+const ObjectId = mongoose.Schema.ObjectId;
 
 const notificationSchema = new mongoose.Schema({
   createdDate: {
@@ -9,9 +9,15 @@ const notificationSchema = new mongoose.Schema({
   time: {
     type: String,
     default: () => {
-      // Function to get the current time in HH:MM format
+      // Function to get the current time in HH:MM AM/PM format
       const currentDate = new Date();
-      return `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+      let hours = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+      const amPM = hours >= 12 ? 'PM' : 'AM';
+      hours %= 12;
+      hours = hours || 12; // Handle midnight (0 hours)
+      const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${amPM}`;
+      return formattedTime;
     },
   },
   action: {
@@ -37,9 +43,10 @@ const notificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  symbol:{
+    type: String,
+    required: true,
+  }
 });
 
-module.exports = notification = mongoose.model(
-  "notification",
-  notificationSchema
-);
+module.exports = mongoose.model("notification", notificationSchema);

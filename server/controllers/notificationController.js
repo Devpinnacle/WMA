@@ -7,7 +7,8 @@ exports.addNotification = catchAsync(async (req, res, next) => {
   const newNotification = new Notification({
     action: "has logged in",
     userId: req.body.userId,
-    priority: "low",
+    priority: "green",
+    symbol: "log-outline",
   });
   await newNotification.save();
 });
@@ -27,4 +28,72 @@ exports.getNotification = catchAsync(async (req, res, next) => {
       data: notifications,
     });
   }
+});
+
+//* Add section notification *****************************************************
+exports.addSectionNotification = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const projectId = req.body.projectId;
+
+  if (!projectId) {
+    next(new AppError("please provide project id and section id", 400));
+  }
+  const newNotification = new Notification({
+    action: "has added section in",
+    userId: userId,
+    priority: "yello",
+    symbol: "add-outline",
+    projectId: projectId,
+  });
+  await newNotification.save();
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+//* Edit section notification *****************************************************
+exports.editSectionNotification = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const projectId = req.body.projectId;
+  const sectionId = req.body.sectionId;
+
+  if (!projectId) {
+    next(new AppError("please provide project id and section id", 400));
+  }
+  const newNotification = new Notification({
+    action: "has edited section in",
+    userId: userId,
+    priority: "yello",
+    symbol: "edit-outline",
+    projectId: projectId,
+    sectionId: sectionId,
+  });
+  await newNotification.save();
+
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+//* Delete section notification *****************************************************
+exports.deleteSectionNotification = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const projectId = req.body.projectId;
+  const sectionId = req.body.sectionId;
+
+  if (!projectId) {
+    next(new AppError("please provide project id and section id", 400));
+  }
+  const newNotification = new Notification({
+    action: "has deleted section in",
+    userId: userId,
+    priority: "red",
+    symbol: "delete-outline",
+    projectId: projectId,
+    sectionId: sectionId,
+  });
+  await newNotification.save();
+  res.status(200).json({
+    status: "success",
+  });
 });
