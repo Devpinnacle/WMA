@@ -3,39 +3,23 @@ import DatePicker from 'react-datepicker';
 import Icon from "./Icon";
 import 'react-datepicker/dist/react-datepicker.css';
 import "./SelectDate.css"
-const SelectDate = ({ selected, onChange, placeholder }) => {
-    
-    const formatedDate=(data)=>{
-        try{
-            return data.toISOString().split("T")[0].split("-").reverse().join("-");
-        }catch(er){
+const SelectDate = ({ selected, onChange, placeholder ,min}) => {
 
-            return "";
-        }
-    }
-   
+
     return (
+        <>
             <DatePicker
                 selected={selected} placeholderText={placeholder}
                 onChange={onChange}
-
-                customInput={
-                    <div className="date-picker">
-                        <input
-                            type="text"
-                            value={formatedDate(selected)}
-                            
-                            className="date-input"
-
-                            placeholder={placeholder}
-                        />
-                        <Icon
-                            name="date-picker-outline"
-                            size="2rem"
-                        />
-                    </div>
-                }
+                dateFormat="dd-MM-yyyy"
+                minDate={min}
             />
+            <div className="date-picker">
+                <Icon name="date-picker-outline"
+                    size="2rem"
+                />
+            </div>
+        </>
     )
 }
 
