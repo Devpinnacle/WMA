@@ -1,0 +1,53 @@
+.modal-notification {
+    z-index: 2000;
+    top: 27%;
+    left: 29%;
+    width: 648px;
+    border-top-left-radius: 0px !important;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--modal-shadow-1);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem !important;
+}
+
+
+@media only screen and (max-width: 82em) {
+    .modal-notification {
+        top: 28%;
+        left: 44%;
+    }
+}
+@media only screen and (max-width: 64em) {
+    .modal-notification {
+        top: 37%;
+        left: 55%;
+    }
+}
+@media only screen and (max-width: 52em) {
+
+    /* 52em = 832px */
+    .modal-notification {
+        left: 50% !important;
+        right: 0 !important;
+        top: 70% !important;
+        bottom: 0 !important;
+        height: 100%;
+        width: 100% !important;
+        border-radius: 0 !important;
+        animation: event-modal-anime 0.5s ease;
+    }
+
+    .modal-notification {
+        overflow: auto;
+        max-height: 60%;
+    }
+
+}
+@media only screen and (max-width: 52em) {
+    .modal-notification {
+
+        top: 90% !important;
+        bottom: 0 !important;
+    }
+}

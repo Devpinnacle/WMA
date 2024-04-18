@@ -73,6 +73,13 @@ input[type="number"] {
 /* input[type="date"]::before {
 	content: attr(placeholder);
 } */
+
+/* Increase the size of the default arrow icon of the date input */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  width: 24px; /* Adjust the width as needed */
+  height: 24px; /* Adjust the height as needed */
+}
+
 input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
