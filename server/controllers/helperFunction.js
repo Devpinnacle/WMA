@@ -1,5 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const LoginHistory=require("../models/LoginHistory");
+const AppError = require("../utils/appError");
+const Notification = require("../models/Notification");
 const { createTokensAndCookies } = require("../utils/tokensAndCookies");
 
 //* Create and send tokens *****************************************
@@ -44,4 +46,25 @@ exports.dashedFormatDate = (dateString,minus) => {
   console.log("day",day-minus)
   console.log("day actual",day)
   return `${year}-${month}-${day-minus}`.toString();
+}
+
+//* add Notifications *************************************************
+
+exports.addNotification=async(userId,projectId,sectionId,priority,symbol,action,res)=>{
+  if (!projectId) {
+    next(new AppError("please provide project id and section id", 400));
+  }
+  const newNotification = new Notification({
+    action: action,
+    userId: userId,
+    priority: priority,
+    symbol: symbol,
+    projectId: projectId,
+    sectionId: sectionId,
+  });
+  await newNotification.save();
+  
+  res.status(200).json({
+    status: "success",
+  });
 }

@@ -399,7 +399,7 @@ const Task = () => {
                   >
                     {todoTask.taskName}
                   </span>
-                  <span>70%</span>
+                  <span>{todoTask.progress}%</span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -428,7 +428,7 @@ const Task = () => {
                       name="status-outline"
                       size="22px"
                     />
-                    <span>To Do</span>
+                    <span>{todoTask.status}</span>
                   </div>
                 </div>
               </div>
@@ -458,7 +458,7 @@ const Task = () => {
                   >
                     {inpg.taskName}
                   </span>
-                  <span>70%</span>
+                  <span>{inpg.progress}%</span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -487,7 +487,7 @@ const Task = () => {
                       name="status-outline"
                       size="22px"
                     />
-                    <span>In Progress</span>
+                    <span>{inpg.status}</span>
                   </div>
                 </div>
               </div>
@@ -519,7 +519,7 @@ const Task = () => {
                   >
                     {comp.taskName}
                   </span>
-                  <span>70%</span>
+                  <span>{comp.progress}%</span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -548,7 +548,7 @@ const Task = () => {
                       name="status-outline"
                       size="22px"
                     />
-                    <span>Completed</span>
+                    <span>{comp.status}</span>
                   </div>
                 </div>
               </div>
@@ -561,6 +561,7 @@ const Task = () => {
             </div>
             {othersTasks.map((oth) => (
               <div className="stage-task"
+              onClick={() => handleViewClick(oth)}
                 style={{
                   backgroundColor: getPriorityBodyColor(oth.priority),
                   borderColor: getPriorityBodyColor(oth.priority),
@@ -578,7 +579,7 @@ const Task = () => {
                   >
                     {oth.taskName}
                   </span>
-                  <span>70%</span>
+                  <span>{oth.progress}%</span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -607,7 +608,7 @@ const Task = () => {
                       name="status-outline"
                       size="22px"
                     />
-                    <span>To Do</span>
+                    <span>{oth.status}</span>
                   </div>
                 </div>
               </div>

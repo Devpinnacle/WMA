@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Notification = require("../models/Notification");
+const {}=require("./helperFunction")
 
 //* Add notification ****************************************************
 exports.addNotification = catchAsync(async (req, res, next) => {
@@ -36,7 +37,7 @@ exports.addSectionNotification = catchAsync(async (req, res, next) => {
   const projectId = req.body.projectId;
 
   if (!projectId) {
-    next(new AppError("please provide project id and section id", 400));
+    next(new AppError("please provide section id", 400));
   }
   const newNotification = new Notification({
     action: "has added section in",
@@ -91,6 +92,27 @@ exports.deleteSectionNotification = catchAsync(async (req, res, next) => {
     symbol: "delete-outline",
     projectId: projectId,
     sectionId: sectionId,
+  });
+  await newNotification.save();
+  res.status(200).json({
+    status: "success",
+  });
+});
+
+//* Add task notification *****************************************************
+exports.addTaskNotification = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+  const {projectId,sectionId} = req.body
+
+  if (!projectId||!sectionId) {
+    next(new AppError("please provide project id and section id", 400));
+  }
+  const newNotification = new Notification({
+    action: "has added task in",
+    userId: userId,
+    priority: "yello",
+    symbol: "add-outline",
+    projectId: projectId,
   });
   await newNotification.save();
   res.status(200).json({

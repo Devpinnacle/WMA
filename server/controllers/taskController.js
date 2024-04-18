@@ -208,7 +208,9 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide task id.", 400));
   }
 
-  const status = await Task.find({ _id: taskId }, { status: 1 });
+  const data = await Task.find({ _id: taskId }, { status: 1 ,_id:0});
+  const status=data.status
+  console.log("progress",req.body.progress)
   await Task.updateOne(
     { _id: taskId },
     {

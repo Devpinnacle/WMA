@@ -210,6 +210,8 @@ const ViewTask = ({ onCancel, task, section }) => {
     };
     updateTaskStg(fromData);
     setEditFlag(false);
+    setDurationflag(false);
+
   };
 
   const handleDailyUpdate = () => {
@@ -246,8 +248,10 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
-
+    console.log("total minits",totalMinutes)
+    console.log(totalMinutes === 0 && parseInt(updates.progress) !== 0)
     if (totalMinutes === 0 && parseInt(updates.progress) !== 0) {
+      console.log("inside minits",totalMinutes)
       setDurationflag(true);
       setFunct(handleSaveTaskUpd);
     } else {
@@ -263,7 +267,7 @@ const ViewTask = ({ onCancel, task, section }) => {
     const hoursInMinutes = parseInt(hours, 10) * 60;
     const minutesAsNumber = parseInt(minutes, 10);
     const totalMinutes = hoursInMinutes + minutesAsNumber;
-
+    console.log("hit daily update")
     const fromData = {
       id: task._id,
       progress: updates.progress ? parseInt(updates.progress) : 0,
@@ -272,6 +276,7 @@ const ViewTask = ({ onCancel, task, section }) => {
     };
 
     updateDailyTask(fromData);
+    setDurationflag(false);
   };
 
   const handleNo = () => {
@@ -624,6 +629,7 @@ const ViewTask = ({ onCancel, task, section }) => {
                   <Icon
                     name="delete-outline"
                     size="24px"
+                    onClick={handleDelete}
                   />
                 </div>
                 <Icon
@@ -646,8 +652,9 @@ const ViewTask = ({ onCancel, task, section }) => {
               type="number"
               id="progress"
               style={{ color: "black" }}
+              value={updates.progress}
               name="progress"
-              onChange={inputHandler}
+              onChange={handleInputChange}
             />
             <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>%</span>
           </div>
@@ -661,14 +668,15 @@ const ViewTask = ({ onCancel, task, section }) => {
               style={{ color: "black", }}
               name="time"
               id="duration"
+              value={updates.duration}
               placeholder="aa"
-              onChange={inputHandler}
+              onChange={handleInputChange}
             />
             <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>hrs</span>
             <div style={{ padding: "1rem" }}>
               <Icon name="checkmark-outline"
                 size="2rem"
-                onClick={handleNotes}
+                onClick={handleDailyUpdate}
               />
             </div>
           </div>
@@ -688,13 +696,14 @@ const ViewTask = ({ onCancel, task, section }) => {
           name="notes"
           id="task-note"
           className="note"
+          value={notes}
           placeholder="Add Instruction"
-          onChange={inputHandler}
+          onChange={(e)=>setNotes(e.target.value)}
           style={{color:"black"}}
         />
         <div className='save-button'>
           {user._id === task.createdBy._id &&
-            <button className="btn-outline" onClick={handleDelete}>
+            <button className="btn-outline" onClick={handleNotes}>
               <Icon
                 name="save-outline"
                 size="2rem"

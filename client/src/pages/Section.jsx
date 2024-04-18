@@ -28,7 +28,7 @@ const Section = () => {
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  // console.log("section", sections[0]);
+  // console.log("section", sections);
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();
@@ -167,7 +167,7 @@ const Section = () => {
     //   </>
     // );
     <MainContainer pageName="Section">
-      <div className="project-name" style={{fontWeight:"600",fontSize:"20px"}}>Project name</div>
+      <div className="project-name" style={{fontWeight:"600",fontSize:"20px"}}>project name</div>
       <div className="section-top">
         <div className="search-box">
           <input
