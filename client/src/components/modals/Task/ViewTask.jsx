@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import { useSelector, useDispatch } from "react-redux";
 // import "./AddTask.css";
-import "./ViewTask.css"
+import "./ViewTask.css";
 import {
   dashedFormatDate,
   formatDate,
@@ -12,6 +12,7 @@ import SelectInput from "../../ui/SelectInput";
 import DurationWarn from "./DurationWarn";
 import {
   useDeleteTaskMutation,
+  useGetSelectedTaskMutation,
   useUpdateDailyTaskMutation,
   useUpdateNotesMutation,
   useUpdateTaskStgMutation,
@@ -20,14 +21,51 @@ import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
 import Icon from "../../ui/Icon";
 import SelectDate from "../../ui/SelectDate";
+import {
+  useNotifiyTaskDeleteMutation,
+  useNotifiyTaskEditMutation,
+  useNotifiyTaskNotesMutation,
+  useNotifiyTaskProgressMutation,
+} from "../../../redux/api/notificationApi";
+import DeleteTask from "./DeleteTask";
+import {
+  useGetTaskNotificationQuery,
+  useNotifiyAssignDateMutation,
+  useNotifiyDueDateMutation,
+  useNotifiyPriorityMutation,
+  useNotifiyProgressAddMutation,
+  useNotifiyStagesMutation,
+  useNotifiyStatusMutation,
+} from "../../../redux/api/taskNotificationApi";
+import io from "socket.io-client";
+import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 
-const ViewTask = ({ onCancel, task, section }) => {
-  console.log("task...", task);
+const ViewTask = ({ onCancel, taskId, section }) => {
+  // console.log("task...", task);
+
+  const [getSelectedTask] = useGetSelectedTaskMutation();
+
+  const { user } = useSelector((state) => state.user);
+  const { taskNotifications } = useSelector((state) => state.taskNotifications);
+  const { selectedTask: task } = useSelector((state) => state.task);
+  // console.log("task...", task);
 
   const [updateTaskStg] = useUpdateTaskStgMutation();
   const [updateDailyTask] = useUpdateDailyTaskMutation();
   const [updateNotes] = useUpdateNotesMutation();
   const [deleteTask] = useDeleteTaskMutation();
+  const [notifiyTaskEdit] = useNotifiyTaskEditMutation();
+  const [notifiyTaskProgress] = useNotifiyTaskProgressMutation();
+  const [notifiyTaskNotes] = useNotifiyTaskNotesMutation();
+  const [notifiyTaskDelete] = useNotifiyTaskDeleteMutation();
+  const [notifiyProgressAdd] = useNotifiyProgressAddMutation();
+  const [notifiyAssignDate] = useNotifiyAssignDateMutation();
+  const [notifiyDueDate] = useNotifiyDueDateMutation();
+  const [notifiyStatus] = useNotifiyStatusMutation();
+  const [notifiyPriority] = useNotifiyPriorityMutation();
+  const [notifiyStages] = useNotifiyStagesMutation();
+
+  const { data } = useGetTaskNotificationQuery(taskId);
 
   const [updates, setUpdates] = useState({
     progress: task.progress,
@@ -38,17 +76,18 @@ const ViewTask = ({ onCancel, task, section }) => {
     status: task.status,
     stages: task.stage,
   });
-  console.log("prior", list.priority);
+  // console.log("prior", list.priority);
   const [date, setDate] = useState({
     startDt: dashedFormatDate(task.assignedDate),
     dueDt: dashedFormatDate(task.dueDate),
   });
-  console.log("date", date.startDt);
+  // console.log("date", date.startDt);
   const [notes, setNotes] = useState(task.notes);
   const [editFlag, setEditFlag] = useState(false);
   const [durationFlag, setDurationflag] = useState(false);
   const [funct, setFunct] = useState(null);
   const [alertFlage, setAlertFlag] = useState(false);
+  const [deleteFlage, setDeleteFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
   const priorityTags = [
@@ -74,12 +113,19 @@ const ViewTask = ({ onCancel, task, section }) => {
     { label: "Re Testing", value: "Re Testing" },
   ];
 
-  const { user } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
 
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
+
+  useEffect(() => {
+    socket.on("taskNotifications", (data) => {
+      dispatch(getTaskNotifications(data));
+    });
+    return () => socket?.off("N");
+  }, []);
+
   const listHandleTags = (e, name) => {
-    console.log("list", list);
+    // console.log("list", list);
     setList((prevState) => ({
       ...prevState,
       [name]: e.value,
@@ -92,6 +138,7 @@ const ViewTask = ({ onCancel, task, section }) => {
   };
 
   const inputHandler = (e) => {
+    // console.log("date to check",date)
     setDate((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -145,8 +192,8 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
-    console.log("section start due", startDate, dueDate);
-    console.log("task start due", startDt, dueDt);
+    // console.log("section start due", startDate, dueDate);
+    // console.log("task start due", startDt, dueDt);
 
     if (startDt < startDate || dueDt > dueDate) {
       setAlertFlag(true);
@@ -173,15 +220,15 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
-    if (
-      (totalMinutes === 0 && parseInt(updates.progress) !== 0) ||
-      (status === "Completed" && totalMinutes === 0)
-    ) {
-      setDurationflag(true);
-      setFunct(handleSaveTaskStg);
-    } else {
-      handleSaveTaskStg();
-    }
+    // if (
+    //   (totalMinutes === 0 && parseInt(updates.progress) !== 0) ||
+    //   (status === "Completed" && totalMinutes === 0)
+    // ) {
+    //   setDurationflag(true);
+    //   setFunct(handleSaveTaskStg);
+    // } else {
+    handleSaveTaskStg();
+    // }
   };
 
   const handleSaveTaskStg = () => {
@@ -206,12 +253,42 @@ const ViewTask = ({ onCancel, task, section }) => {
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
       notes: notes,
-      sectionId: section._id
+      sectionId: section._id,
     };
     updateTaskStg(fromData);
+    if (user.userGroupName === "Software") {
+      notifiyTaskEdit({ sectionId: section._id, projectId: section.projectId });
+    } else {
+      notifiyTaskEdit({
+        sectionId: section._id,
+        projectId: section.projectId,
+        Id: task.assignedTo._id,
+      });
+    }
+    if (startDt.toString() !== dashedFormatDate(task.assignedDate)) {
+      notifiyAssignDate({ taskId: task._id, newData: startDt.toString() });
+    }
+    if (dueDt.toString() !== dashedFormatDate(task.dueDate)) {
+      notifiyDueDate({ taskId: task._id, newData: dueDt.toString() });
+    }
+    if (priority !== task.priority) {
+      notifiyPriority({ taskId: task._id, newData: priority });
+    }
+    if (status !== task.status) {
+      notifiyStatus({ taskId: task._id, newData: status });
+    }
+    if (stages !== task.stage) {
+      notifiyStages({ taskId: task._id, newData: stages });
+    }
+    if (parseInt(updates.progress) !== task.progress) {
+      notifiyProgressAdd({
+        taskId: task._id,
+        newData: updates.progress ? parseInt(updates.progress) : 0,
+      });
+    }
+    getSelectedTask(task._id);
     setEditFlag(false);
     setDurationflag(false);
-
   };
 
   const handleDailyUpdate = () => {
@@ -248,15 +325,15 @@ const ViewTask = ({ onCancel, task, section }) => {
       );
       return;
     }
-    console.log("total minits",totalMinutes)
-    console.log(totalMinutes === 0 && parseInt(updates.progress) !== 0)
-    if (totalMinutes === 0 && parseInt(updates.progress) !== 0) {
-      console.log("inside minits",totalMinutes)
-      setDurationflag(true);
-      setFunct(handleSaveTaskUpd);
-    } else {
-      handleSaveTaskUpd();
-    }
+    // console.log("total minits", totalMinutes);
+    // console.log(totalMinutes === 0 && parseInt(updates.progress) !== 0);
+    // if (totalMinutes === 0 && parseInt(updates.progress) !== 0) {
+    //   console.log("inside minits",totalMinutes)
+    //   setDurationflag(true);
+    //   setFunct(handleSaveTaskUpd);
+    // } else {
+    handleSaveTaskUpd();
+    // }
   };
 
   const handleSaveTaskUpd = () => {
@@ -267,15 +344,33 @@ const ViewTask = ({ onCancel, task, section }) => {
     const hoursInMinutes = parseInt(hours, 10) * 60;
     const minutesAsNumber = parseInt(minutes, 10);
     const totalMinutes = hoursInMinutes + minutesAsNumber;
-    console.log("hit daily update")
+    // console.log("hit daily update");
     const fromData = {
       id: task._id,
       progress: updates.progress ? parseInt(updates.progress) : 0,
       duration: totalMinutes,
-      sectionId: section._id
+      sectionId: section._id,
     };
 
     updateDailyTask(fromData);
+    if (user.userGroupName === "Software") {
+      notifiyTaskProgress({
+        sectionId: section._id,
+        projectId: section.projectId,
+      });
+    } else {
+      notifiyTaskProgress({
+        sectionId: section._id,
+        projectId: section.projectId,
+        Id: task.assignedTo._id,
+      });
+    }
+    if (task.progress !== updates.progress)
+      notifiyProgressAdd({
+        taskId: task._id,
+        newData: updates.progress ? parseInt(updates.progress) : 0,
+      });
+    getSelectedTask(task._id);
     setDurationflag(false);
   };
 
@@ -295,20 +390,48 @@ const ViewTask = ({ onCancel, task, section }) => {
       notes: notes,
     };
     updateNotes(fromData);
+    if (user.userGroupName === "Software") {
+      notifiyTaskNotes({
+        sectionId: section._id,
+        projectId: section.projectId,
+      });
+    } else {
+      notifiyTaskNotes({
+        sectionId: section._id,
+        projectId: section.projectId,
+        Id: task.assignedTo._id,
+      });
+    }
   };
 
   const handleDelete = () => {
     const fromData = {
       id: task._id,
-      secId: task.sectionId._id
+      secId: task.sectionId._id,
     };
     deleteTask(fromData);
+    if (user.userGroupName === "Software") {
+      notifiyTaskDelete({
+        sectionId: section._id,
+        projectId: section.projectId,
+      });
+    }else{
+      notifiyTaskDelete({
+        sectionId: section._id,
+        projectId: section.projectId,
+        Id: task.assignedTo._id,
+      });
+    }
+    setDeleteFlag(false);
     onCancel();
   };
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-centered user-modal view-task-modal" style={{ width: "1287px" }}>
+      <div
+        className="modal-container modal-centered user-modal view-task-modal"
+        style={{ width: "1287px" }}
+      >
         {/* <h1 style={{ color: "black" }}>{task.projectId.sctProjectName}</h1>
         <div className="progress-container">
           <h2 style={{ width: "100%", background: "black", flexGrow: 1 }}>
@@ -440,11 +563,14 @@ const ViewTask = ({ onCancel, task, section }) => {
         </button> */}
 
         <div className="modal-header">
-          <div className='title-container'>
-            <Icon
-              name="project-outline"
-              size="56px" />
-            <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>{task.projectId.sctProjectName}</span>
+          <div className="title-container">
+            <Icon name="project-outline" size="56px" />
+            <span
+              className="title"
+              style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}
+            >
+              {task.projectId.sctProjectName}
+            </span>
           </div>
           <Icon
             className="close-icon"
@@ -456,42 +582,40 @@ const ViewTask = ({ onCancel, task, section }) => {
         <div className="section-item-top">
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
-            <span className="ml-2" style={{ fontSize: "22px", fontWeight: "400" }}>
+            <span
+              className="ml-2"
+              style={{ fontSize: "22px", fontWeight: "400" }}
+            >
               {task.sectionId.sectionName}
             </span>
           </div>
-          <div className="section-item-top-right" style={{ fontSize: "22px", fontWeight: "400" }} >
+          <div
+            className="section-item-top-right"
+            style={{ fontSize: "22px", fontWeight: "400" }}
+          >
             <div className="section-progress">{task.sectionId.progress}%</div>
           </div>
         </div>
         <div className="task-container">
           <div className="view-task-header">
             <span>{task.taskName}</span>
-            <span>
-              {task.progress}%
-
-            </span>
+            <span>{task.progress}%</span>
           </div>
           {editFlag ? (
             <>
               <div className="employee-assigned">
-                <Icon
-                  name="employee-outline"
-                  size="24px"
-                />
+                <Icon name="employee-outline" size="24px" />
                 <span style={{ color: "black" }}>
                   {user._id === task.createdBy._id
                     ? `You`
-                    : task.createdBy.userName}</span>
+                    : task.createdBy.userName}
+                </span>
               </div>
               <div className="view-task-body">
                 <div className="ta-td-date">
                   <span>TA Date :</span>
                   <div className="date-box m-0">
-                    <Icon
-                      name="calender-outline"
-                      size="24px"
-                    />
+                    <Icon name="calender-outline" size="24px" />
                     <input
                       type="date"
                       style={{ color: "black" }}
@@ -505,10 +629,7 @@ const ViewTask = ({ onCancel, task, section }) => {
                 <div className="ta-td-date">
                   <span>TD Date :</span>
                   <div className="date-box m-0">
-                    <Icon
-                      name="calender-outline"
-                      size="24px"
-                    />
+                    <Icon name="calender-outline" size="24px" />
                     <input
                       type="date"
                       style={{ color: "black" }}
@@ -520,11 +641,8 @@ const ViewTask = ({ onCancel, task, section }) => {
                   {/* <span>{formatDate(task.dueDate)}</span> */}
                 </div>
                 <div className="priority-info">
-                  <div className="select-box mb-3" >
-                    <Icon
-                      name="priority-outline"
-                      size="2rem"
-                    />
+                  <div className="select-box mb-3">
+                    <Icon name="priority-outline" size="2rem" />
                     <SelectInput
                       placeholder="Priority"
                       onChange={(e) => listHandleTags(e, "priority")}
@@ -537,10 +655,7 @@ const ViewTask = ({ onCancel, task, section }) => {
                 </div>
                 <div className="status-info">
                   <div className="select-box mb-3">
-                    <Icon
-                      name="status-outline"
-                      size="2rem"
-                    />
+                    <Icon name="status-outline" size="2rem" />
                     <SelectInput
                       placeholder="Status"
                       onChange={(e) => listHandleTags(e, "status")}
@@ -549,15 +664,11 @@ const ViewTask = ({ onCancel, task, section }) => {
                       noBorder={true}
                       value={{ label: list.status, value: list.status }}
                     />
-
                   </div>
                 </div>
                 <div className="stage-info">
                   <div className="select-box mb-3">
-                    <Icon
-                      name="stage-outline"
-                      size="2rem"
-                    />
+                    <Icon name="stage-outline" size="2rem" />
                     <SelectInput
                       placeholder="Stages"
                       onChange={(e) => listHandleTags(e, "stages")}
@@ -578,60 +689,46 @@ const ViewTask = ({ onCancel, task, section }) => {
           ) : (
             <div className="view-task-body">
               <div className="employee-info">
-                <Icon
-                  name="employee-outline"
-                  size="24px"
-                />
+                <Icon name="employee-outline" size="24px" />
                 <span>
                   {user._id === task.createdBy._id
                     ? `You`
-                    : task.createdBy.userName}</span>
+                    : task.createdBy.userName}
+                </span>
               </div>
               <div className="ta-td-date">
                 <span>TA Date :</span>
-                <Icon
-                  name="calender-outline"
-                  size="24px"
-                />
+                <Icon name="calender-outline" size="24px" />
                 <span>{formatDate(task.assignedDate)}</span>
               </div>
               <div className="ta-td-date">
                 <span>TD Date :</span>
-                <Icon
-                  name="calender-outline"
-                  size="24px"
-                />
+                <Icon name="calender-outline" size="24px" />
                 <span>{formatDate(task.dueDate)}</span>
               </div>
               <div className="priority-info">
-                <Icon
-                  name="priority-outline"
-                  size="24px"
-                />
+                <Icon name="priority-outline" size="24px" />
                 <span>{task.priority}</span>
               </div>
               <div className="status-info">
-                <Icon
-                  name="status-outline"
-                  size="24px"
-                />
+                <Icon name="status-outline" size="24px" />
                 <span>{task.status}</span>
               </div>
               <div className="stage-info">
-                <Icon
-                  name="stage-outline"
-                  size="24px"
-                />
+                <Icon name="stage-outline" size="24px" />
                 <span>{task.stage}</span>
               </div>
               <div className="del-edit-btn">
-                <div className="del-btn">
-                  <Icon
-                    name="delete-outline"
-                    size="24px"
-                    onClick={handleDelete}
-                  />
-                </div>
+                {(user._id === task.createdBy._id ||
+                  user.userGroupName !== "Software") && (
+                  <div className="del-btn">
+                    <Icon
+                      name="delete-outline"
+                      size="24px"
+                      onClick={() => setDeleteFlag(true)}
+                    />
+                  </div>
+                )}
                 <Icon
                   name="edit-outline"
                   size="24px"
@@ -642,12 +739,15 @@ const ViewTask = ({ onCancel, task, section }) => {
           )}
         </div>
 
-
         <div className="progress-duration-details">
           <div className="progress-duration">
-            <Icon name="progress-outline"
-              size="2rem" />
-            <label htmlFor='progress' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Progress :</label>
+            <Icon name="progress-outline" size="2rem" />
+            <label
+              htmlFor="progress"
+              style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
+            >
+              Progress :
+            </label>
             <input
               type="number"
               id="progress"
@@ -656,25 +756,37 @@ const ViewTask = ({ onCancel, task, section }) => {
               name="progress"
               onChange={handleInputChange}
             />
-            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>%</span>
+            <span
+              style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
+            >
+              %
+            </span>
           </div>
           <div className="progress-duration">
-            <Icon name="duration-outline"
-              size="2rem"
-            />
-            <label htmlFor='duration' style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>Duration :</label>
+            <Icon name="duration-outline" size="2rem" />
+            <label
+              htmlFor="duration"
+              style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
+            >
+              Duration :
+            </label>
             <input
               type="time"
-              style={{ color: "black", }}
+              style={{ color: "black" }}
               name="time"
               id="duration"
               value={updates.duration}
               placeholder="aa"
               onChange={handleInputChange}
             />
-            <span style={{ color: "black", fontWeight: "bold", margin: "1rem" }}>hrs</span>
+            <span
+              style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
+            >
+              hrs
+            </span>
             <div style={{ padding: "1rem" }}>
-              <Icon name="checkmark-outline"
+              <Icon
+                name="checkmark-outline"
                 size="2rem"
                 onClick={handleDailyUpdate}
               />
@@ -683,13 +795,18 @@ const ViewTask = ({ onCancel, task, section }) => {
         </div>
         <div className="task-note-container">
           <div className="task-note">
-            <Icon
-              name="task-note-outline"
-              size="2rem"
-            />
-            <span style={{ color: "black", fontSize: "22px", marginLeft: "8px", fontWeight: "500" }}>Notes</span>
+            <Icon name="task-note-outline" size="2rem" />
+            <span
+              style={{
+                color: "black",
+                fontSize: "22px",
+                marginLeft: "8px",
+                fontWeight: "500",
+              }}
+            >
+              Notes
+            </span>
           </div>
-
         </div>
         <input
           type="text"
@@ -698,41 +815,55 @@ const ViewTask = ({ onCancel, task, section }) => {
           className="note"
           value={notes}
           placeholder="Add Instruction"
-          onChange={(e)=>setNotes(e.target.value)}
-          style={{color:"black"}}
+          onChange={(e) => setNotes(e.target.value)}
+          style={{ color: "black" }}
         />
-        <div className='save-button'>
-          {user._id === task.createdBy._id &&
-            <button className="btn-outline" onClick={handleNotes}>
-              <Icon
-                name="save-outline"
-                size="2rem"
-              />
-              Save
-            </button>
-          }
+        <div className="save-button">
+          <button className="btn-outline" onClick={handleNotes}>
+            <Icon name="save-outline" size="2rem" />
+            Save
+          </button>
         </div>
         <div className="updates-container">
           <div className="update-header">
-            <Icon
-              name="info-outline"
-              size="24px"
-            />
+            <Icon name="info-outline" size="24px" />
             <span>Updates</span>
           </div>
           <div className="update-body">
-            <div className="update-content">
-              <span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Rakshith </span>
-                <span style={{ color: "black" }}>updated the progress to</span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>20%</span>
-              </span>
-              <div className="date-time">
-                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
+            {taskNotifications?.map((notification) => (
+              <div className="update-content">
+                <span>
+                  <span
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    {notification.userId.userName}
+                  </span>
+                  <span style={{ color: "black" }}>{notification.action}</span>
+                  <span
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    {notification.newData}
+                  </span>
+                </span>
+                <div className="date-time">
+                  <span
+                    style={{ color: "black" }}
+                  >{`${notification.date}  ${notification.time}`}</span>
+                </div>
               </div>
-            </div>
+            ))}
 
-            <div className="update-content">
+            {/* <div className="update-content">
               <span>
                 <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
                 <span style={{ color: "black" }}>edited the due date to</span>
@@ -761,7 +892,7 @@ const ViewTask = ({ onCancel, task, section }) => {
               <div className="date-time">
                 <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -771,7 +902,12 @@ const ViewTask = ({ onCancel, task, section }) => {
       {alertFlage && (
         <Alert type={"error"} msg={errorMsg} onExit={handleOnExit} />
       )}
-
+      {deleteFlage && (
+        <DeleteTask
+          onCancel={() => setDeleteFlag(false)}
+          onDelete={handleDelete}
+        />
+      )}
     </ModalContainer>
   );
 };

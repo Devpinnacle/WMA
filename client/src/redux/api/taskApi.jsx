@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getTasks } from "../slice/taskSlice";
+import { getTasks, getselectedTask } from "../slice/taskSlice";
 import { sectionApi } from "./sectionApi";
 
 export const taskApi = createApi({
@@ -38,6 +38,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringselectedtask" }]));
           obj.dispatch(
             sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
@@ -58,6 +59,8 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringselectedtask" }]));
+
           obj.dispatch(
             sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
@@ -87,8 +90,8 @@ export const taskApi = createApi({
       },
     }),
 
-    //* Update Notes *****************************************************
-    adjustNotes: builder.mutation({
+    //* Adjust Task *****************************************************
+    adjustTask: builder.mutation({
       query: (fromData) => ({
         url: "/task/adjusttask",
         method: "POST",
@@ -146,6 +149,29 @@ export const taskApi = createApi({
         }
       },
     }),
+
+    //* Get selected Task *********************************************************
+    getSelectedTask: builder.mutation({
+      providesTags: (result, error, taskId) => [
+        { type: "bringselectedtask",taskId},
+      ],
+      query: (taskId) => ({
+        url: "/task/getselectedtast",
+        method: "POST",
+        body: { taskId: taskId },
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          // console.log("data recieved",data.data[0])
+          obj.dispatch(getselectedTask(data.data[0]));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
+
+    
   }),
 });
 
@@ -154,7 +180,8 @@ export const {
   useUpdateTaskStgMutation,
   useUpdateDailyTaskMutation,
   useUpdateNotesMutation,
-  useAdjustNotesMutation,
+  useAdjustTaskMutation,
   useDeleteTaskMutation,
   useGetTaskQuery,
+  useGetSelectedTaskMutation,
 } = taskApi;

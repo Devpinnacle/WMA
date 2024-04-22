@@ -28,6 +28,8 @@ const Dashboard = () => {
   const [addProjectFlag, setAddProjectFlag] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [tag, setTag] = useState([]);
+  const [notificationTag, setNotificationTag] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
@@ -47,7 +49,13 @@ const Dashboard = () => {
     { label: "Mobile", value: "Mobile" },
     { label: "Others", value: "Others" },
   ];
-  const socket = io("http://localhost:3001");
+
+  const notificationTags = [
+    { label: "high", value: "red" },
+    { label: "normal", value: "yello" },
+    { label: "low", value: "green" },
+  ];
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   useEffect(() => {
     socket.on("Notifie", (data) => {
@@ -75,13 +83,34 @@ const Dashboard = () => {
     (a, b) => new Date(a.created_date) - new Date(b.created_date)
   );
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };  
+
   const handleTags = (e) => {
     if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
+  };
+
+  const handleNotificationTags = (e) => {
+    if (!notificationTag.some((t) => t.value === e.value)) {
+      setNotificationTag((prev) => [...prev, { label: e.label, value: e.value }]);
+    }
+  };  
+
+  const handleRemoveNotificationTag = (item) => {
+    setNotificationTag((prevTag) => prevTag.filter((tg) => tg.value !== item.value));
   };
 
   const handleRemoveTag = (item) => {
     setTag((prevTag) => prevTag.filter((tg) => tg !== item));
   };
+
+  const filteredNotifications = notifications.filter((notification) => {
+    const notificationDate = new Date(parseInt(notification.createdDate));
+    const isDateMatched = !selectedDate || notificationDate.toDateString() === selectedDate.toDateString();
+    const isTagMatched = notificationTag.length === 0 || notificationTag.every((tg) => notification.priority.includes(tg.value));
+    return isDateMatched && isTagMatched;
+  });  
 
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
@@ -151,109 +180,6 @@ const Dashboard = () => {
 
   return (
     <MainContainer pageName={`Hi`} userName={user.userName}>
-      {/*{/* <div
-        style={{
-          color: "black",
-          border: "2px solid black",
-          margin: "5px",
-          padding: "10px",
-        }}
-      >
-        <h1
-          style={{ color: "black", padding: "10px" }}
-          onClick={() => navigate("projects")}
-        >
-          Projects
-        </h1>
-        {project.map((proj) => (
-          <>
-            <h2
-              style={{
-                color: "black",
-                border: "1px solid black",
-                padding: "10px",
-              }}
-            >
-              {proj.sctProjectName}
-            </h2>
-          </>
-        ))}
-      </div>
-
-      <div
-        style={{
-          color: "black",
-          border: "2px solid black",
-          margin: "5px",
-          padding: "10px",
-        }}
-      >
-        <h1 style={{ color: "black", padding: "10px" }}>Notes</h1>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          Object.keys(groupedMessages).map((date) => (
-            <>
-              <div key={date}>
-                <p style={{ color: "gray" }}>{date}</p>
-                <>
-                  {groupedMessages[date].map((message) => (
-                    <>
-                      <div
-                        style={{ border: "1px solid gray" }}
-                        onClick={() =>
-                          handleViewNote(
-                            message._id,
-                            message.heading,
-                            message.msg
-                          )
-                        }
-                      >
-                        <h2 style={{ color: "black" ,  paddingLeft: "10px"}}>{message.heading}</h2>
-                        <p style={{ color: "black",  paddingLeft: "10px" }}>{message.msg}</p>
-                        <button
-                          onClick={() =>
-                            handleDelete(message._id, message.heading)
-                          }
-                          style={{ color: "black", border: "2px solid black", marginLeft:"10px" }}
-                        >
-                          delete
-                        </button>
-                      </div>
-                      <br />
-                    </>
-                  ))}
-                </>
-              </div>
-              <hr />
-            </>
-          ))
-        )}
-        <button
-          onClick={handleAddNote}
-          style={{ color: "black", border: "2px solid black" }}
-        >
-          Add Notes
-        </button>
-        {addNoteFlag && <AddNotes onCancel={() => setAddNoteFlag(false)} />}
-        {deleteNoteFlag && (
-          <DeleteNotes
-            id={noteId}
-            head={noteHead}
-            onCancel={handleDeleteNotesCancel}
-          />
-        )}
-        {viewNoteFlag && !deleteNoteFlag && (
-          <View
-            id={noteId}
-            head={noteHead}
-            msg={noteMsg}
-            onCancel={handleViewNotesCancel}
-            onDelete={handleOnDelete}
-          />
-        )}
-      </div> */}
-
       <div className="dashboard-container">
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
@@ -265,7 +191,12 @@ const Dashboard = () => {
                   <div className="project-header">
                     <span className="title">Notification</span>
                     <div className="header-right">
-                      <SelectInput className="tags" placeholder="Type" />
+                      <SelectInput
+                        className="tags"
+                        options={notificationTags}
+                        onChange={handleNotificationTags}
+                        placeholder="Type"
+                      />
                       <div
                         className="date-box"
                         style={{ padding: "1rem", margin: "1rem" }}
@@ -276,6 +207,8 @@ const Dashboard = () => {
                               <input
                                 type="text"
                                 className="date-input"
+                                selected={selectedDate}
+                                onChange={handleDateChange}
                                 placeholder="Day dd/mm/yyyy"
                               />
                               <Icon name="date-picker-outline" size="2rem" />
@@ -285,8 +218,20 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="selected-tag">
+                    {notificationTag.map((tg, index) => (
+                      <div key={index} className="tag-container">
+                        <Icon
+                          name="close"
+                          size="2rem"
+                          onClick={() => handleRemoveNotificationTag(tg)}
+                        />
+                        <p style={{ color: "black" }}>{tg.label}</p>
+                      </div>
+                    ))}
+                  </div>
                   <div className="notification-container">
-                    {notifications.map((notification) => (
+                    {filteredNotifications.map((notification) => (
                       <div
                         className={`notification-item ${notification.priority}`}
                       >
@@ -297,89 +242,17 @@ const Dashboard = () => {
                               {notification.userId.userName}
                             </span>{" "}
                             {notification.action}{" "}
-                            {notification?.projectId?.sctProjectName}
-                            {notification.sectionId!==null
-                              ? `(${notification?.sectionId?.sectionName})`
-                              : ``}
+                            <span style={{ fontWeight: "700" }}>
+                              {notification?.projectId?.sctProjectName}
+                              {notification.sectionId !== null
+                                ? `(${notification?.sectionId?.sectionName})`
+                                : ``}
+                            </span>
                           </span>
                         </div>
                         <span>{notification.time}</span>
                       </div>
                     ))}
-                    {/* <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
-                  <div className="left-content">
-                    <Icon name="log-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Rakshith</span> has logged in
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
-                  <div className="left-content">
-                    <Icon name="add-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Rakshith</span> added a task in <span style={{ fontWeight: "700" }}>Bookbetter (Development)</span>
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
-                  <div className="left-content">
-                    <Icon name="progress-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Rakshith</span> updated progress in <span style={{ fontWeight: "700" }}>Bookbetter (Development)</span>
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#FBEFDA", border: "2px solid #F3CF96" }}>
-                  <div className="left-content">
-                    <Icon name="edit-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Joel </span>edited a task in <span style={{ fontWeight: "700" }}>JT application (Updates)</span>
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
-                  <div className="left-content">
-                    <Icon name="delete-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Rolin </span>deleted a task
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
-                  <div className="left-content">
-                    <Icon name="due-outline" size="24px" />
-                    <span className="ml-3">
-                      Task is due in
-                      <span style={{ fontWeight: "700" }}>JT application(Updates) </span>
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#F9E3DD", border: "2px solid #EDB1A1" }}>
-                  <div className="left-content">
-                    <Icon name="critical-note-outline" size="24px" />
-                    <span className="ml-3">
-                      <span style={{ fontWeight: "700" }}>Rakshith </span>added a critical note in <span style={{ fontWeight: "700" }}>JT application (Updates)</span>
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div>
-                <div className="notification-item" style={{ backgroundColor: "#DCEAE3", border: "2px solid #AACBBA" }}>
-                  <div className="left-content">
-                    <Icon name="task-outline" size="24px" />
-                    <span className="ml-3">
-                      Task in 
-                      <span style={{ fontWeight: "700" }}>JT application (Updates) </span> 
-                    </span>
-                  </div>
-                  <span>8:00am </span>
-                </div> */}
                   </div>
                 </>
               )}

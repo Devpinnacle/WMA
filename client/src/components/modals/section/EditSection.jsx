@@ -4,7 +4,7 @@ import ModalContainer from "../ModalContainer";
 import { dashedFormatDate } from "../../../Helper/helper";
 import { useDispatch } from "react-redux";
 import Alert from "../../ui/Alert";
-import { useAdjustNotesMutation } from "../../../redux/api/taskApi";
+import { useAdjustTaskMutation } from "../../../redux/api/taskApi";
 import { useEditSectionMutation } from "../../../redux/api/sectionApi";
 import "./EditSection.css";
 import { useNotifiySectionEditMutation } from "../../../redux/api/notificationApi";
@@ -23,7 +23,7 @@ const EditSection = ({ onCancel, sec }) => {
     due: sec.dueDate,
   });
 
-  const [adjustNotes] = useAdjustNotesMutation();
+  const [adjustTask] = useAdjustTaskMutation();
   const [editSection] = useEditSectionMutation();
   const [notifiySectionEdit]=useNotifiySectionEditMutation();
 
@@ -113,7 +113,7 @@ const EditSection = ({ onCancel, sec }) => {
       initialStartDt: initialDates.start,
     };
     setMadeChange(true);
-    adjustNotes(fromData);
+    adjustTask(fromData);
   };
 
   const onExit=()=>{

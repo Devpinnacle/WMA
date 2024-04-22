@@ -12,6 +12,8 @@ import { taskReducer } from "./slice/taskSlice";
 import { taskApi } from "./api/taskApi";
 import { notificationsReducer } from "./slice/notificationSlice";
 import { notificationApi } from "./api/notificationApi";
+import { taskNotificationsReducer } from "./slice/taskNotificationSlice";
+import { taskNotificationApi } from "./api/taskNotificationApi";
 
 export const store = configureStore({
   reducer: {
@@ -21,12 +23,14 @@ export const store = configureStore({
     section: sectionReducer,
     task: taskReducer,
     notifications: notificationsReducer,
+    taskNotifications:taskNotificationsReducer,
     [userApi.reducerPath]: userApi.reducer,
     [notesApi.reducerPath]: notesApi.reducer,
     [projectApi.reducerPath]: projectApi.reducer,
     [sectionApi.reducerPath]: sectionApi.reducer,
     [taskApi.reducerPath]: taskApi.reducer,
     [notificationApi.reducerPath]: notesApi.reducer,
+    [taskNotificationApi.reducerPath]:taskNotificationApi.reducer
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware(),
@@ -36,6 +40,7 @@ export const store = configureStore({
     sectionApi.middleware,
     taskApi.middleware,
     notificationApi.middleware,
+    taskNotificationApi.middleware
   ],
   devTools: import.meta.env.DEV,
 });

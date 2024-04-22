@@ -46,6 +46,11 @@ const notificationSchema = new mongoose.Schema({
   symbol:{
     type: String,
     required: true,
+  },
+  empUserId:{
+    type: ObjectId,
+    ref: "empdetails",
+    default:null
   }
 });
 

@@ -8,7 +8,7 @@ process.on("uncaughtException", (err) => {
 //* Importing modules **********************************************
 require("dotenv").config();
 const mongoose = require("mongoose");
-const app = require("./app");
+const app = require("./app");  
 
 //* DB Connection **************************************************
 mongoose

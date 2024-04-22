@@ -1,36 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddTask from "../components/modals/Task/AddTask";
 import { useSelector, useDispatch } from "react-redux";
-import { useGetTaskQuery } from "../redux/api/taskApi";
+import {
+  useGetSelectedTaskMutation,
+  useGetTaskQuery,
+} from "../redux/api/taskApi";
 import ViewTask from "../components/modals/Task/ViewTask";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
-import "./Task.css"
+import "./Task.css";
 import Icon from "../components/ui/Icon";
+import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
+import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 
 const Task = () => {
   const [addTaskFlag, setAddTaskFlag] = useState(false);
   const [viewTaskFlag, setViewTaskFlag] = useState(false);
   const [task, setTask] = useState(null);
-  const [section, setSection] = useState(null)
+  const [section, setSection] = useState(null);
 
   const { selectedSection: sec } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
   const { tasks } = useSelector((state) => state.task);
 
-  useGetTaskQuery(sec._id);
+  const dispatch = useDispatch();
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   return date.toLocaleDateString("en-GB");
-  // };
+  useGetTaskQuery(sec._id);
+  const [getSelectedTask, { data: recivedTask }] = useGetSelectedTaskMutation();
+
+  // useEffect(() => {
+  //   setViewTaskFlag(true);
+  // }, [recivedTask]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based, so add 1
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-
 
   const groupedTasks = tasks.reduce((acc, task) => {
     if (!acc[task.status]) {
@@ -48,11 +55,18 @@ const Task = () => {
     (task) => !["In Progress", "To Do", "Completed"].includes(task.status)
   );
 
-  const handleViewClick = (task) => {
-    setSection(sec)
-    setTask(task)
-    setViewTaskFlag(true)
-  }
+  const handleViewClick = async(task) => {
+    setSection(sec);
+    setTask(task);
+    await getSelectedTask(task);
+    setViewTaskFlag(true);
+  };
+
+  const handleCancelViewTask = () => {
+    setViewTaskFlag(false);
+    dispatch(resetTaskNotifications());
+    dispatch(taskNotificationApi.util.resetApiState());
+  };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -199,26 +213,42 @@ const Task = () => {
     <MainContainer pageName="Task">
       <div className="view-all-task-container">
         <div className="project-back">
-          <Icon
-            name="arrow-outline"
-            size="24px"
-          />
-          <span style={{ color: "black", marginLeft: "5px", fontWeight: "bold", fontSize: "25px" }}>project name </span>
+          <Icon name="arrow-outline" size="24px" />
+          <span
+            style={{
+              color: "black",
+              marginLeft: "5px",
+              fontWeight: "bold",
+              fontSize: "25px",
+            }}
+          >
+            project name{" "}
+          </span>
         </div>
         <div className="section-item-top">
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
-            <span className="ml-2" style={{ fontSize: "22px", fontWeight: "400" }}>
+            <span
+              className="ml-2"
+              style={{ fontSize: "22px", fontWeight: "400" }}
+            >
               {sec.sectionName}
             </span>
           </div>
           <div className="section-item-top-right">
-            <div className="section-progress" style={{ fontSize: "22px", fontWeight: "400" }}>{sec.progress}%</div>
+            <div
+              className="section-progress"
+              style={{ fontSize: "22px", fontWeight: "400" }}
+            >
+              {sec.progress}%
+            </div>
           </div>
         </div>
         <div className="section-details-container">
           <div className="section-details-left">
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Addition date:
               <span
                 style={{
@@ -231,7 +261,9 @@ const Task = () => {
                 {formatDate(sec.startDate)}
               </span>
             </span>
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Due date:
               <span
                 style={{
@@ -244,7 +276,9 @@ const Task = () => {
                 {formatDate(sec.dueDate)}
               </span>
             </span>
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Completed tasks:
               <span
                 style={{
@@ -258,7 +292,9 @@ const Task = () => {
               </span>
             </span>
             {user.userGroupName === "Software" && (
-              <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+              <span
+                style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              >
                 Tasks in progress:
                 <span
                   style={{
@@ -276,7 +312,7 @@ const Task = () => {
               style={{
                 color: sec.overdueTasks === 0 ? `black` : `red`,
                 fontSize: "16px",
-                fontWeight: "400"
+                fontWeight: "400",
               }}
             >
               Tasks due:
@@ -285,7 +321,6 @@ const Task = () => {
                   fontWeight: "700",
                   color: sec.overdueTasks === 0 ? `black` : `red`,
                   fontSize: "16px",
-
                 }}
                 className="ml-2"
               >
@@ -294,7 +329,9 @@ const Task = () => {
             </span>
           </div>
           <div className="section-details-right">
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Addition by:
               <span
                 style={{
@@ -304,10 +341,14 @@ const Task = () => {
                 }}
                 className="ml-2"
               >
-                {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
+                {sec.createdBy._id === user._id
+                  ? "You"
+                  : sec.createdBy.userName}
               </span>
             </span>
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               {user.userGroupName === "Software"
                 ? `Task assigned to you:`
                 : `Total task:`}
@@ -322,7 +363,9 @@ const Task = () => {
                 {sec.assigned}
               </span>
             </span>
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Pending tasks:
               <span
                 style={{
@@ -335,7 +378,9 @@ const Task = () => {
                 {sec.pendingTasks}
               </span>
             </span>
-            <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+            <span
+              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+            >
               Tasks on hold:
               <span
                 style={{
@@ -349,7 +394,9 @@ const Task = () => {
               </span>
             </span>
             {user.userGroupName === "Software" && (
-              <span style={{ color: "black", fontSize: "16px", fontWeight: "400" }}>
+              <span
+                style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              >
                 Your total progress:
                 <span
                   style={{
@@ -366,10 +413,7 @@ const Task = () => {
           </div>
         </div>
         <div className="btn-right">
-          <button
-            className="btn-outline"
-            onClick={() => setAddTaskFlag(true)}
-          >
+          <button className="btn-outline" onClick={() => setAddTaskFlag(true)}>
             <Icon name="add-outline" size="2rem" />
             Add Task
           </button>
@@ -380,14 +424,16 @@ const Task = () => {
               <span>To Do</span>
             </div>
             {todoTasks.map((todoTask) => (
-              <div className="stage-task"
-                onClick={() => handleViewClick(todoTask)}
+              <div
+                className="stage-task"
+                onClick={() => handleViewClick(todoTask._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(todoTask.priority),
                   borderColor: getPriorityBodyColor(todoTask.priority),
                 }}
               >
-                <div className="stage-task-header"
+                <div
+                  className="stage-task-header"
                   style={{
                     backgroundColor: getPriorityColor(todoTask.priority),
                     borderColor: getPriorityColor(todoTask.priority),
@@ -403,31 +449,19 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon
-                      name="employee-outline"
-                      size="22px"
-                    />
+                    <Icon name="employee-outline" size="22px" />
                     <span>{todoTask.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="calender-outline"
-                      size="22px"
-                    />
+                    <Icon name="calender-outline" size="22px" />
                     <span>{formatDate(todoTask.dueDate)}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="priority-outline"
-                      size="22px"
-                    />
+                    <Icon name="priority-outline" size="22px" />
                     <span>{todoTask.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="status-outline"
-                      size="22px"
-                    />
+                    <Icon name="status-outline" size="22px" />
                     <span>{todoTask.status}</span>
                   </div>
                 </div>
@@ -439,14 +473,16 @@ const Task = () => {
               <span>In Progress</span>
             </div>
             {inProgressTasks.map((inpg) => (
-              <div className="stage-task"
-                onClick={() => handleViewClick(inpg)}
+              <div
+                className="stage-task"
+                onClick={() => handleViewClick(inpg._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(inpg.priority),
                   borderColor: getPriorityBodyColor(inpg.priority),
                 }}
               >
-                <div className="stage-task-header"
+                <div
+                  className="stage-task-header"
                   style={{
                     backgroundColor: getPriorityColor(inpg.priority),
                     borderColor: getPriorityColor(inpg.priority),
@@ -462,31 +498,19 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon
-                      name="employee-outline"
-                      size="22px"
-                    />
+                    <Icon name="employee-outline" size="22px" />
                     <span>{inpg.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="calender-outline"
-                      size="22px"
-                    />
+                    <Icon name="calender-outline" size="22px" />
                     <span>{formatDate(inpg.dueDate)}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="priority-outline"
-                      size="22px"
-                    />
+                    <Icon name="priority-outline" size="22px" />
                     <span>{inpg.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="status-outline"
-                      size="22px"
-                    />
+                    <Icon name="status-outline" size="22px" />
                     <span>{inpg.status}</span>
                   </div>
                 </div>
@@ -494,20 +518,21 @@ const Task = () => {
             ))}
           </div>
 
-
           <div className="task">
             <div className="stages-heading">
               <span>Completed</span>
             </div>
             {completedTasks.map((comp) => (
-              <div className="stage-task"
-                onClick={() => handleViewClick(comp)}
+              <div
+                className="stage-task"
+                onClick={() => handleViewClick(comp._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(comp.priority),
                   borderColor: getPriorityBodyColor(comp.priority),
                 }}
               >
-                <div className="stage-task-header"
+                <div
+                  className="stage-task-header"
                   style={{
                     backgroundColor: getPriorityColor(comp.priority),
                     borderColor: getPriorityColor(comp.priority),
@@ -523,31 +548,19 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon
-                      name="employee-outline"
-                      size="22px"
-                    />
+                    <Icon name="employee-outline" size="22px" />
                     <span>{comp.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="calender-outline"
-                      size="22px"
-                    />
+                    <Icon name="calender-outline" size="22px" />
                     <span>{formatDate(comp.dueDate)}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="priority-outline"
-                      size="22px"
-                    />
+                    <Icon name="priority-outline" size="22px" />
                     <span>{comp.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="status-outline"
-                      size="22px"
-                    />
+                    <Icon name="status-outline" size="22px" />
                     <span>{comp.status}</span>
                   </div>
                 </div>
@@ -560,14 +573,16 @@ const Task = () => {
               <span>Others</span>
             </div>
             {othersTasks.map((oth) => (
-              <div className="stage-task"
-              onClick={() => handleViewClick(oth)}
+              <div
+                className="stage-task"
+                onClick={() => handleViewClick(oth._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(oth.priority),
                   borderColor: getPriorityBodyColor(oth.priority),
                 }}
               >
-                <div className="stage-task-header"
+                <div
+                  className="stage-task-header"
                   style={{
                     backgroundColor: getPriorityColor(oth.priority),
                     borderColor: getPriorityColor(oth.priority),
@@ -583,31 +598,19 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon
-                      name="employee-outline"
-                      size="22px"
-                    />
+                    <Icon name="employee-outline" size="22px" />
                     <span>{oth.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="calender-outline"
-                      size="22px"
-                    />
+                    <Icon name="calender-outline" size="22px" />
                     <span>{formatDate(oth.dueDate)}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="priority-outline"
-                      size="22px"
-                    />
+                    <Icon name="priority-outline" size="22px" />
                     <span>{oth.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon
-                      name="status-outline"
-                      size="22px"
-                    />
+                    <Icon name="status-outline" size="22px" />
                     <span>{oth.status}</span>
                   </div>
                 </div>
@@ -617,7 +620,13 @@ const Task = () => {
         </div>
       </div>
       {addTaskFlag && <AddTask onCancel={() => setAddTaskFlag(false)} />}
-      {viewTaskFlag && <ViewTask onCancel={() => setViewTaskFlag(false)} task={task} section={section} />}
+      {viewTaskFlag && (
+        <ViewTask
+          onCancel={handleCancelViewTask}
+          taskId={task}
+          section={section}
+        />
+      )}
     </MainContainer>
   );
 };

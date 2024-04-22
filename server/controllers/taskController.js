@@ -44,6 +44,33 @@ exports.getTasks = catchAsync(async (req, res, next) => {
   });
 });
 
+//* Get Selected Task ****************************************************
+exports.getSelectedTask=catchAsync(async(req,res,next)=>{
+  const {taskId}=req.body;
+
+  if (!taskId) {
+    return next(new AppError("Please provide task ID.", 400));
+  }
+
+  const task = await Task.find({_id:taskId,deletedStatus: false}, {
+    createdDate: 0,
+    deletedStatus: 0,
+    deletedBy: 0,
+    deletedDate: 0,
+  })
+    .populate("createdBy", "userName")
+    .populate("assignedTo", "userName")
+    .populate("projectId", "sctProjectName")
+    .populate("sectionId", ["sectionName", "progress"]);
+
+    console.log("selected task",task)
+
+  res.status(200).json({
+    status: "success",
+    data: task,
+  });
+})
+
 //* Add Tasks **********************************************************
 
 exports.addTask = catchAsync(async (req, res, next) => {

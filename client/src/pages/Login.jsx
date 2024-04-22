@@ -13,7 +13,7 @@ const Login = () => {
   const [login, { error, data }] = useLoginMutation();
   const [saveNotification] = useSaveNotificationMutation();
 
-  const socket = io("http://localhost:3001");
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   useEffect(() => {
     if (error) dispatch(setAlert({ type: "error", msg: error }));

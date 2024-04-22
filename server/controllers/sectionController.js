@@ -141,7 +141,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
         return updatedSection; // Return the newly created updated section
       })
     );
-    console.log("updatedSection", updatedSections[0]);
+    // console.log("updatedSection", updatedSections[0]);
     // Send the response with the updated sections
     res.status(200).json({
       status: "success",
