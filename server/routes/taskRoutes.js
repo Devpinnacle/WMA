@@ -14,5 +14,6 @@ router.post("/updatedailytask", taskControllers.dailyTaskUpdate);
 router.post("/updatenotes", taskControllers.updateNotes);
 router.post("/deletetask",taskControllers.deleteTask);
 router.post("/adjusttask",taskControllers.adjustTask);
+router.post("/getselectedtast",taskControllers.getSelectedTask);
 
 module.exports = router;

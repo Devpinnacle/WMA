@@ -16,8 +16,9 @@ const userRoutes = require("./routes/userRoutes");
 const notesRoutes = require("./routes/notesRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const sectionRoutes = require("./routes/sectionRoutes");
-const taskRoutes=require("./routes/taskRoutes");
-const notificationRoutes=require("./routes/notificationsRoutes");
+const taskRoutes = require("./routes/taskRoutes");
+const notificationRoutes = require("./routes/notificationsRoutes");
+const taskNotificationRoutes = require("./routes/taskNotificationRoute");
 
 //* Start express app *******************************************************************
 
@@ -85,8 +86,9 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/notes", notesRoutes);
 app.use("/api/v1/project", projectRoutes);
 app.use("/api/v1/section", sectionRoutes);
-app.use("/api/v1/task",taskRoutes);
-app.use("/api/v1/notifications",notificationRoutes);
+app.use("/api/v1/task", taskRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/taskNotifications", taskNotificationRoutes);
 
 //* Error Middleware ***********************************************
 

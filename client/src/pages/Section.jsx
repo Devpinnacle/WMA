@@ -11,6 +11,9 @@ import "./Section.css";
 import AddTask from "../components/modals/Task/AddTask";
 import EditSection from "../components/modals/section/EditSection";
 import ViewTask from "../components/modals/Task/ViewTask";
+import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
+import { taskNotificationApi } from "../redux/api/taskNotificationApi";
+import { useGetSelectedTaskMutation } from "../redux/api/taskApi";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -24,6 +27,8 @@ const Section = () => {
   const [sectionId, setSectionId] = useState(null);
   const [section, setSection] = useState(null);
   const [task,setTask]=useState(null);
+
+  const [getSelectedTask]=useGetSelectedTaskMutation();
 
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
@@ -94,13 +99,16 @@ const Section = () => {
   };
 
   const handleTaskViewCancel=()=>{
+    dispatch(resetTaskNotifications())
+    dispatch(taskNotificationApi.util.resetApiState())
     setTask(null);
     setSection(null);
     setTaskFlag(false);
   }
 
-  const handleTaskView=(task,sec)=>{
+  const handleTaskView=async(task,sec)=>{
     setTask(task);
+    await getSelectedTask(task)
     setSection(sec);
     setTaskFlag(true);
   }
@@ -365,7 +373,7 @@ const Section = () => {
             {user.userGroupName === "Software" && (
               <div className="section-task-container">
                 {sec.tasks.map((task)=>(
-                  <div className="section-task-body" onClick={()=>handleTaskView(task,sec)}>
+                  <div className="section-task-body" onClick={()=>handleTaskView(task._id,sec)}>
                   <div className="section-task-header">
                     <span
                       className="ml-2"
@@ -468,7 +476,7 @@ const Section = () => {
         {editSectionFlag && (
           <EditSection onCancel={handleEditCancel} sec={section} />
         )}
-        {taskFlag&&<ViewTask onCancel={handleTaskViewCancel} task={task} section={section}/>}
+        {taskFlag&&<ViewTask onCancel={handleTaskViewCancel} taskId={task} section={section}/>}
       </div>
     </MainContainer>
   );

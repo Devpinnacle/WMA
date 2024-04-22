@@ -11,6 +11,7 @@ import "./AddTask.css";
 import Alert from "../../ui/Alert";
 import Icon from "../../ui/Icon";
 import { useAddTaskMutation } from "../../../redux/api/taskApi";
+import { useNotifiyTaskAddMutation } from "../../../redux/api/notificationApi";
 
 const AddTask = ({ onCancel }) => {
   const { user, swUsers } = useSelector((state) => state.user);
@@ -37,8 +38,9 @@ const AddTask = ({ onCancel }) => {
     stages: "",
   });
 
-  if (!(user.userGroupName == "Software")) useGetSwUsersQuery();
+  if (!(user.userGroupName === "Software")) useGetSwUsersQuery();
   const [addTask] = useAddTaskMutation();
+  const [notifiyTaskAdd] = useNotifiyTaskAddMutation();
 
   const tags = swUsers.map((user) => ({
     label: user.userName,
@@ -67,7 +69,7 @@ const AddTask = ({ onCancel }) => {
   ];
 
   const handleTags = (e) => {
-    if (!tag.some((t) => t.value === e.value)) {
+    if (!tag.some((t) => t.label === e.label)) {
       setTag((prevTag) => [...prevTag, { label: e.label, value: e.value }]);
     }
   };
@@ -119,7 +121,7 @@ const AddTask = ({ onCancel }) => {
       return;
     }
 
-    if (!(user.userGroupName == "Software")) {
+    if (!(user.userGroupName === "Software")) {
       if (tag.length === 0) {
         setAlertFlag(true);
         setErrorMsg("You have to assign the task to someone");
@@ -212,6 +214,11 @@ const AddTask = ({ onCancel }) => {
       projectId: sec.projectId,
     };
     addTask(fromData);
+    if (user.userGroupName === "Software") {
+      notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId });
+    }else{
+      notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId ,assignee:assignee});
+    }
     onCancel();
   };
 
@@ -358,29 +365,32 @@ const AddTask = ({ onCancel }) => {
           />
         </div>
         <div className="assignee-details">
-          <div className="select-box">
-            <Icon name="employee-outline" size="2rem" />
-            <SelectInput
-              placeholder="Assignee"
-              onChange={handleTags}
-              isSearchable={false}
-              options={tags}
-              noBorder={true}
-            />
-          </div>
-          {!(user.userGroupName == "Software") && (
-            <div className="selected-tag pb-0">
-              {tag.map((tg, index) => (
-                <div key={index} className="tag-container">
-                  <Icon
-                    name="close"
-                    size="2rem"
-                    onClick={() => handleRemoveTag(tg)}
-                  />
-                  <p style={{ color: "black" }}>{tg.label}</p>
-                </div>
-              ))}
-            </div>
+          {!(user.userGroupName === "Software") && (
+            <>
+              {" "}
+              <div className="select-box">
+                <Icon name="employee-outline" size="2rem" />
+                <SelectInput
+                  placeholder="Assignee"
+                  onChange={handleTags}
+                  isSearchable={false}
+                  options={tags}
+                  noBorder={true}
+                />
+              </div>
+              <div className="selected-tag pb-0">
+                {tag.map((tg, index) => (
+                  <div key={index} className="tag-container">
+                    <Icon
+                      name="close"
+                      size="2rem"
+                      onClick={() => handleRemoveTag(tg)}
+                    />
+                    <p style={{ color: "black" }}>{tg.label}</p>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
 

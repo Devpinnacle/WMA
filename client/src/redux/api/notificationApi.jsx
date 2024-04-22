@@ -2,7 +2,8 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
 import { getNotifications } from "../slice/notificationSlice";
 import io from "socket.io-client";
-const socket = io("http://localhost:3001");
+import { useSelector } from "react-redux";
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 export const notificationApi = createApi({
   reducerPath: "notificationApi",
@@ -27,15 +28,21 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("addsection", "addsection", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
           });
+          if (data.data !== undefined) {
+            socket.emit("userNotification", data.data, (res) => {
+              if (res.error) {
+                console.log("socket error", error);
+              }
+            });
+          }
         } catch (error) {
           console.error("Error....", error);
         }
@@ -52,11 +59,15 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("deletesection", "deletesection", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
+            if (res.error) {
+              console.log("socket error", error);
+            }
+          });
+          socket.emit("userNotification", data.data, (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
@@ -81,7 +92,7 @@ export const notificationApi = createApi({
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("editsection", "editsection", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
@@ -102,15 +113,28 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("addtask", "addtask", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
           });
+
+          if (Array.isArray(data.data)) {
+            socket.emit("updateTaskNotification", data.data, (res) => {
+              if (res.error) {
+                console.log("socket error", error);
+              }
+            });
+          } else {
+            socket.emit("userNotification", data.data, (res) => {
+              if (res.error) {
+                console.log("socket error", error);
+              }
+            });
+          }
         } catch (error) {
           console.error("Error....", error);
         }
@@ -127,11 +151,16 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("edittask", "edittask", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
+            if (res.error) {
+              console.log("socket error", error);
+            }
+          });
+
+          socket.emit("userNotification", data.data, (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
@@ -152,11 +181,15 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("deletetask", "deletetask", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
+            if (res.error) {
+              console.log("socket error", error);
+            }
+          });
+          socket.emit("userNotification", data.data, (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
@@ -177,11 +210,18 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
+          // const user = useSelector((state) => state.user);
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("progresstask", "progresstask", (res) => {
+   
+          socket.emit("updateNotification", "updateNotification", (res) => {
+            if (res.error) {
+              console.log("socket error", error);
+            }
+          });
+        
+          socket.emit("userNotification", data.data, (res) => {
             if (res.error) {
               console.log("socket error", error);
             }
@@ -202,11 +242,17 @@ export const notificationApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-
+          // const user = useSelector((state) => state.user);
           if (socket.disconnected) {
             socket.connect();
           }
-          socket.emit("notestask", "notestask", (res) => {
+          socket.emit("updateNotification", "updateNotification", (res) => {
+            if (res.error) {
+              console.log("socket error", error);
+            }
+          });
+
+          socket.emit("userNotification", data.data, (res) => {
             if (res.error) {
               console.log("socket error", error);
             }

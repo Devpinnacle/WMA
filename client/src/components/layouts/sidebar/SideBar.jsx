@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SideBar.css";
 import SidebarTop from "./SidebarTop";
 import Icon from "../../ui/Icon";
 import { useSelector } from "react-redux";
+import UserNotification from "../../modals/Notification/UserNotification";
 
 export default function SideBar() {
   const { user } = useSelector((state) => state.user);
+  const [userNotificationFlag,setUserNotificationFlag]=useState(false);
   return (
     <div className="sidebar-outer">
       <div className="sidebar">
@@ -23,16 +25,19 @@ export default function SideBar() {
               <span className="profile-details_post">{user.designationName}</span>
             </div>
           </div>
+          {user.userGroupName==="Software"&&(
           <div className="bell-icon">
             <Icon
               name="bell-icon"
+              onClick={()=>setUserNotificationFlag(true)}
               size="26px"/>
-          </div>
+          </div>)}
         </div>
         <div className="sidebar-container"></div>
         <div className="horizontal-line mb-2"></div>
         <SidebarTop />
       </div>
+      {userNotificationFlag&&<UserNotification onCancel={()=>setUserNotificationFlag(false)}/>}
     </div>
   );
 }
