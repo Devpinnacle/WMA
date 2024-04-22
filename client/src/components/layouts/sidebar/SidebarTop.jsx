@@ -4,7 +4,8 @@ import Icon from "../../ui/Icon";
 import "./SidebarTop.css";
 
 export default function SidebarTop() {
-    let user = { role: "Admin" }
+    // let user = { role: "Admin" }
+    const { user } = useSelector((state) => state.user);
     //flag
     // const getClassName = (isActive) => {
     //     return `top-link-item ${isActive
@@ -27,14 +28,18 @@ export default function SidebarTop() {
                     <Icon name="projects" size="24px" />
                     Projects
                 </NavLink>
-                <NavLink className="top-link-item" to="reports" style={{ textDecoration: "none" }}>
-                    <Icon name="reports" size="24px" />
-                    Reports
-                </NavLink>
-                <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
-                    <Icon name="users" size="24px" />
-                    Users
-                </NavLink>
+
+                {!(user.userGroupName === "Software") && (
+                    <>
+                        <NavLink className="top-link-item" to="reports" style={{ textDecoration: "none" }}>
+                            <Icon name="reports" size="24px" />
+                            Reports
+                        </NavLink>
+                        <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
+                            <Icon name="users" size="24px" />
+                            Users
+                        </NavLink></>
+                )}
             </div>
         </div>
     )
