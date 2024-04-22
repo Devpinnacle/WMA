@@ -6,6 +6,8 @@ import SelectInput from '../components/ui/SelectInput'
 import "./Reports.css"
 import { NavLink } from 'react-router-dom'
 import ReportTopComponent from './ReportTopComponent'
+import PieChart from '../components/ui/PieChart'
+import SelectDate from '../components/ui/SelectDate'
 
 const Reports = () => {
     const [months, setMonth] = useState([]);
@@ -29,20 +31,33 @@ const Reports = () => {
             <ReportTopComponent />
             <div className='chart-grid'>
                 <div className='chart' style={{ color: "black" }}>
-                    All task Status
+                    <span className='chart-title'>All task Status</span>
+                    <PieChart></PieChart>
                 </div>
                 <div className='chart' style={{ color: "black" }}>
-                    Task Status-Month
-                    <SelectInput
-                        placeholder="Month"
-                        isSearchable={false}
-                        options={month}
-                    />
+                    <span className='chart-title'>Task Status-Month</span>
+                    <div className='select-box month-selector'>
+                        <SelectInput
+                            placeholder="Month"
+                            isSearchable={false}
+                            options={month}
+                            noBorder={true}
+                        />
+                    </div>
+                    <PieChart></PieChart>
                 </div>
+
                 <div className='chart' style={{ color: "black" }}>
-                    Task Status-Month
+                    <span className='chart-title'>Task Status-Month</span>
+                    <div className='date-box' style={{marginLeft:"6.5rem"}}>
+                        <SelectDate
+                            placeholder="Day dd/mm/yyyy"
+                            // format={dayDate}
+                        />
+                    </div>
+                    <PieChart></PieChart>
                 </div>
-            </div> 
+            </div>
         </MainContainer>
     )
 }

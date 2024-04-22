@@ -126,7 +126,17 @@
 .member-wise-right span{
     color: black;
 }
-
+.chart-title{
+    display: flex;
+    justify-content: center;
+    color:black;
+    font-size: 22px;
+    font-weight: 500;
+}
+.month-selector{
+    margin-left: 10rem;
+    width:120px;
+}
 @media only screen and (max-width: 62em) {
 
     .report-top{

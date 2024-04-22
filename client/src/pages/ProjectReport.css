@@ -1,0 +1,12 @@
+.project-wise-report{
+    display:flex;
+    align-items: center;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+.project-wise-header-right{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-left: auto;
+}

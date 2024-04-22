@@ -35,11 +35,16 @@ export default function SidebarTop() {
                             <Icon name="reports" size="24px" />
                             Reports
                         </NavLink>
-                        <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
-                            <Icon name="users" size="24px" />
-                            Users
-                        </NavLink></>
+                            {/* <NavLink className="top-link-item" to="#" style={{ textDecoration: "none" }}>
+                                <Icon name="users" size="24px" />
+                                Users
+                            </NavLink> */}
+                    </>
                 )}
+                <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
+                    <Icon name="logout-outline" size="24px" />
+                    Log out
+                </NavLink>
             </div>
         </div>
     )
