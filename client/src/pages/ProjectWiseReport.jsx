@@ -61,10 +61,12 @@ const ProjectWiseReport = () => {
                             </span>
                         </span>
                         <div className='tag-container mr-5' style={{ color: 'black' }}>Software</div>
-                        <Icon
-                            name="download-outline"
-                            size="2rem"
-                        />
+                        <div className="download-icon">
+                            <Icon
+                                name="download-outline"
+                                size="2rem"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

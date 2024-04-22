@@ -10,3 +10,14 @@
     justify-content: end;
     margin-left: auto;
 }
+.project-table th{
+    background-color: #AACBBA;
+}
+@media only screen and (max-width: 62em) {
+    .project-wise-report{
+        display: block;
+    }
+    .back-icon{
+        display: flex;
+    }
+}

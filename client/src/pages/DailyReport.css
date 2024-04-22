@@ -1,0 +1,48 @@
+.report-table {
+    padding: 2rem;
+    overflow-y: auto; 
+    overflow-x: auto;
+    max-height: 630px; 
+}
+
+.table-border {
+    border-collapse: collapse;
+    border: 1px solid #3D405B !important;
+    width: 100%;
+}
+
+.table-border thead {
+    border: 3px solid #3D405B !important;
+    color: black;
+    text-align: center;
+    /* position: sticky; 
+    top: 0; 
+    z-index: 1; */
+}
+
+.table-border th {
+    border: 1px solid #3D405B !important;
+    color: black;
+    background-color: #EDB1A1;
+    text-align: center;
+}
+
+.table-border tr {
+    border: 3px solid #3D405B !important;
+}
+
+.table-border td {
+    border: 1px solid #3D405B !important;
+    color: black;
+    text-align: center;
+}
+
+@media only screen and (max-width: 62em) {
+    .daily-report-top {
+        display: block;
+    }
+
+    .daily-header-right {
+        margin: 15px;
+    }
+}

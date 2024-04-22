@@ -1,0 +1,9 @@
+.member-table th{
+    background-color: #F3CF96;
+}
+.member-wise-report{
+    display:flex;
+    align-items: center;
+    padding-left: 18px;
+    padding-right: 18px;
+}
