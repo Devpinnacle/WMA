@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import { useDeleteSectionMutation } from "../../../redux/api/sectionApi";
 import Icon from "../../ui/Icon";
 import "./DeleteSection.css"
 import { useNotifiySectionDeleteMutation } from "../../../redux/api/notificationApi";
+import { useDispatch } from "react-redux";
+import { setAlert } from "../../../redux/slice/userSlice";
+import Alert from "../../ui/Alert";
 
 const DeleteSection = ({ sec, onCancel }) => {
   const [deleteSection] = useDeleteSectionMutation();
-  const [notifiySectionDelete]=useNotifiySectionDeleteMutation();
-  console.log("section",sec)
+  const [notifiySectionDelete,{error,data}]=useNotifiySectionDeleteMutation();
+  // console.log("section",sec)
+
+  const [alertFlag,setAlertFlag]=useState(false)
+
+  useEffect(()=>{
+    if (error){
+      console.log(error)
+      setAlertFlag(true)
+    }
+  },[error, data])
 
   const handleDeleteSection = () => {
     const fromData = {
@@ -69,6 +81,7 @@ const DeleteSection = ({ sec, onCancel }) => {
           </button>
         </div>
       </div>
+      {alertFlag&&<Alert type={"error"} msg={error} onExit={()=>setAlertFlag(false)}/>}
     </ModalContainer>
   );
 };

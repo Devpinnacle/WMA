@@ -45,31 +45,34 @@ exports.getTasks = catchAsync(async (req, res, next) => {
 });
 
 //* Get Selected Task ****************************************************
-exports.getSelectedTask=catchAsync(async(req,res,next)=>{
-  const {taskId}=req.body;
+exports.getSelectedTask = catchAsync(async (req, res, next) => {
+  const { taskId } = req.body;
 
   if (!taskId) {
     return next(new AppError("Please provide task ID.", 400));
   }
 
-  const task = await Task.find({_id:taskId,deletedStatus: false}, {
-    createdDate: 0,
-    deletedStatus: 0,
-    deletedBy: 0,
-    deletedDate: 0,
-  })
+  const task = await Task.find(
+    { _id: taskId, deletedStatus: false },
+    {
+      createdDate: 0,
+      deletedStatus: 0,
+      deletedBy: 0,
+      deletedDate: 0,
+    }
+  )
     .populate("createdBy", "userName")
     .populate("assignedTo", "userName")
     .populate("projectId", "sctProjectName")
     .populate("sectionId", ["sectionName", "progress"]);
 
-    console.log("selected task",task)
+  console.log("selected task", task);
 
   res.status(200).json({
     status: "success",
     data: task,
   });
-})
+});
 
 //* Add Tasks **********************************************************
 
@@ -147,14 +150,9 @@ exports.addTask = catchAsync(async (req, res, next) => {
           ).toFixed(2)
         )
       : 0;
-  if (totalProgress === 100) {
-    await Section.updateOne(
-      { _id: sectionId },
-      { progress: totalProgress, completed: true }
-    );
-  } else {
-    await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
-  }
+
+  await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
+
   await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: 1 } });
 
   res.status(200).json({ status: "success" });
@@ -174,11 +172,19 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
     progress,
     duration,
     notes,
-    sectionId
+    sectionId,
   } = req.body;
 
   // Check if all required parameters are provided
-  const requiredParams = [taskid, startDate, dueDate, priority, status, stage,sectionId];
+  const requiredParams = [
+    taskid,
+    startDate,
+    dueDate,
+    priority,
+    status,
+    stage,
+    sectionId,
+  ];
   if (requiredParams.some((param) => !param)) {
     return next(
       new AppError("Please provide all the parameters for the task.", 400)
@@ -215,14 +221,8 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
           ).toFixed(2)
         )
       : 0;
-  if (totalProgress === 100) {
-    await Section.updateOne(
-      { _id: sectionId },
-      { progress: totalProgress, completed: true }
-    );
-  } else {
-    await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
-  }
+
+  await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
   res.status(200).json({ status: "success" });
 });
 
@@ -235,9 +235,9 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide task id.", 400));
   }
 
-  const data = await Task.find({ _id: taskId }, { status: 1 ,_id:0});
-  const status=data.status
-  console.log("progress",req.body.progress)
+  const data = await Task.find({ _id: taskId }, { status: 1, _id: 0 });
+  const status = data.status;
+  console.log("progress", req.body.progress);
   await Task.updateOne(
     { _id: taskId },
     {
@@ -263,14 +263,11 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
           ).toFixed(2)
         )
       : 0;
-  if (totalProgress === 100) {
-    await Section.updateOne(
-      { _id: req.body.sectionId },
-      { progress: totalProgress, completed: true }
-    );
-  } else {
-    await Section.updateOne({ _id: req.body.sectionId }, { progress: totalProgress });
-  }
+
+  await Section.updateOne(
+    { _id: req.body.sectionId },
+    { progress: totalProgress }
+  );
 
   res.status(200).json({ status: "success" });
 });
@@ -315,6 +312,26 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
       },
     }
   );
+  const userTasks = await Task.find({
+    sectionId: sectionId,
+    deletedStatus: false,
+  });
+
+  const totalProgress =
+    userTasks.length > 0
+      ? parseFloat(
+          (
+            userTasks.reduce((sum, task) => sum + task.progress, 0) /
+            userTasks.length
+          ).toFixed(2)
+        )
+      : 0;
+
+  await Section.updateOne(
+    { _id: sectionId },
+    { progress: totalProgress }
+  );
+
   await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: -1 } });
 
   res.status(200).json({ status: "success" });
