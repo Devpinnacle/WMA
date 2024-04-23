@@ -69,7 +69,10 @@ exports.getSection = catchAsync(async (req, res, next) => {
             deletedStatus: false,
           },
           { createdDate: 0, deletedStatus: 0, deletedBy: 0, deletedDate: 0 }
-        ).populate("createdBy","userName").populate("projectId","sctProjectName").populate("sectionId","sectionName");
+        )
+          .populate("createdBy", "userName")
+          .populate("projectId", "sctProjectName")
+          .populate("sectionId", "sectionName");
 
         const assigned = userTasks.length;
 
@@ -219,8 +222,18 @@ exports.deleteSections = catchAsync(async (req, res, next) => {
       $set: { deletedStatus: true, deletedBy: userId, deletedDate: Date.now() },
     }
   );
-
-  res.status(200).json({ data: "succsess" });
+  const userTasks = await Task.find({
+    sectionId: id,
+    deletedStatus: false,
+  });
+  if (userTasks.length !== 0) {
+    return next(
+      new AppError(
+        "This Section Contains Task can't Delete.",
+        401
+      )
+    );
+  } else res.status(200).json({ data: "succsess" });
 });
 
 //* Update Section *************************************************

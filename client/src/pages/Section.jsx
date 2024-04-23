@@ -33,7 +33,7 @@ const Section = () => {
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  // console.log("section", sections);
+  console.log("section", sections);
   useGetSectionQuery(selectedProject);
 
   const dispatch = useDispatch();
