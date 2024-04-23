@@ -3,45 +3,35 @@ import MainContainer from '../components/layouts/sidebar/MainContainer'
 import ReportTopComponent from './ReportTopComponent'
 import Icon from '../components/ui/Icon'
 import SelectInput from '../components/ui/SelectInput'
-import "./ProjectReport.css"
+import SelectDate from '../components/ui/SelectDate'
+import "./MemberReport.css"
 
-const ProjectReport = () => {
+const MemberReport = () => {
     return (
-        <MainContainer pageName="Project-wise Report">
+        <MainContainer pageName="Member-wise Report">
             <ReportTopComponent />
-            <div className='project-wise-report'>
+            <div className='member-wise-report'>
                 <div className='header-left back-icon'>
                     <Icon
                         name="arrow-outline"
                         sixe="18px"
                     />
                 </div>
-                <span style={{ color: "black", fontWeight: "500", fontSize: "22px", marginLeft: "5px" }}>Book Better</span>
+                <span style={{ color: "black", fontWeight: "500", fontSize: "22px", marginLeft: "5px" }}>Rakshith</span>
                 <div className='project-wise-header-right'>
                     <Icon
                         name="chart-icon"
                         size="3rem"
                         title="Go to chart"
                     />
-                    <div className='search-box report-search'>
-                        <input
-                            id="keyword"
-                            name="keyword"
-                            type="text"
-                            placeholder="Search for section"
-                            autoComplete="new-off"
-                        />
-                        <Icon title="Search" name="search-icon" size="2rem" />
-                    </div>
-                    <div className="mr-1">
-                        <SelectInput
-                            placeholder="Section state"
-                            isSearchable={false}
+                    <div className="date-box mt-0">
+                        <SelectDate
+                            placeholder="dd:mm:yyyy-dd:mm:yyyy"
                         />
                     </div>
-                    <div className="ml-2 mr-2">
+                    <div className="ml-2 mr-4">
                         <SelectInput
-                            placeholder="Stage"
+                            placeholder="Project"
                             isSearchable={false}
                         />
                     </div>
@@ -52,12 +42,12 @@ const ProjectReport = () => {
                 </div>
             </div>
             <div className='report-table'>
-                <table className='table table-border project-table'>
+                <table className='table table-border member-table'>
                     <thead >
                         <tr>
+                            <th scope="col">Project</th>
                             <th scope="col">Section</th>
                             <th scope="col">Task</th>
-                            <th scope="col">Assignee</th>
                             <th scope="col">Start Date</th>
                             <th scope="col">End Date</th>
                             <th scope="col">Priority</th>
@@ -70,7 +60,7 @@ const ProjectReport = () => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Development</td>
+                            <td>Book better</td>
                             <td>Backend</td>
                             <td>Shreya</td>
                             <td>12-2-2024</td>
@@ -81,7 +71,8 @@ const ProjectReport = () => {
                             <td>12</td>
                             <td>60%</td>
                             <td>12-2-2024</td>
-                        </tr>   
+                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
@@ -89,4 +80,4 @@ const ProjectReport = () => {
     )
 }
 
-export default ProjectReport
+export default MemberReport
