@@ -280,8 +280,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {notificationTag.map((tg, index) => (
-                    <div className="selected-tag">
+                  <div className="selected-tag">
+                    {notificationTag.map((tg, index) => (
                       <div key={index} className="tag-container">
                         <Icon
                           name="close"
@@ -290,8 +290,9 @@ const Dashboard = () => {
                         />
                         <p style={{ color: "black" }}>{tg.label}</p>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+
                   <div className="notification-container">
                     {filteredNotifications.map((notification) => (
                       <div
@@ -355,9 +356,8 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              {tag.map((tg, index) => (
-                <div className="selected-tag">
-                  {/* {tag.map((tg, index) => ( */}
+              <div className="selected-tag">
+                {tag.map((tg, index) => (
                   <div key={index} className="tag-container">
                     <Icon
                       name="close"
@@ -366,9 +366,8 @@ const Dashboard = () => {
                     />
                     <p style={{ color: "black" }}>{tg}</p>
                   </div>
-                  {/* ))} */}
-                </div>
-              ))}
+                ))}
+              </div>
               <div className="project-body-container">
                 {filteredProjects.map((proj) => (
                   <div
@@ -464,19 +463,19 @@ const Dashboard = () => {
                 <div className="message-container">
                   <div className="message">
                     <span style={{ color: "black", fontWeight: "bold" }}>Vinayak:</span>
-                    <span style={{color:"#AACBBA", fontWeight:"bold",marginLeft:"5px"}}>@Rakshith</span>
+                    <span style={{ color: "#AACBBA", fontWeight: "bold", marginLeft: "5px" }}>@Rakshith</span>
                     <span style={{ color: "black", marginLeft: "5px" }}>Please update the git</span>
                   </div>
                   <div className="tag-time">
                     <div className="project-tags p-0 m-1">
-                        <span
-                          className="tag-list"
-                          style={{ color: "black" }}
-                        >
-                          Software
-                        </span>
+                      <span
+                        className="tag-list"
+                        style={{ color: "black" }}
+                      >
+                        Software
+                      </span>
                     </div>
-                    <span style={{color:"black",fontSize:"14px"}}>08:00am</span>
+                    <span style={{ color: "black", fontSize: "14px" }}>08:00am</span>
                   </div>
                 </div>
               </div>
