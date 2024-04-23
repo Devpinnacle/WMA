@@ -85,7 +85,7 @@ const Dashboard = () => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };  
+  };
 
   const handleTags = (e) => {
     if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
@@ -95,7 +95,7 @@ const Dashboard = () => {
     if (!notificationTag.some((t) => t.value === e.value)) {
       setNotificationTag((prev) => [...prev, { label: e.label, value: e.value }]);
     }
-  };  
+  };
 
   const handleRemoveNotificationTag = (item) => {
     setNotificationTag((prevTag) => prevTag.filter((tg) => tg.value !== item.value));
@@ -110,7 +110,7 @@ const Dashboard = () => {
     const isDateMatched = !selectedDate || notificationDate.toDateString() === selectedDate.toDateString();
     const isTagMatched = notificationTag.length === 0 || notificationTag.every((tg) => notification.priority.includes(tg.value));
     return isDateMatched && isTagMatched;
-  });  
+  });
 
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
@@ -185,7 +185,69 @@ const Dashboard = () => {
           <div className="dashboard-item">
             <div className="notification">
               {user.userGroupName === "Software" ? (
-                <></>
+                <>
+                  <span className="title">Today's task</span>
+                  <div className="tasks-container">
+                    <div className="task-body">
+                      <div className="task-header">
+                        <div className="task-left">
+                          <Icon
+                            name="project-outline"
+                            size="24px"
+                          />
+                          <span>Pinnacle Media Website</span>
+                        </div>
+                        <div className="task-right">
+                          <span>0%</span>
+                        </div>
+                      </div>
+                      <div className="task-name">
+                        <span>Creating tables and adding a new section</span>
+                        <div className="progress-tag">
+                          <Icon
+                            name="save-outline"
+                            size="24px"
+                          />
+                          <span>Progress updated</span>
+                        </div>
+                      </div>
+                      <div className="task-detail">
+                        <div className="employee-detail">
+                          <Icon
+                            name="employee-outline"
+                            size="22px"
+                          />
+                          <span>Rakshith</span>
+                        </div>
+                        <div className="date-info">
+                          <Icon
+                            name="calender-outline"
+                            size="22px"
+                          />
+                          <span>22/04/2024</span>
+                        </div>
+                        <div className="priority-info">
+                          <Icon
+                            name="priority-outline"
+                            size="22px"
+                          />
+                          <span>Priority</span>
+                        </div>
+                        <div className="status-info">
+                          <Icon
+                            name="stage-outline"
+                            size="22px"
+                          />
+                          <span>To Do</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="total-progress-count">
+                    <span>Total tasks: 8</span>
+                    <span>Progress updated: 8</span>
+                  </div>
+                </>
               ) : (
                 <>
                   <div className="project-header">
@@ -218,8 +280,8 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="selected-tag">
-                    {notificationTag.map((tg, index) => (
+                  {notificationTag.map((tg, index) => (
+                    <div className="selected-tag">
                       <div key={index} className="tag-container">
                         <Icon
                           name="close"
@@ -228,8 +290,8 @@ const Dashboard = () => {
                         />
                         <p style={{ color: "black" }}>{tg.label}</p>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                   <div className="notification-container">
                     {filteredNotifications.map((notification) => (
                       <div
@@ -293,8 +355,9 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className="selected-tag">
-                {tag.map((tg, index) => (
+              {tag.map((tg, index) => (
+                <div className="selected-tag">
+                  {/* {tag.map((tg, index) => ( */}
                   <div key={index} className="tag-container">
                     <Icon
                       name="close"
@@ -303,8 +366,9 @@ const Dashboard = () => {
                     />
                     <p style={{ color: "black" }}>{tg}</p>
                   </div>
-                ))}
-              </div>
+                  {/* ))} */}
+                </div>
+              ))}
               <div className="project-body-container">
                 {filteredProjects.map((proj) => (
                   <div
@@ -362,12 +426,86 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
+        {/*CHATS*/}
         <div className="dashboard-lower-grid">
           <div className="dashboard-item">
-            <div className="projects">
-              <div className="add-project-header">
-                <span className="dashboard-contenttitle"></span>
+            <div className="chats">
+              <div className="project-header">
+                <span className="title">Chats</span>
+                <div className="header-right">
+                  <div
+                    className="date-box"
+                    style={{ marginBottom: "1rem", marginRight: "0px" }}
+                  >
+                    <DatePicker
+                      customInput={
+                        <div className="date-picker">
+                          <input
+                            type="text"
+                            className="date-input"
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            placeholder="Day dd/mm/yyyy"
+                          />
+                          <Icon name="date-picker-outline" size="2rem" />
+                        </div>
+                      }
+                    />
+                  </div>
+                  <SelectInput
+                    className="tags"
+                    options={notificationTags}
+                    onChange={handleNotificationTags}
+                    placeholder="Tags"
+                  />
+                </div>
+              </div>
+              <div className="chat-container">
+                <div className="message-container">
+                  <div className="message">
+                    <span style={{ color: "black", fontWeight: "bold" }}>Vinayak:</span>
+                    <span style={{color:"#AACBBA", fontWeight:"bold",marginLeft:"5px"}}>@Rakshith</span>
+                    <span style={{ color: "black", marginLeft: "5px" }}>Please update the git</span>
+                  </div>
+                  <div className="tag-time">
+                    <div className="project-tags p-0 m-1">
+                        <span
+                          className="tag-list"
+                          style={{ color: "black" }}
+                        >
+                          Software
+                        </span>
+                    </div>
+                    <span style={{color:"black",fontSize:"14px"}}>08:00am</span>
+                  </div>
+                </div>
+              </div>
+              <div className="chat-input">
+                <input
+                  type="text"
+                  placeholder="Message"
+                  style={{ color: "black" }}
+                />
+                <div className="input-operation-buttons">
+                  <div className="ml-3 mr-3">
+                    <Icon
+                      name="tag-outline"
+                      size="20px"
+                    />
+                  </div>
+                  <div className="mr-3">
+                    <Icon
+                      name="attachment-outline"
+                      size="20px"
+                    />
+                  </div>
+                  <div className="">
+                    <Icon
+                      name="send-outline"
+                      size="20px"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

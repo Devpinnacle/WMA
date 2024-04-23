@@ -27,7 +27,7 @@ const UserNotification = ({ onCancel }) => {
   }, []);
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="modal-container modal-notification">
+      <div className="user-madol modal-centered modal-notification" >
         <div className="notification">
           <div className="project-header">
             <span className="title">Notification</span>

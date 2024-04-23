@@ -97,10 +97,8 @@
 .section-task-container{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    /* grid-template-rows: repeat(2, 1fr); */
     padding: 0.5rem;
     row-gap: 1rem;
-    /* margin-bottom: 2rem; */
     overflow-y: auto;
     max-height: 180px;
     overflow-y: auto;
@@ -121,9 +119,7 @@
 
 .section-task-body{
     border-radius: 8px;
-    background-color: antiquewhite;
-    height: 80px;
-    
+    background-color:#FBEFDA    ;
 }
 
 .section-task-details{
@@ -143,7 +139,11 @@
     /* 81em = 1296px */
     .section-bottom {
         grid-template-columns: 1fr;
-    } 
+    }
+    .section-task-details{
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
 }
 @media only screen and (max-width: 68em) {
@@ -152,6 +152,7 @@
         flex-direction: column;
         align-items: flex-start;
     }  
+   
   }
   @media only screen and (max-width: 23em) {
      .section-top-right{

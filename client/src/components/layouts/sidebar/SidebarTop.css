@@ -42,7 +42,7 @@
 
 
 .top-link-item-active {
-    background-color: var(--btn-hovered-color) !important;
+    background-color: white;
     fill: var(--text-black-color);
     color: var(--text-black-color);
 }
