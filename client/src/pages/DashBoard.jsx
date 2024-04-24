@@ -17,6 +17,7 @@ import AddProject from "../components/modals/projects/AddProject";
 import io from "socket.io-client";
 import { getNotifications } from "../redux/slice/notificationSlice";
 import { useGetNotificationQuery } from "../redux/api/notificationApi";
+import DayDateInput from "../components/ui/DayDateInput";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -30,7 +31,6 @@ const Dashboard = () => {
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
   const { data: nofify } = useGetNotificationQuery();
@@ -253,31 +253,19 @@ const Dashboard = () => {
                   <div className="project-header">
                     <span className="title">Notification</span>
                     <div className="header-right">
-                      <SelectInput
-                        className="tags"
-                        options={notificationTags}
-                        onChange={handleNotificationTags}
-                        placeholder="Type"
-                      />
-                      <div
-                        className="date-box"
-                        style={{ padding: "1rem", margin: "1rem" }}
-                      >
-                        <DatePicker
-                          customInput={
-                            <div className="date-picker">
-                              <input
-                                type="text"
-                                className="date-input"
-                                selected={selectedDate}
-                                onChange={handleDateChange}
-                                placeholder="Day dd/mm/yyyy"
-                              />
-                              <Icon name="date-picker-outline" size="2rem" />
-                            </div>
-                          }
+                      <div className="mt-3">
+                        <SelectInput
+                          className="tags"
+                          options={notificationTags}
+                          onChange={handleNotificationTags}
+                          placeholder="Type"
                         />
                       </div>
+                      <DayDateInput
+                        placeholder="Day dd/mm/yyyy"
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                      />
                     </div>
                   </div>
                   <div className="selected-tag">
@@ -431,51 +419,37 @@ const Dashboard = () => {
             <div className="chats">
               <div className="project-header">
                 <span className="title">Chats</span>
-                <div className="header-right">
-                  <div
-                    className="date-box"
-                    style={{ marginBottom: "1rem", marginRight: "0px" }}
-                  >
-                    <DatePicker
-                      customInput={
-                        <div className="date-picker">
-                          <input
-                            type="text"
-                            className="date-input"
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            placeholder="Day dd/mm/yyyy"
-                          />
-                          <Icon name="date-picker-outline" size="2rem" />
-                        </div>
-                      }
+                <div className="header-right ">
+                  <DayDateInput
+                    placeholder="Day dd/mm/yyyy"
+                  />
+                  <div className="mt-3">
+                    <SelectInput
+                      className="tags"
+                      options={notificationTags}
+                      onChange={handleNotificationTags}
+                      placeholder="Tags"
                     />
                   </div>
-                  <SelectInput
-                    className="tags"
-                    options={notificationTags}
-                    onChange={handleNotificationTags}
-                    placeholder="Tags"
-                  />
                 </div>
               </div>
               <div className="chat-container">
                 <div className="message-container">
                   <div className="message">
-                    <span style={{ color: "black", fontWeight: "bold" }}>Vinayak:</span>
+                    {/* <span style={{ color: "black", fontWeight: "bold" }}>Vinayak:</span>
                     <span style={{ color: "#AACBBA", fontWeight: "bold", marginLeft: "5px" }}>@Rakshith</span>
-                    <span style={{ color: "black", marginLeft: "5px" }}>Please update the git</span>
+                    <span style={{ color: "black", marginLeft: "5px" }}>Please update the git</span> */}
                   </div>
                   <div className="tag-time">
                     <div className="project-tags p-0 m-1">
-                      <span
+                      {/* <span
                         className="tag-list"
                         style={{ color: "black" }}
                       >
                         Software
-                      </span>
+                      </span> */}
                     </div>
-                    <span style={{ color: "black", fontSize: "14px" }}>08:00am</span>
+                    {/* <span style={{ color: "black", fontSize: "14px" }}>08:00am</span> */}
                   </div>
                 </div>
               </div>

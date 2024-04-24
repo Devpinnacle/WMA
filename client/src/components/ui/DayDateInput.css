@@ -1,0 +1,25 @@
+
+.day-date-picker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 0 0.5rem;
+    border: var(--secondary-border);
+    border-radius: 8px;
+    height: 3.8rem;
+    font-size: 1.3rem;
+    width: 20rem;
+    margin-top: 10px;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.day-date-picker input {
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 107%;
+    color: black;
+}

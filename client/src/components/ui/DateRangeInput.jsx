@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { DateRangePicker } from "react-date-range";
-import {getTimeData } from "../util";
-import Icon from "../components/ui/Icon";
-import useOutsideClick from "../hooks/useOutsideClick";
-import {setDateRange} from "../redux/slice/calenderSlice";
+import {getTimeData } from "../../util";
+import Icon from "./Icon";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import {setDateRange} from "../../redux/slice/calenderSlice";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "./DateRangeInput.css";
