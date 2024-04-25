@@ -6,13 +6,50 @@ import SelectInput from "../components/ui/SelectInput";
 import "./ProjectReport.css";
 import { useSelector } from "react-redux";
 import { formatDate } from "../Helper/helper";
-import { useGetSingleProjectReportMutation } from "../redux/api/reportApi";
+import { CSVLink } from "react-csv";
 
 const ProjectReport = () => {
   const { setProject, selectedProject } = useSelector((state) => state.report);
   const [getProject]=useGetSingleProjectReportMutation()
   console.log("selectedProject", selectedProject);
   useEffect(()=>{getProject(setProject)},[])
+  // Function to format data for CSV
+  const getCSVdata = () => {
+    const csvData = [];
+    // Add header row
+    csvData.push([
+      "Section",
+      "Task",
+      "Assignee",
+      "Start Date",
+      "End Date",
+      "Priority",
+      "Status",
+      "Stage",
+      "Duration (hrs)",
+      "Progress",
+      "Completion Date",
+    ]);
+    // Add data rows
+    selectedProject.forEach((sec) => {
+      sec.data.forEach((task) => {
+        csvData.push([
+          sec.sectionName,
+          task.taskName,
+          task.assignee,
+          formatDate(task.startDate),
+          formatDate(task.endDate),
+          task.priority,
+          task.status,
+          task.stage,
+          task.duration,
+          `${task.progress}%`,
+          task.completedDate ? formatDate(task.completedDate) : "",
+        ]);
+      });
+    });
+    return csvData;
+  };
   return (
     <MainContainer pageName="Project-wise Report">
       {/* <ReportTopComponent /> */}
@@ -28,7 +65,9 @@ const ProjectReport = () => {
             marginLeft: "5px",
           }}
         >
-          Book Better
+          {/* Book Better */}
+          {selectedProject.ProjectName}
+          {/* {selectedProject ? selectedProject.sctProjectName : "Project Report"} */}
         </span>
         <div className="project-wise-header-right">
           <Icon name="chart-icon" size="3rem" title="Go to chart" />
@@ -48,10 +87,15 @@ const ProjectReport = () => {
           <div className="ml-2 mr-2">
             <SelectInput placeholder="Stage" isSearchable={false} />
           </div>
-          <button className="btn-outline m-0">
+          <div className="btn-download btn-outline mb-4">
             <Icon name="excel-outline" size="2rem" />
-            Download Excel
-          </button>
+            <CSVLink
+              data={getCSVdata()}
+              filename={"project_report.csv"}
+            >
+              Download Excel
+            </CSVLink>
+          </div>
         </div>
       </div>
       <div className="report-table">
@@ -98,7 +142,7 @@ const ProjectReport = () => {
                     <td>{task.stage}</td>
                     <td>{task.duration}</td>
                     <td>{task.progress}%</td>
-                    <td>{task.completedDate?formatDate(task.completedDate):null}</td>
+                    <td>{task.completedDate ? formatDate(task.completedDate) : null}</td>
                   </tr>
                 ))}
               </>

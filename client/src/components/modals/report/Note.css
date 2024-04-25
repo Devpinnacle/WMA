@@ -1,0 +1,31 @@
+.report-note-modal_container {
+    width: 36rem;
+    z-index: 1000;
+    box-shadow: var(--modal-shadow-2);
+  }
+  
+
+  
+  @media only screen and (max-width: 52em) {
+    /* 52em = 832px */
+    .report-note-modal_container {
+      left: 0 !important;
+      right: 0 !important;
+      top: 60% !important;
+      bottom: 0 !important;
+      height: 100%;
+      width: 100%;
+      border-radius: 0 !important;
+      animation: event-modal-anime 0.5s ease;
+    }
+  }
+  
+  @keyframes event-modal-anime {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  

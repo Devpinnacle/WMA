@@ -39,7 +39,6 @@
 .btn-download{
     border: 2px solid #3D405B;
     border-radius: 32px;
-    height: 40px;
     display: flex;
     align-items: center;
 }

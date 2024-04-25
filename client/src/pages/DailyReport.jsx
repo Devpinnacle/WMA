@@ -8,11 +8,12 @@ import { dashedFormatDate, formatDate } from "../Helper/helper";
 import DayDateInput from "../components/ui/DayDateInput";
 import { CSVLink } from "react-csv"
 import { useNavigate } from "react-router-dom";
+import Note from "../components/modals/report/Note";
+
 
 const DailyReport = () => {
   useGetDailyReportQuery();
   const { dailyReport } = useSelector((state) => state.report);
-  console.log("daily report", dailyReport);
 
   // Function to format data for CSV
   const getCSVdata = () => {
@@ -47,7 +48,7 @@ const DailyReport = () => {
           detail.duration,
           detail.status,
           detail.progress,
-          detail.notes ? "Yes" : "No",
+          detail.notes,
         ]);
       });
     });
@@ -67,7 +68,7 @@ const DailyReport = () => {
         > Wednesday{" "}
           {dailyReport.map((report) => (
             <>
-            {report._id}
+              {report._id}
             </>
           ))}
         </span>
@@ -165,7 +166,16 @@ const DailyReport = () => {
                       <td>{detail.duration}</td>
                       <td>{detail.status}</td>
                       <td>{detail.progress}%</td>
-                      <td>{detail.notes ? <Icon name="report-note-outline" size="22px" /> : null}</td>
+                      <td>
+                        {/* {detail.notes ? (
+                          <Icon
+                            name="report-note-outline"
+                            size="22px"
+                          />
+                        ) : null} */}
+                        {detail.notes}
+                      </td>
+
                     </tr>
                   </>
                 ))}
@@ -183,7 +193,6 @@ const DailyReport = () => {
           </tbody>
         </table>
       </div>
-      {/* <NotesView onCancel={()=>setNotes(null) } head={notes}/> */}
     </MainContainer>
   );
 };
