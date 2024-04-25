@@ -3,8 +3,22 @@ import MainContainer from "../components/layouts/sidebar/MainContainer";
 import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
+import { useGetProjectReportQuery } from "../redux/api/reportApi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getSetProject } from "../redux/slice/reportSlice";
 
 const ProjectWiseReport = () => {
+  useGetProjectReportQuery();
+  const { projectReport } = useSelector((state) => state.report);
+  console.log("projectReport", projectReport);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleProjectClick = (id) => {
+    dispatch(getSetProject(id));
+    navigate("/reports/singleprojectreports");
+  };
   return (
     <MainContainer pageName="Project-wise Report">
       {/* <ReportTopComponent /> */}
@@ -25,45 +39,69 @@ const ProjectWiseReport = () => {
         </div>
       </div>
       <div className="project-wise-grid">
-        <div className="project-wise-item">
-          <span className="ml-1" style={{ fontWeight: "700", color: "black" }}>
-            Book better
-          </span>
-          <div className="project-wise-right">
-            <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Total section :
-              <span style={{ fontWeight: "700", marginLeft: "1rem" }}>9</span>
-            </span>
-            <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Total Tasks :
-              <span style={{ fontWeight: "700", marginLeft: "1rem" }}>9</span>
-            </span>
-            <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Completed tasks :
-              <span style={{ fontWeight: "700", marginLeft: "1rem" }}>9</span>
-            </span>
-            <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
-              Pending tasks :
-              <span style={{ fontWeight: "700", marginLeft: "1rem" }}>9</span>
-            </span>
+        {projectReport.map((proj) => (
+          <div
+            className="project-wise-item"
+            onClick={() => handleProjectClick(proj._id)}
+          >
             <span
-              style={{ color: "red", marginLeft: "2rem", marginRight: "2rem" }}
+              className="ml-1"
+              style={{ fontWeight: "700", color: "black" }}
             >
-              Task due :
-              <span
-                style={{ fontWeight: "700", marginLeft: "1rem", color: "red" }}
-              >
-                9
-              </span>
+              {proj.sctProjectName}
             </span>
-            <div className="tag-container mr-5" style={{ color: "black" }}>
-              Software
-            </div>
-            <div className="download-icon">
-              <Icon name="download-outline" size="2rem" />
+            <div className="project-wise-right">
+              <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Total section :
+                <span style={{ fontWeight: "700", marginLeft: "1rem" }}>
+                  {proj.sectionLen}
+                </span>
+              </span>
+              <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Total Tasks :
+                <span style={{ fontWeight: "700", marginLeft: "1rem" }}>
+                  {proj.assigned}
+                </span>
+              </span>
+              <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Completed tasks :
+                <span style={{ fontWeight: "700", marginLeft: "1rem" }}>
+                  {proj.completedTasks}
+                </span>
+              </span>
+              <span style={{ marginLeft: "2rem", marginRight: "2rem" }}>
+                Pending tasks :
+                <span style={{ fontWeight: "700", marginLeft: "1rem" }}>
+                  {proj.pendingTasks}
+                </span>
+              </span>
+              <span
+                style={{
+                  color: proj.overdueTasks === 0 ? `black` : `red`,
+                  marginLeft: "2rem",
+                  marginRight: "2rem",
+                }}
+              >
+                Task due :
+                <span
+                  style={{
+                    fontWeight: "700",
+                    marginLeft: "1rem",
+                    color: proj.overdueTasks === 0 ? `black` : `red`,
+                  }}
+                >
+                  {proj.overdueTasks}
+                </span>
+              </span>
+              <div className="tag-container mr-5" style={{ color: "black" }}>
+                Software
+              </div>
+              <div className="download-icon">
+                <Icon name="download-outline" size="2rem" />
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </MainContainer>
   );

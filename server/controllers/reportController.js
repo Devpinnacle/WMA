@@ -4,6 +4,8 @@ const Project = require("../models/sctProjects");
 const Task = require("../models/Tasks");
 const Section = require("../models/Sections");
 const Daily = require("../models/DailyReport");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 //* Get DailyReport ***********************************************************
 
@@ -84,8 +86,6 @@ const Daily = require("../models/DailyReport");
 //   });
 // });
 
-
-
 exports.getDailyReport = catchAsync(async (req, res, next) => {
   const groupedData = await Daily.aggregate([
     {
@@ -156,7 +156,7 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  console.log(groupedData)
+  console.log(groupedData);
 
   res.status(200).json({
     status: "success",
@@ -164,3 +164,132 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
   });
 });
 
+//* Get Project Report ***********************************************************
+exports.ProjectReport = catchAsync(async (req, res, next) => {
+  const projects = await Project.find(
+    {},
+    { tags: 1, sctProjectName: 1, sctProjectEnteredById: 1 }
+  ).populate("sctProjectEnteredById", "userName");
+
+  const updatedProjects = await Promise.all(
+    projects.map(async (project) => {
+      const userTasks = await Task.find({
+        projectId: project._id,
+        deletedStatus: false,
+      });
+
+      const sections = await Section.find({
+        projectId: project._id,
+        deletedStatus: false,
+      });
+
+      const assigned = userTasks.length;
+      const sectionLen = sections.length;
+
+      const pendingTasks = userTasks.filter(
+        (task) => task.status === "Pending"
+      ).length;
+
+      const inProgressTasks = userTasks.filter(
+        (task) => task.status === "In Progress"
+      ).length;
+
+      const completedTasks = userTasks.filter(
+        (task) => task.status === "Completed"
+      ).length;
+
+      const overdueTasks = userTasks.filter((task) => {
+        const now = Date.now() - 20000000;
+        const dueDateTimestamp = new Date(task.dueDate).getTime();
+        return now > dueDateTimestamp && task.status !== "Completed";
+      }).length;
+
+      const updatedProject = {
+        _id: project._id,
+        sctProjectName: project.sctProjectName,
+        sctProjectEnteredById: project.sctProjectEnteredById,
+        tags: project.tags,
+        pendingTasks,
+        inProgressTasks,
+        assigned,
+        completedTasks,
+        overdueTasks,
+        sectionLen,
+      };
+      return updatedProject;
+    })
+  );
+  res.status(200).json({
+    status: "success",
+    data: updatedProjects,
+  });
+});
+
+//* Get Project's tasks ***********************************************************
+
+exports.tasksReport = catchAsync(async (req, res, next) => {
+  const { id } = req.body;
+  if (!id) {
+    return next(new AppError("Please Project id.", 400));
+  }
+  console.log("id is...",id)
+
+  const tasks = await Task.aggregate([
+    {
+      $match: {
+        projectId: new ObjectId(id),
+        deletedStatus: false,
+      },
+    },
+    {
+      $lookup: {
+        from: "sections",
+        localField: "sectionId",
+        foreignField: "_id",
+        as: "sections",
+      },
+    },
+    {
+      $lookup: {
+        from: "empdetails",
+        localField: "assignedTo",
+        foreignField: "_id",
+        as: "users",
+      },
+    },
+    {
+      $unwind: "$sections",
+    },
+    {
+      $unwind: "$users",
+    },
+    {
+      $group: {
+        _id: "$sectionId",
+        sectionName: {
+          $first: "$sections.sectionName",
+        },
+        data: {
+          $push: {
+            taskName: "$taskName",
+            assignee: "$users.userName",
+            startDate: "$assignedDate",
+            endDate: "$dueDate",
+            priority: "$priority",
+            status: "$status",
+            stage: "$stage",
+            duration: "$totalDuration",
+            progress: "$progress",
+            completedDate: "$completedDate",
+          },
+        },
+      },
+    },
+  ]);
+
+  console.log(tasks)
+  res.status(200).json({
+    status: "success",
+    data: tasks,
+  });
+});

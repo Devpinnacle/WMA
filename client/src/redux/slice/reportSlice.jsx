@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   dailyReport: [],
+  projectReport: [],
+  setProject: null,
+  selectedProject: [],
 };
 
 const reportSlice = createSlice({
@@ -11,9 +14,23 @@ const reportSlice = createSlice({
     getDailyReport(state, { payload }) {
       state.dailyReport = payload;
     },
+    getProjectReport(state, { payload }) {
+      state.projectReport = payload;
+    },
+    getSetProject(state, { payload }) {
+      state.setProject = payload;
+    },
+    getSelectedProject(state, { payload }) {
+      state.selectedProject = payload;
+    },
   },
 });
 
-export const {getDailyReport}=reportSlice.actions;
+export const {
+  getDailyReport,
+  getProjectReport,
+  getSetProject,
+  getSelectedProject,
+} = reportSlice.actions;
 
-export const reportReducer=reportSlice.reducer;
+export const reportReducer = reportSlice.reducer;

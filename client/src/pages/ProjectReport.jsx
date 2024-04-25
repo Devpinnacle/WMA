@@ -4,8 +4,14 @@ import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
 import "./ProjectReport.css";
+import { useSelector } from "react-redux";
+import { useGetSingleProjectReportQuery } from "../redux/api/reportApi";
+import { formatDate } from "../Helper/helper";
 
 const ProjectReport = () => {
+  const { setProject, selectedProject } = useSelector((state) => state.report);
+  useGetSingleProjectReportQuery(setProject);
+  console.log("selectedProject", selectedProject);
   return (
     <MainContainer pageName="Project-wise Report">
       {/* <ReportTopComponent /> */}
@@ -65,19 +71,37 @@ const ProjectReport = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Development</td>
-              <td>Backend</td>
-              <td>Shreya</td>
-              <td>12-2-2024</td>
-              <td>12-5-2024</td>
-              <td>Normal</td>
-              <td>In progress</td>
-              <td>Development</td>
-              <td>12</td>
-              <td>60%</td>
-              <td>12-2-2024</td>
-            </tr>
+            {selectedProject.map((sec) => (
+              <>
+                <tr>
+                  <td rowSpan={sec.data.length}>{sec.sectionName}</td>
+                  <td>{sec.data[0].taskName}</td>
+                  <td>{sec.data[0].assignee}</td>
+                  <td>{formatDate(sec.data[0].startDate)}</td>
+                  <td>{formatDate(sec.data[0].endDate)}</td>
+                  <td>{sec.data[0].priority}</td>
+                  <td>{sec.data[0].status}</td>
+                  <td>{sec.data[0].stage}</td>
+                  <td>{sec.data[0].duration}</td>
+                  <td>{sec.data[0].progress}%</td>
+                  <td>{sec.data[0].completedDate}</td>
+                </tr>
+                {sec.data.slice(1).map((task) => (
+                  <tr>
+                    <td>{task.taskName}</td>
+                    <td>{task.assignee}</td>
+                    <td>{formatDate(task.startDate)}</td>
+                    <td>{formatDate(task.endDate)}</td>
+                    <td>{task.priority}</td>
+                    <td>{task.status}</td>
+                    <td>{task.stage}</td>
+                    <td>{task.duration}</td>
+                    <td>{task.progress}%</td>
+                    <td>{task.completedDate?formatDate(task.completedDate):null}</td>
+                  </tr>
+                ))}
+              </>
+            ))}
           </tbody>
         </table>
       </div>

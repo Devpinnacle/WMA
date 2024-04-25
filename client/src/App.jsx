@@ -105,6 +105,14 @@ function App() {
                     </ProtectedRoute>
                   ),
                 },
+                {
+                  path: "singleprojectreports",
+                  element: (
+                    <ProtectedRoute>
+                      <ProjectReport/>
+                    </ProtectedRoute>
+                  ),
+                },
         
               ]
             },
