@@ -16,9 +16,11 @@ import { taskNotificationsReducer } from "./slice/taskNotificationSlice";
 import { taskNotificationApi } from "./api/taskNotificationApi";
 import { reportReducer } from "./slice/reportSlice";
 import { reportApi } from "./api/reportApi";
+import { calenderReducer } from "./slice/calenderSlice";
 
 export const store = configureStore({
   reducer: {
+    calender: calenderReducer,
     user: userReducer,
     notes: notesReducer,
     project: projectReducer,

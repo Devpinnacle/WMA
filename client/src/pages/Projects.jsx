@@ -97,8 +97,8 @@ const Projects = () => {
           )}
         </div>
       </div>
-      <div className="selected-tag">
-        {tag.map((tg, index) => (
+      {tag.map((tg, index) => (
+      <div className="selected-tag">    
           <div key={index} className="tag-container">
             <Icon
               name="close"
@@ -107,8 +107,8 @@ const Projects = () => {
             />
             <p style={{ color: "black" }}>{tg}</p>
           </div>
-        ))}
       </div>
+      ))}
       <div className="project-container">
         {filteredProjects.map((proj) => (
           <div

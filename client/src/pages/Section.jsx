@@ -21,14 +21,14 @@ const Section = () => {
   const [addTaskFlag, setAddTaskFlag] = useState(false);
   const [editSectionFlag, setEditSectionFlag] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
-  const [taskFlag,setTaskFlag]=useState(false);
+  const [taskFlag, setTaskFlag] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectionHead, setSectionHead] = useState(null);
   const [sectionId, setSectionId] = useState(null);
   const [section, setSection] = useState(null);
-  const [task,setTask]=useState(null);
+  const [task, setTask] = useState(null);
 
-  const [getSelectedTask]=useGetSelectedTaskMutation();
+  const [getSelectedTask] = useGetSelectedTaskMutation();
 
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
@@ -98,7 +98,7 @@ const Section = () => {
     setEditSectionFlag(false);
   };
 
-  const handleTaskViewCancel=()=>{
+  const handleTaskViewCancel = () => {
     dispatch(resetTaskNotifications())
     dispatch(taskNotificationApi.util.resetApiState())
     setTask(null);
@@ -106,12 +106,36 @@ const Section = () => {
     setTaskFlag(false);
   }
 
-  const handleTaskView=async(task,sec)=>{
+  const handleTaskView = async (task, sec) => {
     setTask(task);
     await getSelectedTask(task)
     setSection(sec);
     setTaskFlag(true);
   }
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "#EDB1A1";
+      case "Low":
+        return "#F3CF96";
+      case "On Hold":
+        return "#B7B7B7";
+      default:
+        return "#AACBBA";
+    }
+  };
+  const getPriorityBodyColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "#F9E3DD";
+      case "Low":
+        return "#FBEFDA";
+      case "On Hold":
+        return "#FBEFDA";
+      default:
+        return "#DCEAE3";
+    }
+  };
 
   return (
     //   <>
@@ -175,7 +199,7 @@ const Section = () => {
     //   </>
     // );
     <MainContainer pageName="Section">
-      <div className="project-name" style={{fontWeight:"600",fontSize:"20px"}}>project name</div>
+      <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div>
       <div className="section-top">
         <div className="search-box">
           <input
@@ -190,7 +214,7 @@ const Section = () => {
           <Icon title="Search" name="search-icon" size="2rem" />
         </div>
         <div className="section-top-right">
-          <button className="btn-outline" onClick={()=>setShowCompleted(!showCompleted)}>
+          <button className="btn-outline" onClick={() => setShowCompleted(!showCompleted)}>
             {showCompleted ? "Show Sections" : "Show Completed Sections"}
           </button>
           <button
@@ -207,7 +231,7 @@ const Section = () => {
           <div
             className="section-item"
             key={sec._id}
-            // onClick={() => handleSectionClick(sec)}
+          // onClick={() => handleSectionClick(sec)}
           >
             <div className="section-item-top">
               <div className="section-item-top-left">
@@ -372,66 +396,76 @@ const Section = () => {
             </div>
             {user.userGroupName === "Software" && (
               <div className="section-task-container">
-                {sec.tasks.map((task)=>(
-                  <div className="section-task-body" onClick={()=>handleTaskView(task._id,sec)}>
-                  <div className="section-task-header">
-                    <span
-                      className="ml-2"
-                      style={{ fontSize: "16px", color: "black" }}
+                {sec.tasks.map((task) => (
+                  <div className="section-task-body" onClick={() => handleTaskView(task._id, sec)}
+                  style={{
+                    backgroundColor: getPriorityBodyColor(task.priority),
+                    borderColor: getPriorityBodyColor(task.priority),
+                  }}
+                  >
+                    <div className="section-task-header"
+                      style={{
+                        backgroundColor: getPriorityColor(task.priority),
+                        borderColor: getPriorityColor(task.priority),
+                      }}
                     >
-                      {task.taskName}
-                    </span>
-                    <div className="section-item-top-right">
-                      <div className="notify"></div>
-                      <div
-                        className="section-progress"
-                        style={{ color: "black" }}
+                      <span
+                        className="ml-2"
+                        style={{ fontSize: "16px", color: "black" }}
                       >
-                        {task.progress}
+                        {task.taskName}
+                      </span>
+                      <div className="section-item-top-right">
+                        <div className="notify"></div>
+                        <div
+                          className="section-progress"
+                          style={{ color: "black" }}
+                        >
+                          {task.progress}<span style={{ fontSize: "16px", color: "black", marginRight: "8px" }}>%</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="section-task-details">
-                    <div className="task-details">
-                      <Icon name="employee-outline" size="2rem" />
-                      <span style={{ color: "black" }} className="ml-2">
-                        {user._id===task.createdBy._id?`You`:task.createdBy.userName}
-                      </span>
+                    <div className="section-task-details">
+                      <div className="task-details">
+                        <Icon name="employee-outline" size="2rem" />
+                        <span style={{ color: "black" }} className="ml-2">
+                          {user._id === task.createdBy._id ? `You` : task.createdBy.userName}
+                        </span>
+                      </div>
+                      <div className="task-details">
+                        <Icon name="calender-outline" size="2rem" />
+                        <span style={{ color: "black" }} className="ml-2">
+                          {formatDate(task.assignedDate)}
+                        </span>
+                      </div>
+                      <div className="task-details">
+                        <Icon name="priority-outline" size="2rem" />
+                        <span style={{ color: "black" }} className="ml-2">
+                          {task.priority}
+                        </span>
+                      </div>
+                      <div className="task-details">
+                        <Icon name="status-outline" size="2rem" />
+                        <span style={{ color: "black" }} className="ml-2">
+                          {task.status}
+                        </span>
+                      </div>
                     </div>
-                    <div className="task-details">
-                      <Icon name="calender-outline" size="2rem" />
-                      <span style={{ color: "black" }} className="ml-2">
-                        {formatDate(task.assignedDate)}
-                      </span>
-                    </div>
-                    <div className="task-details">
-                      <Icon name="priority-outline" size="2rem" />
-                      <span style={{ color: "black" }} className="ml-2">
-                        {task.priority}
-                      </span>
-                    </div>
-                    <div className="task-details">
-                      <Icon name="status-outline" size="2rem" />
-                      <span style={{ color: "black" }} className="ml-2">
-                        {task.status}
-                      </span>
-                    </div>
-                  </div>
-                </div>))}
+                  </div>))}
               </div>
             )}
 
             <div className="section-details-bottom">
               {/* {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>} */}
               <div className="mt-4">
-              {user.userGroupName !== "Software" && (
-                <Icon
-                  name="edit-outline"
-                  size="2.5rem "
-                  onClick={() => handleEditSection(sec)}
-                />
-              )}
+                {user.userGroupName !== "Software" && (
+                  <Icon
+                    name="edit-outline"
+                    size="2.5rem "
+                    onClick={() => handleEditSection(sec)}
+                  />
+                )}
               </div>
               {sec.totalTask === 0 ? (
                 <button
@@ -476,7 +510,7 @@ const Section = () => {
         {editSectionFlag && (
           <EditSection onCancel={handleEditCancel} sec={section} />
         )}
-        {taskFlag&&<ViewTask onCancel={handleTaskViewCancel} taskId={task} section={section}/>}
+        {taskFlag && <ViewTask onCancel={handleTaskViewCancel} taskId={task} section={section} />}
       </div>
     </MainContainer>
   );

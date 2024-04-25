@@ -29,6 +29,10 @@ export default function SelectInput(props) {
                     border: props.noBorder && "none"
 
                 }),
+                placeholder: (provided, state) => ({
+                    ...provided,
+                    color: "#000", 
+                  }),
                 option: (provided, state) => ({
                     ...provided,
                     fontSize: "1.3rem",
