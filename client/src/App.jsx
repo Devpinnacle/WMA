@@ -11,6 +11,9 @@ import Task from "./pages/Task";
 import Reports from "./pages/Reports";
 import DailyReport from "./pages/DailyReport";
 import ReportTopComponent from "./pages/ReportTopComponent";
+import ProjectReport from "./pages/ProjectReport";
+import ProjectWiseReport from "./pages/ProjectWiseReport";
+import MemberWiseReport from "./pages/MemberWiseReport";
 
 function App() {
   const router = createBrowserRouter([
@@ -66,9 +69,44 @@ function App() {
               path: "reports",
               element: (
                 <ProtectedRoute>
-                  <Reports />
+                  <ReportTopComponent />
                 </ProtectedRoute>
               ),
+              children:[
+                {
+                  index: true,
+                  element: (
+                    <ProtectedRoute>
+                      <Reports />
+                    </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: "dailyreports",
+                  element: (
+                    <ProtectedRoute>
+                      <DailyReport />
+                    </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: "projectreports",
+                  element: (
+                    <ProtectedRoute>
+                      < ProjectWiseReport/>
+                    </ProtectedRoute>
+                  ),
+                },
+                {
+                  path: "memberreports",
+                  element: (
+                    <ProtectedRoute>
+                      <MemberWiseReport/>
+                    </ProtectedRoute>
+                  ),
+                },
+        
+              ]
             },
 
           ],

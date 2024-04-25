@@ -19,6 +19,7 @@ const sectionRoutes = require("./routes/sectionRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const notificationRoutes = require("./routes/notificationsRoutes");
 const taskNotificationRoutes = require("./routes/taskNotificationRoute");
+const reportRoutes = require("./routes/reportRoute");
 
 //* Start express app *******************************************************************
 
@@ -89,6 +90,7 @@ app.use("/api/v1/section", sectionRoutes);
 app.use("/api/v1/task", taskRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/taskNotifications", taskNotificationRoutes);
+app.use("/api/v1/report", reportRoutes);
 
 //* Error Middleware ***********************************************
 

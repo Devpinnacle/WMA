@@ -70,7 +70,7 @@ async function updateCompletedSections() {
 }
 
 // Schedule the cron job to run at midnight
-cron.schedule("30 16 * * *", async () => {
+cron.schedule("23 10 * * *", async () => {
   console.log("Running daily report cron job...");
   await updateDailyReport();
   await updateCompletedSections()
