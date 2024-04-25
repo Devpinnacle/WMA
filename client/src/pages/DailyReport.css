@@ -36,7 +36,23 @@
     color: black;
     text-align: center;
 }
-
+.btn-download{
+    border: 2px solid #3D405B;
+    border-radius: 32px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+.btn-download a{
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+}
+.btn-download a:active{
+    color: white;
+}
 @media only screen and (max-width: 62em) {
     .daily-report-top {
         display: block;

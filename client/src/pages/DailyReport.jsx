@@ -1,22 +1,61 @@
 import React, { useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
-import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
-import SelectDate from "../components/ui/SelectDate";
 import "./DailyReport.css";
 import { useGetDailyReportQuery } from "../redux/api/reportApi";
 import { useSelector } from "react-redux";
 import { dashedFormatDate, formatDate } from "../Helper/helper";
-import NotesView from "../components/modals/Task/NotesView";
+import DayDateInput from "../components/ui/DayDateInput";
+import { CSVLink } from "react-csv"
+import { useNavigate } from "react-router-dom";
 
 const DailyReport = () => {
   useGetDailyReportQuery();
-  const [notes,setNotes]=useState(null)
   const { dailyReport } = useSelector((state) => state.report);
   console.log("daily report", dailyReport);
+
+  // Function to format data for CSV
+  const getCSVdata = () => {
+    const csvData = [];
+    // Add header row
+    csvData.push([
+      "Employee",
+      "Project",
+      "Section",
+      "SD Date",
+      "Task",
+      "TA Date",
+      "TD Date",
+      "Stage",
+      "Duration(min)",
+      "Status",
+      "Progress",
+      "Notes",
+    ]);
+    // Add data rows
+    dailyReport.forEach((report) => {
+      report.data.forEach((detail) => {
+        csvData.push([
+          detail.name,
+          detail.projectName,
+          detail.sectionName,
+          dashedFormatDate(detail.sectionDue),
+          detail.taskName,
+          dashedFormatDate(detail.assignedDate),
+          dashedFormatDate(detail.dueDate),
+          detail.stages,
+          detail.duration,
+          detail.status,
+          detail.progress,
+          detail.notes ? "Yes" : "No",
+        ]);
+      });
+    });
+    return csvData;
+  };
+
   return (
     <MainContainer pageName="Daily Report">
-      {/* <ReportTopComponent /> */}
       <div className="daily-report-top">
         <span
           style={{
@@ -25,18 +64,32 @@ const DailyReport = () => {
             fontSize: "22px",
             fontWeight: "500",
           }}
-        >
-          Wednesday 11-04-2024
+        > Wednesday{" "}
+          {dailyReport.map((report) => (
+            <>
+            {report._id}
+            </>
+          ))}
         </span>
         <div className="daily-header-right">
-          <Icon name="chart-icon" size="3rem" title="Go to chart" />
-          <div className="date-box m-0 ml-3">
-            <SelectDate placeholder="Day dd/mm/yyyy" />
+          <div className="mt-4">
+            <Icon name="chart-icon" size="3rem" title="Go to chart" />
           </div>
-          <button className="btn-outline mt-0">
+          <DayDateInput
+            placeholder="Day dd/mm/yyyy"
+          />
+          {/* CSVLink for downloading CSV */}
+
+          <div className="btn-download btn-outline ">
             <Icon name="excel-outline" size="2rem" />
-            Download Excel
-          </button>
+            <CSVLink
+              data={getCSVdata()}
+              filename={"daily_report.csv"}
+            >
+
+              Download Excel
+            </CSVLink>
+          </div>
         </div>
       </div>
       <div className="report-table daily-report-table">
@@ -94,24 +147,25 @@ const DailyReport = () => {
 
             {dailyReport.map((report) => (
               <>
-                <tr>
+                {/* <tr>
                   <td colSpan={12}>{report._id}</td>
-                </tr>
+                </tr> */}
+
                 {report.data.map((detail) => (
                   <>
                     <tr>
                       <td>{detail.name}</td>
                       <td>{detail.projectName}</td>
                       <td>{detail.sectionName}</td>
-                      <td>{formatDate(detail.sectionDue)}</td>
+                      <td>{dashedFormatDate(detail.sectionDue)}</td>
                       <td>{detail.taskName}</td>
-                      <td>{formatDate(detail.assignedDate)}</td>
-                      <td>{formatDate(detail.dueDate)}</td>
+                      <td>{dashedFormatDate(detail.assignedDate)}</td>
+                      <td>{dashedFormatDate(detail.dueDate)}</td>
                       <td>{detail.stages}</td>
                       <td>{detail.duration}</td>
                       <td>{detail.status}</td>
-                      <td>{detail.progress}</td>
-                      <td>{detail.notes?<button>icon</button>:null}</td>
+                      <td>{detail.progress}%</td>
+                      <td>{detail.notes ? <Icon name="report-note-outline" size="22px" /> : null}</td>
                     </tr>
                   </>
                 ))}
@@ -125,148 +179,6 @@ const DailyReport = () => {
             <tr><td>tcs</td></tr>
             <tr>
               <td>Dev2</td>
-            </tr> */}
-
-            {/* Dummy Example
-            <tr>
-              <td colSpan={12}>date</td>
-            </tr>
-            <tr>
-              <td rowSpan={8}>Rakshith</td>
-              <td rowSpan={4}>SHG</td>
-              <td rowSpan={2}>Login</td>
-              <td rowSpan={2}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={2}>Login</td>
-              <td rowSpan={2}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={4}>SHG</td>
-              <td rowSpan={2}>Login</td>
-              <td rowSpan={2}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={2}>Login</td>
-              <td rowSpan={2}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={4}>Rakshith</td>
-              <td rowSpan={2}>SHG</td>
-              <td rowSpan={1}>Login</td>
-              <td rowSpan={1}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
-            </tr>
-            <tr>
-              <td rowSpan={1}>Login</td>
-              <td rowSpan={1}> 12/2/2024</td>
-              <td>frontend</td>
-              <td>12/5/2024</td>
-              <td>12/5/2024</td>
-              <td>Development</td>
-              <td>2</td>
-              <td>In progress</td>
-              <td>50%</td>
-              <td>
-                <Icon name="report-note-outline" size="24px" />
-              </td>
             </tr> */}
           </tbody>
         </table>
