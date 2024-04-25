@@ -10,6 +10,8 @@ const ReportTopComponent = () => {
           className="top-items daily-report"
           to="dailyreports"
           style={{ color: "black", textDecoration: "none" }}
+          activeClassName="active"
+          
         >
           <Icon id="project-icon" name="daily-report-outline" size="5.5rem" />
           <span style={{ color: "black" }}>Daily Report</span>
@@ -18,6 +20,7 @@ const ReportTopComponent = () => {
           className="top-items project-report"
           to="projectreports"
           style={{ color: "black", textDecoration: "none" }}
+          activeClassName="active"
         >
           <Icon name="projects" size="5.5rem" />
           <span style={{ color: "black" }}>Project-wise Report</span>
@@ -26,6 +29,7 @@ const ReportTopComponent = () => {
           className="top-items member-report"
           to="memberreports"
           style={{ color: "black", textDecoration: "none" }}
+          activeClassName="active"
         >
           <Icon name="member-wise-outline" size="5.5rem" />
           <span style={{ color: "black" }}>Member-wise Report</span>

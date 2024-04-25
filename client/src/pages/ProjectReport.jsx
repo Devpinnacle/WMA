@@ -14,7 +14,6 @@ const ProjectReport = () => {
 
   useGetSingleProjectReportQuery(setProject);
 
-  // Function to format data for CSV
   const getCSVdata = () => {
     const csvData = [];
     // Add header row
@@ -31,11 +30,12 @@ const ProjectReport = () => {
       "Progress",
       "Completion Date",
     ]);
+
     // Add data rows
     selectedProject.forEach((sec) => {
-      sec.data.forEach((task) => {
-        csvData.push([
-          sec.sectionName,
+      sec.data.forEach((task, index) => {
+        const rowData = [
+          index === 0 ? sec.sectionName : "", // Include section name for the first row
           task.taskName,
           task.assignee,
           formatDate(task.startDate),
@@ -46,11 +46,13 @@ const ProjectReport = () => {
           task.duration,
           `${task.progress}%`,
           task.completedDate ? formatDate(task.completedDate) : "",
-        ]);
+        ];
+        csvData.push(rowData);
       });
     });
     return csvData;
   };
+
   return (
     <MainContainer pageName="Project-wise Report">
       {/* <ReportTopComponent /> */}
