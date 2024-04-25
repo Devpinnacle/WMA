@@ -14,6 +14,7 @@ import ReportTopComponent from "./pages/ReportTopComponent";
 import ProjectReport from "./pages/ProjectReport";
 import ProjectWiseReport from "./pages/ProjectWiseReport";
 import MemberWiseReport from "./pages/MemberWiseReport";
+import MemberReport from "./pages/MemberReport";
 
 function App() {
   const router = createBrowserRouter([
@@ -113,7 +114,14 @@ function App() {
                     </ProtectedRoute>
                   ),
                 },
-        
+                {
+                  path: "singleuserreports",
+                  element: (
+                    <ProtectedRoute>
+                      <MemberReport/>
+                    </ProtectedRoute>
+                  ),
+                },
               ]
             },
 

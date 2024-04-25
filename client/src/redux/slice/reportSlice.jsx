@@ -5,6 +5,9 @@ const initialState = {
   projectReport: [],
   setProject: null,
   selectedProject: [],
+  userReport: [],
+  setUser: null,
+  selectedUser: [],
 };
 
 const reportSlice = createSlice({
@@ -23,6 +26,15 @@ const reportSlice = createSlice({
     getSelectedProject(state, { payload }) {
       state.selectedProject = payload;
     },
+    getUserReport(state, { payload }) {
+      state.userReport = payload;
+    },
+    getSetUser(state, { payload }) {
+      state.setUser = payload;
+    },
+    getSelectedUser(state, { payload }) {
+      state.selectedUser = payload;
+    },
   },
 });
 
@@ -31,6 +43,9 @@ export const {
   getProjectReport,
   getSetProject,
   getSelectedProject,
+  getUserReport,
+  getSetUser,
+  getSelectedUser,
 } = reportSlice.actions;
 
 export const reportReducer = reportSlice.reducer;

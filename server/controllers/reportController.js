@@ -232,7 +232,7 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
   if (!id) {
     return next(new AppError("Please Project id.", 400));
   }
-  console.log("id is...",id)
+  console.log("id is...", id);
 
   const tasks = await Task.aggregate([
     {
@@ -287,7 +287,223 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  console.log(tasks)
+  // console.log(tasks);
+  res.status(200).json({
+    status: "success",
+    data: tasks,
+  });
+});
+
+//* Get  Single User ***********************************************************
+
+exports.userTaskReport = catchAsync(async (req, res, next) => {
+  const { id } = req.body;
+  if (!id) {
+    return next(new AppError("Please Project id.", 400));
+  }
+
+  const tasks = await Task.aggregate([
+    {
+      $match: {
+        assignedTo: new ObjectId(id),
+        deletedStatus: false,
+      },
+    },
+    {
+      $lookup: {
+        from: "sections",
+        localField: "sectionId",
+        foreignField: "_id",
+        as: "sections",
+      },
+    },
+    {
+      $lookup: {
+        from: "empdetails",
+        localField: "assignedTo",
+        foreignField: "_id",
+        as: "users",
+      },
+    },
+    {
+      $lookup: {
+        from: "sctprojects",
+        localField: "projectId",
+        foreignField: "_id",
+        as: "projects",
+      },
+    },
+    {
+      $unwind: "$sections",
+    },
+    {
+      $unwind: "$users",
+    },
+    {
+      $unwind: "$projects",
+    },
+    {
+      $group: {
+        _id: "$sectionId",
+        sectionName: {
+          $first: "$sections.sectionName",
+        },
+        projectId: {
+          $first: "$projectId",
+        },
+        projectName: {
+          $first: "$projects.sctProjectName",
+        },
+        count: {
+          $sum: 1,
+        },
+        data: {
+          $push: {
+            taskName: "$taskName",
+            assignee: "$users.userName",
+            startDate: "$assignedDate",
+            endDate: "$dueDate",
+            priority: "$priority",
+            status: "$status",
+            stage: "$stage",
+            duration: "$totalDuration",
+            progress: "$progress",
+            completedDate: "$completedDate",
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$projectId",
+        projectName: {
+          $first: "$projectName",
+        },
+        count:{$sum:"$count"},
+        data: {
+          $push: {
+            data: "$data",
+            sectionName: "$sectionName",
+          },
+        },
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: tasks,
+  });
+});
+
+//* Get  Single User ***********************************************************
+
+exports.userReport = catchAsync(async (req, res, next) => {
+  const tasks = await Task.aggregate([
+    {
+      $lookup: {
+        from: "sections",
+        localField: "sectionId",
+        foreignField: "_id",
+        as: "sections",
+      },
+    },
+    {
+      $lookup: {
+        from: "empdetails",
+        localField: "assignedTo",
+        foreignField: "_id",
+        as: "users",
+      },
+    },
+    {
+      $lookup: {
+        from: "sctprojects",
+        localField: "projectId",
+        foreignField: "_id",
+        as: "projects",
+      },
+    },
+    {
+      $unwind: "$sections",
+    },
+    {
+      $unwind: "$users",
+    },
+    {
+      $unwind: "$projects",
+    },
+    {
+      $group: {
+        _id: "$assignedTo",
+        userName: {
+          $first: "$users.userName",
+        },
+        totalProjects: {
+          $addToSet: "$projectId",
+        },
+        // Total number of projects
+        totalSections: {
+          $addToSet: "$sections._id",
+        },
+        // Total number of sections
+        totalTasks: {
+          $sum: 1,
+        },
+        // Total number of tasks
+        completedTasks: {
+          $sum: {
+            $cond: [
+              {
+                $eq: ["$status", "Completed"],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        pendingTasks: {
+          $sum: {
+            $cond: [
+              {
+                $eq: ["$status", "Pending"],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        dueTasks: {
+          $sum: {
+            $cond: [
+              {
+                $lt: ["$dueDate", new Date()],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        // Exclude the _id field
+        userName: "$userName",
+        totalProjects: {
+          $size: "$totalProjects",
+        },
+        totalSections: {
+          $size: "$totalSections",
+        },
+        totalTasks: 1,
+        completedTasks: 1,
+        pendingTasks: 1,
+        dueTasks: 1,
+      },
+    },
+  ]);
   res.status(200).json({
     status: "success",
     data: tasks,
