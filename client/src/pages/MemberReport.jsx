@@ -38,7 +38,7 @@ const MemberReport = () => {
         sec.data.forEach((task, taskIndex) => {
           const isFirstRowOfProject = secIndex === 0 && taskIndex === 0;
           const isFirstRowInSection = taskIndex === 0;
-  
+
           const rowData = [
             isFirstRowOfProject ? proj.projectName : "",
             isFirstRowInSection ? sec.sectionName : "",
@@ -52,7 +52,7 @@ const MemberReport = () => {
             `${task.progress}%`,
             task.completedDate ? formatDate(task.completedDate) : "",
           ];
-  
+
           csvData.push(rowData);
         });
       });
@@ -62,7 +62,7 @@ const MemberReport = () => {
 
   return (
     <MainContainer>
-      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Member-wise Report</div>
+      <div style={{ color: "#3D405B", fontWeight: "700", fontSize: "50px", paddingLeft: "2rem" }}>Member-wise Report</div>
       <div className="member-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
@@ -77,23 +77,27 @@ const MemberReport = () => {
         >
           Rakshith
         </span>
-        <div className="project-wise-header-right">
-          <Icon name="chart-icon" size="3rem" title="Go to chart" />
+        <div className="member-wise-header-right">
+          {/* <Icon name="chart-icon" size="3rem" title="Go to chart" /> */}
           <div className="ml-3 mr-3">
             <DateRangeInput />
           </div>
-          <div className="ml-2 mr-4">
+          <div className="select-input ml-3 mr-2">
             <SelectInput placeholder="Project" isSearchable={false} />
           </div>
-
-          <div className="btn-download btn-outline mb-4">
-            <Icon name="excel-outline" size="2rem" />
-            <CSVLink
-              data={getCSVdata()}
-              filename={"member_report.csv"}
-            >
-              Download Excel
-            </CSVLink>
+          <div className="btn-container">
+            <div className="btn-download btn-outline mb-4 mr-3">
+              <Icon name="excel-outline" size="2rem" />
+              <CSVLink
+                data={getCSVdata()}
+                filename={"member_report.csv"}
+              >
+                Download Excel
+              </CSVLink>
+            </div>
+            <div className="chart-icon mt-4">
+              <Icon name="chart-icon" size="3rem" title="Go to chart" />
+            </div>
           </div>
         </div>
       </div>
