@@ -55,8 +55,9 @@ const ProjectReport = () => {
   };
 
   return (
-    <MainContainer pageName="Project-wise Report">
+    <MainContainer>
       {/* <ReportTopComponent /> */}
+      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Project-wise Report</div>
       <div className="project-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
@@ -85,6 +86,7 @@ const ProjectReport = () => {
             />
             <Icon title="Search" name="search-icon" size="2rem" />
           </div>
+          
           <div className="mr-1">
             <SelectInput placeholder="Section state" isSearchable={false} />
           </div>

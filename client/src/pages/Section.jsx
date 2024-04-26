@@ -200,7 +200,7 @@ const Section = () => {
     // );
     <MainContainer pageName="Section">
       {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
-      <div className="section-top">
+      <div className="section-top" >
         <div className="search-box">
           <input
             id="keyword"
@@ -233,7 +233,7 @@ const Section = () => {
             key={sec._id}
           // onClick={() => handleSectionClick(sec)}
           >
-            <div className="section-item-top">
+            <div className="section-item-top" style={{backgroundColor:sec.dueDate? `#3D405B` : `#FF4848`}}>
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
                 <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>
@@ -260,12 +260,12 @@ const Section = () => {
                     {formatDate(sec.startDate)}
                   </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px",color:sec.dueDate? `black` : `red` }}>
                   Due date:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
+                      color:sec.dueDate ? `black` : `red`, 
                       fontSize: "16px",
                     }}
                     className="ml-2"

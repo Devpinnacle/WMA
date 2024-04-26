@@ -27,10 +27,10 @@ export default function SidebarTop() {
                         Projects
                     </NavLink>
 
-                <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
+                {/* <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
                     <Icon name="chat-outline" size="24px" />
                     Chats
-                </NavLink>
+                </NavLink> */}
                 {!(user.userGroupName === "Software") && (
                     <>
                         <div className="top-link-items">

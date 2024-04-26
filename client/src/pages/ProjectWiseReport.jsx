@@ -22,8 +22,8 @@ const ProjectWiseReport = () => {
     navigate("/reports/singleprojectreports");
   };
   return (
-    <MainContainer pageName="Project-wise Report">
-      {/* <ReportTopComponent /> */}
+    <MainContainer>
+      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Project-wise Report</div>
       <div className="project-wise">
         <Icon name="chart-icon" size="3rem" title="Go to chart" />
         <div className="search-box report-search">

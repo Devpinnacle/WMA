@@ -61,14 +61,15 @@ const MemberReport = () => {
   };
 
   return (
-    <MainContainer pageName="Member-wise Report">
+    <MainContainer>
+      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Member-wise Report</div>
       <div className="member-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
         </div>
         <span
           style={{
-            color: "black",
+            color: "#3D405B",
             fontWeight: "500",
             fontSize: "22px",
             marginLeft: "5px",
@@ -84,10 +85,7 @@ const MemberReport = () => {
           <div className="ml-2 mr-4">
             <SelectInput placeholder="Project" isSearchable={false} />
           </div>
-          {/* <button className="btn-outline m-0">
-            <Icon name="excel-outline" size="2rem" />
-            Download Excel
-          </button> */}
+
           <div className="btn-download btn-outline mb-4">
             <Icon name="excel-outline" size="2rem" />
             <CSVLink
