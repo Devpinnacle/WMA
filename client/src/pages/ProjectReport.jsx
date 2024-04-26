@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
 import "./ProjectReport.css";
 import { useSelector } from "react-redux";
-import { useGetSingleProjectReportQuery } from "../redux/api/reportApi";
 import { formatDate } from "../Helper/helper";
 import { CSVLink } from "react-csv";
+import { useGetSingleProjectReportMutation } from "../redux/api/reportApi";
 
 const ProjectReport = () => {
   const { setProject, selectedProject } = useSelector((state) => state.report);
-
-  useGetSingleProjectReportQuery(setProject);
-
+  const [getProject]=useGetSingleProjectReportMutation()
+  console.log("selectedProject", selectedProject);
+  useEffect(()=>{getProject(setProject)},[])
+  // Function to format data for CSV
   const getCSVdata = () => {
     const csvData = [];
     // Add header row
@@ -132,7 +133,7 @@ const ProjectReport = () => {
                   <td>{sec.data[0].stage}</td>
                   <td>{sec.data[0].duration}</td>
                   <td>{sec.data[0].progress}%</td>
-                  <td>{sec.data[0].completedDate}</td>
+                  <td>{sec.data[0].completedDate?formatDate(sec.data[0].completedDate):null}</td>
                 </tr>
                 {sec.data.slice(1).map((task) => (
                   <tr>

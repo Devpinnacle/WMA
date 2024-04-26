@@ -3,7 +3,7 @@ import MainContainer from "../components/layouts/sidebar/MainContainer";
 import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
-import { useGetProjectReportQuery } from "../redux/api/reportApi";
+import { useGetProjectReportQuery, useGetSingleProjectReportMutation } from "../redux/api/reportApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSetProject } from "../redux/slice/reportSlice";
@@ -11,12 +11,14 @@ import { getSetProject } from "../redux/slice/reportSlice";
 const ProjectWiseReport = () => {
   useGetProjectReportQuery();
   const { projectReport } = useSelector((state) => state.report);
-  console.log("projectReport", projectReport);
+  const [getProject]=useGetSingleProjectReportMutation();
+  // console.log("projectReport", projectReport);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleProjectClick = (id) => {
     dispatch(getSetProject(id));
+    getProject(id)
     navigate("/reports/singleprojectreports");
   };
   return (
