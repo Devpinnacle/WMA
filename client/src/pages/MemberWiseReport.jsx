@@ -23,7 +23,6 @@ const MemberWiseReport = () => {
 
   return (
     <MainContainer pageName="Member-wise Report">
-      {/* <ReportTopComponent /> */}
       <div className="member-wise-report">
         <div className="project-wise-header-right">
           <Icon name="chart-icon" size="3rem" title="Go to chart" />
@@ -85,9 +84,9 @@ const MemberWiseReport = () => {
                 {user.dueTasks}
               </span>
             </span>
-            <div className="download-icon">
+            {/* <div className="download-icon">
               <Icon name="download-outline" size="2rem" />
-            </div>
+            </div> */}
           </div>
         </div>
       ))}

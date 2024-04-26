@@ -199,7 +199,7 @@ const Section = () => {
     //   </>
     // );
     <MainContainer pageName="Section">
-      <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div>
+      {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
       <div className="section-top">
         <div className="search-box">
           <input
@@ -236,13 +236,13 @@ const Section = () => {
             <div className="section-item-top">
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
-                <span className="ml-2" style={{ fontSize: "16px" }}>
+                <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>
                   {sec.sectionName}
                 </span>
               </div>
               <div className="section-item-top-right">
                 <div className="notify">1</div>
-                <div className="section-progress">{sec.progress}%</div>
+                <div className="section-progress" style={{color:"white"}}>{sec.progress}%</div>
               </div>
             </div>
             <div className="section-details-container">

@@ -22,12 +22,11 @@ export default function SidebarTop() {
                         Dashboard
                     </NavLink>
                 </div>
-                <div className="top-link-items">
                     <NavLink className={({ isActive }) => getClassName(isActive)} to="projects" style={{ textDecoration: "none" }}>
                         <Icon name="projects" size="24px" />
                         Projects
                     </NavLink>
-                </div>
+
                 <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
                     <Icon name="chat-outline" size="24px" />
                     Chats

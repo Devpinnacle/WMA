@@ -12,7 +12,7 @@ import DayDateInput from "../components/ui/DayDateInput";
 
 const Reports = () => {
   return (
-    <MainContainer pageName="Project-wise Report">
+    <MainContainer pageName="Reports">
       <div className="chart-grid">
         <div className="chart" style={{ color: "black" }}>
           <span className="chart-title">All task Status</span>
