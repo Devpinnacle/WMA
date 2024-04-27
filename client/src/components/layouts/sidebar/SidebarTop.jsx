@@ -14,39 +14,43 @@ export default function SidebarTop() {
     };
 
     return (
-        <div className="">
+        <div className="sidebar-top-container">
             <div className="sidebar-top-links">
                 <div className="top-link-items">
                     <NavLink className={({ isActive }) => getClassName(isActive)} to="/" style={{ textDecoration: "none" }} >
-                        <Icon name="dashboard" size="24px" />
+                        <div className="side-icon">
+                            <Icon name="dashboard" size="24px" />
+                        </div>
                         Dashboard
                     </NavLink>
                 </div>
-                    <NavLink className={({ isActive }) => getClassName(isActive)} to="projects" style={{ textDecoration: "none" }}>
+                <NavLink className={({ isActive }) => getClassName(isActive)} to="projects" style={{ textDecoration: "none" }}>
+                    <div className="side-icon">
                         <Icon name="projects" size="24px" />
-                        Projects
-                    </NavLink>
+                    </div>
+                    Projects
+                </NavLink>
 
-                {/* <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
-                    <Icon name="chat-outline" size="24px" />
-                    Chats
-                </NavLink> */}
                 {!(user.userGroupName === "Software") && (
                     <>
                         <div className="top-link-items">
                             <NavLink className={({ isActive }) => getClassName(isActive)} to="reports" style={{ textDecoration: "none" }}>
-                                <Icon name="reports" size="24px" />
+                                <div className="side-icon">
+                                    <Icon name="reports" size="24px" />
+                                </div>
                                 Reports
                             </NavLink>
                         </div>
                     </>
                 )}
-                {/* <div className="top-link-items"> */}
+                <div className="top-link-items">
                 <NavLink className="top-link-item" to="" style={{ textDecoration: "none" }}>
-                    <Icon name="logout-outline" size="24px" />
+                    <div className="side-icon">
+                        <Icon name="logout-outline" size="24px" />
+                    </div>
                     Log out
                 </NavLink>
-                {/* </div> */}
+                </div>
             </div>
         </div>
     )
