@@ -82,6 +82,23 @@ export const sectionApi = createApi({
         }
       },
     }),
+
+    //* Get Section ******************************************************
+    getSelectedSection: builder.mutation({
+      query: (Id) => ({
+        url: "/section/setselectedsection",
+        method: "POST",
+        body: { Id: Id },
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          return data.data
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -90,4 +107,5 @@ export const {
   useEditSectionMutation,
   useDeleteSectionMutation,
   useGetSectionQuery,
+  useGetSelectedSectionMutation,
 } = sectionApi;

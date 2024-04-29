@@ -261,3 +261,27 @@ exports.updateSection = catchAsync(async (req, res, next) => {
   );
   res.status(200).json({ data: "succsess" });
 });
+
+//* get selected section **************************************************
+
+exports.getSelectedSection=catchAsync(async(req,res,next)=>{
+  const {Id}=req.body
+  const sections = await Section.find(
+    { projectId: Id, deletedStatus: false },
+    {
+      sectionName: 1,
+      projectId: 1,
+      startDate: 1,
+      dueDate: 1,
+      progress: 1,
+      totalTask: 1,
+      createdBy: 1,
+      completed: 1,
+    }
+  ).populate("createdBy", "userName");
+
+  res.status(200).json({
+    status: "success",
+    data: sections[0],
+  });
+})

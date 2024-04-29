@@ -151,6 +151,15 @@ const EmpDetailsSchema = new mongoose.Schema({
   empLoginStatus: {
     type: Number,
   },
+  refreshTokens: [
+    {
+      token: String,
+      expiresIn: {
+        type: Date,
+        default: Date.now() + process.env.REFRESH_EXPIRES_IN * 1,
+      },
+    },
+  ],
 });
 
 module.exports = empdetails = mongoose.model("empdetails", EmpDetailsSchema);

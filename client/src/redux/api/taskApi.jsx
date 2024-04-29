@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getTasks, getselectedTask } from "../slice/taskSlice";
+import { getTasks, getTodaysTask, getselectedTask } from "../slice/taskSlice";
 import { sectionApi } from "./sectionApi";
 
 export const taskApi = createApi({
@@ -38,10 +38,14 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringselectedtask" }]));
+          obj.dispatch(
+            taskApi.util.invalidateTags([{ type: "bringselectedtask" }])
+          );
           obj.dispatch(
             sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
+          obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
+
         } catch (error) {
           console.error("Error....", error);
         }
@@ -59,11 +63,15 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringselectedtask" }]));
+          obj.dispatch(
+            taskApi.util.invalidateTags([{ type: "bringselectedtask" }])
+          );
 
           obj.dispatch(
             sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
+          obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
+
         } catch (error) {
           console.error("Error....", error);
         }
@@ -124,6 +132,7 @@ export const taskApi = createApi({
           obj.dispatch(
             sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
+          obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
         } catch (error) {
           console.error("Error....", error);
         }
@@ -153,7 +162,7 @@ export const taskApi = createApi({
     //* Get selected Task *********************************************************
     getSelectedTask: builder.mutation({
       providesTags: (result, error, taskId) => [
-        { type: "bringselectedtask",taskId},
+        { type: "bringselectedtask", taskId },
       ],
       query: (taskId) => ({
         url: "/task/getselectedtast",
@@ -171,7 +180,22 @@ export const taskApi = createApi({
       },
     }),
 
-    
+    //* Get selected Task *********************************************************
+    getTodaysTask: builder.query({
+      providesTags:()=>[{type:"bringtodaystask"}],
+      query: () => ({
+        url: "/task/todaystask",
+        method: "GET",
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(getTodaysTask(data.data));
+        } catch (error) {
+          console.error("Error....", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -184,4 +208,5 @@ export const {
   useDeleteTaskMutation,
   useGetTaskQuery,
   useGetSelectedTaskMutation,
+  useGetTodaysTaskQuery
 } = taskApi;

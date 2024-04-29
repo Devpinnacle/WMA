@@ -2,7 +2,7 @@ const User = require("../models/EmpDetails");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
-const { sendTokensAndCookies, saveLoginHistory } = require("./helperFunction");
+const { sendTokensAndCookies, saveLoginHistory, deleteExpiredTokens } = require("./helperFunction");
 
 //* Log in ***********************************************************
 
@@ -20,6 +20,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid Credentials!", 401));
   }
   saveLoginHistory(user, req.ip);
+  deleteExpiredTokens(user);
   sendTokensAndCookies(req, res, user, 200);
 });
 

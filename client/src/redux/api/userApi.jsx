@@ -17,9 +17,11 @@ export const userApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("refreshToken", data.refreshToken);
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
             })
           );
           obj.dispatch(userApi.util.invalidateTags([{ type: "me" }]));

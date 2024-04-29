@@ -191,6 +191,14 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
     );
   }
 
+  const task = await Task.find({ _id: taskid });
+  if (task.status !== "Completed" && status === "Completed") {
+    await Task.updateOne(
+      { _id: taskid },
+      { $set: { progressUpdateDate: new Date() } }
+    );
+  }
+
   await Task.updateOne(
     { _id: taskid },
     {
@@ -229,7 +237,7 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
 //* Update Daily task (Progress, Duration) *******************************
 
 exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
-  console.log("hit..Daily");
+  // console.log("hit..Daily");
   const taskId = req.body.id;
   if (!taskId) {
     return next(new AppError("Please provide task id.", 400));
@@ -244,6 +252,7 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
       $set: {
         progress: req.body.progress,
         duration: req.body.duration,
+        progressUpdateDate: new Date(),
         status: req.body.progress === 100 ? "Completed" : status,
       },
     }
@@ -327,10 +336,7 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
         )
       : 0;
 
-  await Section.updateOne(
-    { _id: sectionId },
-    { progress: totalProgress }
-  );
+  await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
 
   await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: -1 } });
 
@@ -371,4 +377,51 @@ exports.adjustTask = catchAsync(async (req, res, next) => {
   await Promise.all(adjustedTasks);
 
   res.status(200).json({ status: "success" });
+});
+
+//* Today's task **********************************************************
+exports.todaysTask = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+
+  const tasks = await Task.find(
+    {
+      assignedTo: userId,
+      deletedStatus: false,
+      $or: [
+        {
+          $and: [
+            { status: "In Progress" },
+            { assignedDate: { $lte: new Date() } },
+          ],
+        },
+        { $and: [{ status: "To Do" }, { assignedDate: { $lte: new Date() } }] },
+      ],
+    },
+    {
+      createdDate: 0,
+      deletedStatus: 0,
+      deletedBy: 0,
+      deletedDate: 0,
+    }
+  )
+    .populate("createdBy", "userName")
+    .populate("assignedTo", "userName")
+    .populate("projectId", "sctProjectName")
+    .populate("sectionId", ["sectionName", "progress"]);
+
+  const currentDate = new Date();
+
+  const tasksWithProgressToday = tasks.filter((task) => {
+    const progressUpdateDate = task.progressUpdateDate;
+    return (
+      progressUpdateDate &&
+      progressUpdateDate.toDateString() === currentDate.toDateString()
+    );
+  });
+
+  const count = tasksWithProgressToday.length;
+
+  res
+    .status(200)
+    .json({ status: "success", data: { data: tasks, count: count } });
 });

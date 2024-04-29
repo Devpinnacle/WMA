@@ -18,6 +18,12 @@ import io from "socket.io-client";
 import { getNotifications } from "../redux/slice/notificationSlice";
 import { useGetNotificationQuery } from "../redux/api/notificationApi";
 import DayDateInput from "../components/ui/DayDateInput";
+import { useGetSelectedTaskMutation, useGetTodaysTaskQuery } from "../redux/api/taskApi";
+import { formatDate } from "../Helper/helper";
+import { useGetSelectedSectionMutation } from "../redux/api/sectionApi";
+import ViewTask from "../components/modals/Task/ViewTask";
+import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
+import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -27,6 +33,9 @@ const Dashboard = () => {
   const [deleteNoteFlag, setDeleteNoteFlag] = useState(false);
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
   const [addProjectFlag, setAddProjectFlag] = useState(false);
+  const [taskFlag,setTaskFlag]=useState(false);
+  const [task,setTask]=useState(null);
+  const [section,setSection]=useState(null)
   const [searchTerm, setSearchTerm] = useState("");
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
@@ -34,11 +43,19 @@ const Dashboard = () => {
   const { data: fetchedData, isLoading } = useGetNotesQuery();
   const { data: projectData } = useGetProjectQuery();
   const { data: nofify } = useGetNotificationQuery();
+  const { data: tasktoday } = useGetTodaysTaskQuery();
+  const [getSelectedSection]=useGetSelectedSectionMutation();
+  const [getSelectedTask] = useGetSelectedTaskMutation();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
   const { notifications } = useSelector((state) => state.notifications);
+  const { todaysTask } = useSelector((state) => state.task);
+
+  // console.log("todaysTask", todaysTask);
+  // console.log("today date", todaysTask?todaysTask.data[0]?.progressUpdateDate:null);
+  // console.log("date",new Date())
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -93,12 +110,17 @@ const Dashboard = () => {
 
   const handleNotificationTags = (e) => {
     if (!notificationTag.some((t) => t.value === e.value)) {
-      setNotificationTag((prev) => [...prev, { label: e.label, value: e.value }]);
+      setNotificationTag((prev) => [
+        ...prev,
+        { label: e.label, value: e.value },
+      ]);
     }
   };
 
   const handleRemoveNotificationTag = (item) => {
-    setNotificationTag((prevTag) => prevTag.filter((tg) => tg.value !== item.value));
+    setNotificationTag((prevTag) =>
+      prevTag.filter((tg) => tg.value !== item.value)
+    );
   };
 
   const handleRemoveTag = (item) => {
@@ -107,8 +129,12 @@ const Dashboard = () => {
 
   const filteredNotifications = notifications.filter((notification) => {
     const notificationDate = new Date(parseInt(notification.createdDate));
-    const isDateMatched = !selectedDate || notificationDate.toDateString() === selectedDate.toDateString();
-    const isTagMatched = notificationTag.length === 0 || notificationTag.every((tg) => notification.priority.includes(tg.value));
+    const isDateMatched =
+      !selectedDate ||
+      notificationDate.toDateString() === selectedDate.toDateString();
+    const isTagMatched =
+      notificationTag.length === 0 ||
+      notificationTag.every((tg) => notification.priority.includes(tg.value));
     return isDateMatched && isTagMatched;
   });
 
@@ -178,6 +204,20 @@ const Dashboard = () => {
     navigate("/sections");
   };
 
+  const handleClickTask=async(task)=>{
+    const sec=await getSelectedSection(task.sectionId)
+    setSection(sec);
+    setTask(task._id);
+    await getSelectedTask(task._id)
+    setTaskFlag(true);
+  }
+
+  const handleCancelViewTask=()=>{
+    setTaskFlag(false);
+    dispatch(resetTaskNotifications());
+    dispatch(taskNotificationApi.util.resetApiState())
+  }
+
   return (
     <MainContainer pageName={`Hi`} userName={user.userName}>
       <div className="dashboard-container">
@@ -188,64 +228,51 @@ const Dashboard = () => {
                 <>
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
-                    <div className="task-body">
-                      <div className="task-header">
-                        <div className="task-left">
-                          <Icon
-                            name="project-outline"
-                            size="24px"
-                          />
-                          <span>Pinnacle Media Website</span>
+                    {todaysTask.data?.map((task) => (
+                      <div className="task-body" onClick={()=>handleClickTask(task)}>
+                        <div className="task-header">
+                          <div className="task-left">
+                            <Icon name="project-outline" size="24px" />
+                            <span>{task.projectId.sctProjectName}</span>
+                          </div>
+                          <div className="task-right">
+                            <span>{task.progress}%</span>
+                          </div>
                         </div>
-                        <div className="task-right">
-                          <span>0%</span>
+
+                        <div className="task-name">
+                          <span>{task.taskName}</span>
+                          {task.progressUpdateDate?( formatDate(task.progressUpdateDate)===formatDate(new Date())&& (
+                              <div className="progress-tag">
+                                <Icon name="save-outline" size="24px" />
+                                <span>Progress updated</span>
+                              </div>
+                            )):(<></>)}
                         </div>
-                      </div>
-                      <div className="task-name">
-                        <span>Creating tables and adding a new section</span>
-                        <div className="progress-tag">
-                          <Icon
-                            name="save-outline"
-                            size="24px"
-                          />
-                          <span>Progress updated</span>
-                        </div>
-                      </div>
-                      <div className="task-detail">
-                        <div className="employee-detail">
-                          <Icon
-                            name="employee-outline"
-                            size="22px"
-                          />
-                          <span>Rakshith</span>
-                        </div>
-                        <div className="date-info">
-                          <Icon
-                            name="calender-outline"
-                            size="22px"
-                          />
-                          <span>22/04/2024</span>
-                        </div>
-                        <div className="priority-info">
-                          <Icon
-                            name="priority-outline"
-                            size="22px"
-                          />
-                          <span>Priority</span>
-                        </div>
-                        <div className="status-info">
-                          <Icon
-                            name="stage-outline"
-                            size="22px"
-                          />
-                          <span>To Do</span>
+                        <div className="task-detail">
+                          <div className="employee-detail">
+                            <Icon name="employee-outline" size="22px" />
+                            <span>{task.assignedTo.userName}</span>
+                          </div>
+                          <div className="date-info">
+                            <Icon name="calender-outline" size="22px" />
+                            <span>{formatDate(task.dueDate)}</span>
+                          </div>
+                          <div className="priority-info">
+                            <Icon name="priority-outline" size="22px" />
+                            <span>{task.priority}</span>
+                          </div>
+                          <div className="status-info">
+                            <Icon name="stage-outline" size="22px" />
+                            <span>{task.status}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
                   <div className="total-progress-count">
-                    <span>Total tasks: 8</span>
-                    <span>Progress updated: 8</span>
+                    <span>Total tasks: {todaysTask.data?.length}</span>
+                    <span>Progress updated: {todaysTask?.count}</span>
                   </div>
                 </>
               ) : (
@@ -420,9 +447,7 @@ const Dashboard = () => {
               <div className="project-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
-                  <DayDateInput
-                    placeholder="Day dd/mm/yyyy"
-                  />
+                  <DayDateInput placeholder="Day dd/mm/yyyy" />
                   <div className="mt-3">
                     <SelectInput
                       className="tags"
@@ -461,22 +486,13 @@ const Dashboard = () => {
                 />
                 <div className="input-operation-buttons">
                   <div className="ml-3 mr-3">
-                    <Icon
-                      name="tag-outline"
-                      size="20px"
-                    />
+                    <Icon name="tag-outline" size="20px" />
                   </div>
                   <div className="mr-3">
-                    <Icon
-                      name="attachment-outline"
-                      size="20px"
-                    />
+                    <Icon name="attachment-outline" size="20px" />
                   </div>
                   <div className="">
-                    <Icon
-                      name="send-outline"
-                      size="20px"
-                    />
+                    <Icon name="send-outline" size="20px" />
                   </div>
                 </div>
               </div>
@@ -581,6 +597,7 @@ const Dashboard = () => {
       {addProjectFlag && (
         <AddProject onCancel={() => setAddProjectFlag(false)} />
       )}
+      {taskFlag&&<ViewTask taskId={task} onCancel={handleCancelViewTask} section={section}/>}
     </MainContainer>
   );
 };
