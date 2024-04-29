@@ -14,7 +14,7 @@ export const monthsValue = [
   "December",
 ];
 export const getStatusColors = (status) => {
-  if (status === "completed") {
+  if (status === "completed") { 
     return "#3A9679";
   } else if (status === "In progress") {
     return "#0802A3";
