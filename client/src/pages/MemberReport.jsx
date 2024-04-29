@@ -8,21 +8,68 @@ import "./MemberReport.css";
 import { useSelector } from "react-redux";
 import { formatDate } from "../Helper/helper";
 import { useGetSingleUserReportMutation } from "../redux/api/reportApi";
+import DateRangeInput from "../components/ui/DateRangeInput";
+import { CSVLink } from "react-csv";
 
 const MemberReport = () => {
   const { setUser, selectedUser } = useSelector((state) => state.report);
-  const [getUser]=useGetSingleUserReportMutation();
+  const [getUser] = useGetSingleUserReportMutation();
   console.log("selectedUser", selectedUser);
-  useEffect(()=>{getUser(setUser)},[])
+  useEffect(() => { getUser(setUser) }, [])
+  // Function to format data for CSV
+  const getCSVdata = () => {
+    const csvData = [];
+    // Add header row
+    csvData.push([
+      "Project",
+      "Section",
+      "Task",
+      "Start Date",
+      "End Date",
+      "Priority",
+      "Status",
+      "Stage",
+      "Duration (hrs)",
+      "Progress",
+      "Completion Date",
+    ]);
+    selectedUser.forEach((proj) => {
+      proj.data.forEach((sec, secIndex) => {
+        sec.data.forEach((task, taskIndex) => {
+          const isFirstRowOfProject = secIndex === 0 && taskIndex === 0;
+          const isFirstRowInSection = taskIndex === 0;
+
+          const rowData = [
+            isFirstRowOfProject ? proj.projectName : "",
+            isFirstRowInSection ? sec.sectionName : "",
+            task.taskName,
+            formatDate(task.startDate),
+            formatDate(task.endDate),
+            task.priority,
+            task.status,
+            task.stage,
+            task.duration,
+            `${task.progress}%`,
+            task.completedDate ? formatDate(task.completedDate) : "",
+          ];
+
+          csvData.push(rowData);
+        });
+      });
+    });
+    return csvData;
+  };
+
   return (
-    <MainContainer pageName="Member-wise Report">
+    <MainContainer>
+      <div style={{ color: "#3D405B", fontWeight: "700", fontSize: "50px", paddingLeft: "2rem" }}>Member-wise Report</div>
       <div className="member-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
         </div>
         <span
           style={{
-            color: "black",
+            color: "#3D405B",
             fontWeight: "500",
             fontSize: "22px",
             marginLeft: "5px",
@@ -30,18 +77,28 @@ const MemberReport = () => {
         >
           Rakshith
         </span>
-        <div className="project-wise-header-right">
-          <Icon name="chart-icon" size="3rem" title="Go to chart" />
-          <div className="date-box mt-0">
-            <SelectDate placeholder="dd:mm:yyyy-dd:mm:yyyy" />
+        <div className="member-wise-header-right">
+          {/* <Icon name="chart-icon" size="3rem" title="Go to chart" /> */}
+          <div className="ml-3 mr-3">
+            <DateRangeInput />
           </div>
-          <div className="ml-2 mr-4">
+          <div className="select-input ml-3 mr-2">
             <SelectInput placeholder="Project" isSearchable={false} />
           </div>
-          <button className="btn-outline m-0">
-            <Icon name="excel-outline" size="2rem" />
-            Download Excel
-          </button>
+          <div className="btn-container">
+            <div className="btn-download btn-outline mb-4 mr-3">
+              <Icon name="excel-outline" size="2rem" />
+              <CSVLink
+                data={getCSVdata()}
+                filename={"member_report.csv"}
+              >
+                Download Excel
+              </CSVLink>
+            </div>
+            <div className="chart-icon mt-4">
+              <Icon name="chart-icon" size="3rem" title="Go to chart" />
+            </div>
+          </div>
         </div>
       </div>
       <div className="report-table">
@@ -117,22 +174,22 @@ const MemberReport = () => {
                         : null}
                     </td>
                   </tr>
-                  {sec.data.slice(1).map((task)=>(
-                     <tr>
-                     <td>{task.taskName}</td>
-                     <td>{formatDate(task.startDate)}</td>
-                     <td>{formatDate(task.endDate)}</td>
-                     <td>{task.priority}</td>
-                     <td>{task.status}</td>
-                     <td>{task.stage}</td>
-                     <td>{task.duration}</td>
-                     <td>{task.progress}%</td>
-                     <td>
-                       {task.completedDate
-                         ? formatDate(task.completedDate)
-                         : null}
-                     </td>
-                   </tr>
+                  {sec.data.slice(1).map((task) => (
+                    <tr>
+                      <td>{task.taskName}</td>
+                      <td>{formatDate(task.startDate)}</td>
+                      <td>{formatDate(task.endDate)}</td>
+                      <td>{task.priority}</td>
+                      <td>{task.status}</td>
+                      <td>{task.stage}</td>
+                      <td>{task.duration}</td>
+                      <td>{task.progress}%</td>
+                      <td>
+                        {task.completedDate
+                          ? formatDate(task.completedDate)
+                          : null}
+                      </td>
+                    </tr>
                   ))}
                 </>))}
               </>

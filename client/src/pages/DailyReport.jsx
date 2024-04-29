@@ -56,7 +56,8 @@ const DailyReport = () => {
   };
 
   return (
-    <MainContainer pageName="Daily Report">
+    <MainContainer>
+      <div style={{ color: "#3D405B", fontWeight: "700", fontSize: "50px", paddingLeft: "2rem" }}>Daily Report</div>
       <div className="daily-report-top">
         <span
           style={{
@@ -73,23 +74,26 @@ const DailyReport = () => {
           ))}
         </span>
         <div className="daily-header-right">
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <Icon name="chart-icon" size="3rem" title="Go to chart" />
-          </div>
+          </div> */}
           <DayDateInput
             placeholder="Day dd/mm/yyyy"
           />
           {/* CSVLink for downloading CSV */}
-
-          <div className="btn-download btn-outline ">
-            <Icon name="excel-outline" size="2rem" />
-            <CSVLink
-              data={getCSVdata()}
-              filename={"daily_report.csv"}
-            >
-
-              Download Excel
-            </CSVLink>
+          <div className="btn-container">
+            <div className="btn-download btn-outline mr-3">
+              <Icon name="excel-outline" size="2rem" />
+              <CSVLink
+                data={getCSVdata()}
+                filename={"daily_report.csv"}
+              >
+                Download Excel
+              </CSVLink>
+            </div>
+            <div className="chart-icon mt-4 mr-3">
+              <Icon name="chart-icon" size="3rem" title="Go to chart" />
+            </div>
           </div>
         </div>
       </div>

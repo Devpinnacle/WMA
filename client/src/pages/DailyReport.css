@@ -52,9 +52,17 @@
 .btn-download a:active{
     color: white;
 }
+.btn-container{
+    display: flex;
+}
 @media only screen and (max-width: 62em) {
     .daily-report-top {
-        display: block;
+        display: block !important;
+
+    }
+    .daily-header-right{
+        flex-direction: column !important;
+        align-items: flex-start;
     }
 
     .daily-header-right {

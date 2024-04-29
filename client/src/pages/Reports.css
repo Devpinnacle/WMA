@@ -1,11 +1,12 @@
-.report-top{
+.report-top {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     padding: 2rem;
     align-content: center;
 }
-.top-items{
+
+.top-items {
     padding: 2.5rem;
     height: 184px;
     border-radius: 24px;
@@ -20,41 +21,53 @@
     background-color: #F9E3DD;
     border: 2px solid #EDB1A1;
 }
-.daily-report:focus{
-    background-color: #EDB1A1;
-}
 
 .project-report {
-    background-color: #DCEAE3; 
+    background-color: #DCEAE3;
     border: 2px solid #AACBBA;
 }
-.project-report:focus{
+
+.daily-report.active {
+    background-color: #EDB1A1;
+    border: 2px solid #EDB1A1
+}
+
+.project-report.active {
     background-color: #AACBBA;
+    border: 2px solid #AACBBA
 }
 
 .member-report {
     background-color: #FBEFDA;
     border: 2px solid #F3CF96;
 }
-.member-report:focus{
+
+.member-report.active {
     background-color: #F3CF96;
+    border: 2px solid #F3CF96;
 }
-.chart-grid{
+
+.chart-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     padding: 2rem;
-    align-content: center;   
+    align-content: center;
     padding-left: 15rem;
     padding-right: 15rem;
 }
-.chart{
+
+.chart {
     padding: 2rem;
     box-shadow: 2px 2px 21px 2px #3D405B33;
     border-radius: 24px;
     height: 560px;
- 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
+
 .daily-report-top {
     display: flex;
     justify-content: space-between;
@@ -62,121 +75,170 @@
     margin-right: 10px;
     padding: 0.5rem;
 }
+
 .daily-header-right {
     display: flex;
     align-items: center;
     /* padding: 2rem; */
 }
-.project-wise{
+
+.project-wise {
     display: flex;
     justify-content: flex-end;
     padding-right: 2rem;
     padding-left: 2rem;
-    
+
 }
-.report-search{
+
+.report-search {
     width: 25rem;
     margin-bottom: 1rem;
 }
-.project-wise-grid{
+
+.project-wise-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap:1rem;
+    gap: 1rem;
     padding: 2rem;
     padding-top: 1rem;
     /* overflow-y: auto; */
 }
-.project-wise-item{
+
+.project-wise-item {
     border: 4px solid #AACBBA;
     border-radius: 24px;
-    padding:0.5rem;
+    padding: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .project-wise-right {
     display: flex;
     align-items: center;
     margin-right: 1rem;
 }
-.project-wise-right span{
+
+.project-wise-right span {
     color: black;
 }
-.member-wise-grid{
+
+.member-wise-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap:1rem;
+    gap: 1rem;
     padding: 2rem;
     padding-top: 1rem;
     /* overflow-y: auto; */
 }
-.member-wise-item{
+
+.member-wise-item {
     border: 4px solid #F3CF96;
     border-radius: 24px;
-    padding:1rem;
-    margin: 2rem;
+    padding: 1rem;
+    margin: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .member-wise-right {
     display: flex;
     align-items: center;
     margin-right: 1rem;
 }
-.member-wise-right span{
+
+.member-wise-right span {
     color: black;
 }
-.chart-title{
+
+.chart-title {
     display: flex;
     justify-content: center;
-    color:black;
+    color: black;
     font-size: 22px;
     font-weight: 500;
 }
-.month-selector{
-    margin-left: 10rem;
-    width:120px;
-}
-@media only screen and (max-width: 62em) {
 
-    .report-top{
-        grid-template-columns: 1fr;
-    } 
-    .top-items{
+.month-selector {
+    margin-left: 10rem;
+    width: 120px;
+}
+
+@media only screen and (max-width: 82em) {
+    .head-content {
+            display: flex;
+            align-items: center;
+        }
+
+    .top-items {
         height: auto;
         font-size: 25px;
     }
-    .chart-grid{
+
+    .chart-grid {
         grid-template-columns: 1fr;
         padding: 1rem;
     }
-    .project-wise-grid{
-        /* padding: 2rem; */
+
+    .project-wise-grid {
         padding-top: 1rem;
         overflow-y: auto;
     }
+
     .member-wise-item,
-    .project-wise-item{
-        display:block;
+    .project-wise-item {
+        display: block;
     }
+
     .member-wise-right,
-    .project-wise-right{
+    .project-wise-right {
         flex-direction: column;
         align-items: flex-start;
     }
-    .download-icon{
+
+    .download-icon {
         margin-top: 1rem;
     }
+
+    .report-icon {
+        width: 40px;
+        margin: 10px;
+    }
+
 }
+
+@media only screen and (max-width: 58em) {
+    .report-top {
+        grid-template-columns: 1fr;
+    }
+
+    .top-items {
+        display: flex;
+        font-size: 25px;
+    }
+
+    .top-items span {
+        margin-left: 1rem;
+        margin-top: 2rem !important;
+    }
+
+    .head-content span {
+        margin-bottom: 2rem !important;
+    }
+
+
+}
+
 @media only screen and (max-width: 28em) {
-    .top-items{
+    .top-items {
         display: flex;
         height: 8rem;
         font-size: 25px;
         padding: 0;
     }
-    .top-items span{
+
+    .top-items span {
         margin-left: 1rem;
         margin-top: 2rem;
     }

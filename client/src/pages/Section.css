@@ -43,7 +43,9 @@
     overflow: hidden;
     fill: var(--text-white-color);
 }
-
+.section-item-top span{
+    color:white
+}
 .section-item-top-left {
     display: flex;
     align-items: center;
@@ -52,6 +54,9 @@
 .section-item-top-right {
     display: flex;
     align-items: center;
+}
+.section-item-top-right{
+    color: white;
 }
 
 .notify {

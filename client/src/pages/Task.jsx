@@ -435,7 +435,8 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    backgroundColor: getPriorityColor(todoTask.priority),
+                    // backgroundColor: getPriorityColor(todoTask.priority),
+                    backgroundColor: sec.overdueTasks === 0 ?`#FF4848` :getPriorityColor(todoTask.priority),  
                     borderColor: getPriorityColor(todoTask.priority),
                   }}
                 >
@@ -484,7 +485,8 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    backgroundColor: getPriorityColor(inpg.priority),
+                    // backgroundColor: getPriorityColor(inpg.priority),
+                    backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),  
                     borderColor: getPriorityColor(inpg.priority),
                   }}
                 >
@@ -527,7 +529,8 @@ const Task = () => {
                 className="stage-task"
                 onClick={() => handleViewClick(comp._id)}
                 style={{
-                  backgroundColor: getPriorityBodyColor(comp.priority),
+                  // backgroundColor: getPriorityBodyColor(comp.priority),
+                  backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(comp.priority),
                   borderColor: getPriorityBodyColor(comp.priority),
                 }}
               >
@@ -577,7 +580,8 @@ const Task = () => {
                 className="stage-task"
                 onClick={() => handleViewClick(oth._id)}
                 style={{
-                  backgroundColor: getPriorityBodyColor(oth.priority),
+                  // backgroundColor: getPriorityBodyColor(oth.priority),
+                  backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(oth.priority),
                   borderColor: getPriorityBodyColor(oth.priority),
                 }}
               >

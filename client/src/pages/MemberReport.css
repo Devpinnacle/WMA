@@ -7,3 +7,23 @@
     padding-left: 18px;
     padding-right: 18px;
 }
+.member-wise-header-right{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-left: auto;
+}
+@media only screen and (max-width: 62em) {
+.member-wise-report{
+display: block;
+}
+.member-wise-header-right{
+    flex-direction: column;
+    align-items: flex-start;
+}
+.select-input{
+    margin-top: 8px;
+}
+
+
+}

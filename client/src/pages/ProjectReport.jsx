@@ -31,11 +31,12 @@ const ProjectReport = () => {
       "Progress",
       "Completion Date",
     ]);
+
     // Add data rows
     selectedProject.forEach((sec) => {
-      sec.data.forEach((task) => {
-        csvData.push([
-          sec.sectionName,
+      sec.data.forEach((task, index) => {
+        const rowData = [
+          index === 0 ? sec.sectionName : "", // Include section name for the first row
           task.taskName,
           task.assignee,
           formatDate(task.startDate),
@@ -46,14 +47,17 @@ const ProjectReport = () => {
           task.duration,
           `${task.progress}%`,
           task.completedDate ? formatDate(task.completedDate) : "",
-        ]);
+        ];
+        csvData.push(rowData);
       });
     });
     return csvData;
   };
+
   return (
-    <MainContainer pageName="Project-wise Report">
+    <MainContainer>
       {/* <ReportTopComponent /> */}
+      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Project-wise Report</div>
       <div className="project-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
@@ -82,6 +86,7 @@ const ProjectReport = () => {
             />
             <Icon title="Search" name="search-icon" size="2rem" />
           </div>
+          
           <div className="mr-1">
             <SelectInput placeholder="Section state" isSearchable={false} />
           </div>
