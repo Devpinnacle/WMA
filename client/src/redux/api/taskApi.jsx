@@ -18,9 +18,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
+
         } catch (error) {
           console.error("Error....", error);
         }
@@ -40,9 +38,6 @@ export const taskApi = createApi({
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
           obj.dispatch(
             taskApi.util.invalidateTags([{ type: "bringselectedtask" }])
-          );
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
           );
           obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
 
@@ -66,10 +61,6 @@ export const taskApi = createApi({
           obj.dispatch(
             taskApi.util.invalidateTags([{ type: "bringselectedtask" }])
           );
-
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
           obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
 
         } catch (error) {
@@ -89,9 +80,6 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -109,9 +97,6 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
         } catch (error) {
           console.error("Error....", error);
         }
@@ -129,9 +114,6 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
           obj.dispatch(taskApi.util.invalidateTags([{type:"bringtodaystask"}]))
         } catch (error) {
           console.error("Error....", error);

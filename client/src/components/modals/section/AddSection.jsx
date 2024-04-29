@@ -3,7 +3,7 @@ import ModalContainer from "../ModalContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
-import { useSaveSectionMutation } from "../../../redux/api/sectionApi";
+import { useGetSectionMutation, useSaveSectionMutation } from "../../../redux/api/sectionApi";
 import Icon from "../../ui/Icon";
 import "./AddSection.css"
 import { useNotifiySectionAddMutation } from "../../../redux/api/notificationApi";
@@ -18,6 +18,7 @@ const AddSection = ({ onCancel }) => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [saveSection] = useSaveSectionMutation();
   const [notifiySectionAdd]=useNotifiySectionAddMutation();
+  const [getSections]=useGetSectionMutation();
 
   const { selectedProject: projectId } = useSelector((state) => state.project);
 
@@ -58,7 +59,8 @@ const AddSection = ({ onCancel }) => {
       startDate: start,
       dueDate: due,
     };
-    saveSection(fromData);
+    await saveSection(fromData);
+    getSections(projectId );
     notifiySectionAdd({projectId:projectId})
     onCancel();
   };

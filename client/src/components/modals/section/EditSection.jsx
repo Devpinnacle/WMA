@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Icon from "../../ui/Icon";
 import ModalContainer from "../ModalContainer";
 import { dashedFormatDate } from "../../../Helper/helper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "../../ui/Alert";
 import { useAdjustTaskMutation } from "../../../redux/api/taskApi";
-import { useEditSectionMutation } from "../../../redux/api/sectionApi";
+import { useEditSectionMutation, useGetSectionMutation } from "../../../redux/api/sectionApi";
 import "./EditSection.css";
 import { useNotifiySectionEditMutation } from "../../../redux/api/notificationApi";
 
@@ -23,9 +23,12 @@ const EditSection = ({ onCancel, sec }) => {
     due: sec.dueDate,
   });
 
+  const { selectedProject } = useSelector((state) => state.project);
+
   const [adjustTask] = useAdjustTaskMutation();
   const [editSection] = useEditSectionMutation();
   const [notifiySectionEdit]=useNotifiySectionEditMutation();
+  const [getSections]=useGetSectionMutation();
 
   const dispatch = useDispatch();
 
@@ -86,7 +89,7 @@ const EditSection = ({ onCancel, sec }) => {
     setAlertFlag(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async() => {
     if (!sectionName || !startDate || !dueDate) {
       setAlertFlag(true);
       setErrorMsg("Enter allFields");
@@ -99,7 +102,8 @@ const EditSection = ({ onCancel, sec }) => {
       startDate: startDate,
       dueDate: dueDate,
     };
-    editSection(fromData);
+    await editSection(fromData);
+    getSections(selectedProject );
     notifiySectionEdit({sectionId:sec._id,projectId:sec.projectId})
     onCancel();
   };

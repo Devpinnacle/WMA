@@ -12,10 +12,12 @@ import Alert from "../../ui/Alert";
 import Icon from "../../ui/Icon";
 import { useAddTaskMutation } from "../../../redux/api/taskApi";
 import { useNotifiyTaskAddMutation } from "../../../redux/api/notificationApi";
+import { useGetSectionMutation } from "../../../redux/api/sectionApi";
 
 const AddTask = ({ onCancel }) => {
   const { user, swUsers } = useSelector((state) => state.user);
   const { selectedSection: sec } = useSelector((state) => state.section);
+  const { selectedProject } = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
   const [tag, setTag] = useState([]);
@@ -41,6 +43,7 @@ const AddTask = ({ onCancel }) => {
   if (!(user.userGroupName === "Software")) useGetSwUsersQuery();
   const [addTask] = useAddTaskMutation();
   const [notifiyTaskAdd] = useNotifiyTaskAddMutation();
+  const [getSections]=useGetSectionMutation();
 
   const tags = swUsers.map((user) => ({
     label: user.userName,
@@ -96,7 +99,7 @@ const AddTask = ({ onCancel }) => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async() => {
     const { name, startDt, dueDt, progress, notes, time } = taskData;
     const { stages, status, priority } = list;
     const startDate = sec.startDate.substring(0, 10);
@@ -213,7 +216,8 @@ const AddTask = ({ onCancel }) => {
       sectionId: sec._id,
       projectId: sec.projectId,
     };
-    addTask(fromData);
+    await addTask(fromData);
+    getSections(selectedProject );
     if (user.userGroupName === "Software") {
       notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId });
     }else{

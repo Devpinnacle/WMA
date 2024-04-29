@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import AddProject from "../components/modals/projects/AddProject";
+import { useGetSectionMutation } from "../redux/api/sectionApi";
 
 const Projects = () => {
   const [tag, setTag] = useState([]);
@@ -15,6 +16,7 @@ const Projects = () => {
   const [addProjectFlag, setAddProjectFlag] = useState(false);
 
   const { data: projectData } = useGetProjectQuery();
+  const [getSections]=useGetSectionMutation();
 
   const { project } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
@@ -56,8 +58,9 @@ const Projects = () => {
     return isIncludedInTags && isIncludedInSearch;
   });
 
-  const handleProjectClick = (id) => {
+  const handleProjectClick = async(id) => {
     dispatch(setSelectedProject(id));
+    await getSections(id)
     navigate("/sections");
   };
 
