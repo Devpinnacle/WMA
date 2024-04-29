@@ -78,8 +78,8 @@ io.on("connection", async (socket) => {
       .populate("projectId", "sctProjectName")
       .populate("sectionId", "sectionName")
       .populate("empUserId", "userName");
-    console.log("user Notifications", notifications);
-    io.to(Id).emit("userNotification", notifications);
+    // console.log("user Notifications", notifications);
+    io.to(Id).emit("userNotification", notifications);  
   });
 
   socket.on("updateTaskNotification", async (assign) => {

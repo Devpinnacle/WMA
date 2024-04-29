@@ -17,8 +17,14 @@ const createTokens = async (user) => {
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_EXPIRES_IN }
   );
-
-  return { accessToken };
+  const refreshToken = jwt.sign(
+    { id: user._id },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: process.env.REFRESH_EXPIRES_IN }
+  );
+  user.refreshTokens.push({ token: refreshToken });
+  await user.save({ validateBeforeSave: false });
+  return { accessToken,refreshToken };
 };
 
 //* Send Cookies ***************************************************
@@ -29,14 +35,19 @@ const sendCookies = (res, accessToken, refreshToken) => {
     accessToken,
     cookieOptions(process.env.ACCESS_COOKIE_EXPIRES_IN)
   );
+  res.cookie(
+    "refresh",
+    refreshToken,
+    cookieOptions(process.env.REFRESH_COOKIE_EXPIRES_IN)
+  );
 };
 
 //* Create tokens and send Cookies *********************************
 
 const createTokensAndCookies = async (user, res) => {
-  const { accessToken } = await createTokens(user);
-  sendCookies(res, accessToken);
-  return { accessToken };
+  const { accessToken,refreshToken } = await createTokens(user);
+  sendCookies(res, accessToken,refreshToken);
+  return { accessToken,refreshToken };
 };
 
 module.exports = {

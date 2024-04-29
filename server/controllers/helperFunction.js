@@ -4,16 +4,35 @@ const AppError = require("../utils/appError");
 const Notification = require("../models/Notification");
 const { createTokensAndCookies } = require("../utils/tokensAndCookies");
 const TaskNotification = require("../models/taskNotifications");
+const User = require("../models/EmpDetails");
 
 //* Create and send tokens *****************************************
 
 exports.sendTokensAndCookies = async (req, res, user, statusCode) => {
-  const { accessToken } = await createTokensAndCookies(user, res);
+  const refreshToken = req.cookies?.refresh || req.headers.refreshtoken;
+  if (refreshToken) {
+    // If any cookie => remove it from DB
+    user.refreshTokens = user.refreshTokens.filter(
+      (rt) => rt.token !== refreshToken
+    );
+
+    // Reuse detection
+    const foundToken = await User.findOne({
+      "refreshTokens.token": refreshToken,
+    });
+    if (!foundToken) user.refreshTokens = [];
+  }
+
+  const { accessToken, refreshToken: rT } = await createTokensAndCookies(
+    user,
+    res
+  );
 
   res.status(statusCode).json({
     status: "SUCCESS",
     accessToken,
     userId: user._id,
+    refreshToken: rT
   });
 };
 
@@ -55,7 +74,7 @@ exports.addNotification = async (
   action,
   res,
   next,
-  empUserId=null
+  empUserId = null
 ) => {
   if (!projectId) {
     next(new AppError("please provide project id and section id", 401));
@@ -67,33 +86,48 @@ exports.addNotification = async (
     symbol: symbol,
     projectId: projectId,
     sectionId: sectionId,
-    empUserId:empUserId
+    empUserId: empUserId,
   });
   await newNotification.save();
 
   res.status(200).json({
     status: "success",
-    data:empUserId
+    data: empUserId,
   });
 };
 
 //* add Notifications *************************************************
 
-exports.addTaskNotification=async(userId,taskId,action,newData,res,next)=>{
+exports.addTaskNotification = async (
+  userId,
+  taskId,
+  action,
+  newData,
+  res,
+  next
+) => {
   if (!taskId) {
     return next(new AppError("Invalid Credentials!", 401));
   }
-  const newTaskNotification=new TaskNotification({
-    taskId:taskId,
-    action:action,
-    userId:userId,
-    newData:newData?newData:null
-  })
+  const newTaskNotification = new TaskNotification({
+    taskId: taskId,
+    action: action,
+    userId: userId,
+    newData: newData ? newData : null,
+  });
 
   await newTaskNotification.save();
 
   res.status(200).json({
     status: "success",
-    data:taskId
+    data: taskId,
   });
-}
+};
+
+//* Delete expired refresh tokens **********************************
+
+exports.deleteExpiredTokens = async (user) => {
+  user.refreshTokens = user.refreshTokens.filter(
+    (rt) => rt.expiresIn.getTime() > Date.now()
+  );
+};

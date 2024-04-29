@@ -6,6 +6,7 @@ const initialState = {
   alertMsg: null,
   alertType: null,
   accessToken: localStorage.getItem("accessToken"),
+  refreshToken: localStorage.getItem("refreshToken"),
 };
 
 const userSlice = createSlice({
@@ -34,6 +35,7 @@ const userSlice = createSlice({
     },
     setTokens(state, { payload }) {
       state.accessToken = payload.accessToken;
+      state.refreshToken = payload.refreshToken;
     },
     getSwUsers(state, { payload }) {
       state.swUsers = payload;

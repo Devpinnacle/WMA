@@ -56,6 +56,10 @@ const taskSchema = new mongoose.Schema({
     ref: "sctproject",
     required: true,
   },
+  progressUpdateDate: {
+    type: Date,
+    default: null,
+  },
   createdBy: {
     type: ObjectId,
     ref: "empdetails",
