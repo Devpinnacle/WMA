@@ -407,8 +407,10 @@ const Section = () => {
                   >
                     <div className="section-task-header"
                       style={{
-                        backgroundColor: getPriorityColor(task.priority),
-                        borderColor: getPriorityColor(task.priority),
+                        backgroundColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+                        borderColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+                        // backgroundColor: getPriorityColor(task.priority),
+                        // borderColor: getPriorityColor(task.priority),
                       }}
                     >
                       <span

@@ -227,7 +227,10 @@ const Task = () => {
             project name{" "}
           </span>
         </div> */}
-        <div className="section-item-top" style={{backgroundColor:sec.dueDate > new Date()  ? '#FF4848' :'#3D405B'}}>
+        <div className="section-item-top" style={{
+          backgroundColor: sec.dueDate > new Date() ? '#FF4848' : '#3D405B',
+          borderColor: sec.dueDate > new Date() ? '#FF4848' : '#3D405B',
+        }}>
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span
@@ -439,7 +442,8 @@ const Task = () => {
                   style={{
                     // backgroundColor: getPriorityColor(todoTask.priority),
                     backgroundColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(todoTask.priority),
-                    borderColor: getPriorityColor(todoTask.priority),
+                    borderColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(todoTask.priority),
+                    // borderColor: getPriorityColor(todoTask.priority),
                   }}
                 >
                   <span
@@ -489,7 +493,9 @@ const Task = () => {
                   style={{
                     backgroundColor: getPriorityColor(inpg.priority),
                     // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),  
-                    borderColor: getPriorityColor(inpg.priority),
+                    backgroundColor: inpg.dueDate > new Date() ? '#FF4848' : getPriorityColor(inpg.priority),
+                    borderColor: inpg.dueDate > new Date() ? '#FF4848' : getPriorityColor(inpg.priority),
+                    // borderColor: getPriorityColor(inpg.priority),
                   }}
                 >
                   <span
@@ -532,15 +538,16 @@ const Task = () => {
                 onClick={() => handleViewClick(comp._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(comp.priority),
-                  // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(comp.priority),
                   borderColor: getPriorityBodyColor(comp.priority),
                 }}
               >
                 <div
                   className="stage-task-header"
                   style={{
-                    backgroundColor: getPriorityColor(comp.priority),
-                    borderColor: getPriorityColor(comp.priority),
+                    // backgroundColor: getPriorityColor(comp.priority),
+                    backgroundColor: comp.dueDate > new Date() ? '#FF4848' : getPriorityColor(comp.priority),
+                    borderColor: comp.dueDate > new Date() ? '#FF4848' : getPriorityColor(comp.priority),
+                    // borderColor: getPriorityColor(comp.priority),
                   }}
                 >
                   <span
@@ -583,15 +590,16 @@ const Task = () => {
                 onClick={() => handleViewClick(oth._id)}
                 style={{
                   backgroundColor: getPriorityBodyColor(oth.priority),
-                  // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(oth.priority),
                   borderColor: getPriorityBodyColor(oth.priority),
                 }}
               >
                 <div
                   className="stage-task-header"
                   style={{
-                    backgroundColor: getPriorityColor(oth.priority),
-                    borderColor: getPriorityColor(oth.priority),
+                    // backgroundColor: getPriorityColor(oth.priority),
+                    backgroundColor: oth.dueDate > new Date() ? '#FF4848' : getPriorityColor(oth.priority),
+                    borderColor: oth.dueDate > new Date() ? '#FF4848' : getPriorityColor(oth.priority),
+                    // borderColor: getPriorityColor(oth.priority),
                   }}
                 >
                   <span

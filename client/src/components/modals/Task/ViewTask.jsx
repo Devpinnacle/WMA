@@ -634,8 +634,9 @@ const ViewTask = ({ onCancel, taskId, section }) => {
         >
           <div className="view-task-header"
             style={{
-              backgroundColor: getPriorityColor(task.priority),
-              borderColor: getPriorityColor(task.priority),
+              backgroundColor: task.dueDt > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+              // backgroundColor: getPriorityColor(task.priority),
+              borderColor: task.dueDt > new Date() ? '#FF4848' : getPriorityColor(task.priority),
             }}
           >
             <span>{task.taskName}</span>
@@ -667,15 +668,15 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                   {/* <span>{formatDate(task.assignedDate)}</span> */}
                 </div>
                 <div className="ta-td-date">
-                  <span>TD Date :</span>
+                  <span style={{ color: date.dueDt > new Date() ? '#FF4848' : 'black'}}>TD Date :</span>
                   <div className="date-box m-0">
                     <Icon name="calender-outline" size="24px" />
                     <input
                       type="date"
-                      style={{ color: "black" }}
                       value={date.dueDt}
                       name="dueDt"
                       onChange={inputHandler}
+                      style={{ color: date.dueDt > new Date() ? '#FF4848' : 'black'}}
                     />
                   </div>
                   {/* <span>{formatDate(task.dueDate)}</span> */}
@@ -810,14 +811,15 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             >
               Duration :
             </label>
+
             <input
               type="time"
-              style={{ color: "black" }}
-              name="time"
-              id="duration"
+              name="duration"
               value={updates.duration}
+              style={{ color: "black" }}
               onChange={handleInputChange}
             />
+            
             <span
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
             >
