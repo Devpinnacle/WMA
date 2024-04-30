@@ -14,6 +14,7 @@ const AddSection = ({ onCancel }) => {
     start: null,
     due: null,
   });
+  console.log("section data",sectionData)
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [saveSection] = useSaveSectionMutation();
@@ -69,6 +70,7 @@ const AddSection = ({ onCancel }) => {
     setErrorMsg(null);
     setAlertFlag(false);
   };
+  const currentDate = new Date().toISOString().split("T")[0];
 
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
@@ -128,6 +130,7 @@ const AddSection = ({ onCancel }) => {
               type="date"
               name="start"
               onChange={inputHandler}
+              min={currentDate}
             />
           </div>
  
@@ -137,6 +140,7 @@ const AddSection = ({ onCancel }) => {
               type="date"
               name="due"
               onChange={inputHandler}
+              min={sectionData.start}
             />
           </div>
           <div className='save-button'>

@@ -582,8 +582,8 @@ const Task = () => {
                 className="stage-task"
                 onClick={() => handleViewClick(oth._id)}
                 style={{
-                  // backgroundColor: getPriorityBodyColor(oth.priority),
-                  backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(oth.priority),
+                  backgroundColor: getPriorityBodyColor(oth.priority),
+                  // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(oth.priority),
                   borderColor: getPriorityBodyColor(oth.priority),
                 }}
               >

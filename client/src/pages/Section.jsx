@@ -200,7 +200,7 @@ const Section = () => {
     //     )}
     //   </>
     // );
-    <MainContainer pageName="Section">
+    <MainContainer pageName="Project name-desc">
       {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
       <div className="section-top" >
         <div className="search-box">
@@ -243,7 +243,7 @@ const Section = () => {
                 </span>
               </div>
               <div className="section-item-top-right">
-                <div className="notify">1</div>
+                {/* <div className="notify">1</div> */}
                 <div className="section-progress" style={{color:"white"}}>{sec.progress}%</div>
               </div>
             </div>
@@ -418,7 +418,7 @@ const Section = () => {
                         {task.taskName}
                       </span>
                       <div className="section-item-top-right">
-                        <div className="notify"></div>
+                        {/* <div className="notify"></div> */}
                         <div
                           className="section-progress"
                           style={{ color: "black" }}

@@ -401,7 +401,7 @@ const Dashboard = () => {
                           {proj.sctProjectName}
                         </span>
                       </div>
-                      <div className="notify">1</div>
+                      {/* <div className="notify">1</div> */}
                     </div>
                     <div
                       style={{
