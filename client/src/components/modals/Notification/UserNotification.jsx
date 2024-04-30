@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../ui/Icon";
 import ModalContainer from "../ModalContainer";
 import "./UserNotification.css";
@@ -8,41 +8,98 @@ import { useGetNotificationQuery } from "../../../redux/api/notificationApi";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 import { getNotifications } from "../../../redux/slice/notificationSlice";
+import { dashedFormatDate } from "../../../Helper/helper";
 
 const UserNotification = ({ onCancel }) => {
+  const [notificationTag, setNotificationTag] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const { data: nofify } = useGetNotificationQuery();
   const { notifications } = useSelector((state) => state.notifications);
-  const {user}=useSelector((state)=>state.user)
-  const dispatch=useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const socket = io(import.meta.env.VITE_SOCKET_URL);
 
+  const notificationTags = [
+    { label: "high", value: "red" },
+    { label: "normal", value: "yello" },
+    { label: "low", value: "green" },
+  ];
+
   useEffect(() => {
-    socket.emit('join', user._id);
+    socket.emit("join", user._id);
     socket.on("userNotification", (data) => {
-      
-        dispatch(getNotifications(data));
-      
+      dispatch(getNotifications(data));
     });
     return () => socket?.off("N");
   }, []);
+
+  const handleNotificationTags = (e) => {
+    if (!notificationTag.some((t) => t.value === e.value)) {
+      setNotificationTag((prev) => [
+        ...prev,
+        { label: e.label, value: e.value },
+      ]);
+    }
+  };
+
+  const handleRemoveNotificationTag = (item) => {
+    setNotificationTag((prevTag) =>
+      prevTag.filter((tg) => tg.value !== item.value)
+    );
+  };
+
+  const handleDateChange = (date) => { 
+    // console.log(dashedFormatDate(date))
+    setSelectedDate(date);
+  };
+
+  const filteredNotifications = notifications.filter((notification) => {
+    const notificationDate = notification.createdDate;
+    console.log(dashedFormatDate(notificationDate))
+    const isDateMatched =
+      !selectedDate ||
+      dashedFormatDate(notificationDate) === dashedFormatDate(selectedDate);
+    const isTagMatched =
+      notificationTag.length === 0 ||
+      notificationTag.every((tg) => notification.priority.includes(tg.value));
+    return isDateMatched && isTagMatched;
+  });
+
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
-      <div className="user-madol modal-centered modal-notification" >
+      <div className="user-madol modal-centered modal-notification">
         <div className="notification">
           <div className="project-header">
             <span className="title">Notification</span>
             <div className="header-right">
-              <SelectInput className="tags" placeholder="Type" />
+              <SelectInput
+                className="tags"
+                options={notificationTags}
+                onChange={handleNotificationTags}
+                placeholder="Type"
+              />
               <div
                 className="date-box"
                 style={{ padding: "1rem", margin: "1rem" }}
               >
-                <SelectDate placeholder="Day dd-mm-yyyy" />
+                <SelectDate placeholder="Day dd-mm-yyyy" value={selectedDate} onChange={handleDateChange}/>
               </div>
             </div>
           </div>
+          <div className="selected-tag">
+            {notificationTag.map((tg, index) => (
+              <div key={index} className="tag-container">
+                <Icon
+                  name="close"
+                  size="2rem"
+                  onClick={() => handleRemoveNotificationTag(tg)}
+                />
+                <p style={{ color: "black" }}>{tg.label}</p>
+              </div>
+            ))}
+          </div>
           <div className="notification-container">
-            {notifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <div className={`notification-item ${notification.priority}`}>
                 <div className="left-content">
                   <Icon name={notification.symbol} size="24px" />

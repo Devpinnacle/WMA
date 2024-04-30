@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
-import { useDeleteSectionMutation } from "../../../redux/api/sectionApi";
+import { useDeleteSectionMutation, useGetSectionMutation } from "../../../redux/api/sectionApi";
 import Icon from "../../ui/Icon";
 import "./DeleteSection.css"
 import { useNotifiySectionDeleteMutation } from "../../../redux/api/notificationApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
 import Alert from "../../ui/Alert";
 
 const DeleteSection = ({ sec, onCancel }) => {
   const [deleteSection] = useDeleteSectionMutation();
   const [notifiySectionDelete,{error,data}]=useNotifiySectionDeleteMutation();
+  const [getSections]=useGetSectionMutation();
+
+  const { selectedProject } = useSelector((state) => state.project);
   // console.log("section",sec)
 
   const [alertFlag,setAlertFlag]=useState(false)
@@ -22,12 +25,13 @@ const DeleteSection = ({ sec, onCancel }) => {
     }
   },[error, data])
 
-  const handleDeleteSection = () => {
+  const handleDeleteSection = async() => {
     const fromData = {
       id: sec._id,
     };
-    deleteSection(fromData);
+    await deleteSection(fromData);
     notifiySectionDelete({projectId:sec.projectId,sectionId:sec._id})
+    getSections(selectedProject);
     onCancel();
   };
 

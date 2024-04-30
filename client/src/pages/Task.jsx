@@ -529,8 +529,8 @@ const Task = () => {
                 className="stage-task"
                 onClick={() => handleViewClick(comp._id)}
                 style={{
-                  // backgroundColor: getPriorityBodyColor(comp.priority),
-                  backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(comp.priority),
+                  backgroundColor: getPriorityBodyColor(comp.priority),
+                  // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(comp.priority),
                   borderColor: getPriorityBodyColor(comp.priority),
                 }}
               >

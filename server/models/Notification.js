@@ -4,7 +4,7 @@ const ObjectId = mongoose.Schema.ObjectId;
 const notificationSchema = new mongoose.Schema({
   createdDate: {
     type: String,
-    default: Date.now(),
+    default: Date(),
   },
   time: {
     type: String,

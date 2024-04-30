@@ -15,10 +15,7 @@ export const sectionApi = createApi({
       }),
       async onQueryStarted(args, obj) {
         try {
-          const { data } = await obj.queryFulfilled;
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
+
         } catch (error) {
           console.error("Error....", error);
         }
@@ -34,10 +31,7 @@ export const sectionApi = createApi({
       }),
       async onQueryStarted(args, obj) {
         try {
-          const { data } = await obj.queryFulfilled;
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
+     
         } catch (error) {
           console.error("Error....", error);
         }
@@ -53,10 +47,7 @@ export const sectionApi = createApi({
       }),
       async onQueryStarted(args, obj) {
         try {
-          const { data } = await obj.queryFulfilled;
-          obj.dispatch(
-            sectionApi.util.invalidateTags([{ type: "bringsection" }])
-          );
+
         } catch (error) {
           console.error("Error....", error);
         }
@@ -64,10 +55,8 @@ export const sectionApi = createApi({
     }),
 
     //* Get Section ******************************************************
-    getSection: builder.query({
-      providesTags: (result, error, projectId) => [
-        { type: "bringsection", projectId },
-      ],
+    getSection: builder.mutation({
+
       query: (projectId) => ({
         url: "/section/getsection",
         method: "POST",
@@ -106,6 +95,6 @@ export const {
   useSaveSectionMutation,
   useEditSectionMutation,
   useDeleteSectionMutation,
-  useGetSectionQuery,
+  useGetSectionMutation,
   useGetSelectedSectionMutation,
 } = sectionApi;

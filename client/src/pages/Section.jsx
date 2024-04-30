@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddSection from "../components/modals/section/AddSection";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetSectionQuery } from "../redux/api/sectionApi";
 import DeleteSection from "../components/modals/section/DeleteSection";
 import { useNavigate } from "react-router-dom";
 import { setSelectedSection } from "../redux/slice/sectionSlice";
@@ -14,6 +13,7 @@ import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { useGetSelectedTaskMutation } from "../redux/api/taskApi";
+import { useGetSectionMutation } from "../redux/api/sectionApi";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -33,8 +33,10 @@ const Section = () => {
   const { selectedProject } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
-  console.log("section", sections);
-  useGetSectionQuery(selectedProject);
+
+  const [getSections]=useGetSectionMutation();
+
+  useEffect(()=>{getSections(selectedProject)},[])
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,7 +56,7 @@ const Section = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const month = (date.getMonth()+1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };

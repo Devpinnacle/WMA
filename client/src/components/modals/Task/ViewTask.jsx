@@ -39,6 +39,7 @@ import {
 } from "../../../redux/api/taskNotificationApi";
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
+import { useGetSectionMutation } from "../../../redux/api/sectionApi";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   // console.log("task...", task);
@@ -48,6 +49,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   const { user } = useSelector((state) => state.user);
   const { taskNotifications } = useSelector((state) => state.taskNotifications);
   const { selectedTask: task } = useSelector((state) => state.task);
+  const { selectedProject } = useSelector((state) => state.project);
   // console.log("task...", task);
 
   const [updateTaskStg] = useUpdateTaskStgMutation();
@@ -64,6 +66,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   const [notifiyStatus] = useNotifiyStatusMutation();
   const [notifiyPriority] = useNotifiyPriorityMutation();
   const [notifiyStages] = useNotifiyStagesMutation();
+  const [getSections]=useGetSectionMutation();
 
   const { data } = useGetTaskNotificationQuery(taskId);
 
@@ -231,7 +234,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     // }
   };
 
-  const handleSaveTaskStg = () => {
+  const handleSaveTaskStg = async() => {
     const { startDt, dueDt } = date;
     const { stages, status, priority } = list;
 
@@ -255,7 +258,8 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       notes: notes,
       sectionId: section._id,
     };
-    updateTaskStg(fromData);
+    await updateTaskStg(fromData);
+    getSections(selectedProject);
     if (user.userGroupName === "Software") {
       notifiyTaskEdit({ sectionId: section._id, projectId: section.projectId });
     } else {
@@ -336,7 +340,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     // }
   };
 
-  const handleSaveTaskUpd = () => {
+  const handleSaveTaskUpd = async() => {
     // Convert hours and minutes to numbers
     const [hours, minutes] = updates.duration
       ? updates.duration.split(":")
@@ -352,7 +356,8 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       sectionId: section._id,
     };
 
-    updateDailyTask(fromData);
+    await updateDailyTask(fromData);
+    getSections(selectedProject);
     if (user.userGroupName === "Software") {
       notifiyTaskProgress({
         sectionId: section._id,
@@ -404,12 +409,13 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async() => {
     const fromData = {
       id: task._id,
       secId: task.sectionId._id,
     };
-    deleteTask(fromData);
+    await deleteTask(fromData);
+    getSections(selectedProject );
     if (user.userGroupName === "Software") {
       notifiyTaskDelete({
         sectionId: section._id,

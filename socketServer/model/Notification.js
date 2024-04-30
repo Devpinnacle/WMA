@@ -7,7 +7,7 @@ const Section=require("./Sections")
 const notificationSchema = new mongoose.Schema({
   createdDate: {
     type: String,
-    default: Date.now(),
+    default: new Date(),
   },
   time: {
     type: String,
