@@ -43,7 +43,7 @@ const AddTask = ({ onCancel }) => {
   if (!(user.userGroupName === "Software")) useGetSwUsersQuery();
   const [addTask] = useAddTaskMutation();
   const [notifiyTaskAdd] = useNotifiyTaskAddMutation();
-  const [getSections]=useGetSectionMutation();
+  const [getSections] = useGetSectionMutation();
 
   const tags = swUsers.map((user) => ({
     label: user.userName,
@@ -99,7 +99,7 @@ const AddTask = ({ onCancel }) => {
     }));
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     const { name, startDt, dueDt, progress, notes, time } = taskData;
     const { stages, status, priority } = list;
     const startDate = sec.startDate.substring(0, 10);
@@ -142,27 +142,18 @@ const AddTask = ({ onCancel }) => {
     }
 
     if (taskStartDate > taskDueDate) {
-      console.log(startDt > dueDt, " came inside ");
       setAlertFlag(true);
-      // alert("1")
       setErrorMsg("Due date must be greater than start Date");
-      // alert("2")
       dispatch(
         setAlert({
           type: "error",
           msg: "Due date must be greater than start Date",
         })
       );
-      // alert("3")
     }
-
-    console.log(taskStartDate < startDate || taskDueDate > dueDate);
-    console.log("section date", startDate, "  ", dueDate);
-    console.log("task date", taskStartDate, " ", taskDueDate);
 
     if (taskStartDate < startDate || taskDueDate > dueDate) {
       setAlertFlag(true);
-      console.log("alert flag", alertFlage);
       setErrorMsg(
         "Task start date and due date must be inside the range of Section's start date and due date"
       );
@@ -202,10 +193,18 @@ const AddTask = ({ onCancel }) => {
       return;
     }
 
+    // Increment start date by one day
+    const updatedStartDate = new Date(startDt);
+    updatedStartDate.setDate(updatedStartDate.getDate() + 1);
+
+    // Increment due date by one day
+    const updatedDueDate = new Date(dueDt);
+    updatedDueDate.setDate(updatedDueDate.getDate() + 1);
+
     const fromData = {
       taskName: name,
-      startDate: taskStartDate,
-      dueDate: taskDueDate,
+      startDate: updatedStartDate.toISOString().split("T")[0],
+      dueDate: updatedDueDate.toISOString().split("T")[0],
       priority: priority,
       status: status,
       stage: stages,
@@ -216,12 +215,17 @@ const AddTask = ({ onCancel }) => {
       sectionId: sec._id,
       projectId: sec.projectId,
     };
+    // console.log(fromData);
     await addTask(fromData);
-    getSections(selectedProject );
+    getSections(selectedProject);
     if (user.userGroupName === "Software") {
       notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId });
-    }else{
-      notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId ,assignee:assignee});
+    } else {
+      notifiyTaskAdd({
+        sectionId: sec._id,
+        projectId: sec.projectId,
+        assignee: assignee,
+      });
     }
     onCancel();
   };

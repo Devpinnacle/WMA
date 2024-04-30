@@ -14,7 +14,9 @@ export const minutesToHoursAndMinutes = (totalMinutes) => {
   export const dashedFormatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = (date.getMonth()).toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add 1 before padding
     const day = date.getDate().toString().padStart(2, '0');
+    console.log(month)
     return `${year}-${month}-${day}`.toString();
-}
+  }
+  

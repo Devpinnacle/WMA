@@ -45,6 +45,7 @@ const EditSection = ({ onCancel, sec }) => {
       const newDueDate = new Date(
         new Date(newStartDate).getTime() + initialDistance
       );
+      console.log(newDueDate)
       setDueDate(dashedFormatDate(newDueDate));
     }
 

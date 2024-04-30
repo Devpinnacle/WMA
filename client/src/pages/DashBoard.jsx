@@ -19,7 +19,7 @@ import { getNotifications } from "../redux/slice/notificationSlice";
 import { useGetNotificationQuery } from "../redux/api/notificationApi";
 import DayDateInput from "../components/ui/DayDateInput";
 import { useGetSelectedTaskMutation, useGetTodaysTaskQuery } from "../redux/api/taskApi";
-import { formatDate } from "../Helper/helper";
+import { dashedFormatDate, formatDate } from "../Helper/helper";
 import { useGetSelectedSectionMutation } from "../redux/api/sectionApi";
 import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
@@ -100,7 +100,8 @@ const Dashboard = () => {
     (a, b) => new Date(a.created_date) - new Date(b.created_date)
   );
 
-  const handleDateChange = (date) => {
+  const handleDateChange = (date) => { 
+    // console.log(dashedFormatDate(date))
     setSelectedDate(date);
   };
 
@@ -128,10 +129,11 @@ const Dashboard = () => {
   };
 
   const filteredNotifications = notifications.filter((notification) => {
-    const notificationDate = new Date(parseInt(notification.createdDate));
+    const notificationDate = notification.createdDate;
+    console.log(dashedFormatDate(notificationDate))
     const isDateMatched =
       !selectedDate ||
-      notificationDate.toDateString() === selectedDate.toDateString();
+      dashedFormatDate(notificationDate) === dashedFormatDate(selectedDate);
     const isTagMatched =
       notificationTag.length === 0 ||
       notificationTag.every((tg) => notification.priority.includes(tg.value));
