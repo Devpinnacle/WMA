@@ -64,6 +64,7 @@ const DeleteSection = ({ sec, onCancel }) => {
             className="close-icon"
             name="close"
             size="6rem"
+            color="black"
             onClick={onCancel}
           />
         </div>

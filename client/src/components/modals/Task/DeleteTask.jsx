@@ -17,7 +17,7 @@ const DeleteTask = ({onCancel, onDelete}) => {
               Delete task
             </span>
           </div>
-          <Icon className="close-icon" name="close" size="6rem" onClick={onCancel} />
+          <Icon className="close-icon" name="close" size="6rem" onClick={onCancel} color="black" />
         </div>
         <div className="del-content ml-5">
           Are you sure you want to delete <span>db</span> notes?

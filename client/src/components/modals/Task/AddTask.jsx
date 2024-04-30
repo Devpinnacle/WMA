@@ -31,7 +31,6 @@ const AddTask = ({ onCancel }) => {
     progress: null,
     time: null,
   });
-  console.log("task data",taskData)
   const [list, setList] = useState({
     priority: "",
     status: "",
@@ -213,7 +212,6 @@ const AddTask = ({ onCancel }) => {
       sectionId: sec._id,
       projectId: sec.projectId,
     };
-    // console.log(fromData);
     await addTask(fromData);
     getSections(selectedProject);
     if (user.userGroupName === "Software") {

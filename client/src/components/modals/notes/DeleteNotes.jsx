@@ -30,6 +30,7 @@ const DeleteNotes = ({ id, head, onCancel }) => {
               className="close-icon"
               name="close"
               size="45px"
+              color="black"
               onClick={onCancel}
             />
           </div>

@@ -348,7 +348,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     const hoursInMinutes = parseInt(hours, 10) * 60;
     const minutesAsNumber = parseInt(minutes, 10);
     const totalMinutes = hoursInMinutes + minutesAsNumber;
-    // console.log("hit daily update");
     const fromData = {
       id: task._id,
       progress: updates.progress ? parseInt(updates.progress) : 0,
@@ -819,7 +818,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               style={{ color: "black" }}
               onChange={handleInputChange}
             />
-            
+
             <span
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
             >

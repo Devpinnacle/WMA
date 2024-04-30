@@ -33,9 +33,9 @@ const Dashboard = () => {
   const [deleteNoteFlag, setDeleteNoteFlag] = useState(false);
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
   const [addProjectFlag, setAddProjectFlag] = useState(false);
-  const [taskFlag,setTaskFlag]=useState(false);
-  const [task,setTask]=useState(null);
-  const [section,setSection]=useState(null)
+  const [taskFlag, setTaskFlag] = useState(false);
+  const [task, setTask] = useState(null);
+  const [section, setSection] = useState(null)
   const [searchTerm, setSearchTerm] = useState("");
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
@@ -44,7 +44,7 @@ const Dashboard = () => {
   const { data: projectData } = useGetProjectQuery();
   const { data: nofify } = useGetNotificationQuery();
   const { data: tasktoday } = useGetTodaysTaskQuery();
-  const [getSelectedSection]=useGetSelectedSectionMutation();
+  const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
 
   const { notes } = useSelector((state) => state.notes);
@@ -52,10 +52,6 @@ const Dashboard = () => {
   const { user } = useSelector((state) => state.user);
   const { notifications } = useSelector((state) => state.notifications);
   const { todaysTask } = useSelector((state) => state.task);
-
-  // console.log("todaysTask", todaysTask);
-  // console.log("today date", todaysTask?todaysTask.data[0]?.progressUpdateDate:null);
-  // console.log("date",new Date())
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,8 +96,7 @@ const Dashboard = () => {
     (a, b) => new Date(a.created_date) - new Date(b.created_date)
   );
 
-  const handleDateChange = (date) => { 
-    // console.log(dashedFormatDate(date))
+  const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
@@ -130,7 +125,6 @@ const Dashboard = () => {
 
   const filteredNotifications = notifications.filter((notification) => {
     const notificationDate = notification.createdDate;
-    console.log(dashedFormatDate(notificationDate))
     const isDateMatched =
       !selectedDate ||
       dashedFormatDate(notificationDate) === dashedFormatDate(selectedDate);
@@ -206,15 +200,15 @@ const Dashboard = () => {
     navigate("/sections");
   };
 
-  const handleClickTask=async(task)=>{
-    const sec=await getSelectedSection(task.sectionId)
+  const handleClickTask = async (task) => {
+    const sec = await getSelectedSection(task.sectionId)
     setSection(sec);
     setTask(task._id);
     await getSelectedTask(task._id)
     setTaskFlag(true);
   }
 
-  const handleCancelViewTask=()=>{
+  const handleCancelViewTask = () => {
     setTaskFlag(false);
     dispatch(resetTaskNotifications());
     dispatch(taskNotificationApi.util.resetApiState())
@@ -231,7 +225,7 @@ const Dashboard = () => {
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
                     {todaysTask.data?.map((task) => (
-                      <div className="task-body" onClick={()=>handleClickTask(task)}>
+                      <div className="task-body" onClick={() => handleClickTask(task)}>
                         <div className="task-header">
                           <div className="task-left">
                             <Icon name="project-outline" size="24px" />
@@ -244,12 +238,12 @@ const Dashboard = () => {
 
                         <div className="task-name">
                           <span>{task.taskName}</span>
-                          {task.progressUpdateDate?( formatDate(task.progressUpdateDate)===formatDate(new Date())&& (
-                              <div className="progress-tag">
-                                <Icon name="save-outline" size="24px" />
-                                <span>Progress updated</span>
-                              </div>
-                            )):(<></>)}
+                          {task.progressUpdateDate ? (formatDate(task.progressUpdateDate) === formatDate(new Date()) && (
+                            <div className="progress-tag">
+                              <Icon name="save-outline" size="24px" />
+                              <span>Progress updated</span>
+                            </div>
+                          )) : (<></>)}
                         </div>
                         <div className="task-detail">
                           <div className="employee-detail">
@@ -279,6 +273,7 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
+                  {/* NOTIFICATION */}
                   <div className="project-header">
                     <span className="title">Notification</span>
                     <div className="header-right">
@@ -297,7 +292,8 @@ const Dashboard = () => {
                       />
                     </div>
                   </div>
-                  <div className="selected-tag">
+                  
+                    <div className="selected-tag">
                     {notificationTag.map((tg, index) => (
                       <div key={index} className="tag-container">
                         <Icon
@@ -308,7 +304,7 @@ const Dashboard = () => {
                         <p style={{ color: "black" }}>{tg.label}</p>
                       </div>
                     ))}
-                  </div>
+                    </div>
 
                   <div className="notification-container">
                     {filteredNotifications.map((notification) => (
@@ -599,7 +595,7 @@ const Dashboard = () => {
       {addProjectFlag && (
         <AddProject onCancel={() => setAddProjectFlag(false)} />
       )}
-      {taskFlag&&<ViewTask taskId={task} onCancel={handleCancelViewTask} section={section}/>}
+      {taskFlag && <ViewTask taskId={task} onCancel={handleCancelViewTask} section={section} />}
     </MainContainer>
   );
 };
