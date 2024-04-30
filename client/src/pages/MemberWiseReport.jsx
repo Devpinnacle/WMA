@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
-import { useGetSingleUserReportMutation, useGetUserReportQuery } from "../redux/api/reportApi";
+import {
+  useGetSingleUserReportMutation,
+  useGetUserReportQuery,
+} from "../redux/api/reportApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSetUser } from "../redux/slice/reportSlice";
 
 const MemberWiseReport = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   useGetUserReportQuery();
-  const [getUser] = useGetSingleUserReportMutation()
+  const [getUser] = useGetSingleUserReportMutation();
   const { userReport } = useSelector((state) => state.report);
   console.log("userReport", userReport);
   const navigate = useNavigate();
@@ -17,15 +21,25 @@ const MemberWiseReport = () => {
 
   const handleUserClick = async (id) => {
     dispatch(getSetUser(id));
-    getUser(id)
+    getUser(id);
     navigate("/reports/singleuserreports");
   };
-
+  const filteredReport = userReport.filter((user) => {
+    return user.userName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
   return (
     <MainContainer>
-      <div style={{ color: "#3D405B", fontWeight: "700", fontSize: "50px", paddingLeft: "2rem" }}>Member-wise Report</div>
+      <div
+        style={{
+          color: "#3D405B",
+          fontWeight: "700",
+          fontSize: "50px",
+          paddingLeft: "2rem",
+        }}
+      >
+        Member-wise Report
+      </div>
       <div className="member-wise-report">
-
         <div className="btn-container member-wise-header-right">
           <div className="search-box report-search">
             <input
@@ -33,6 +47,7 @@ const MemberWiseReport = () => {
               name="keyword"
               type="text"
               placeholder="Search for Employee"
+              onChange={(e) => setSearchTerm(e.target.value)}
               autoComplete="new-off"
             />
             <Icon title="Search" name="search-icon" size="2rem" />
@@ -40,8 +55,11 @@ const MemberWiseReport = () => {
           <Icon name="chart-icon" size="3rem" title="Go to chart" />
         </div>
       </div>
-      {userReport.map((user) => (
-        <div className="member-wise-item" onClick={() => handleUserClick(user._id)} >
+      {filteredReport.map((user) => (
+        <div
+          className="member-wise-item"
+          onClick={() => handleUserClick(user._id)}
+        >
           <span className="ml-3" style={{ fontWeight: "700", color: "black" }}>
             {user.userName}
           </span>
@@ -77,11 +95,19 @@ const MemberWiseReport = () => {
               </span>
             </span>
             <span
-              style={{ color: user.dueTasks === 0 ? `black` : `red`, marginLeft: "2rem", marginRight: "4rem" }}
+              style={{
+                color: user.dueTasks === 0 ? `black` : `red`,
+                marginLeft: "2rem",
+                marginRight: "4rem",
+              }}
             >
               Task due :
               <span
-                style={{ fontWeight: "700", marginLeft: "1rem", color: user.dueTasks === 0 ? `black` : `red` }}
+                style={{
+                  fontWeight: "700",
+                  marginLeft: "1rem",
+                  color: user.dueTasks === 0 ? `black` : `red`,
+                }}
               >
                 {user.dueTasks}
               </span>
