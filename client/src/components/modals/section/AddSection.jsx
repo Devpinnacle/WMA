@@ -14,7 +14,6 @@ const AddSection = ({ onCancel }) => {
     start: null,
     due: null,
   });
-  console.log("section data",sectionData)
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [saveSection] = useSaveSectionMutation();

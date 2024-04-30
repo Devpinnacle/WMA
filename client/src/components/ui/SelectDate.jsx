@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import Icon from "./Icon";
 import 'react-datepicker/dist/react-datepicker.css';
 import "./SelectDate.css"
-const SelectDate = ({ selected, onChange, placeholder ,min}) => {
+const SelectDate = ({ selected, onChange, placeholder ,min,max}) => {
 
 
     return (
@@ -13,6 +13,7 @@ const SelectDate = ({ selected, onChange, placeholder ,min}) => {
                 onChange={onChange}
                 dateFormat="dd-MM-yyyy"
                 minDate={min}
+                maxDate={max}
             />
             <div className="date-picker">
                 <Icon name="date-picker-outline"

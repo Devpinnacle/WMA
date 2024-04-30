@@ -3,7 +3,6 @@ import ModalContainer from "../ModalContainer";
 import SelectInput from "../../ui/SelectInput";
 import DatePicker from "react-datepicker";
 import SelectDate from "../../ui/SelectDate";
-//import 'react-datepicker/dist/react-datepicker.css';
 import { useGetSwUsersQuery } from "../../../redux/api/userApi";
 import { useSelector, useDispatch } from "react-redux";
 import { setAlert } from "../../../redux/slice/userSlice";
@@ -24,8 +23,6 @@ const AddTask = ({ onCancel }) => {
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const [DateinputType, setDateInputType] = useState("text");
-
   const [taskData, setTaskData] = useState({
     name: "",
     startDt: "",
@@ -34,6 +31,7 @@ const AddTask = ({ onCancel }) => {
     progress: null,
     time: null,
   });
+  console.log("task data",taskData)
   const [list, setList] = useState({
     priority: "",
     status: "",
@@ -141,30 +139,30 @@ const AddTask = ({ onCancel }) => {
       assignee.push(user._id);
     }
 
-    if (taskStartDate > taskDueDate) {
-      setAlertFlag(true);
-      setErrorMsg("Due date must be greater than start Date");
-      dispatch(
-        setAlert({
-          type: "error",
-          msg: "Due date must be greater than start Date",
-        })
-      );
-    }
+    // if (taskStartDate > taskDueDate) {
+    //   setAlertFlag(true);
+    //   setErrorMsg("Due date must be greater than start Date");
+    //   dispatch(
+    //     setAlert({
+    //       type: "error",
+    //       msg: "Due date must be greater than start Date",
+    //     })
+    //   );
+    // }
 
-    if (taskStartDate < startDate || taskDueDate > dueDate) {
-      setAlertFlag(true);
-      setErrorMsg(
-        "Task start date and due date must be inside the range of Section's start date and due date"
-      );
-      dispatch(
-        setAlert({
-          type: "error",
-          msg: "Task start date and due date must be inside the range of Section's start date and due date",
-        })
-      );
-      return;
-    }
+    // if (taskStartDate < startDate || taskDueDate > dueDate) {
+    //   setAlertFlag(true);
+    //   setErrorMsg(
+    //     "Task start date and due date must be inside the range of Section's start date and due date"
+    //   );
+    //   dispatch(
+    //     setAlert({
+    //       type: "error",
+    //       msg: "Task start date and due date must be inside the range of Section's start date and due date",
+    //     })
+    //   );
+    //   return;
+    // }
 
     if (!(progressInt >= 0 && progressInt <= 100)) {
       setAlertFlag(true);
@@ -414,6 +412,8 @@ const AddTask = ({ onCancel }) => {
               }}
               name="startDt"
               value={taskData.startDt}
+              min={sec.startDate}
+              max={sec.dueDate}
             />
           </div>
           <div className="date-box">
@@ -424,6 +424,7 @@ const AddTask = ({ onCancel }) => {
               onChange={(date) => inputHandler(date, "dueDt")}
               name="dueDt"
               min={taskData.startDt}
+              max={sec.dueDate}
               value={taskData.dueDt}
             />
           </div>
