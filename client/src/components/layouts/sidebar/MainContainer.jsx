@@ -39,10 +39,10 @@ export default function MainContainer({ onGoBack, children, pageName, userName }
                     {onGoBack && (
                         <Icon
                             title="Back"
-                            name="long-arrow-back"
+                            name="arrow-outline"
                             size="5.9rem"
                             onClick={onGoBack}
-                            color="#f8f9fb"
+                            color="#3D405B"
                         />
                     )}
                     {/* <Icon

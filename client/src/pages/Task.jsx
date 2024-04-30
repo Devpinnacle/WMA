@@ -210,9 +210,11 @@ const Task = () => {
     //   {addTaskFlag && <AddTask onCancel={() => setAddTaskFlag(false)} />}
     //   {viewTaskFlag && <ViewTask onCancel={() => setViewTaskFlag(false)} task={task} section={section}/>}
     // </>
-    <MainContainer pageName="Task">
+    <MainContainer pageName="Project name"
+    onGoBack={() => navigate("/sections")}
+    >
       <div className="view-all-task-container">
-        <div className="project-back">
+        {/* <div className="project-back">
           <Icon name="arrow-outline" size="24px" />
           <span
             style={{
@@ -224,7 +226,7 @@ const Task = () => {
           >
             project name{" "}
           </span>
-        </div>
+        </div> */}
         <div className="section-item-top">
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
@@ -435,8 +437,8 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(todoTask.priority),
-                    backgroundColor: sec.overdueTasks === 0 ?`#FF4848` :getPriorityColor(todoTask.priority),  
+                    backgroundColor: getPriorityColor(todoTask.priority),
+                    // backgroundColor: sec.overdueTasks === 0 ?`#FF4848` :getPriorityColor(todoTask.priority),  
                     borderColor: getPriorityColor(todoTask.priority),
                   }}
                 >
@@ -485,8 +487,8 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(inpg.priority),
-                    backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),  
+                    backgroundColor: getPriorityColor(inpg.priority),
+                    // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),  
                     borderColor: getPriorityColor(inpg.priority),
                   }}
                 >
