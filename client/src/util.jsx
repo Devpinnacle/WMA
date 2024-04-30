@@ -1,3 +1,15 @@
+//* Get status color ***********************************************
+export const getStatusColors = (status) => {
+  if (status === "completed") { 
+    return "#3A9679";
+  } else if (status === "In progress") {
+    return "#0802A3";
+  } else if (status === "To do") {
+    return "#9376E0";
+  } else if (status === "Others") {
+    return "#FF4B91";
+  }
+};
 //* Month Names ****************************************************
 export const monthsValue = [
   "January",
@@ -13,17 +25,7 @@ export const monthsValue = [
   "November",
   "December",
 ];
-export const getStatusColors = (status) => {
-  if (status === "completed") { 
-    return "#3A9679";
-  } else if (status === "In progress") {
-    return "#0802A3";
-  } else if (status === "To do") {
-    return "#9376E0";
-  } else if (status === "Others") {
-    return "#FF4B91";
-  }
-};
+
 //* Pad 0 **********************************************************
 export const padZero = (number) => {
   if (number < 10) {

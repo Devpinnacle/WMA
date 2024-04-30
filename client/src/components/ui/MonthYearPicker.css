@@ -1,0 +1,64 @@
+.month-year-container {
+    position: relative;
+}
+
+.month-year-text {
+    background-color: #fff;
+    border: var(--secondary-border);
+    height: 3.6rem;
+    padding: 0 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.month-year-modal {
+    position: absolute;
+    width: 20rem;
+    top: 125%;
+    left: 0;
+    padding: 1rem;
+    z-index: 500;
+    background-color: #fff;
+    box-shadow: var(--modal-shadow-2);
+    border-radius: 8px;
+}
+
+.year-changer {
+    height: 3rem;
+    font-size: 1.3rem;
+}
+
+.month-changer-current {
+    background-color: var(--btn-active-color);
+    color: var(--text-white-color);
+}
+
+.picker-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.picker-modal button,
+.month-changer button {
+    padding: 0.1rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 1rem;
+background-color: #fff;
+}
+.picker-modal button:hover {
+    border: 1px solid var(--text-black-color);
+    background-color: #ddd;
+    
+  }
+  .month-changer button:hover {
+    border: 1px solid var(--btn-active-color);
+    background-color: var(--btn-hovered-color);
+  }
+  
+  .picker-modal-value {
+    font-size: 1.2rem;
+    padding: 0.9rem;
+    border-radius: 8px;
+  }
