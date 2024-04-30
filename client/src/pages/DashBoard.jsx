@@ -449,8 +449,8 @@ const Dashboard = () => {
                   <div className="mt-3">
                     <SelectInput
                       className="tags"
-                      options={notificationTags}
-                      onChange={handleNotificationTags}
+                      // options={notificationTags}
+                      // onChange={handleNotificationTags}
                       placeholder="Tags"
                     />
                   </div>

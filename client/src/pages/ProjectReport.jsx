@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
@@ -10,10 +10,31 @@ import { CSVLink } from "react-csv";
 import { useGetSingleProjectReportMutation } from "../redux/api/reportApi";
 
 const ProjectReport = () => {
+  const [statusTag, setStatusTag] = useState([]);
+  const [stagesTag, setStagesTag] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const { setProject, selectedProject } = useSelector((state) => state.report);
-  const [getProject]=useGetSingleProjectReportMutation()
-  console.log("selectedProject", selectedProject);
-  useEffect(()=>{getProject(setProject)},[])
+  const [getProject] = useGetSingleProjectReportMutation();
+
+  const statusTags = [
+    { label: "In Progress", value: "In Progress" },
+    { label: "Completed", value: "Completed" },
+    { label: "Pending", value: "Pending" },
+    { label: "On Hold", value: "On Hold" },
+    { label: "To Do", value: "To Do" },
+  ];
+  const stagesTags = [
+    { label: "Analysis", value: "Analysis" },
+    { label: "Development", value: "Development" },
+    { label: "Verification", value: "Verification" },
+    { label: "Amendment", value: "Amendment" },
+    { label: "Testing", value: "Testing" },
+    { label: "Re Testing", value: "Re Testing" },
+  ];
+  // console.log("selectedProject", selectedProject);
+  useEffect(() => {
+    getProject(setProject);
+  }, []);
   // Function to format data for CSV
   const getCSVdata = () => {
     const csvData = [];
@@ -54,10 +75,59 @@ const ProjectReport = () => {
     return csvData;
   };
 
+  const handleStatusTags = (e) => {
+    if (!statusTag.includes(e.value))
+      setStatusTag((prev) => [...prev, e.value]);
+  };
+  const handleRemoveStatusTags = (item) => {
+    setStatusTag((prev) => prev.filter((tg) => tg !== item));
+  };
+  const handleStagesTag = (e) => {
+    if (!stagesTag.includes(e.value))
+      setStagesTag((prev) => [...prev, e.value]);
+  };
+  const handleRemovestagesTags = (item) => {
+    setStagesTag((prev) => prev.filter((tg) => tg !== item));
+  };
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredProject = selectedProject.filter((sec) => {
+    // Filter by section name
+    return sec.sectionName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+  console.log(filteredProject);
+  const filteredProject1 = filteredProject.map((proj) => {
+    // Filter the data within each project
+    const filteredData = proj.data.filter((task) => {
+      const isIncludeStatusTag = statusTag.length === 0 || statusTag.includes(task.status);
+      const isIncludeStagesTag = stagesTag.length === 0 || stagesTag.includes(task.stage);
+      return isIncludeStatusTag && isIncludeStagesTag;
+    });
+  
+    // Update the project with the filtered data
+    return {
+      ...proj,
+      data: filteredData,
+    };
+  });  
+
+  console.log("filteredProject", filteredProject1);
+
   return (
     <MainContainer>
       {/* <ReportTopComponent /> */}
-      <div style={{color:"#3D405B", fontWeight:"700",fontSize:"50px",paddingLeft:"2rem"}}>Project-wise Report</div>
+      <div
+        style={{
+          color: "#3D405B",
+          fontWeight: "700",
+          fontSize: "50px",
+          paddingLeft: "2rem",
+        }}
+      >
+        Project-wise Report
+      </div>
       <div className="project-wise-report">
         <div className="header-left back-icon">
           <Icon name="arrow-outline" sixe="18px" />
@@ -83,26 +153,58 @@ const ProjectReport = () => {
               type="text"
               placeholder="Search for section"
               autoComplete="new-off"
+              onChange={handleSearch}
             />
             <Icon title="Search" name="search-icon" size="2rem" />
           </div>
-          
+
           <div className="mr-1">
-            <SelectInput placeholder="Section state" isSearchable={false} />
+            <SelectInput
+              placeholder="Section state"
+              isSearchable={false}
+              options={statusTags}
+              onChange={handleStatusTags}
+            />
           </div>
           <div className="ml-2 mr-2">
-            <SelectInput placeholder="Stage" isSearchable={false} />
+            <SelectInput
+              placeholder="Stage"
+              isSearchable={false}
+              options={stagesTags}
+              onChange={handleStagesTag}
+            />
           </div>
           <div className="btn-download btn-outline mb-4">
             <Icon name="excel-outline" size="2rem" />
-            <CSVLink
-              data={getCSVdata()}
-              filename={"project_report.csv"}
-            >
+            <CSVLink data={getCSVdata()} filename={"project_report.csv"}>
               Download Excel
             </CSVLink>
           </div>
         </div>
+      </div>
+      <div className="selected-tag">
+        {statusTag.map((tg, index) => (
+          <div key={index} className="tag-container">
+            <Icon
+              name="close"
+              size="2rem"
+              onClick={() => handleRemoveStatusTags(tg)}
+            />
+            <p style={{ color: "black" }}>{tg}</p>
+          </div>
+        ))}
+      </div>
+      <div className="selected-tag">
+        {stagesTag.map((tg, index) => (
+          <div key={index} className="tag-green-container">
+            <Icon
+              name="close"
+              size="2rem"
+              onClick={() => handleRemovestagesTags(tg)}
+            />
+            <p style={{ color: "black" }}>{tg}</p>
+          </div>
+        ))}
       </div>
       <div className="report-table">
         <table className="table table-border project-table">
@@ -122,22 +224,26 @@ const ProjectReport = () => {
             </tr>
           </thead>
           <tbody>
-            {selectedProject.map((sec) => (
+            {filteredProject1.filter(sec=>sec.data.length>0).map((sec) => (
               <>
                 <tr>
                   <td rowSpan={sec.data.length}>{sec.sectionName}</td>
-                  <td>{sec.data[0].taskName}</td>
-                  <td>{sec.data[0].assignee}</td>
-                  <td>{formatDate(sec.data[0].startDate)}</td>
-                  <td>{formatDate(sec.data[0].endDate)}</td>
-                  <td>{sec.data[0].priority}</td>
-                  <td>{sec.data[0].status}</td>
-                  <td>{sec.data[0].stage}</td>
-                  <td>{sec.data[0].duration}</td>
-                  <td>{sec.data[0].progress}%</td>
-                  <td>{sec.data[0].completedDate?formatDate(sec.data[0].completedDate):null}</td>
+                  <td>{sec.data[0]?.taskName}</td>
+                  <td>{sec.data[0]?.assignee}</td>
+                  <td>{sec.data[0]?formatDate(sec.data[0]?.startDate):" "}</td>
+                  <td>{sec.data[0]?formatDate(sec.data[0]?.endDate):" "}</td>
+                  <td>{sec.data[0]?.priority}</td>
+                  <td>{sec.data[0]?.status}</td>
+                  <td>{sec.data[0]?.stage}</td>
+                  <td>{sec.data[0]?.duration}</td>
+                  <td>{sec.data[0]?.progress}%</td>
+                  <td>
+                    {sec.data[0]?.completedDate
+                      ? formatDate(sec.data[0].completedDate)
+                      : null}
+                  </td>
                 </tr>
-                {sec.data.slice(1).map((task) => (
+                {sec.data?.slice(1).map((task) => (
                   <tr>
                     <td>{task.taskName}</td>
                     <td>{task.assignee}</td>
@@ -148,7 +254,11 @@ const ProjectReport = () => {
                     <td>{task.stage}</td>
                     <td>{task.duration}</td>
                     <td>{task.progress}%</td>
-                    <td>{task.completedDate ? formatDate(task.completedDate) : null}</td>
+                    <td>
+                      {task.completedDate
+                        ? formatDate(task.completedDate)
+                        : null}
+                    </td>
                   </tr>
                 ))}
               </>

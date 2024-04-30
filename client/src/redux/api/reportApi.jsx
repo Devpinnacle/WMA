@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
 import {
+  getChartData,
   getDailyReport,
   getProjectReport,
   getSelectedProject,
@@ -91,6 +92,22 @@ export const reportApi = createApi({
         }
       },
     }),
+
+    //* Chart *************************************************
+    getChart: builder.query({
+      query: () => ({
+        url: "/report/taskChart",
+        method: "GET",
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(getChartData(data.data));
+        } catch (error) {
+          console.log("Error....", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -100,4 +117,5 @@ export const {
   useGetSingleProjectReportMutation,
   useGetUserReportQuery,
   useGetSingleUserReportMutation,
+  useGetChartQuery,
 } = reportApi;

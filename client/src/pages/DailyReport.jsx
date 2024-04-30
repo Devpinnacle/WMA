@@ -4,14 +4,18 @@ import Icon from "../components/ui/Icon";
 import "./DailyReport.css";
 import { useGetDailyReportQuery } from "../redux/api/reportApi";
 import { useSelector } from "react-redux";
-import { dashedFormatDate, formatDate } from "../Helper/helper";
+import {
+  dashedFormatDate,
+  formatDate,
+  formatStringDate,
+} from "../Helper/helper";
 import DayDateInput from "../components/ui/DayDateInput";
-import { CSVLink } from "react-csv"
+import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import Note from "../components/modals/report/Note";
 
-
 const DailyReport = () => {
+  const [selectedDate, setSelectedDate] = useState(null);
   useGetDailyReportQuery();
   const { dailyReport } = useSelector((state) => state.report);
 
@@ -55,9 +59,30 @@ const DailyReport = () => {
     return csvData;
   };
 
+  const handleDateChange = (date) => {
+    console.log(dashedFormatDate(date))
+    setSelectedDate(date);
+  };
+  let filteredReport
+  if (dailyReport) {
+     filteredReport = dailyReport.filter((report) => {
+      return !selectedDate ||
+        formatStringDate(report._id) === dashedFormatDate(selectedDate);
+    });
+    
+  }
   return (
     <MainContainer>
-      <div style={{ color: "#3D405B", fontWeight: "700", fontSize: "50px", paddingLeft: "2rem" }}>Daily Report</div>
+      <div
+        style={{
+          color: "#3D405B",
+          fontWeight: "700",
+          fontSize: "50px",
+          paddingLeft: "2rem",
+        }}
+      >
+        Daily Report
+      </div>
       <div className="daily-report-top">
         <span
           style={{
@@ -66,11 +91,11 @@ const DailyReport = () => {
             fontSize: "22px",
             fontWeight: "500",
           }}
-        > Wednesday{" "}
+        >
+          {" "}
+          Wednesday{" "}
           {dailyReport.map((report) => (
-            <>
-              {report._id}
-            </>
+            <>{report._id}</>
           ))}
         </span>
         <div className="daily-header-right">
@@ -79,15 +104,14 @@ const DailyReport = () => {
           </div> */}
           <DayDateInput
             placeholder="Day dd/mm/yyyy"
+            selected={selectedDate}
+            onChange={handleDateChange}
           />
           {/* CSVLink for downloading CSV */}
           <div className="btn-container">
             <div className="btn-download btn-outline mr-3">
               <Icon name="excel-outline" size="2rem" />
-              <CSVLink
-                data={getCSVdata()}
-                filename={"daily_report.csv"}
-              >
+              <CSVLink data={getCSVdata()} filename={"daily_report.csv"}>
                 Download Excel
               </CSVLink>
             </div>
@@ -150,11 +174,11 @@ const DailyReport = () => {
               </> */}
             {/* ))} */}
 
-            {dailyReport.map((report) => (
+            {filteredReport.map((report) => (
               <>
-                {/* <tr>
+                <tr>
                   <td colSpan={12}>{report._id}</td>
-                </tr> */}
+                </tr>
 
                 {report.data.map((detail) => (
                   <>
@@ -170,30 +194,12 @@ const DailyReport = () => {
                       <td>{detail.duration}</td>
                       <td>{detail.status}</td>
                       <td>{detail.progress}%</td>
-                      <td>
-                        {/* {detail.notes ? (
-                          <Icon
-                            name="report-note-outline"
-                            size="22px"
-                          />
-                        ) : null} */}
-                        {detail.notes}
-                      </td>
-
+                      <td>{detail.notes}</td>
                     </tr>
                   </>
                 ))}
               </>
             ))}
-
-            {/* <tr>
-              <td rowSpan={2}>Dev1</td>
-              <td>shg</td>
-            </tr>
-            <tr><td>tcs</td></tr>
-            <tr>
-              <td>Dev2</td>
-            </tr> */}
           </tbody>
         </table>
       </div>

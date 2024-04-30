@@ -8,6 +8,7 @@ const initialState = {
   userReport: [],
   setUser: null,
   selectedUser: [],
+  chart:[],
 };
 
 const reportSlice = createSlice({
@@ -35,6 +36,9 @@ const reportSlice = createSlice({
     getSelectedUser(state, { payload }) {
       state.selectedUser = payload;
     },
+    getChartData(state,{payload}){
+      state.chart=payload;
+    }
   },
 });
 
@@ -46,6 +50,7 @@ export const {
   getUserReport,
   getSetUser,
   getSelectedUser,
+  getChartData,
 } = reportSlice.actions;
 
 export const reportReducer = reportSlice.reducer;

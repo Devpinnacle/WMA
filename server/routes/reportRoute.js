@@ -12,5 +12,6 @@ router.get("/getprojectdetails", reportControllers.ProjectReport);
 router.get("/usereport", reportControllers.userReport);
 router.post("/singleprojectreport", reportControllers.tasksReport);
 router.post("/singleuserreport", reportControllers.userTaskReport);
+router.get("/taskChart",reportControllers.taskChart);
 
 module.exports = router;
