@@ -200,7 +200,7 @@ const Section = () => {
     //     )}
     //   </>
     // );
-    <MainContainer pageName="Section">
+    <MainContainer pageName="Project name-desc">
       {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
       <div className="section-top" >
         <div className="search-box">
@@ -235,7 +235,7 @@ const Section = () => {
             key={sec._id}
           // onClick={() => handleSectionClick(sec)}
           >
-            <div className="section-item-top" style={{backgroundColor:sec.dueDate? `#3D405B` : `#FF4848`}}>
+            <div className="section-item-top" style={{backgroundColor:sec.dueDate > new Date()  ? '#FF4848' :'#3D405B'}}>
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
                 <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>
@@ -243,7 +243,7 @@ const Section = () => {
                 </span>
               </div>
               <div className="section-item-top-right">
-                <div className="notify">1</div>
+                {/* <div className="notify">1</div> */}
                 <div className="section-progress" style={{color:"white"}}>{sec.progress}%</div>
               </div>
             </div>
@@ -262,12 +262,12 @@ const Section = () => {
                     {formatDate(sec.startDate)}
                   </span>
                 </span>
-                <span style={{fontSize: "16px",color:sec.dueDate? `black` : `red` }}>
+                <span style={{fontSize: "16px",color: sec.dueDate > new Date()  ? '#FF4848' : 'black'}}>
                   Due date:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color:sec.dueDate ? `black` : `red`, 
+                      color: sec.dueDate > new Date()  ? 'red' : 'black',
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -407,8 +407,10 @@ const Section = () => {
                   >
                     <div className="section-task-header"
                       style={{
-                        backgroundColor: getPriorityColor(task.priority),
-                        borderColor: getPriorityColor(task.priority),
+                        backgroundColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+                        borderColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+                        // backgroundColor: getPriorityColor(task.priority),
+                        // borderColor: getPriorityColor(task.priority),
                       }}
                     >
                       <span
@@ -418,7 +420,7 @@ const Section = () => {
                         {task.taskName}
                       </span>
                       <div className="section-item-top-right">
-                        <div className="notify"></div>
+                        {/* <div className="notify"></div> */}
                         <div
                           className="section-progress"
                           style={{ color: "black" }}

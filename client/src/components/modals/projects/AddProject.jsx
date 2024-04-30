@@ -101,7 +101,7 @@ const AddProject = ({ onCancel }) => {
             <input
               className="project-input-box"
               type="text"
-              name="name"
+              name="decs"
               value={project.desc}
               onChange={inputHandler}
             />
