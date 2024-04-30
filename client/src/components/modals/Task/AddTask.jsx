@@ -503,9 +503,9 @@ const AddTask = ({ onCancel }) => {
             >
               hrs
             </span>
-            <div style={{ padding: "1rem" }}>
+            {/* <div style={{ padding: "1rem" }}>
               <Icon name="checkmark-outline" size="2rem" />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="task-note-container">

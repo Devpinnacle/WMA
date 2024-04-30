@@ -66,7 +66,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   const [notifiyStatus] = useNotifiyStatusMutation();
   const [notifiyPriority] = useNotifiyPriorityMutation();
   const [notifiyStages] = useNotifiyStagesMutation();
-  const [getSections]=useGetSectionMutation();
+  const [getSections] = useGetSectionMutation();
 
   const { data } = useGetTaskNotificationQuery(taskId);
 
@@ -234,7 +234,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     // }
   };
 
-  const handleSaveTaskStg = async() => {
+  const handleSaveTaskStg = async () => {
     const { startDt, dueDt } = date;
     const { stages, status, priority } = list;
 
@@ -340,7 +340,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     // }
   };
 
-  const handleSaveTaskUpd = async() => {
+  const handleSaveTaskUpd = async () => {
     // Convert hours and minutes to numbers
     const [hours, minutes] = updates.duration
       ? updates.duration.split(":")
@@ -409,19 +409,19 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     }
   };
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     const fromData = {
       id: task._id,
       secId: task.sectionId._id,
     };
     await deleteTask(fromData);
-    getSections(selectedProject );
+    getSections(selectedProject);
     if (user.userGroupName === "Software") {
       notifiyTaskDelete({
         sectionId: section._id,
         projectId: section.projectId,
       });
-    }else{
+    } else {
       notifiyTaskDelete({
         sectionId: section._id,
         projectId: section.projectId,
@@ -430,6 +430,30 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     }
     setDeleteFlag(false);
     onCancel();
+  };
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "#EDB1A1";
+      case "Low":
+        return "#F3CF96";
+      case "On Hold":
+        return "#B7B7B7";
+      default:
+        return "#AACBBA";
+    }
+  };
+  const getPriorityBodyColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "#F9E3DD";
+      case "Low":
+        return "#FBEFDA";
+      case "On Hold":
+        return "#FBEFDA";
+      default:
+        return "#DCEAE3";
+    }
   };
 
   return (
@@ -602,8 +626,18 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             <div className="section-progress">{task.sectionId.progress}%</div>
           </div>
         </div>
-        <div className="task-container">
-          <div className="view-task-header">
+        <div className="task-container"
+          style={{
+            backgroundColor: getPriorityBodyColor(task.priority),
+            borderColor: getPriorityBodyColor(task.priority),
+          }}
+        >
+          <div className="view-task-header"
+            style={{
+              backgroundColor: getPriorityColor(task.priority),
+              borderColor: getPriorityColor(task.priority),
+            }}
+          >
             <span>{task.taskName}</span>
             <span>{task.progress}%</span>
           </div>
@@ -727,14 +761,14 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               <div className="del-edit-btn">
                 {(user._id === task.createdBy._id ||
                   user.userGroupName !== "Software") && (
-                  <div className="del-btn">
-                    <Icon
-                      name="delete-outline"
-                      size="24px"
-                      onClick={() => setDeleteFlag(true)}
-                    />
-                  </div>
-                )}
+                    <div className="del-btn">
+                      <Icon
+                        name="delete-outline"
+                        size="24px"
+                        onClick={() => setDeleteFlag(true)}
+                      />
+                    </div>
+                  )}
                 <Icon
                   name="edit-outline"
                   size="24px"
@@ -782,7 +816,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               name="time"
               id="duration"
               value={updates.duration}
-              placeholder="aa"
               onChange={handleInputChange}
             />
             <span
@@ -847,7 +880,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                       marginLeft: "8px",
                     }}
                   >
-                    {notification.userId.userName}
+                    {notification.userId.userName}{" "}
                   </span>
                   <span style={{ color: "black" }}>{notification.action}</span>
                   <span

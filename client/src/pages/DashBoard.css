@@ -349,7 +349,7 @@
 .item-content {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 90%;
+    /* max-width: 95%; */
     color: #000;
 }
 

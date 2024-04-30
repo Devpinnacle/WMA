@@ -43,6 +43,7 @@
 }
 
 .stage-task {
+    width: 360px;
     height: 116px;
     padding: 8px;
     margin-top: 8px;
@@ -62,12 +63,18 @@
     justify-content: space-between;
     background-color: #EDB1A1;
     border: 2px solid #EDB1A1;
+    overflow: hidden;
+    white-space: nowrap;
+ 
 }
 
 .stage-task-header span {
     font-size: 16px;
     font-weight: bold;
     color: black;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    max-width: 85%;
 }
 
 .stage-body-grid {
