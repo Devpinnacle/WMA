@@ -1,54 +1,56 @@
 .date-range {
-    position: relative;
-  }
-  
-  .date-range-text {
-    min-width: max-content;
-  }
-  
-  .date-range-view {
-    border: var(--secondary-border);
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-    font-size: 1.3rem;
-  
-    width: 250px;
-    background-color: #fff;
-    height: 3.6rem;
-  }
-  
+  position: relative;
+}
+
+.date-range-text {
+  min-width: max-content;
+}
+
+.date-range-view {
+  border: var(--secondary-border);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 1.3rem;
+
+  width: 250px;
+  background-color: #fff;
+  height: 3.6rem;
+
+}
+
+.date-range-picker {
+  position: absolute;
+  left: 0;
+  top: 125%;
+  z-index: 500;
+  box-shadow: var(--modal-shadow-2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rdrDefinedRangesWrapper {
+  display: none;
+}
+
+.date-range-picker .rdrMonths {
+  font-size: 1.1rem;
+}
+
+.rdrMonthAndYearWrapper {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 40em) {
+
+  /* 40em = 640px */
   .date-range-picker {
-    position: absolute;
-    left: 0;
-    top: 125%;
-    z-index: 500;
-    box-shadow: var(--modal-shadow-2);
-    border-radius: 8px;
-    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-  
-  .rdrDefinedRangesWrapper {
-    display: none;
-  }
-  
+
   .date-range-picker .rdrMonths {
-    font-size: 1.1rem;
+    flex-direction: column;
   }
-  
-  .rdrMonthAndYearWrapper {
-    overflow: hidden;
-  }
-  
-  @media only screen and (max-width: 40em) {
-    /* 40em = 640px */
-    .date-range-picker {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    .date-range-picker .rdrMonths {
-      flex-direction: column;
-    }
-  }
-  
+}

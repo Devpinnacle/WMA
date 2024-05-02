@@ -34,7 +34,7 @@ export default function MonthYearPicker({ defaultDate, setMonthYear }) {
           <span style={{color:"black"}}>
             {monthsValue[month]}, {year}
           </span>
-          <Icon title="Show Picker" name="calender-outline" noCursor />
+          <Icon title="Show Picker" name="calender-outline" size="24px" noCursor />
         </div>
   
         {showModal && (

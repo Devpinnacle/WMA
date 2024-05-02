@@ -1,12 +1,13 @@
 import Chart from "react-apexcharts";
 import useScreenSize from "../../hooks/useScreenSize";
 
-export default function PieChart({ series, labels, colors, title }) {
+export default function PieChart({ series, labels, colors }) {
   const { width } = useScreenSize();
 
   const plotOptions = {
     pie: {
       donut: {
+        size: "50%",
         labels: {
           show: true,
           total: {
@@ -24,7 +25,7 @@ export default function PieChart({ series, labels, colors, title }) {
     <Chart
       type="donut"
       height={400}
-      width="95%"
+      width="100%"
       series={series}
       options={{
         chart: {
@@ -40,15 +41,19 @@ export default function PieChart({ series, labels, colors, title }) {
           width: 0,
         },
         legend: {
-          width: width <= 560 ? "100%" : 150,
-          position: width <= 560 ? "bottom" : "bottom",
+          width: 150,
+          position:"bottom",
           horizontalAlign: width <= 560 ? "left" : "",
-          offsetX: width <= 560 ? "100%" : 280,
+          offsetX: 70,
           markers: {
             offsetY: 0,
           },
           formatter: (seriesName, opts) => {
-            return [seriesName, " - ", opts.w.globals.series[opts.seriesIndex]];
+            return [
+              seriesName,
+              " - ",
+              opts.w.globals.series[opts.seriesIndex],
+            ];
           },
         },
       }}

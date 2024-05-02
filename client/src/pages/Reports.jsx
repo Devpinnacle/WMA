@@ -17,9 +17,9 @@ const Reports = () => {
   const { chart } = useSelector((state) => state.report);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [selectedDate,setSelectedDate]=useState(new Date().setHours(0,0,0,0))
+  const [selectedDate, setSelectedDate] = useState(new Date().setHours(0, 0, 0, 0))
   const current = new Date(
-    new Date().getFullYear()+1,
+    new Date().getFullYear() + 1,
     new Date().getMonth() - 11,
     1
   );
@@ -104,10 +104,10 @@ const Reports = () => {
     }
   });
 
-  const dateWiseChart=chart.filter((task)=>{
-    const startDate=new Date(task.assignedDate).setHours(0,0,0,0);
-    const endDate=new Date(task.dueDate).setHours(0,0,0,0);
-    return startDate<=selectedDate&&endDate>=selectedDate;
+  const dateWiseChart = chart.filter((task) => {
+    const startDate = new Date(task.assignedDate).setHours(0, 0, 0, 0);
+    const endDate = new Date(task.dueDate).setHours(0, 0, 0, 0);
+    return startDate <= selectedDate && endDate >= selectedDate;
   })
 
   const statusCounts2 = {
@@ -136,61 +136,61 @@ const Reports = () => {
     const newDate = new Date(date).setHours(0, 0, 0, 0);
     setSelectedDate(newDate);
   };
-  
 
-  // console.log(statusCounts);
-  // useEffect(()=>{console.log(date);},[date])
-  // console.log("chart1",chart[0].assignedDate," month ",new Date(chart[0].assignedDate).getMonth(),"date",date,"month",new Date(date).getMonth())
 
   return (
     <MainContainer pageName="Reports">
       <div className="chart-grid">
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title">All task Status</span>
+          <span className="chart-title pt-3 pb-3">All task Status</span>
           <DateRangeInput onChange={handleSetDate} />
-          <PieChart
-            series={[
-              statusCounts["Completed"],
-              statusCounts["To Do"],
-              statusCounts["In Progress"],
-              statusCounts["Others"],
-            ]}
-            labels={["Completed", "To Do", "In Progress", "Others"]}
-            colors={["#008000", "#0000FF", "#FF0000", "#000000"]}
-          />
+          <div className="pt-5">
+            <PieChart
+              // series={[
+              //   // statusCounts["Completed"],
+              //   // statusCounts["To Do"],
+              //   // statusCounts["In Progress"],
+              //   // statusCounts["Others"],
+              // ]}
+              series={[10,20,30,40]}
+              labels={["Completed", "To Do", "In Progress", "Others"]}
+              colors={["#3A9679", "#9376E0", "#0802A3", "#FF4B91"]}
+            />
+          </div>
         </div>
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title">Task Status-Month</span>
+          <span className="chart-title pt-3 pb-3">Task Status-Month</span>
 
-          {/* <div className="select-box month-selector"> */}
           <MonthYearPicker defaultDate={date} setMonthYear={setDate} />
-          {/* </div> */}
-          <PieChart
-            series={[
-              statusCounts1["Completed"],
-              statusCounts1["To Do"],
-              statusCounts1["In Progress"],
-              statusCounts1["Others"],
-            ]}
-            labels={["Completed", "To Do", "In Progress", "Others"]}
-            colors={["#008000", "#0000FF", "#FF0000", "#000000"]}
-          />
+          <div className="pt-5">
+            <PieChart
+              series={[
+                statusCounts1["Completed"],
+                statusCounts1["To Do"],
+                statusCounts1["In Progress"],
+                statusCounts1["Others"],
+              ]}
+              labels={["Completed", "To Do", "In Progress", "Others"]}
+              colors={["#3A9679", "#9376E0", "#0802A3", "#FF4B91"]}
+            />
+          </div>
         </div>
 
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title">Task Status-Month</span>
-          <DayDateInput placeholder="Day dd/mm/yyyy" onChange={handleSetSelectedDate}/>
-
-          <PieChart
-           series={[
-            statusCounts2["Completed"],
-            statusCounts2["To Do"],
-            statusCounts2["In Progress"],
-            statusCounts2["Others"],
-          ]}
-          labels={["Completed", "To Do", "In Progress", "Others"]}
-          colors={["#008000", "#0000FF", "#FF0000", "#000000"]}
-        />
+          <span className="chart-title pt-3">Task Status-Month</span>
+          <DayDateInput placeholder="Day dd/mm/yyyy" onChange={handleSetSelectedDate} />
+          <div className="pt-5">
+            <PieChart
+              series={[
+                statusCounts2["Completed"],
+                statusCounts2["To Do"],
+                statusCounts2["In Progress"],
+                statusCounts2["Others"],
+              ]}
+              labels={["Completed", "To Do", "In Progress", "Others"]}
+              colors={["#3A9679", "#9376E0", "#0802A3", "#FF4B91"]}
+            />
+          </div>
         </div>
       </div>
     </MainContainer>
