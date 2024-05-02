@@ -68,16 +68,33 @@ const Task = () => {
     dispatch(taskNotificationApi.util.resetApiState());
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
-        return "#EDB1A1";
-      case "Low":
-        return "#F3CF96";
-      case "On Hold":
-        return "#B7B7B7";
-      default:
-        return "#AACBBA";
+  const getPriorityColor = (priority, dueDate, status) => {
+    if (status !== "Completed") {
+      if (new Date() > new Date(dueDate)) {
+        return "#FF4848";
+      } else {
+        switch (priority) {
+          case "High":
+            return "#EDB1A1";
+          case "Low":
+            return "#F3CF96";
+          case "On Hold":
+            return "#B7B7B7";
+          default:
+            return "#AACBBA";
+        }
+      }
+    } else {
+      switch (priority) {
+        case "High":
+          return "#EDB1A1";
+        case "Low":
+          return "#F3CF96";
+        case "On Hold":
+          return "#B7B7B7";
+        default:
+          return "#AACBBA";
+      }
     }
   };
   const getPriorityBodyColor = (priority) => {
@@ -210,7 +227,8 @@ const Task = () => {
     //   {addTaskFlag && <AddTask onCancel={() => setAddTaskFlag(false)} />}
     //   {viewTaskFlag && <ViewTask onCancel={() => setViewTaskFlag(false)} task={task} section={section}/>}
     // </>
-    <MainContainer pageName="Project name"
+    <MainContainer
+      pageName="Project name"
       onGoBack={() => navigate("/sections")}
     >
       <div className="view-all-task-container">
@@ -227,10 +245,13 @@ const Task = () => {
             project name{" "}
           </span>
         </div> */}
-        <div className="section-item-top" style={{
-          backgroundColor: sec.dueDate > new Date() ? '#FF4848' : '#3D405B',
-          borderColor: sec.dueDate > new Date() ? '#FF4848' : '#3D405B',
-        }}>
+        <div
+          className="section-item-top"
+          style={{
+            backgroundColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
+            borderColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
+          }}
+        >
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span
@@ -267,13 +288,17 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{ color: sec.dueDate > new Date() ? '#FF4848' : 'black', fontSize: "16px", fontWeight: "400" }}
+              style={{
+                color: sec.dueDate > new Date() ? "#FF4848" : "black",
+                fontSize: "16px",
+                fontWeight: "400",
+              }}
             >
               Due date:
               <span
                 style={{
                   fontWeight: "700",
-                  color: sec.dueDate > new Date() ? '#FF4848' : 'black',
+                  color: sec.dueDate > new Date() ? "#FF4848" : "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -441,8 +466,16 @@ const Task = () => {
                   className="stage-task-header"
                   style={{
                     // backgroundColor: getPriorityColor(todoTask.priority),
-                    backgroundColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(todoTask.priority),
-                    borderColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(todoTask.priority),
+                    backgroundColor: getPriorityColor(
+                      todoTask.priority,
+                      todoTask.dueDate,
+                      todoTask.status
+                    ),
+                    borderColor: getPriorityColor(
+                      todoTask.priority,
+                      todoTask.dueDate,
+                      todoTask.status
+                    ),
                     // borderColor: getPriorityColor(todoTask.priority),
                   }}
                 >
@@ -461,7 +494,14 @@ const Task = () => {
                   </div>
                   <div className="stage-task-body">
                     <Icon name="calender-outline" size="22px" />
-                    <span style={{ color: todoTask.dueDate > new Date() ? '#FF4848' : 'black' }}>{formatDate(todoTask.dueDate)}</span>
+                    <span
+                      style={{
+                        color:
+                          todoTask.dueDate > new Date() ? "#FF4848" : "black",
+                      }}
+                    >
+                      {formatDate(todoTask.dueDate)}
+                    </span>
                   </div>
                   <div className="stage-task-body">
                     <Icon name="priority-outline" size="22px" />
@@ -492,9 +532,17 @@ const Task = () => {
                   className="stage-task-header"
                   style={{
                     backgroundColor: getPriorityColor(inpg.priority),
-                    // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),  
-                    backgroundColor: inpg.dueDate > new Date() ? '#FF4848' : getPriorityColor(inpg.priority),
-                    borderColor: inpg.dueDate > new Date() ? '#FF4848' : getPriorityColor(inpg.priority),
+                    // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),
+                    backgroundColor: getPriorityColor(
+                      inpg.priority,
+                      inpg.dueDate,
+                      inpg.status
+                    ),
+                    borderColor: getPriorityColor(
+                      inpg.priority,
+                      inpg.dueDate,
+                      inpg.status
+                    ),
                     // borderColor: getPriorityColor(inpg.priority),
                   }}
                 >
@@ -513,7 +561,13 @@ const Task = () => {
                   </div>
                   <div className="stage-task-body">
                     <Icon name="calender-outline" size="22px" />
-                    <span style={{ color: inpg.dueDate > new Date() ? '#FF4848' : 'black' }}>{formatDate(inpg.dueDate)}</span>
+                    <span
+                      style={{
+                        color: inpg.dueDate > new Date() ? "#FF4848" : "black",
+                      }}
+                    >
+                      {formatDate(inpg.dueDate)}
+                    </span>
                   </div>
                   <div className="stage-task-body">
                     <Icon name="priority-outline" size="22px" />
@@ -545,8 +599,16 @@ const Task = () => {
                   className="stage-task-header"
                   style={{
                     // backgroundColor: getPriorityColor(comp.priority),
-                    backgroundColor: comp.dueDate > new Date() ? '#FF4848' : getPriorityColor(comp.priority),
-                    borderColor: comp.dueDate > new Date() ? '#FF4848' : getPriorityColor(comp.priority),
+                    backgroundColor: getPriorityColor(
+                      comp.priority,
+                      comp.dueDate,
+                      comp.status
+                    ),
+                    borderColor: getPriorityColor(
+                      comp.priority,
+                      comp.dueDate,
+                      comp.status
+                    ),
                     // borderColor: getPriorityColor(comp.priority),
                   }}
                 >
@@ -565,7 +627,13 @@ const Task = () => {
                   </div>
                   <div className="stage-task-body">
                     <Icon name="calender-outline" size="22px" />
-                    <span style={{ color: comp.dueDate > new Date() ? '#FF4848' : 'black' }}>{formatDate(comp.dueDate)}</span>
+                    <span
+                      style={{
+                        color: comp.dueDate > new Date() ? "#FF4848" : "black",
+                      }}
+                    >
+                      {formatDate(comp.dueDate)}
+                    </span>
                   </div>
                   <div className="stage-task-body">
                     <Icon name="priority-outline" size="22px" />
@@ -597,8 +665,16 @@ const Task = () => {
                   className="stage-task-header"
                   style={{
                     // backgroundColor: getPriorityColor(oth.priority),
-                    backgroundColor: oth.dueDate > new Date() ? '#FF4848' : getPriorityColor(oth.priority),
-                    borderColor: oth.dueDate > new Date() ? '#FF4848' : getPriorityColor(oth.priority),
+                    backgroundColor: getPriorityColor(
+                      oth.priority,
+                      oth.dueDate,
+                      oth.status
+                    ),
+                    borderColor: getPriorityColor(
+                      oth.priority,
+                      oth.dueDate,
+                      oth.status
+                    ),
                     // borderColor: getPriorityColor(oth.priority),
                   }}
                 >
@@ -617,7 +693,13 @@ const Task = () => {
                   </div>
                   <div className="stage-task-body">
                     <Icon name="calender-outline" size="22px" />
-                    <span style={{ color: oth.dueDate > new Date() ? '#FF4848' : 'black' }}>{formatDate(oth.dueDate)}</span>
+                    <span
+                      style={{
+                        color: oth.dueDate > new Date() ? "#FF4848" : "black",
+                      }}
+                    >
+                      {formatDate(oth.dueDate)}
+                    </span>
                   </div>
                   <div className="stage-task-body">
                     <Icon name="priority-outline" size="22px" />

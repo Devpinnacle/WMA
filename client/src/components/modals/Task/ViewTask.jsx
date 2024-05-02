@@ -430,16 +430,33 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     setDeleteFlag(false);
     onCancel();
   };
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
-        return "#EDB1A1";
-      case "Low":
-        return "#F3CF96";
-      case "On Hold":
-        return "#B7B7B7";
-      default:
-        return "#AACBBA";
+  const getPriorityColor = (priority, dueDate, status) => {
+    if (status !== "Completed") {
+      if (new Date() > new Date(dueDate)) {
+        return "#FF4848";
+      } else {
+        switch (priority) {
+          case "High":
+            return "#EDB1A1";
+          case "Low":
+            return "#F3CF96";
+          case "On Hold":
+            return "#B7B7B7";
+          default:
+            return "#AACBBA";
+        }
+      }
+    } else {
+      switch (priority) {
+        case "High":
+          return "#EDB1A1";
+        case "Low":
+          return "#F3CF96";
+        case "On Hold":
+          return "#B7B7B7";
+        default:
+          return "#AACBBA";
+      }
     }
   };
   const getPriorityBodyColor = (priority) => {
@@ -633,9 +650,9 @@ const ViewTask = ({ onCancel, taskId, section }) => {
         >
           <div className="view-task-header"
             style={{
-              backgroundColor: task.dueDt > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+              backgroundColor: getPriorityColor(task.priority,task.dueDate,task.status),
               // backgroundColor: getPriorityColor(task.priority),
-              borderColor: task.dueDt > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+              borderColor: getPriorityColor(task.priority,task.dueDate,task.status),
             }}
           >
             <span>{task.taskName}</span>

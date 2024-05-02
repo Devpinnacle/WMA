@@ -114,16 +114,33 @@ const Section = () => {
     setSection(sec);
     setTaskFlag(true);
   }
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "High":
-        return "#EDB1A1";
-      case "Low":
-        return "#F3CF96";
-      case "On Hold":
-        return "#B7B7B7";
-      default:
-        return "#AACBBA";
+  const getPriorityColor = (priority, dueDate, status) => {
+    if (status !== "Completed") {
+      if (new Date() > new Date(dueDate)) {
+        return "#FF4848";
+      } else {
+        switch (priority) {
+          case "High":
+            return "#EDB1A1";
+          case "Low":
+            return "#F3CF96";
+          case "On Hold":
+            return "#B7B7B7";
+          default:
+            return "#AACBBA";
+        }
+      }
+    } else {
+      switch (priority) {
+        case "High":
+          return "#EDB1A1";
+        case "Low":
+          return "#F3CF96";
+        case "On Hold":
+          return "#B7B7B7";
+        default:
+          return "#AACBBA";
+      }
     }
   };
   const getPriorityBodyColor = (priority) => {
@@ -407,8 +424,8 @@ const Section = () => {
                   >
                     <div className="section-task-header"
                       style={{
-                        backgroundColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
-                        borderColor: todoTask.dueDate > new Date() ? '#FF4848' : getPriorityColor(task.priority),
+                        backgroundColor: getPriorityColor(task.priority,task.dueDate,task.status),
+                        borderColor: getPriorityColor(task.priority,task.dueDate,task.status),
                         // backgroundColor: getPriorityColor(task.priority),
                         // borderColor: getPriorityColor(task.priority),
                       }}
