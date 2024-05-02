@@ -531,7 +531,7 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    backgroundColor: getPriorityColor(inpg.priority),
+                    // backgroundColor: getPriorityColor(inpg.priority),
                     // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),
                     backgroundColor: getPriorityColor(
                       inpg.priority,

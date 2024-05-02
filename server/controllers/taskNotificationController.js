@@ -13,7 +13,7 @@ exports.getTaskNotifications = catchAsync(async (req, res, next) => {
   const taskNotification = await TaskNotification.find({taskId:taskId}).populate(
     "userId",
     "userName"
-  );
+  ); 
 
   console.log("hit get notification",taskNotification)
 

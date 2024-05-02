@@ -7,7 +7,7 @@ import "./MonthYearPicker.css";
 export default function MonthYearPicker({ defaultDate, setMonthYear }) {
     const [month, setMonth] = useState();
     const [year, setYear] = useState();
-    console.log("year",year);
+    // console.log("year",year);
     const [showModal, setShowModal] = useState(false);
     const wrappedRef = useRef(null);
     useOutsideClick(wrappedRef, () => setShowModal(false));

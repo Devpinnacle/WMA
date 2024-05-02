@@ -69,3 +69,8 @@ export const getTime = (date) => {
 
   return f_Time;
 };
+
+export const getLastDateOfMonth = (date) => {
+  // Get the last date of the month for the selected date
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+};
