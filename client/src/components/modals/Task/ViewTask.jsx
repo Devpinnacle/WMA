@@ -180,6 +180,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
           msg: "Due date must be greater than start Date",
         })
       );
+      return;
     }
 
     if (
