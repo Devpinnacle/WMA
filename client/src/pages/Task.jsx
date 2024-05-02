@@ -69,8 +69,13 @@ const Task = () => {
   };
 
   const getPriorityColor = (priority, dueDate, status) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
     if (status !== "Completed") {
-      if (new Date() > new Date(dueDate)) {
+      if (today > due) {
         return "#FF4848";
       } else {
         switch (priority) {
@@ -245,13 +250,14 @@ const Task = () => {
             project name{" "}
           </span>
         </div> */}
-        <div
+        {/* <div
           className="section-item-top"
           style={{
             backgroundColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
             borderColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
           }}
-        >
+        > */}
+        <div className="section-item-top" style={{ backgroundColor: new Date(sec.dueDate) > new Date() ? '#3D405B' : '#FF4848' }}>
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span
