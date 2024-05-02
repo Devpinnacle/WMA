@@ -136,8 +136,8 @@ const Reports = () => {
     const newDate = new Date(date).setHours(0, 0, 0, 0);
     setSelectedDate(newDate);
   };
-
-
+  const formattedSelectedDate = new Date(selectedDate);
+  const selectedYearMonth = formattedSelectedDate.toLocaleDateString('en-GB');   
   return (
     <MainContainer pageName="Reports">
       <div className="chart-grid">
@@ -176,7 +176,7 @@ const Reports = () => {
         </div>
 
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title pt-3">Task Status-Month</span>
+          <span className="chart-title pt-3">Task Status-{selectedYearMonth}</span>
           <DayDateInput placeholder="Day dd/mm/yyyy" onChange={handleSetSelectedDate} />
           <div className="pt-5">
             <PieChart
