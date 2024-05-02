@@ -146,13 +146,12 @@ const Reports = () => {
           <DateRangeInput onChange={handleSetDate} />
           <div className="pt-5">
             <PieChart
-              // series={[
-              //   // statusCounts["Completed"],
-              //   // statusCounts["To Do"],
-              //   // statusCounts["In Progress"],
-              //   // statusCounts["Others"],
-              // ]}
-              series={[10,20,30,40]}
+              series={[
+                statusCounts["Completed"],
+                statusCounts["To Do"],
+                statusCounts["In Progress"],
+                statusCounts["Others"],
+              ]}
               labels={["Completed", "To Do", "In Progress", "Others"]}
               colors={["#3A9679", "#9376E0", "#0802A3", "#FF4B91"]}
             />
