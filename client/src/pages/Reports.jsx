@@ -11,6 +11,7 @@ import DateRangeInput from "../components/ui/DateRangeInput";
 import DayDateInput from "../components/ui/DayDateInput";
 import { useGetChartQuery } from "../redux/api/reportApi";
 import { useSelector } from "react-redux";
+import MonthYearPicker from "../components/ui/MonthYearPicker";
 
 const Reports = () => {
   const { chart } = useSelector((state) => state.report);
@@ -67,12 +68,7 @@ const Reports = () => {
           <span className="chart-title">Task Status-Month</span>
 
           {/* <div className="select-box month-selector"> */}
-          <SelectInput
-            placeholder="Month"
-            isSearchable={false}
-            //   options={month}
-            // noBorder={true}
-          />
+          <MonthYearPicker/>
           {/* </div> */}
           <PieChart></PieChart>
         </div>
