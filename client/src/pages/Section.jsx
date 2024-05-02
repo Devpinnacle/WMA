@@ -114,9 +114,43 @@ const Section = () => {
     setSection(sec);
     setTaskFlag(true);
   }
+  // const getPriorityColor = (priority, dueDate, status) => {
+  //   if (status !== "Completed") {
+  //     if (new Date() > new Date(dueDate)) {
+  //       return "#FF4848";
+  //     } else {
+  //       switch (priority) {
+  //         case "High":
+  //           return "#EDB1A1";
+  //         case "Low":
+  //           return "#F3CF96";
+  //         case "On Hold":
+  //           return "#B7B7B7";
+  //         default:
+  //           return "#AACBBA";
+  //       }
+  //     }
+  //   } else {
+  //     switch (priority) {
+  //       case "High":
+  //         return "#EDB1A1";
+  //       case "Low":
+  //         return "#F3CF96";
+  //       case "On Hold":
+  //         return "#B7B7B7";
+  //       default:
+  //         return "#AACBBA";
+  //     }
+  //   }
+  // };
   const getPriorityColor = (priority, dueDate, status) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
     if (status !== "Completed") {
-      if (new Date() > new Date(dueDate)) {
+      if (today > due) {
         return "#FF4848";
       } else {
         switch (priority) {
@@ -252,7 +286,8 @@ const Section = () => {
             key={sec._id}
           // onClick={() => handleSectionClick(sec)}
           >
-            <div className="section-item-top" style={{backgroundColor:sec.dueDate > new Date()  ? '#FF4848' :'#3D405B'}}>
+  
+            <div className="section-item-top" style={{ backgroundColor: new Date(sec.dueDate) > new Date() ? '#3D405B' : '#FF4848' }}>
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
                 <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>
