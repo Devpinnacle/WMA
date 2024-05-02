@@ -31,9 +31,9 @@ export default function PieChart({ series, labels, colors }) {
         chart: {
           fontFamily: "inherit",
         },
-        dataLabels: {
-          enabled: width <= 560 ? false : true,
-        },
+        // dataLabels: {
+        //   enabled: width <= 560 ? false : true,
+        // },
         labels,
         colors,
         plotOptions,
