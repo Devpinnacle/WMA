@@ -156,6 +156,88 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
     },
   ]);
 
+  const task=await Task.aggregate([
+    {
+      $match: {
+        $and: [
+          {
+            status: "In Progress",
+          },
+          {
+            assignedDate: {
+              $lte: new Date(),
+            },
+          },
+          {
+            dueDate: {
+              $gte: new Date(),
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "empdetails",
+        localField: "assignedTo",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $lookup: {
+        from: "sctprojects",
+        localField: "projectId",
+        foreignField: "_id",
+        as: "project",
+      },
+    },
+    {
+      $lookup: {
+        from: "sections",
+        localField: "sectionId",
+        foreignField: "_id",
+        as: "section",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $unwind: "$project",
+    },
+    {
+      $unwind: "$section",
+    },
+    {
+      $group: {
+        _id: new Date(
+          new Date().setHours(0, 0, 0, 0)
+        ),
+        data: {
+          $push: {
+            name: "$user.userName",
+            userId: "$user._id",
+            projectName: "$project.sctProjectName",
+            sectionName: "$section.sectionName",
+            sectionDue: "$section.dueDate",
+            taskName: "$taskName",
+            assignedDate: "$assignedDate",
+            dueDate: "$dueDate",
+            stages: "$stage",
+            duration: "$duration",
+            status: "$status",
+            progress: "$progress",
+            notes: "$notes",
+          },
+        },
+      },
+    },
+  ])
+
+  groupedData.push(...task);
+  groupedData.sort((a, b) => b._id - a._id);
+
   console.log(groupedData);
 
   res.status(200).json({

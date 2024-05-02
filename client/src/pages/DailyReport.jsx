@@ -67,7 +67,7 @@ const DailyReport = () => {
   if (dailyReport) {
      filteredReport = dailyReport.filter((report) => {
       return !selectedDate ||
-        formatStringDate(report._id) === dashedFormatDate(selectedDate);
+      dashedFormatDate(report._id) === dashedFormatDate(selectedDate);
     });
     
   }
@@ -92,11 +92,7 @@ const DailyReport = () => {
             fontWeight: "500",
           }}
         >
-          {" "}
-          Wednesday{" "}
-          {dailyReport.map((report) => (
-            <>{report._id}</>
-          ))}
+       {selectedDate}
         </span>
         <div className="daily-header-right">
           {/* <div className="mt-4">
@@ -177,7 +173,7 @@ const DailyReport = () => {
             {filteredReport.map((report) => (
               <>
                 <tr>
-                  <td colSpan={12}>{report._id}</td>
+                  <td colSpan={12} style={{fontWeight:"bold"}}>{dashedFormatDate(report._id)}</td>
                 </tr>
 
                 {report.data.map((detail) => (
