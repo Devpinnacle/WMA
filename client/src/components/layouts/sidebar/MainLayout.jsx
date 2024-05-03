@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 export default function MainLayout() {
   const { user } = useSelector((state) => state.user);
   const { width } = useScreenSize();
-  console.log("inside Main layout")
   return (
     <Fragment>
       {user && (

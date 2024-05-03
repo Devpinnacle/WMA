@@ -18,11 +18,13 @@ const Task = () => {
   const [task, setTask] = useState(null);
   const [section, setSection] = useState(null);
 
-  const { selectedSection: sec } = useSelector((state) => state.section);
+  const { selectedSection: sec1 } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
   const { tasks } = useSelector((state) => state.task);
 
   const dispatch = useDispatch();
+  const sec = typeof sec1 === 'string' ? JSON.parse(sec1) : sec1;
+  console.log("selectedSection", sec);
 
   useGetTaskQuery(sec._id);
   const [getSelectedTask, { data: recivedTask }] = useGetSelectedTaskMutation();

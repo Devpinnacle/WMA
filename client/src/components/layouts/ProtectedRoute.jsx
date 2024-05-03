@@ -15,14 +15,12 @@ export default function ProtectedRoute({ children, reverse }) {
       dispatch(userApi.util.resetApiState());
     }
   }, [data, user, dispatch]);
-  console.log("called");
+
   if (isLoading) {
   } else if (data) {
     if (reverse) {
-      console.log(location);
       return <Navigate to={"/"} state={location} replace />;
     } else {
-      console.log("in else part");
       return children || outlet;
     }
   } else {

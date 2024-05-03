@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   project: [],
-  selectedProject: null,
+  selectedProject: localStorage.getItem("selectedProject"),
 };
 
 const projectSlice = createSlice({
@@ -14,6 +14,7 @@ const projectSlice = createSlice({
     },
     setSelectedProject(state, { payload }) {
       state.selectedProject = payload;
+      localStorage.setItem("selectedProject",payload)
     },
   },
 });

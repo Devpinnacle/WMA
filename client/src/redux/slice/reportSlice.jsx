@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   dailyReport: [],
   projectReport: [],
-  setProject: null,
+  setProject: localStorage.getItem("setProject")||null,
   selectedProject: [],
   userReport: [],
-  setUser: null,
+  setUser: localStorage.getItem("setUser")||null,
   selectedUser: [],
   chart:[],
 };
@@ -23,6 +23,7 @@ const reportSlice = createSlice({
     },
     getSetProject(state, { payload }) {
       state.setProject = payload;
+      localStorage.setItem("setProject",payload)
     },
     getSelectedProject(state, { payload }) {
       state.selectedProject = payload;
@@ -32,6 +33,7 @@ const reportSlice = createSlice({
     },
     getSetUser(state, { payload }) {
       state.setUser = payload;
+      localStorage.setItem("setUser",payload)
     },
     getSelectedUser(state, { payload }) {
       state.selectedUser = payload;
