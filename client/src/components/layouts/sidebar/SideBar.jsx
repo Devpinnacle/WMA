@@ -20,12 +20,12 @@ export default function SideBar() {
             </div>
             <div className="profile-details">
               <span className="profile-details_name">
-                 {user.userName}
+                 {user?.userName}
               </span>
-              <span className="profile-details_post">{user.designationName}</span>
+              <span className="profile-details_post">{user?.designationName}</span>
             </div>
           </div>
-          {user.userGroupName==="Software"&&(
+          {user?.userGroupName==="Software"&&(
           <div className="bell-icon">
             <Icon
               name="bell-icon"

@@ -50,10 +50,16 @@ const createTokensAndCookies = async (user, res) => {
   return { accessToken,refreshToken };
 };
 
+const removeCookies = (res) => {
+  res.cookie("access", "", cookieOptions(1));
+  res.cookie("refresh", "", cookieOptions(1));
+};
+
 module.exports = {
     cookieOptions,
     createTokens,
     sendCookies,
     createTokensAndCookies,
+    removeCookies
   };
   

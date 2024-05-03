@@ -2,25 +2,27 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useOutlet } from "react-router-dom";
 import { useGetMeQuery, userApi } from "../../redux/api/userApi";
-import { useGetNotesQuery } from "../../redux/api/notesApi";
 
 export default function ProtectedRoute({ children, reverse }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const outlet = useOutlet();
   const location = useLocation();
-  const { data } = useGetMeQuery();
+  const { isLoading, data } = useGetMeQuery();
 
   useEffect(() => {
     if (data && !user) {
       dispatch(userApi.util.resetApiState());
     }
   }, [data, user, dispatch]);
-
-  if (data) {
+  console.log("called");
+  if (isLoading) {
+  } else if (data) {
     if (reverse) {
+      console.log(location);
       return <Navigate to={"/"} state={location} replace />;
     } else {
+      console.log("in else part");
       return children || outlet;
     }
   } else {

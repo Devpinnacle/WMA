@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import Icon from "../../ui/Icon";
 import "./SidebarTop.css";
 import { useState } from "react";
+import Logout from "../../modals/logout/Logout";
 
 export default function SidebarTop() {
   const { user } = useSelector((state) => state.user);
@@ -38,7 +39,7 @@ export default function SidebarTop() {
           Projects
         </NavLink>
 
-        {!(user.userGroupName === "Software") && (
+        {!(user?.userGroupName === "Software") && (
           <>
             <div className="top-link-items">
               <NavLink
@@ -68,6 +69,7 @@ export default function SidebarTop() {
           </NavLink>
         </div>
       </div>
+      {logoutFlag&&<Logout onCancel={()=>setLogoutFlag(false)}/>}
     </div>
   );
 }

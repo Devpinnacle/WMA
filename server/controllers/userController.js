@@ -3,6 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
 const { sendTokensAndCookies, saveLoginHistory, deleteExpiredTokens } = require("./helperFunction");
+const { removeCookies } = require("../utils/tokensAndCookies");
 
 //* Log in ***********************************************************
 
@@ -45,3 +46,24 @@ exports.getSwUsers = catchAsync(async (req, res, next) => {
     data: users,
   });
 });
+
+//* Log out ********************************************************
+
+exports.logout = catchAsync(async (req, res) => {
+  const refreshToken = req.cookies?.refresh || req.headers.refreshtoken;
+  if (refreshToken) {
+    const user = await User.findOne({
+      "refreshTokens.token": refreshToken,
+    });
+    if (user) {
+      user.refreshTokens = user.refreshTokens.filter(
+        (rt) => rt.token !== refreshToken
+      );
+      await user.save();
+    }
+  }
+
+  removeCookies(res);
+  res.status(200).json({ status: "SUCCESS" });
+});
+

@@ -215,12 +215,12 @@ const Dashboard = () => {
   }
 
   return (
-    <MainContainer pageName={`Hi`} userName={user.userName}>
+    <MainContainer pageName={`Hi`} userName={user?.userName}>
       <div className="dashboard-container">
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
-              {user.userGroupName === "Software" ? (
+              {user?.userGroupName === "Software" ? (
                 <>
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
@@ -359,7 +359,7 @@ const Dashboard = () => {
                     onChange={handleTags}
                     options={tags}
                   />
-                  {user.userGroupName !== "Software" && (
+                  {user?.userGroupName !== "Software" && (
                     <Icon
                       className="icon"
                       name="add-outline"

@@ -1,6 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getSwUsers, getUser, setTokens } from "../slice/userSlice";
+import { getSwUsers, getUser, isLoggedOut, setTokens } from "../slice/userSlice";
+import { notesApi } from "./notesApi";
+import { notificationApi } from "./notificationApi";
+import { projectApi } from "./projectApi";
+import { reportApi } from "./reportApi";
+import { sectionApi } from "./sectionApi";
+import { taskApi } from "./taskApi";
+import { taskNotificationApi } from "./taskNotificationApi";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -62,7 +69,33 @@ export const userApi = createApi({
         }
       },
     }),
+    //* logout ***********************************************************
+    logout: builder.mutation({
+      query: () => ({
+        url: "/user/logout",
+        method: "PATCH",
+        body: {},
+      }),
+
+      async onQueryStarted(args, obj) {
+        try {
+          await obj.queryFulfilled;
+          localStorage.clear();
+          obj.dispatch(isLoggedOut())
+          obj.dispatch(notesApi.util.resetApiState())
+          obj.dispatch(notificationApi.util.resetApiState())
+          obj.dispatch(projectApi.util.resetApiState())
+          obj.dispatch(reportApi.util.resetApiState())
+          obj.dispatch(sectionApi.util.resetApiState())
+          obj.dispatch(taskApi.util.resetApiState())
+          obj.dispatch(taskNotificationApi.util.resetApiState())
+        } catch (error) {
+          if (import.meta.env.DEV) console.error("Error:", error);
+        }
+      },
+    }),
+
   }),
 });
 
-export const { useLoginMutation, useGetMeQuery,useGetSwUsersQuery } = userApi;
+export const { useLoginMutation, useGetMeQuery,useGetSwUsersQuery,useLogoutMutation } = userApi;
