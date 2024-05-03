@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import Icon from "../components/ui/Icon";
-import { getLastDateOfMonth, getStatusColors, padZero } from "../util";
+import { getLastDateOfMonth, getStatusColors, monthsValue, padZero } from "../util";
 import SelectInput from "../components/ui/SelectInput";
 import "./Reports.css";
 import { NavLink } from "react-router-dom";
@@ -158,7 +158,7 @@ const Reports = () => {
           </div>
         </div>
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title pt-3 pb-3">Task Status-Month</span>
+          <span className="chart-title pt-3 pb-3">Task Status-{monthsValue[new Date(date).getMonth()]}</span>
 
           <MonthYearPicker defaultDate={date} setMonthYear={setDate} />
           <div className="pt-5">
