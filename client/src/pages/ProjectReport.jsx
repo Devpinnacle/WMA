@@ -117,7 +117,6 @@ const ProjectReport = () => {
 
   return (
     <MainContainer>
-      {/* <ReportTopComponent /> */}
       <div
         style={{
           color: "#3D405B",
@@ -158,7 +157,7 @@ const ProjectReport = () => {
             <Icon title="Search" name="search-icon" size="2rem" />
           </div>
 
-          <div className="mr-1">
+          <div className="section-state mr-1">
             <SelectInput
               placeholder="Section state"
               isSearchable={false}
@@ -166,7 +165,7 @@ const ProjectReport = () => {
               onChange={handleStatusTags}
             />
           </div>
-          <div className="ml-2 mr-2">
+          <div className="stage ml-2 mr-2">
             <SelectInput
               placeholder="Stage"
               isSearchable={false}

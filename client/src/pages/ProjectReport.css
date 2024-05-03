@@ -14,10 +14,23 @@
     background-color: #AACBBA;
 }
 @media only screen and (max-width: 62em) {
+    .project-wise-header-right{
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0 !important;
+    }
     .project-wise-report{
         display: block;
+        padding: 0;
     }
     .back-icon{
         display: flex;
+    }
+    .section-state{
+        padding-left: 1rem;
+        padding-bottom: 1rem;
+    }
+    .stage{
+        padding-left: 0.5rem;
     }
 }
