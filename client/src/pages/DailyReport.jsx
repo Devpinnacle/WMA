@@ -24,6 +24,7 @@ const DailyReport = () => {
     const csvData = [];
     // Add header row
     csvData.push([
+      "Date",
       "Employee",
       "Project",
       "Section",
@@ -41,6 +42,7 @@ const DailyReport = () => {
     dailyReport.forEach((report) => {
       report.data.forEach((detail) => {
         csvData.push([
+          dashedFormatDate(report._id),
           detail.name,
           detail.projectName,
           detail.sectionName,
@@ -95,9 +97,6 @@ const DailyReport = () => {
        {selectedDate}
         </span>
         <div className="daily-header-right">
-          {/* <div className="mt-4">
-            <Icon name="chart-icon" size="3rem" title="Go to chart" />
-          </div> */}
           <DayDateInput
             placeholder="Day dd/mm/yyyy"
             selected={selectedDate}

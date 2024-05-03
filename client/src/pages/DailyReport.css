@@ -58,13 +58,15 @@
 @media only screen and (max-width: 62em) {
     .daily-report-top {
         display: block !important;
-
+        padding: 0;
+    }
+    .report-table{
+        padding-top: 0;
     }
     .daily-header-right{
         flex-direction: column !important;
         align-items: flex-start;
     }
-
     .daily-header-right {
         margin: 15px;
     }
