@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getSwUsers, getUser, isLoggedOut, setTokens } from "../slice/userSlice";
+import { getSwUsers, getUser, isLoggedOut, setLogStatus, setStatus, setTokens, setUserId } from "../slice/userSlice";
 import { notesApi } from "./notesApi";
 import { notificationApi } from "./notificationApi";
 import { projectApi } from "./projectApi";
@@ -8,6 +8,7 @@ import { reportApi } from "./reportApi";
 import { sectionApi } from "./sectionApi";
 import { taskApi } from "./taskApi";
 import { taskNotificationApi } from "./taskNotificationApi";
+import { useNavigate } from "react-router-dom";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -23,8 +24,11 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
+          console.log("api login",data)
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
+          // obj.dispatch(setLogStatus(data.status))
+          // obj.dispatch(setUserId(data.userId))
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
@@ -73,13 +77,15 @@ export const userApi = createApi({
     logout: builder.mutation({
       query: () => ({
         url: "/user/logout",
-        method: "PATCH",
+        method: "POST",
         body: {},
       }),
 
       async onQueryStarted(args, obj) {
         try {
-          await obj.queryFulfilled;
+          const {data}= await obj.queryFulfilled;
+          console.log("hit logout api", data)
+          obj.dispatch(setStatus(data.status))
           localStorage.clear();
           obj.dispatch(isLoggedOut())
           obj.dispatch(notesApi.util.resetApiState())
@@ -90,7 +96,7 @@ export const userApi = createApi({
           obj.dispatch(taskApi.util.resetApiState())
           obj.dispatch(taskNotificationApi.util.resetApiState())
         } catch (error) {
-          if (import.meta.env.DEV) console.error("Error:", error);
+          console.error("Error:", error);
         }
       },
     }),

@@ -1,16 +1,36 @@
-import { useSelector } from "react-redux";
-import { NavLink, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import Icon from "../../ui/Icon";
 import "./SidebarTop.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logout from "../../modals/logout/Logout";
+import { useLogoutMutation } from "../../../redux/api/userApi";
+import { setStatus } from "../../../redux/slice/userSlice";
 
 export default function SidebarTop() {
+  const navigate = useNavigate();
+  const [logout, { data }] = useLogoutMutation();
+  const { status } = useSelector((state) => state.user);
+  const dispatch=useDispatch()
+
+  useEffect(() => {
+    console.log("hit", data);
+    if (status === "SUCCESS") {
+      dispatch(setStatus(null))
+      navigate("/login");
+    }
+  }, [data, navigate, status]);
+
   const { user } = useSelector((state) => state.user);
-  const [logoutFlag,setLogoutFlag]=useState(false);
+  const [logoutFlag, setLogoutFlag] = useState(false);
   //flag
   const getClassName = (isActive) => {
     return `top-link-item ${isActive ? "top-link-item-active" : null}`;
+  };
+
+  const handleLogout = () => {
+    setLogoutFlag(false);
+    logout();
   };
 
   return (
@@ -60,7 +80,7 @@ export default function SidebarTop() {
             className="top-link-item"
             to=""
             style={{ textDecoration: "none" }}
-            onClick={()=>setLogoutFlag(true)}
+            onClick={() => setLogoutFlag(true)}
           >
             <div className="side-icon">
               <Icon name="logout-outline" size="24px" />
@@ -69,7 +89,9 @@ export default function SidebarTop() {
           </NavLink>
         </div>
       </div>
-      {logoutFlag&&<Logout onCancel={()=>setLogoutFlag(false)}/>}
+      {logoutFlag && (
+        <Logout onCancel={() => setLogoutFlag(false)} logout={handleLogout} />
+      )}
     </div>
   );
 }

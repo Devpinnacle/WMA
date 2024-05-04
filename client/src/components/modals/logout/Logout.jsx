@@ -5,13 +5,8 @@ import "./Logout.css";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../../redux/api/userApi";
 
-const Logout = ({onCancel}) => {
-    const navigate=useNavigate();
-    const [logout,{data}]=useLogoutMutation();
-
-    useEffect(() => {
-        if (data?.status === "SUCCESS") navigate("/login");
-      }, [data, navigate]);
+const Logout = ({onCancel,logout}) => {
+ 
 
   return (
     <ModalContainer  onCancel={onCancel} backdropClass={"backdrop-dark"}>
@@ -38,7 +33,7 @@ const Logout = ({onCancel}) => {
           Are you sure you want to logout?
         </div>
         <div className="log-can-btn">
-          <button className="btn-del" onClick={()=>logout()}>
+          <button className="btn-del" onClick={logout}>
             <Icon name="logout-outline" size="2rem" />
             Logout
           </button>

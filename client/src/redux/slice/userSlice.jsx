@@ -7,6 +7,9 @@ const initialState = {
   alertType: null,
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
+  status: null,
+  userId:null,
+  logStatus:null,
 };
 
 const userSlice = createSlice({
@@ -40,6 +43,15 @@ const userSlice = createSlice({
     getSwUsers(state, { payload }) {
       state.swUsers = payload;
     },
+    setStatus(state, { payload }) {
+      state.status = payload;
+    },
+    setUserId(state,{payload}){
+      state.userId=payload;
+    },
+    setLogStatus(state, { payload }) {
+      state.logStatus = payload;
+    },
     resetUser() {
       return initialState;
     },
@@ -54,5 +66,8 @@ export const {
   resetUser,
   setTokens,
   getSwUsers,
+  setStatus,
+  setLogStatus,
+  setUserId,
 } = userSlice.actions;
 export const userReducer = userSlice.reducer;

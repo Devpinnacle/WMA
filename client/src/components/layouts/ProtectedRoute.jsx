@@ -16,8 +16,8 @@ export default function ProtectedRoute({ children, reverse }) {
     }
   }, [data, user, dispatch]);
 
-  if (isLoading) {
-  } else if (data) {
+  if (isLoading) {} else 
+  if (data) {
     if (reverse) {
       return <Navigate to={"/"} state={location} replace />;
     } else {

@@ -10,21 +10,23 @@ import io from "socket.io-client";
 const Login = () => {
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const dispatch = useDispatch();
-  const [login, { error, data }] = useLoginMutation();
+  const [login, { isLoading,error, data }] = useLoginMutation();
   const [saveNotification] = useSaveNotificationMutation();
+  
 
   const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   useEffect(() => {
+    console.log("login data",data)
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
     if (data?.status === "SUCCESS") {
       saveNotification({ userId: data.userId });
+      console.log("login")
       socket.emit("login", data.userId);
-
       dispatch(setAlert({ type: "success", msg: "Welcome" }));
     }
-  }, [error, dispatch, data]);
+  }, [error, dispatch, data,isLoading]);
 
   const inputHandler = (e) => {
     setFormData((prevState) => ({
