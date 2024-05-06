@@ -11,6 +11,7 @@ import { useGetSingleUserReportMutation } from "../redux/api/reportApi";
 import DateRangeInput from "../components/ui/DateRangeInput";
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
+import { convertMinutesToHoursAndMinutes } from "../util";
 
 const MemberReport = () => {
   const [tag, setTag] = useState([]);
@@ -206,7 +207,7 @@ const MemberReport = () => {
                     <td>{proj.data[0].data[0].priority}</td>
                     <td>{proj.data[0].data[0].status}</td>
                     <td>{proj.data[0].data[0].stage}</td>
-                    <td>{proj.data[0].data[0].duration}</td>
+                    <td>{convertMinutesToHoursAndMinutes(proj.data[0].data[0].duration)}</td>
                     <td>{proj.data[0].data[0].progress}%</td>
                     <td>
                       {proj.data[0].data[0].completedDate
@@ -222,7 +223,7 @@ const MemberReport = () => {
                       <td>{task.priority}</td>
                       <td>{task.status}</td>
                       <td>{task.stage}</td>
-                      <td>{task.duration}</td>
+                      <td>{convertMinutesToHoursAndMinutes(task.duration)}</td>
                       <td>{task.progress}%</td>
                       <td>
                         {task.completedDate
@@ -244,7 +245,7 @@ const MemberReport = () => {
                           <td>{sec.data[0].priority}</td>
                           <td>{sec.data[0].status}</td>
                           <td>{sec.data[0].stage}</td>
-                          <td>{sec.data[0].duration}</td>
+                          <td>{convertMinutesToHoursAndMinutes(sec.data[0].duration)}</td>
                           <td>{sec.data[0].progress}%</td>
                           <td>
                             {sec.data[0].completedDate
@@ -260,7 +261,7 @@ const MemberReport = () => {
                             <td>{task.priority}</td>
                             <td>{task.status}</td>
                             <td>{task.stage}</td>
-                            <td>{task.duration}</td>
+                            <td>{convertMinutesToHoursAndMinutes(task.duration)}</td>
                             <td>{task.progress}%</td>
                             <td>
                               {task.completedDate
