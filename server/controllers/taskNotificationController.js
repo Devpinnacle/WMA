@@ -33,7 +33,7 @@ exports.progress = catchAsync(async (req, res, next) => {
     userId,
     taskId,
     "updated progress to",
-    newData,
+    `${newData}%`,
     res,
     next
   );

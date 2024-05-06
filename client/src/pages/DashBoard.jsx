@@ -6,7 +6,7 @@ import { getNotes } from "../redux/slice/notesSlice";
 import DeleteNotes from "../components/modals/notes/DeleteNotes";
 import View from "../components/modals/notes/View";
 import { useGetProjectQuery } from "../redux/api/projectApi";
-import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
+import { getProject, setSelectedProject, setSelectedProjectName } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import "./DashBoard.css";
@@ -20,7 +20,7 @@ import { useGetNotificationQuery } from "../redux/api/notificationApi";
 import DayDateInput from "../components/ui/DayDateInput";
 import { useGetSelectedTaskMutation, useGetTodaysTaskQuery } from "../redux/api/taskApi";
 import { dashedFormatDate, formatDate } from "../Helper/helper";
-import { useGetSelectedSectionMutation } from "../redux/api/sectionApi";
+import { useGetSectionMutation, useGetSelectedSectionMutation } from "../redux/api/sectionApi";
 import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
@@ -46,6 +46,7 @@ const Dashboard = () => {
   const { data: tasktoday } = useGetTodaysTaskQuery();
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
+  const [getSections]=useGetSectionMutation();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
@@ -195,8 +196,10 @@ const Dashboard = () => {
     setDeleteNoteFlag(true);
   };
 
-  const handleProjectClick = (id) => {
+  const handleProjectClick = async(id,name) => {
     dispatch(setSelectedProject(id));
+    dispatch(setSelectedProjectName(name))
+    await getSections(id)
     navigate("/sections");
   };
 
@@ -385,7 +388,7 @@ const Dashboard = () => {
                 {filteredProjects.map((proj) => (
                   <div
                     className="project-items"
-                    onClick={() => handleProjectClick(proj._id)}
+                    onClick={() => handleProjectClick(proj._id,proj.sctProjectName)}
                   >
                     <div className="project-item-header">
                       <div className="left-content">

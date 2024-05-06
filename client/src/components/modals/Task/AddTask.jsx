@@ -347,7 +347,7 @@ const AddTask = ({ onCancel }) => {
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2rem" />
             <span className="ml-2" style={{ fontSize: "22px" }}>
-              Section name
+              {sec.sectionName}
             </span>
           </div>
         </div>

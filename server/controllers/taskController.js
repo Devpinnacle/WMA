@@ -153,7 +153,7 @@ exports.addTask = catchAsync(async (req, res, next) => {
 
   await Section.updateOne({ _id: sectionId }, { progress: totalProgress });
 
-  await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: 1 } });
+  await Section.updateOne({ _id: sectionId }, { $inc: { totalTask: assignedTo.length } });
 
   res.status(200).json({ status: "success" });
 });
