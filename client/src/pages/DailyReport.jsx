@@ -18,6 +18,7 @@ const DailyReport = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   useGetDailyReportQuery();
   const { dailyReport } = useSelector((state) => state.report);
+  const navigate=useNavigate()
 
   // Function to format data for CSV
   const getCSVdata = () => {
@@ -111,7 +112,7 @@ const DailyReport = () => {
               </CSVLink>
             </div>
             <div className="chart-icon mt-4 mr-3">
-              <Icon name="chart-icon" size="3rem" title="Go to chart" />
+              <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")}/>
             </div>
           </div>
         </div>

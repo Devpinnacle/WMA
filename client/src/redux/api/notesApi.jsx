@@ -38,6 +38,22 @@ export const notesApi = createApi({
       },
     }),
 
+    updateNotes: builder.mutation({
+      query: (fromData) => ({
+        url: "/notes/updatenotes",
+        method: "POST",
+        body: fromData,
+      }),
+      async onQueryStarted(args, obj) {
+        try {
+          const { data } = await obj.queryFulfilled;
+          obj.dispatch(notesApi.util.invalidateTags([{ type: "bringnotes" }]));
+        } catch (error) {
+          console.log("Error delete notes:", error);
+        }
+      },
+    }),
+
     getNotes: builder.query({
       providesTags: () => [{ type: "bringnotes" }],
       query: () => ({
@@ -59,5 +75,6 @@ export const notesApi = createApi({
 export const {
   useSaveNotesMutation,
   useDeleteNotesMutation,
+  useUpdateNotesMutation,
   useGetNotesQuery,
 } = notesApi;

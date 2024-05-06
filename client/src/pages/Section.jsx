@@ -14,6 +14,7 @@ import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { useGetSelectedTaskMutation } from "../redux/api/taskApi";
 import { useGetSectionMutation } from "../redux/api/sectionApi";
+import { setSectionDueColor } from "../util";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -30,7 +31,7 @@ const Section = () => {
 
   const [getSelectedTask] = useGetSelectedTaskMutation();
 
-  const { selectedProject } = useSelector((state) => state.project);
+  const { selectedProject ,selectedProjectName} = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
 
@@ -114,35 +115,7 @@ const Section = () => {
     setSection(sec);
     setTaskFlag(true);
   }
-  // const getPriorityColor = (priority, dueDate, status) => {
-  //   if (status !== "Completed") {
-  //     if (new Date() > new Date(dueDate)) {
-  //       return "#FF4848";
-  //     } else {
-  //       switch (priority) {
-  //         case "High":
-  //           return "#EDB1A1";
-  //         case "Low":
-  //           return "#F3CF96";
-  //         case "On Hold":
-  //           return "#B7B7B7";
-  //         default:
-  //           return "#AACBBA";
-  //       }
-  //     }
-  //   } else {
-  //     switch (priority) {
-  //       case "High":
-  //         return "#EDB1A1";
-  //       case "Low":
-  //         return "#F3CF96";
-  //       case "On Hold":
-  //         return "#B7B7B7";
-  //       default:
-  //         return "#AACBBA";
-  //     }
-  //   }
-  // };
+ 
   const getPriorityColor = (priority, dueDate, status) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set time to midnight
@@ -191,67 +164,7 @@ const Section = () => {
   };
 
   return (
-    //   <>
-    //     <input
-    //       type="text"
-    //       value={searchTerm}
-    //       onChange={handleSearch}
-    //       style={{ color: "black" }}
-    //       placeholder="search for section"
-    //     />
-    //     <button
-    //       style={{ color: "black" }}
-    //       onClick={() => setAddSectionFlag(true)}
-    //     >
-    //       addsection
-    //     </button>
-
-    //     {filteredSections.map((sec) => (
-    //       <div className="test"
-    //         key={sec._id}
-    //         style={{ border: "1px solid black", padding: "10px" }}
-    //         onClick={()=>handleSectionClick(sec._id)}
-    //       >
-    //         <h2 style={{ color: "black" }}>{sec.sectionName}</h2>
-    //         <p style={{ color: "black" }}>
-    //           Start Date: {formatDate(sec.startDate)}
-    //         </p>
-    //         <p style={{ color: "black" }}>Due Date: {formatDate(sec.dueDate)}</p>
-    //         <p style={{ color: "black" }}>
-    //           Created By:{" "}
-    //           {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
-    //         </p>
-    //         <p style={{ color: "black" }}>{sec.progress}</p>
-    //         <button style={{ color: "black" }}>add task</button>
-    //         {sec.totalTask===0 ? (
-    //           <button
-    //             style={{ color: "black" }}
-    //             onClick={() => handleDeleteSection(sec._id, sec.sectionName)}
-    //           >
-    //             delete task
-    //           </button>
-    //         ) : (
-    //           <button style={{ color: "black" }}>View task</button>
-    //         )}
-    //       </div>
-    //     ))}
-
-    //     {addSectionFlag && (
-    //       <AddSection
-    //         onCancel={() => setAddsectionFlag(false)}
-    //         projectId={selectedProject}
-    //       />
-    //     )}
-    //     {deleteSectionFlag && (
-    //       <DeleteSection
-    //         id={sectionId}
-    //         head={sectionHead}
-    //         onCancel={handleOnCancelSection}
-    //       />
-    //     )}
-    //   </>
-    // );
-    <MainContainer pageName="Project name-desc">
+    <MainContainer pageName={selectedProjectName}>
       {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
       <div className="section-top" >
         <div className="search-box">
@@ -287,7 +200,7 @@ const Section = () => {
           // onClick={() => handleSectionClick(sec)}
           >
   
-            <div className="section-item-top" style={{ backgroundColor: new Date(sec.dueDate) > new Date() ? '#3D405B' : '#FF4848' }}>
+            <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask) }}>
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
                 <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>

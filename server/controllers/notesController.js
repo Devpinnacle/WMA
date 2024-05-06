@@ -35,10 +35,21 @@ exports.saveNotes = catchAsync(async (req, res, next) => {
 exports.deleteNotes = catchAsync(async (req, res, next) => {
   const { id } = req.body;
   if (!id) {
-    return next(new AppError("Please Note id.", 400));
+    return next(new AppError("Please provide Note id.", 400));
   }
 
   await Notes.updateOne({ _id: id }, { $set: { deleted_status: true } });
 
   res.status(200).json({ data: "succsess" });
 });
+
+//* Update Notes ***********************************************************
+
+exports.updateNotes=catchAsync(async(req,res,next)=>{
+  const id=req.body.Id;
+  if (!id) {
+    return next(new AppError("Please provide Note id.", 400));
+  }
+  await Notes.updateOne({ _id: id }, { $set: { msg: req.body.msg } });
+  res.status(200).json({ data: "succsess" });
+})

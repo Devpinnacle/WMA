@@ -10,14 +10,16 @@ import { formatDate } from "../Helper/helper";
 import { useGetSingleUserReportMutation } from "../redux/api/reportApi";
 import DateRangeInput from "../components/ui/DateRangeInput";
 import { CSVLink } from "react-csv";
+import { useNavigate } from "react-router-dom";
 
 const MemberReport = () => {
   const [tag, setTag] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { setUser, selectedUser } = useSelector((state) => state.report);
+  const { setUser, selectedUser,memberName } = useSelector((state) => state.report);
   const [getUser] = useGetSingleUserReportMutation();
+  const navigate=useNavigate()
   // console.log("selectedUser", selectedUser);
   useEffect(() => {
     getUser(setUser);
@@ -119,7 +121,7 @@ const MemberReport = () => {
       </div>
       <div className="member-wise-report">
         <div className="header-left back-icon">
-          <Icon name="arrow-outline" sixe="18px" />
+          <Icon name="arrow-outline" sixe="18px" onClick={()=>navigate("/reports/memberreports")}  />
         </div>
         <span
           style={{
@@ -129,7 +131,7 @@ const MemberReport = () => {
             marginLeft: "5px",
           }}
         >
-          Rakshith
+          {memberName}
         </span>
         <div className="member-wise-header-right">
           {/* <Icon name="chart-icon" size="3rem" title="Go to chart" /> */}
@@ -152,7 +154,7 @@ const MemberReport = () => {
               </CSVLink>
             </div>
             <div className="chart-icon mt-4">
-              <Icon name="chart-icon" size="3rem" title="Go to chart" />
+              <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")}/>
             </div>
           </div>
         </div>

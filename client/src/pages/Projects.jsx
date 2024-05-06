@@ -5,7 +5,7 @@ import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
 import { useGetProjectQuery } from "../redux/api/projectApi";
 import { useDispatch, useSelector } from "react-redux";
-import { getProject, setSelectedProject } from "../redux/slice/projectSlice";
+import { getProject, setSelectedProject, setSelectedProjectName } from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import AddProject from "../components/modals/projects/AddProject";
 import { useGetSectionMutation } from "../redux/api/sectionApi";
@@ -58,8 +58,9 @@ const Projects = () => {
     return isIncludedInTags && isIncludedInSearch;
   });
 
-  const handleProjectClick = async(id) => {
+  const handleProjectClick = async(id,name) => {
     dispatch(setSelectedProject(id));
+    dispatch(setSelectedProjectName(name))
     await getSections(id)
     navigate("/sections");
   };
@@ -117,7 +118,7 @@ const Projects = () => {
           <div
             className="project-item"
             key={proj.id}
-            onClick={() => handleProjectClick(proj._id)}
+            onClick={() => handleProjectClick(proj._id,proj.sctProjectName)}
           >
             <div className="project-title">
               <Icon name="project-outline" size="2rem" />

@@ -11,6 +11,8 @@ import "./Task.css";
 import Icon from "../components/ui/Icon";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
+import { setSectionDueColor } from "../util";
+import { useNavigate } from "react-router-dom";
 
 const Task = () => {
   const [addTaskFlag, setAddTaskFlag] = useState(false);
@@ -19,10 +21,13 @@ const Task = () => {
   const [section, setSection] = useState(null);
 
   const { selectedSection: sec1 } = useSelector((state) => state.section);
+  const { selectedProjectName} = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
   const { tasks } = useSelector((state) => state.task);
 
   const dispatch = useDispatch();
+  const navigate=useNavigate();
+  
   const sec = typeof sec1 === 'string' ? JSON.parse(sec1) : sec1;
   console.log("selectedSection", sec);
 
@@ -235,7 +240,7 @@ const Task = () => {
     //   {viewTaskFlag && <ViewTask onCancel={() => setViewTaskFlag(false)} task={task} section={section}/>}
     // </>
     <MainContainer
-      pageName="Project name"
+      pageName={selectedProjectName}
       onGoBack={() => navigate("/sections")}
     >
       <div className="view-all-task-container">
@@ -259,7 +264,7 @@ const Task = () => {
             borderColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
           }}
         > */}
-        <div className="section-item-top" style={{ backgroundColor: new Date(sec.dueDate) > new Date() ? '#3D405B' : '#FF4848' }}>
+        <div className="section-item-top" style={{ backgroundColor:setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask)}}>
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span

@@ -8,7 +8,7 @@ import {
 } from "../redux/api/reportApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSetUser } from "../redux/slice/reportSlice";
+import { getSetUser, setMemberName } from "../redux/slice/reportSlice";
 
 const MemberWiseReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,8 +19,9 @@ const MemberWiseReport = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleUserClick = async (id) => {
+  const handleUserClick = async (id,name) => {
     dispatch(getSetUser(id));
+    dispatch(setMemberName(name))
     getUser(id);
     navigate("/reports/singleuserreports");
   };
@@ -52,13 +53,13 @@ const MemberWiseReport = () => {
             />
             <Icon title="Search" name="search-icon" size="2rem" />
           </div>
-          <Icon name="chart-icon" size="3rem" title="Go to chart" />
+          <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")}/>
         </div>
       </div>
       {filteredReport.map((user) => (
         <div
           className="member-wise-item"
-          onClick={() => handleUserClick(user._id)}
+          onClick={() => handleUserClick(user._id,user.userName)}
         >
           <span className="ml-3" style={{ fontWeight: "700", color: "black" }}>
             {user.userName}

@@ -10,5 +10,6 @@ router.use(authMiddlewares.protect);
 router.route("/getnotes").get(notesControllers.getNotes);
 router.post("/savenotes", notesControllers.saveNotes);
 router.post("/deletenotes", notesControllers.deleteNotes);
+router.post("/updatenotes",notesControllers.updateNotes);
 
 module.exports = router;

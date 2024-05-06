@@ -9,7 +9,7 @@ import {
 } from "../redux/api/reportApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSetProject } from "../redux/slice/reportSlice";
+import { getSetProject, setProjectName } from "../redux/slice/reportSlice";
 
 const ProjectWiseReport = () => {
   const [tag, setTag] = useState([]);
@@ -28,8 +28,9 @@ const ProjectWiseReport = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleProjectClick = (id) => {
+  const handleProjectClick = (id,name) => {
     dispatch(getSetProject(id));
+    dispatch(setProjectName(name))
     getProject(id);
     navigate("/reports/singleprojectreports");
   };
@@ -66,7 +67,7 @@ const ProjectWiseReport = () => {
         Project-wise Report
       </div>
       <div className="project-wise">
-        <Icon name="chart-icon" size="3rem" title="Go to chart" />
+        <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")} />
         <div className="search-box report-search">
           <input
             id="keyword"
@@ -103,7 +104,7 @@ const ProjectWiseReport = () => {
         {filteredProjects.map((proj) => (
           <div
             className="project-wise-item"
-            onClick={() => handleProjectClick(proj._id)}
+            onClick={() => handleProjectClick(proj._id,proj.sctProjectName)}
           >
             <span
               className="ml-1"

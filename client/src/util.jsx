@@ -74,3 +74,17 @@ export const getLastDateOfMonth = (date) => {
   // Get the last date of the month for the selected date
   return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 };
+//* Set Due Date color *******************************************************
+export const setSectionDueColor=(dueDate,progress,totalTask)=>{
+  if(progress===0&&totalTask<=0){
+    return "#3D405B"
+  }
+  if(progress===100)
+    return "#3D405B"
+  else{
+    if(new Date().setHours(0,0,0,0)>new Date(dueDate)){
+      return "#FF4848"
+    }
+    else return "#3D405B"
+  }
+}

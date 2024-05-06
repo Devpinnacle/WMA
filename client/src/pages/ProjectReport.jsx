@@ -8,13 +8,16 @@ import { useSelector } from "react-redux";
 import { formatDate } from "../Helper/helper";
 import { CSVLink } from "react-csv";
 import { useGetSingleProjectReportMutation } from "../redux/api/reportApi";
+import { useNavigate } from "react-router-dom";
 
 const ProjectReport = () => {
   const [statusTag, setStatusTag] = useState([]);
   const [stagesTag, setStagesTag] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { setProject, selectedProject } = useSelector((state) => state.report);
+  const { setProject, selectedProject,projectName } = useSelector((state) => state.report);
   const [getProject] = useGetSingleProjectReportMutation();
+
+  const navigate=useNavigate()
 
   const statusTags = [
     { label: "In Progress", value: "In Progress" },
@@ -116,7 +119,7 @@ const ProjectReport = () => {
   console.log("filteredProject", filteredProject1);
 
   return (
-    <MainContainer>
+    <MainContainer onGoBack={()=>navigate("/reports/projectreports")}>
       <div
         style={{
           color: "#3D405B",
@@ -125,12 +128,9 @@ const ProjectReport = () => {
           paddingLeft: "2rem",
         }}
       >
-        Project-wise Report
+        {projectName} Report
       </div>
       <div className="project-wise-report">
-        <div className="header-left back-icon">
-          <Icon name="arrow-outline" sixe="18px" />
-        </div>
         <span
           style={{
             color: "black",
@@ -144,7 +144,7 @@ const ProjectReport = () => {
           {/* {selectedProject ? selectedProject.sctProjectName : "Project Report"} */}
         </span>
         <div className="project-wise-header-right">
-          <Icon name="chart-icon" size="3rem" title="Go to chart" />
+          <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")} />
           <div className="search-box report-search">
             <input
               id="keyword"

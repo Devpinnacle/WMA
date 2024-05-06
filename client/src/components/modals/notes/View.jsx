@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import ModalContainer from "../ModalContainer";
 import "./ViewNote.css"
 import Icon from "../../ui/Icon";
+import { useUpdateNotesMutation } from "../../../redux/api/notesApi";
 
 const View = ({ id, head, msg, onCancel, onDelete }) => {
+  const [message,setMessage]=useState(msg);
+  const [updateNotes] = useUpdateNotesMutation();
+  console.log(id)
+  const onExit=()=>{
+    if(msg!==message){
+      const fromData={
+        Id:id,
+        msg:message
+      }
+      updateNotes(fromData);
+      onCancel()
+    }
+    onCancel()
+  }
 
   return (
-    <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
+    <ModalContainer onCancel={onExit} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal view-note-modal">
         <div className="modal-header">
           <div className='title-container'>
@@ -20,7 +35,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
             className="close-icon"
             name="close"
             size="6rem"
-            onClick={onCancel}
+            onClick={onExit}
           />
         </div>
         <div className="view-notes-body">
@@ -32,7 +47,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
               onClick={onDelete}
             />
           </div>
-          <textarea className="body-content">{msg}</textarea>
+          <textarea className="body-content" value={message} onChange={(e)=>setMessage(e.target.value)} />
         </div>
       </div>
     </ModalContainer>
