@@ -173,7 +173,7 @@ const DailyReport = () => {
             {filteredReport.map((report) => (
               <>
                 <tr>
-                  <td colSpan={12} style={{fontWeight:"bold"}}>{dashedFormatDate(report._id)}</td>
+                  <td colSpan={12} style={{fontWeight:"bold"}}>{formatDate(report._id)}</td>
                 </tr>
 
                 {report.data.map((detail) => (
@@ -182,10 +182,10 @@ const DailyReport = () => {
                       <td>{detail.name}</td>
                       <td>{detail.projectName}</td>
                       <td>{detail.sectionName}</td>
-                      <td>{dashedFormatDate(detail.sectionDue)}</td>
+                      <td>{formatDate(detail.sectionDue)}</td>
                       <td>{detail.taskName}</td>
-                      <td>{dashedFormatDate(detail.assignedDate)}</td>
-                      <td>{dashedFormatDate(detail.dueDate)}</td>
+                      <td>{formatDate(detail.assignedDate)}</td>
+                      <td>{formatDate(detail.dueDate)}</td>
                       <td>{detail.stages}</td>
                       <td>{detail.duration}</td>
                       <td>{detail.status}</td>
