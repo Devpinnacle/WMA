@@ -34,7 +34,7 @@ const DailyReport = () => {
       "TA Date",
       "TD Date",
       "Stage",
-      "Duration(min)",
+      "Duration(hrs)",
       "Status",
       "Progress",
       "Notes",
@@ -129,7 +129,7 @@ const DailyReport = () => {
               <th scope="col">TA Date</th>
               <th scope="col">TD Date</th>
               <th scope="col">Stage</th>
-              <th scope="col">Duration(min)</th>
+              <th scope="col">Duration(hrs)</th>
               <th scope="col">Status</th>
               <th scope="col">Progress</th>
               <th scope="col">Notes</th>
