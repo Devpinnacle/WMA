@@ -435,7 +435,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   };
   const getPriorityColor = (priority, dueDate, status) => {
     if (status !== "Completed") {
-      if (new Date() > new Date(dueDate)) {
+      if (new Date().setHours(0,0,0,0) > new Date(dueDate)) {
         return "#FF4848";
       } else {
         switch (priority) {
