@@ -6,27 +6,30 @@ import { setAlert } from "../redux/slice/userSlice";
 import { useGetNotesQuery } from "../redux/api/notesApi";
 import { useSaveNotificationMutation } from "../redux/api/notificationApi";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const dispatch = useDispatch();
-  const [login, { isLoading,error, data }] = useLoginMutation();
+  const [login, { isLoading,error, data:logdata }] = useLoginMutation();
   const [saveNotification] = useSaveNotificationMutation();
-  
+  const navigate=useNavigate()
+  const { user } = useSelector((state) => state.user);
 
   const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   useEffect(() => {
-    console.log("login data",data)
+    console.log("login data",logdata)
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
-    if (data?.status === "SUCCESS") {
-      saveNotification({ userId: data.userId });
+    if (logdata?.status === "SUCCESS") {
+      saveNotification({ userId: logdata.userId });
       console.log("login")
-      socket.emit("login", data.userId);
+      socket.emit("login", logdata.userId);
       dispatch(setAlert({ type: "success", msg: "Welcome" }));
+      navigate("/")
     }
-  }, [error, dispatch, data,isLoading]);
+  }, [error, dispatch, logdata,user]);
 
   const inputHandler = (e) => {
     setFormData((prevState) => ({

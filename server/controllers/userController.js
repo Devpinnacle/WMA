@@ -2,8 +2,17 @@ const User = require("../models/EmpDetails");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
+const factory=require("./handleFactory")
 const { sendTokensAndCookies, saveLoginHistory, deleteExpiredTokens } = require("./helperFunction");
 const { removeCookies } = require("../utils/tokensAndCookies");
+
+//* Helping Middlewares ********************************************
+
+// add user id in params
+exports.getUserId = (req, res, next) => {
+  req.params.id = req.user._id;
+  next();
+};
 
 //* Log in ***********************************************************
 
@@ -27,15 +36,15 @@ exports.login = catchAsync(async (req, res, next) => {
 
 //* Get user *********************************************************
 
-exports.getUser = catchAsync(async (req, res) => {
-  const user = req.user;
-  res.status(200).json({
-    status: "SUCCESS",
-    data: {
-      user: user,
-    },
-  });
-});
+// exports.getUser = catchAsync(async (req, res) => {
+//   const user = req.user;
+//   res.status(200).json({
+//     status: "SUCCESS",
+//     data: {
+//       user: user,
+//     },
+//   });
+// });
 
 //* Get Software user *********************************************************
 
@@ -66,4 +75,8 @@ exports.logout = catchAsync(async (req, res) => {
   removeCookies(res);
   res.status(200).json({ status: "SUCCESS" });
 });
+
+//* Using Factory Handler ******************************************
+
+exports.getUserById=factory.getById(User);
 

@@ -14,7 +14,7 @@ export default function SidebarTop() {
   const dispatch=useDispatch()
 
   useEffect(() => {
-    console.log("hit", data);
+    // console.log("hit", data);
     if (status === "SUCCESS") {
       dispatch(setStatus(null))
       navigate("/login");

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import customFetchBase from "../customFetchBase";
-import { getSwUsers, getUser, isLoggedOut, setLogStatus, setStatus, setTokens, setUserId } from "../slice/userSlice";
+import { getSwUsers, getUser, isLoggedOut, setAlert, setLogStatus, setStatus, setTokens, setUserId } from "../slice/userSlice";
 import { notesApi } from "./notesApi";
 import { notificationApi } from "./notificationApi";
 import { projectApi } from "./projectApi";
@@ -9,6 +9,7 @@ import { sectionApi } from "./sectionApi";
 import { taskApi } from "./taskApi";
 import { taskNotificationApi } from "./taskNotificationApi";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -24,18 +25,24 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
+          // const socket = io(import.meta.env.VITE_SOCKET_URL);
           console.log("api login",data)
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
-          // obj.dispatch(setLogStatus(data.status))
-          // obj.dispatch(setUserId(data.userId))
+          console.log(data.status);
+          obj.dispatch(setLogStatus(data.status))
+          obj.dispatch(setUserId(data.userId))
+          // dispatch(setAlert({ type: "success", msg: "Welcome" }));
+          // socket.emit("login", data.userId);
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,
             })
           );
-          obj.dispatch(userApi.util.invalidateTags([{ type: "me" }]));
+          // obj.dispatch(notificationApi.util.invalidateTags([ "log" ]));
+          // obj.dispatch(userApi.util.invalidateTags([ "me" ]));
+          
         } catch (error) {
           console.error("Error....", error);
         }
