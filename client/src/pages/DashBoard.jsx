@@ -46,7 +46,7 @@ const Dashboard = () => {
   const { data: tasktoday } = useGetTodaysTaskQuery();
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
-  const [getSections]=useGetSectionMutation();
+  const [getSections] = useGetSectionMutation();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
@@ -196,7 +196,7 @@ const Dashboard = () => {
     setDeleteNoteFlag(true);
   };
 
-  const handleProjectClick = async(id,name) => {
+  const handleProjectClick = async (id, name) => {
     dispatch(setSelectedProject(id));
     dispatch(setSelectedProjectName(name))
     await getSections(id)
@@ -216,6 +216,52 @@ const Dashboard = () => {
     dispatch(resetTaskNotifications());
     dispatch(taskNotificationApi.util.resetApiState())
   }
+  const getPriorityColor = (priority, dueDate, status) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to midnight
+
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+    if (status !== "Completed") {
+      if (today > due) {
+        return "#FF4848";
+      } else {
+        switch (priority) {
+          case "High":
+            return "#EDB1A1";
+          case "Low":
+            return "#F3CF96";
+          case "On Hold":
+            return "#B7B7B7";
+          default:
+            return "#AACBBA";
+        }
+      }
+    } else {
+      switch (priority) {
+        case "High":
+          return "#EDB1A1";
+        case "Low":
+          return "#F3CF96";
+        case "On Hold":
+          return "#B7B7B7";
+        default:
+          return "#AACBBA";
+      }
+    }
+  };
+  const getPriorityBodyColor = (priority) => {
+    switch (priority) {
+      case "High":
+        return "#F9E3DD";
+      case "Low":
+        return "#FBEFDA";
+      case "On Hold":
+        return "#FBEFDA";
+      default:
+        return "#DCEAE3";
+    }
+  };
 
   return (
     <MainContainer pageName={`Hi`} userName={user?.userName}>
@@ -225,11 +271,31 @@ const Dashboard = () => {
             <div className="notification">
               {user?.userGroupName === "Software" ? (
                 <>
+                  {/* TODAY'S TASK */}
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
                     {todaysTask.data?.map((task) => (
-                      <div className="task-body" onClick={() => handleClickTask(task)}>
-                        <div className="task-header">
+                      <div className="task-body"
+                        onClick={() => handleClickTask(task)}
+                        style={{
+                          backgroundColor: getPriorityBodyColor(task.priority),
+                          borderColor: getPriorityBodyColor(task.priority),
+                        }}
+                      >
+                        <div className="task-header"
+                        style={{
+                          backgroundColor: getPriorityColor(
+                            task.priority,
+                            task.dueDate,
+                            task.status
+                          ),
+                          borderColor: getPriorityColor(
+                            task.priority,
+                            task.dueDate,
+                            task.status
+                          ),
+                        }}
+                      >
                           <div className="task-left">
                             <Icon name="project-outline" size="24px" />
                             <span>{task.projectId.sctProjectName}</span>
@@ -295,8 +361,8 @@ const Dashboard = () => {
                       />
                     </div>
                   </div>
-                  
-                    <div className="selected-tag">
+
+                  <div className="selected-tag">
                     {notificationTag.map((tg, index) => (
                       <div key={index} className="tag-container">
                         <Icon
@@ -307,7 +373,7 @@ const Dashboard = () => {
                         <p style={{ color: "black" }}>{tg.label}</p>
                       </div>
                     ))}
-                    </div>
+                  </div>
 
                   <div className="notification-container">
                     {filteredNotifications.map((notification) => (
@@ -388,7 +454,7 @@ const Dashboard = () => {
                 {filteredProjects.map((proj) => (
                   <div
                     className="project-items"
-                    onClick={() => handleProjectClick(proj._id,proj.sctProjectName)}
+                    onClick={() => handleProjectClick(proj._id, proj.sctProjectName)}
                   >
                     <div className="project-item-header">
                       <div className="left-content">
