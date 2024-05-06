@@ -103,12 +103,9 @@ exports.getSection = catchAsync(async (req, res, next) => {
             : 0;
 
         const overdueTasks = userTasks.filter((task) => {
-          const now = Date.now() - 20000000;
-          const dueDateTimestamp = new Date(task.dueDate).getTime();
-          // console.log("now ",now)
-          // console.log("due date ",task.dueDate)
-          // console.log("due date ",now > dueDateTimestamp && task.status !== "Completed")
-          return now > dueDateTimestamp && task.status !== "Completed";
+          // const now = Date.now() - 20000000;
+          // const dueDateTimestamp = new Date(task.dueDate).getTime();
+          return new Date().setHours(0,0,0,0) > new Date(task.dueDate) && task.status !== "Completed";
         }).length;
 
         const tasks = userTasks.filter((task) => {

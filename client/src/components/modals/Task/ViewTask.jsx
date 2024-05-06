@@ -394,18 +394,20 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       id: task._id,
       notes: notes,
     };
-    updateNotes(fromData);
-    if (user.userGroupName === "Software") {
-      notifiyTaskNotes({
-        sectionId: section._id,
-        projectId: section.projectId,
-      });
-    } else {
-      notifiyTaskNotes({
-        sectionId: section._id,
-        projectId: section.projectId,
-        Id: task.assignedTo._id,
-      });
+    if (task.notes !== notes) {
+      updateNotes(fromData);
+      if (user.userGroupName === "Software") {
+        notifiyTaskNotes({
+          sectionId: section._id,
+          projectId: section.projectId,
+        });
+      } else {
+        notifiyTaskNotes({
+          sectionId: section._id,
+          projectId: section.projectId,
+          Id: task.assignedTo._id,
+        });
+      }
     }
   };
 
@@ -643,17 +645,27 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             <div className="section-progress">{task.sectionId.progress}%</div>
           </div>
         </div>
-        <div className="task-container"
+        <div
+          className="task-container"
           style={{
             backgroundColor: getPriorityBodyColor(task.priority),
             borderColor: getPriorityBodyColor(task.priority),
           }}
         >
-          <div className="view-task-header"
+          <div
+            className="view-task-header"
             style={{
-              backgroundColor: getPriorityColor(task.priority,task.dueDate,task.status),
+              backgroundColor: getPriorityColor(
+                task.priority,
+                task.dueDate,
+                task.status
+              ),
               // backgroundColor: getPriorityColor(task.priority),
-              borderColor: getPriorityColor(task.priority,task.dueDate,task.status),
+              borderColor: getPriorityColor(
+                task.priority,
+                task.dueDate,
+                task.status
+              ),
             }}
           >
             <span>{task.taskName}</span>
@@ -685,7 +697,13 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                   {/* <span>{formatDate(task.assignedDate)}</span> */}
                 </div>
                 <div className="ta-td-date">
-                  <span style={{ color: date.dueDt > new Date() ? '#FF4848' : 'black'}}>TD Date :</span>
+                  <span
+                    style={{
+                      color: date.dueDt > new Date() ? "#FF4848" : "black",
+                    }}
+                  >
+                    TD Date :
+                  </span>
                   <div className="date-box m-0">
                     <Icon name="calender-outline" size="24px" />
                     <input
@@ -693,7 +711,9 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                       value={date.dueDt}
                       name="dueDt"
                       onChange={inputHandler}
-                      style={{ color: date.dueDt > new Date() ? '#FF4848' : 'black'}}
+                      style={{
+                        color: date.dueDt > new Date() ? "#FF4848" : "black",
+                      }}
                     />
                   </div>
                   {/* <span>{formatDate(task.dueDate)}</span> */}
@@ -779,14 +799,14 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               <div className="del-edit-btn">
                 {(user._id === task.createdBy._id ||
                   user.userGroupName !== "Software") && (
-                    <div className="del-btn">
-                      <Icon
-                        name="delete-outline"
-                        size="24px"
-                        onClick={() => setDeleteFlag(true)}
-                      />
-                    </div>
-                  )}
+                  <div className="del-btn">
+                    <Icon
+                      name="delete-outline"
+                      size="24px"
+                      onClick={() => setDeleteFlag(true)}
+                    />
+                  </div>
+                )}
                 <Icon
                   name="edit-outline"
                   size="24px"
