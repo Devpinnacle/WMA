@@ -119,7 +119,7 @@ const ProjectReport = () => {
   console.log("filteredProject", filteredProject1);
 
   return (
-    <MainContainer onGoBack={()=>navigate("/reports/projectreports")}>
+    <MainContainer onGoBack={()=>navigate("/reports/projectreports")} pageName={`${projectName} Report`}>
       <div
         style={{
           color: "#3D405B",
@@ -128,7 +128,7 @@ const ProjectReport = () => {
           paddingLeft: "2rem",
         }}
       >
-        {projectName} Report
+        {/* {projectName} Report */}
       </div>
       <div className="project-wise-report">
         <span
