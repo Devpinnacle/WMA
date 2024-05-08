@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={submitHandler}>
-        <h2 className="title" style={{ color: "white" }}>
+        <h2 className="title">
           LOG IN
         </h2>
 
