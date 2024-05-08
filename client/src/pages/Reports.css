@@ -79,7 +79,6 @@
 .daily-header-right {
     display: flex;
     align-items: center;
-    /* padding: 2rem; */
 }
 
 .project-wise {
@@ -101,7 +100,6 @@
     gap: 1rem;
     padding: 2rem;
     padding-top: 1rem;
-    /* overflow-y: auto; */
 }
 
 .project-wise-item {
@@ -129,7 +127,6 @@
     gap: 1rem;
     padding: 2rem;
     padding-top: 1rem;
-    /* overflow-y: auto; */
 }
 
 .member-wise-item {
@@ -226,8 +223,6 @@
     .head-content span {
         margin-bottom: 2rem !important;
     }
-
-
 }
 
 @media only screen and (max-width: 28em) {

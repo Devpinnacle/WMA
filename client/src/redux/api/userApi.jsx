@@ -25,24 +25,16 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-          // const socket = io(import.meta.env.VITE_SOCKET_URL);
-          console.log("api login",data)
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
-          console.log(data.status);
           obj.dispatch(setLogStatus(data.status))
           obj.dispatch(setUserId(data.userId))
-          // dispatch(setAlert({ type: "success", msg: "Welcome" }));
-          // socket.emit("login", data.userId);
           obj.dispatch(
             setTokens({
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,
             })
           );
-          // obj.dispatch(notificationApi.util.invalidateTags([ "log" ]));
-          // obj.dispatch(userApi.util.invalidateTags([ "me" ]));
-          
         } catch (error) {
           console.error("Error....", error);
         }
@@ -91,7 +83,6 @@ export const userApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const {data}= await obj.queryFulfilled;
-          console.log("hit logout api", data)
           obj.dispatch(setStatus(data.status))
           localStorage.clear();
           obj.dispatch(isLoggedOut())

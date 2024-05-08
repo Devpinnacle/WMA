@@ -7,12 +7,10 @@ import { useSelector } from "react-redux";
 import {
   dashedFormatDate,
   formatDate,
-  formatStringDate,
 } from "../Helper/helper";
 import DayDateInput from "../components/ui/DayDateInput";
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
-import Note from "../components/modals/report/Note";
 import { convertMinutesToHoursAndMinutes } from "../util";
 
 const DailyReport = () => {
@@ -64,7 +62,6 @@ const DailyReport = () => {
   };
 
   const handleDateChange = (date) => {
-    console.log(dashedFormatDate(date))
     setSelectedDate(date);
   };
   let filteredReport
@@ -137,40 +134,6 @@ const DailyReport = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {dailyReport.map((date) => (
-              <>
-                <tr key={`date-${date.date}`}>
-                  <td colSpan={12}>{date.date}</td>
-                </tr>
-                {date.data.map((name) => (
-                  <>
-                    {/* Render user name with rowspan */}
-            {/* <tr key={`user-${name.name}`}>
-                      <td rowSpan={name.nameData.length}>{name.name}</td>
-                      <td>{name.nameData[0].projectName}</td>
-                      <td>{name.nameData[0].projectData[0].sectionName}</td>
-                    </tr> */}
-            {/* Render additional projects and sections for the same user */}
-            {/* {name.nameData.slice(1).map((proj) => (
-                      <>
-                        <tr key={`project-${proj.projectName}`}>
-                          <td rowSpan={proj.projectData.length}>
-                            {proj.projectName}
-                          </td>
-                          <td>{proj.projectData[0].sectionName}</td>
-                        </tr>
-                        {proj.projectData.slice(1).map((section) => (
-                          <tr key={`section-${section.sectionName}`}>
-                            <td>{section.sectionName}</td>
-                          </tr>
-                        ))}
-                      </>
-                    ))}
-                  </>
-                ))}
-              </> */}
-            {/* ))} */}
-
             {filteredReport.map((report) => (
               <>
                 <tr>

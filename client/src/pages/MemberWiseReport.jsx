@@ -15,7 +15,6 @@ const MemberWiseReport = () => {
   useGetUserReportQuery();
   const [getUser] = useGetSingleUserReportMutation();
   const { userReport } = useSelector((state) => state.report);
-  console.log("userReport", userReport);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -113,9 +112,6 @@ const MemberWiseReport = () => {
                 {user.dueTasks}
               </span>
             </span>
-            {/* <div className="download-icon">
-              <Icon name="download-outline" size="2rem" />
-            </div> */}
           </div>
         </div>
       ))}

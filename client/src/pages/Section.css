@@ -24,7 +24,6 @@
 }
 
 .section-item {
-    /* box-shadow: 2px 2px 21px 2px #3D405B33; */
     box-shadow: var(--modal-shadow-2);
     background-color: #fff;
     border-radius: 16px;

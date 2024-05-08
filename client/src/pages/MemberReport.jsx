@@ -23,7 +23,6 @@ const MemberReport = () => {
   );
   const [getUser] = useGetSingleUserReportMutation();
   const navigate = useNavigate();
-  // console.log("selectedUser", selectedUser);
   useEffect(() => {
     getUser(setUser);
   }, []);
@@ -114,8 +113,6 @@ const MemberReport = () => {
     return { ...proj, data: filteredData };
   });
 
-  console.log("fileteredUser1 ", filteredUser1);
-
   return (
     <MainContainer>
       <div
@@ -147,7 +144,6 @@ const MemberReport = () => {
           {memberName}
         </span>
         <div className="member-wise-header-right">
-          {/* <Icon name="chart-icon" size="3rem" title="Go to chart" /> */}
           <div className="ml-3 mr-3">
             <DateRangeInput onChange={handleSetDate} />
           </div>

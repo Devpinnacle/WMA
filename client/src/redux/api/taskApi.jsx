@@ -154,7 +154,6 @@ export const taskApi = createApi({
       async onQueryStarted(args, obj) {
         try {
           const { data } = await obj.queryFulfilled;
-          // console.log("data recieved",data.data[0])
           obj.dispatch(getselectedTask(data.data[0]));
         } catch (error) {
           console.error("Error....", error);

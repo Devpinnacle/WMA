@@ -86,8 +86,6 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    /* text-overflow: ellipsis; */
-    /* white-space: nowrap; */
 }
 
 .task-detail {
@@ -192,7 +190,6 @@
     justify-content: space-between;
     align-items: center;
     margin-right: 10px;
-    /* padding: 0.5rem;  */
 }
 
 .project-body-container {
@@ -252,22 +249,24 @@
 }
 
 .chat-input input {
-    width:750px;
+    width: 750px;
     height: 24px;
     border: none;
 }
-.input-operation-buttons{
+
+.input-operation-buttons {
     display: flex;
     align-items: center;
 }
-.message-container{
+
+.message-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 8px;
-    /* height: 50px; */
 }
-.tag-time{
+
+.tag-time {
     display: flex;
     align-items: center;
     margin-right: 8px;
@@ -328,7 +327,6 @@
 .notes-item {
     background-color: #DCEAE3;
     border-radius: 8px;
-    /* height: 100px; */
     height: 80px;
     color: black;
     overflow: hidden;
@@ -343,13 +341,11 @@
     margin: 0.5rem;
     padding: 0.5rem;
     height: 35px;
-    /* overflow: hidden; */
 }
 
 .item-content {
     overflow: hidden;
     text-overflow: ellipsis;
-    /* max-width: 95%; */
     color: #000;
 }
 

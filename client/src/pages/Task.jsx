@@ -29,14 +29,9 @@ const Task = () => {
   const navigate=useNavigate();
   
   const sec = typeof sec1 === 'string' ? JSON.parse(sec1) : sec1;
-  console.log("selectedSection", sec);
 
   useGetTaskQuery(sec._id);
   const [getSelectedTask, { data: recivedTask }] = useGetSelectedTaskMutation();
-
-  // useEffect(() => {
-  //   setViewTaskFlag(true);
-  // }, [recivedTask]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -123,147 +118,11 @@ const Task = () => {
   };
 
   return (
-    // <>
-    //   <div>
-    //     <h1 style={{ color: "black" }}>{sec.sectionName}</h1>
-    //     <p style={{ color: "black" }}>progress:{sec.progress}</p>
-    //     <p style={{ color: "black" }}>
-    //       Created By:{" "}
-    //       {sec.createdBy._id === user._id ? "You" : sec.createdBy.userName}
-    //     </p>
-    //     <p style={{ color: "black" }}>Start Date:{formatDate(sec.startDate)}</p>
-    //     <p style={{ color: "black" }}>Due Date:{formatDate(sec.dueDate)}</p>
-    //   </div>
-
-    //   <button style={{ color: "black" }} onClick={() => setAddTaskFlag(true)}>
-    //     add task
-    //   </button>
-
-    //   <div style={{ clear: "both" }}>
-    //     <div style={{ color: "black", float: "left", width: "25%" }}>
-    //       <h1 style={{ color: "black" }}>Todo</h1>
-    //       {todoTasks.map((todoTask) => (
-    //         <div style={{ border: "1px solid black" }} onClick={()=>handleViewClick(todoTask)}>
-    //           <h2 style={{ color: "black" }}>{todoTask.taskName}</h2>
-    //           <p style={{ color: "black" }}>
-    //             Created By:{" "}
-    //             {todoTask.createdBy._id === user._id
-    //               ? "You"
-    //               : todoTask.createdBy.userName}
-    //           </p>
-    //           <p style={{ color: "black" }}>
-    //             dueDate:{formatDate(todoTask.dueDate)}
-    //           </p>
-    //           <p style={{ color: "black" }}>priority:{todoTask.priority}</p>
-    //           {!(user.userGroupName == "Software") && (
-    //             <p style={{ color: "black" }}>
-    //               assingned to:{todoTask.assignedTo.userName}
-    //             </p>
-    //           )}
-    //         </div>
-    //       ))}
-    //     </div>
-
-    //     <div style={{ color: "black", float: "left", width: "25%" }}>
-    //       <h1 style={{ color: "black" }}>In progress</h1>
-    //       {inProgressTasks.map((inpg) => (
-    //         <div style={{ border: "1px solid black" }} onClick={()=>handleViewClick(inpg)}>
-    //           <h2 style={{ color: "black" }}>{inpg.taskName}</h2>
-    //           <p style={{ color: "black" }}>
-    //             Created By:{" "}
-    //             {inpg.createdBy._id === user._id
-    //               ? "You"
-    //               : inpg.createdBy.userName}
-    //           </p>
-    //           <p style={{ color: "black" }}>
-    //             dueDate:{formatDate(inpg.dueDate)}
-    //           </p>
-    //           <p style={{ color: "black" }}>priority:{inpg.priority}</p>
-    //           {!(user.userGroupName == "Software") && (
-    //             <p style={{ color: "black" }}>
-    //               assingned to:{inpg.assignedTo.userName}
-    //             </p>
-    //           )}
-    //         </div>
-    //       ))}
-    //     </div>
-
-    //     <div style={{ color: "black", float: "left", width: "25%" }}>
-    //       <h1 style={{ color: "black" }}>completed</h1>
-    //       {completedTasks.map((comp) => (
-    //         <div style={{ border: "1px solid black" }} onClick={()=>handleViewClick(comp)}>
-    //           <h2 style={{ color: "black" }}>{comp.taskName}</h2>
-    //           <p style={{ color: "black" }}>
-    //             Created By:{" "}
-    //             {comp.createdBy._id === user._id
-    //               ? "You"
-    //               : comp.createdBy.userName}
-    //           </p>
-    //           <p style={{ color: "black" }}>
-    //             dueDate:{formatDate(comp.dueDate)}
-    //           </p>
-    //           <p style={{ color: "black" }}>priority:{comp.priority}</p>
-    //           {!(user.userGroupName == "Software") && (
-    //             <p style={{ color: "black" }}>
-    //               assingned to:{comp.assignedTo.userName}
-    //             </p>
-    //           )}
-    //         </div>
-    //       ))}
-    //     </div>
-
-    //     <div style={{ color: "black", float: "left", width: "25%" }}>
-    //       <h1 style={{ color: "black" }}>others</h1>
-    //       {othersTasks.map((oth) => (
-    //         <div style={{ border: "1px solid black" }} onClick={()=>handleViewClick(oth)}>
-    //           <h2 style={{ color: "black" }}>{oth.taskName}</h2>
-    //           <p style={{ color: "black" }}>
-    //             Created By:{" "}
-    //             {oth.createdBy._id === user._id
-    //               ? "You"
-    //               : oth.createdBy.userName}
-    //           </p>
-    //           <p style={{ color: "black" }}>
-    //             dueDate:{formatDate(oth.dueDate)}
-    //           </p>
-    //           <p style={{ color: "black" }}>priority:{oth.priority}</p>
-    //           {!(user.userGroupName == "Software") && (
-    //             <p style={{ color: "black" }}>
-    //               assingned to:{oth.assignedTo.userName}
-    //             </p>
-    //           )}
-    //         </div>
-    //       ))}
-    //     </div>
-    //   </div>
-    //   {addTaskFlag && <AddTask onCancel={() => setAddTaskFlag(false)} />}
-    //   {viewTaskFlag && <ViewTask onCancel={() => setViewTaskFlag(false)} task={task} section={section}/>}
-    // </>
     <MainContainer
       pageName={selectedProjectName}
       onGoBack={() => navigate("/sections")}
     >
       <div className="view-all-task-container">
-        {/* <div className="project-back">
-          <Icon name="arrow-outline" size="24px" />
-          <span
-            style={{
-              color: "black",
-              marginLeft: "5px",
-              fontWeight: "bold",
-              fontSize: "25px",
-            }}
-          >
-            project name{" "}
-          </span>
-        </div> */}
-        {/* <div
-          className="section-item-top"
-          style={{
-            backgroundColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
-            borderColor: sec.dueDate > new Date() ? "#FF4848" : "#3D405B",
-          }}
-        > */}
         <div className="section-item-top" style={{ backgroundColor:setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask)}}>
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
@@ -478,7 +337,6 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(todoTask.priority),
                     backgroundColor: getPriorityColor(
                       todoTask.priority,
                       todoTask.dueDate,
@@ -489,7 +347,6 @@ const Task = () => {
                       todoTask.dueDate,
                       todoTask.status
                     ),
-                    // borderColor: getPriorityColor(todoTask.priority),
                   }}
                 >
                   <span
@@ -544,8 +401,6 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(inpg.priority),
-                    // backgroundColor: sec.overdueTasks === 0 ? `#FF4848` :getPriorityColor(inpg.priority),
                     backgroundColor: getPriorityColor(
                       inpg.priority,
                       inpg.dueDate,
@@ -556,7 +411,6 @@ const Task = () => {
                       inpg.dueDate,
                       inpg.status
                     ),
-                    // borderColor: getPriorityColor(inpg.priority),
                   }}
                 >
                   <span
@@ -611,7 +465,6 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(comp.priority),
                     backgroundColor: getPriorityColor(
                       comp.priority,
                       comp.dueDate,
@@ -622,7 +475,6 @@ const Task = () => {
                       comp.dueDate,
                       comp.status
                     ),
-                    // borderColor: getPriorityColor(comp.priority),
                   }}
                 >
                   <span
@@ -677,7 +529,6 @@ const Task = () => {
                 <div
                   className="stage-task-header"
                   style={{
-                    // backgroundColor: getPriorityColor(oth.priority),
                     backgroundColor: getPriorityColor(
                       oth.priority,
                       oth.dueDate,
@@ -688,7 +539,6 @@ const Task = () => {
                       oth.dueDate,
                       oth.status
                     ),
-                    // borderColor: getPriorityColor(oth.priority),
                   }}
                 >
                   <span

@@ -1,9 +1,6 @@
-*{
-    color:#fff
-}
 .login-container{
     position: relative;
-    background-color: var(--text-white-color);
+    background-color: #3D405B;
     height: 100vh;
 }
 
@@ -17,7 +14,7 @@
     transform: translate(-50%, -50%);
     padding: 5rem;
     font-size: 1.4rem;
-    background: #3D405B;
+    background: white;
     box-shadow: var(--modal-shadow-2);
     border-radius: 15px;
 }
