@@ -594,6 +594,6 @@ exports.userReport = catchAsync(async (req, res, next) => {
 
 //* Task report **********************************************************
 exports.taskChart=catchAsync(async(req,res,next)=>{
-  const tasks=await Task.find({},{taskName:1,status:1,assignedDate:1,dueDate:1})
+  const tasks=await Task.find({deletedStatus:false},{taskName:1,status:1,assignedDate:1,dueDate:1})
   res.status(200).json({status:"success",data:tasks})
 })
