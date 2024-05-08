@@ -195,7 +195,7 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
   if (task.status !== "Completed" && status === "Completed") {
     await Task.updateOne(
       { _id: taskid },
-      { $set: { progressUpdateDate: new Date(),completedDate:new Date() } }
+      { $set: { progressUpdateDate: new Date(),completedDate:new Date().setHours(0,0,0,0) } }
     );
   }
 
@@ -261,7 +261,7 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
         duration: req.body.duration,
         progressUpdateDate: new Date(),
         status: req.body.progress === 100 ? "Completed" : status,
-        completedDate:req.body.progress === 100 ? new Date() : null,
+        completedDate:req.body.progress === 100 ? new Date().setHours(0,0,0,0) : null,
       },
     }
   );

@@ -172,7 +172,7 @@ const EditSection = ({ onCancel, sec }) => {
               onChange={(e) => setSectionName(e.target.value)}
             />
           </div>
-          <div>
+          {new Date().setHours(0,0,0,0)<new Date(sec.startDate).setHours(0,0,0,0)&&<><div>
             <label
               htmlFor="section"
               style={{ color: "black", fontWeight: "bold" }}
@@ -185,7 +185,7 @@ const EditSection = ({ onCancel, sec }) => {
               value={startDate}
               onChange={handleStartDateChange}
             />
-          </div>
+          </div></>}
           <div>
             <label
               htmlFor="section"

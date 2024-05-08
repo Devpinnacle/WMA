@@ -5,6 +5,7 @@ const Task = require("../models/Tasks");
 const Section = require("../models/Sections");
 const Daily = require("../models/DailyReport");
 const mongoose = require("mongoose");
+// const {  ISODate } = require('mongodb');
 const ObjectId = mongoose.Types.ObjectId;
 
 //* Get DailyReport ***********************************************************
@@ -87,6 +88,8 @@ const ObjectId = mongoose.Types.ObjectId;
 // });
 
 exports.getDailyReport = catchAsync(async (req, res, next) => {
+  const today = new Date();
+  today.setHours(0,0,0,0)
   const groupedData = await Daily.aggregate([
     {
       $lookup: {
@@ -156,12 +159,17 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  const task=await Task.aggregate([
+  const task = await Task.aggregate([
     {
       $match: {
         $and: [
           {
-            $or:[{status: "In Progress"},{completedDate:new Date()}],
+            $or: [
+              { status: "In Progress" },
+              {   completedDate: {
+                $eq: today
+              } },
+            ],
           },
           {
             assignedDate: {
@@ -211,9 +219,7 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
     },
     {
       $group: {
-        _id: new Date(
-          new Date().setHours(0, 0, 0, 0)
-        ),
+        _id: new Date(new Date().setHours(0, 0, 0, 0)),
         data: {
           $push: {
             name: "$user.userName",
@@ -233,7 +239,7 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
         },
       },
     },
-  ])
+  ]);
 
   groupedData.push(...task);
   groupedData.sort((a, b) => b._id - a._id);
@@ -461,7 +467,7 @@ exports.userTaskReport = catchAsync(async (req, res, next) => {
         projectName: {
           $first: "$projectName",
         },
-        count:{$sum:"$count"},
+        count: { $sum: "$count" },
         data: {
           $push: {
             data: "$data",
@@ -593,7 +599,10 @@ exports.userReport = catchAsync(async (req, res, next) => {
 });
 
 //* Task report **********************************************************
-exports.taskChart=catchAsync(async(req,res,next)=>{
-  const tasks=await Task.find({deletedStatus:false},{taskName:1,status:1,assignedDate:1,dueDate:1})
-  res.status(200).json({status:"success",data:tasks})
-})
+exports.taskChart = catchAsync(async (req, res, next) => {
+  const tasks = await Task.find(
+    { deletedStatus: false },
+    { taskName: 1, status: 1, assignedDate: 1, dueDate: 1 }
+  );
+  res.status(200).json({ status: "success", data: tasks });
+});
