@@ -6,7 +6,11 @@ import { getNotes } from "../redux/slice/notesSlice";
 import DeleteNotes from "../components/modals/notes/DeleteNotes";
 import View from "../components/modals/notes/View";
 import { useGetProjectQuery } from "../redux/api/projectApi";
-import { getProject, setSelectedProject, setSelectedProjectName } from "../redux/slice/projectSlice";
+import {
+  getProject,
+  setSelectedProject,
+  setSelectedProjectName,
+} from "../redux/slice/projectSlice";
 import { useNavigate } from "react-router-dom";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import "./DashBoard.css";
@@ -18,12 +22,19 @@ import io from "socket.io-client";
 import { getNotifications } from "../redux/slice/notificationSlice";
 import { useGetNotificationQuery } from "../redux/api/notificationApi";
 import DayDateInput from "../components/ui/DayDateInput";
-import { useGetSelectedTaskMutation, useGetTodaysTaskQuery } from "../redux/api/taskApi";
+import {
+  useGetSelectedTaskMutation,
+  useGetTodaysTaskQuery,
+} from "../redux/api/taskApi";
 import { dashedFormatDate, formatDate } from "../Helper/helper";
-import { useGetSectionMutation, useGetSelectedSectionMutation } from "../redux/api/sectionApi";
+import {
+  useGetSectionMutation,
+  useGetSelectedSectionMutation,
+} from "../redux/api/sectionApi";
 import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
+import { dueDateTextColor } from "../util";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -35,8 +46,9 @@ const Dashboard = () => {
   const [addProjectFlag, setAddProjectFlag] = useState(false);
   const [taskFlag, setTaskFlag] = useState(false);
   const [task, setTask] = useState(null);
-  const [section, setSection] = useState(null)
+  const [section, setSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [notesSearch, setNotesSearch] = useState("");
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -153,6 +165,10 @@ const Dashboard = () => {
     groupedMessages[date].push(message);
   });
 
+  const filteredNotes = notes.filter((note) => {
+    return note.heading.toLowerCase().includes(notesSearch.toLowerCase());
+  });
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -198,24 +214,24 @@ const Dashboard = () => {
 
   const handleProjectClick = async (id, name) => {
     dispatch(setSelectedProject(id));
-    dispatch(setSelectedProjectName(name))
-    await getSections(id)
+    dispatch(setSelectedProjectName(name));
+    await getSections(id);
     navigate("/sections");
   };
 
   const handleClickTask = async (task) => {
-    const sec = await getSelectedSection(task.sectionId)
+    const sec = await getSelectedSection(task.sectionId);
     setSection(sec);
     setTask(task._id);
-    await getSelectedTask(task._id)
+    await getSelectedTask(task._id);
     setTaskFlag(true);
-  }
+  };
 
   const handleCancelViewTask = () => {
     setTaskFlag(false);
     dispatch(resetTaskNotifications());
-    dispatch(taskNotificationApi.util.resetApiState())
-  }
+    dispatch(taskNotificationApi.util.resetApiState());
+  };
   const getPriorityColor = (priority, dueDate, status) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set time to midnight
@@ -275,44 +291,76 @@ const Dashboard = () => {
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
                     {todaysTask.data?.map((task) => (
-                      <div className="task-body"
+                      <div
+                        className="task-body"
                         onClick={() => handleClickTask(task)}
                         style={{
                           backgroundColor: getPriorityBodyColor(task.priority),
                           borderColor: getPriorityBodyColor(task.priority),
                         }}
                       >
-                        <div className="task-header"
-                        style={{
-                          backgroundColor: getPriorityColor(
-                            task.priority,
-                            task.dueDate,
-                            task.status
-                          ),
-                          borderColor: getPriorityColor(
-                            task.priority,
-                            task.dueDate,
-                            task.status
-                          ),
-                        }}
-                      >
+                        <div
+                          className="task-header"
+                          style={{
+                            backgroundColor: getPriorityColor(
+                              task.priority,
+                              task.dueDate,
+                              task.status
+                            ),
+                            borderColor: getPriorityColor(
+                              task.priority,
+                              task.dueDate,
+                              task.status
+                            ),
+                          }}
+                        >
                           <div className="task-left">
-                            <Icon name="project-outline" size="24px" />
-                            <span>{task.projectId.sctProjectName}</span>
+                            <Icon
+                              name="project-outline"
+                              size="24px"
+                              color={dueDateTextColor(
+                                task.dueDate,
+                                task.status
+                              )}
+                            />
+                            <span
+                              style={{
+                                color: dueDateTextColor(
+                                  task.dueDate,
+                                  task.status
+                                ),
+                              }}
+                            >
+                              {task.projectId.sctProjectName}
+                            </span>
                           </div>
                           <div className="task-right">
-                            <span>{task.progress}%</span>
+                            <span
+                              style={{
+                                color: dueDateTextColor(
+                                  task.dueDate,
+                                  task.status
+                                ),
+                              }}
+                            >
+                              {task.progress}%
+                            </span>
                           </div>
                         </div>
 
                         <div className="task-name">
                           <span>{task.taskName}</span>
-                          {task.progressUpdateDate ? (formatDate(task.progressUpdateDate) === formatDate(new Date()) && (
-                            <div className="progress-tag">
-                              <Icon name="save-outline" size="24px" />
-                              <span>Progress updated</span>
-                            </div>
-                          )) : (<></>)}
+                          {task.progressUpdateDate ? (
+                            formatDate(task.progressUpdateDate) ===
+                              formatDate(new Date()) && (
+                              <div className="progress-tag">
+                                <Icon name="save-outline" size="24px" />
+                                <span>Progress updated</span>
+                              </div>
+                            )
+                          ) : (
+                            <></>
+                          )}
                         </div>
                         <div className="task-detail">
                           <div className="employee-detail">
@@ -454,7 +502,9 @@ const Dashboard = () => {
                 {filteredProjects.map((proj) => (
                   <div
                     className="project-items"
-                    onClick={() => handleProjectClick(proj._id, proj.sctProjectName)}
+                    onClick={() =>
+                      handleProjectClick(proj._id, proj.sctProjectName)
+                    }
                   >
                     <div className="project-item-header">
                       <div className="left-content">
@@ -515,10 +565,7 @@ const Dashboard = () => {
                 <div className="header-right ">
                   <DayDateInput placeholder="Day dd/mm/yyyy" />
                   <div className="mt-3">
-                    <SelectInput
-                      className="tags"
-                      placeholder="Tags"
-                    />
+                    <SelectInput className="tags" placeholder="Tags" />
                   </div>
                 </div>
               </div>
@@ -578,6 +625,8 @@ const Dashboard = () => {
                         id="keyword"
                         name="keyword"
                         type="text"
+                        value={notesSearch}
+                        onChange={(e) => setNotesSearch(e.target.value)}
                         placeholder="Search"
                         autoComplete="new-off"
                       />
@@ -596,47 +645,50 @@ const Dashboard = () => {
                 )}
               </div>
               <div className="notes-body-container">
-                {Object.keys(groupedMessages).map((date) =>
-                  groupedMessages[date].map((message) => (
-                    <div className="notes-item" key={message._id}>
-                      <div className="notes-item-header">
-                        <div className="left-content">
-                          <Icon name="notes-outline" size="3rem" />
-                          <div className="item-content">
-                            <span
-                              className="item-title ml-2"
-                              style={{ color: "black" }}
-                            >
-                              {message.heading}
-                            </span>
+                {filteredNotes &&
+                  filteredNotes.map(
+                    (
+                      message // Added a null check for filteredNotes
+                    ) => (
+                      <div className="notes-item" key={message._id}>
+                        <div className="notes-item-header">
+                          <div className="left-content">
+                            <Icon name="notes-outline" size="3rem" />
+                            <div className="item-content">
+                              <span
+                                className="item-title ml-2"
+                                style={{ color: "black" }}
+                              >
+                                {message.heading}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="notes-header-right">
+                            <Icon
+                              title="Delete"
+                              name="delete-outline"
+                              size="3rem"
+                              onClick={() =>
+                                handleDelete(message._id, message.heading)
+                              }
+                            />
+                            <Icon
+                              name="open-outline"
+                              size="3rem"
+                              onClick={() =>
+                                handleViewNote(
+                                  message._id,
+                                  message.heading,
+                                  message.msg
+                                )
+                              }
+                            />
                           </div>
                         </div>
-                        <div className="notes-header-right">
-                          <Icon
-                            title="Delete"
-                            name="delete-outline"
-                            size="3rem"
-                            onClick={() =>
-                              handleDelete(message._id, message.heading)
-                            }
-                          />
-                          <Icon
-                            name="open-outline"
-                            size="3rem"
-                            onClick={() =>
-                              handleViewNote(
-                                message._id,
-                                message.heading,
-                                message.msg
-                              )
-                            }
-                          />
-                        </div>
+                        <div className="note-content">{message.msg}</div>
                       </div>
-                      <div className="note-content">{message.msg}</div>
-                    </div>
-                  ))
-                )}
+                    )
+                  )}
                 {deleteNoteFlag && (
                   <DeleteNotes
                     id={noteId}
@@ -661,7 +713,13 @@ const Dashboard = () => {
       {addProjectFlag && (
         <AddProject onCancel={() => setAddProjectFlag(false)} />
       )}
-      {taskFlag && <ViewTask taskId={task} onCancel={handleCancelViewTask} section={section} />}
+      {taskFlag && (
+        <ViewTask
+          taskId={task}
+          onCancel={handleCancelViewTask}
+          section={section}
+        />
+      )}
     </MainContainer>
   );
 };

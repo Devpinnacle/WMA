@@ -11,7 +11,7 @@ import "./Task.css";
 import Icon from "../components/ui/Icon";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
-import { setSectionDueColor } from "../util";
+import { dueDateTextColor, setSectionDueColor } from "../util";
 import { useNavigate } from "react-router-dom";
 
 const Task = () => {
@@ -21,14 +21,14 @@ const Task = () => {
   const [section, setSection] = useState(null);
 
   const { selectedSection: sec1 } = useSelector((state) => state.section);
-  const { selectedProjectName} = useSelector((state) => state.project);
+  const { selectedProjectName } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
   const { tasks } = useSelector((state) => state.task);
 
   const dispatch = useDispatch();
-  const navigate=useNavigate();
-  
-  const sec = typeof sec1 === 'string' ? JSON.parse(sec1) : sec1;
+  const navigate = useNavigate();
+
+  const sec = typeof sec1 === "string" ? JSON.parse(sec1) : sec1;
 
   useGetTaskQuery(sec._id);
   const [getSelectedTask, { data: recivedTask }] = useGetSelectedTaskMutation();
@@ -123,7 +123,16 @@ const Task = () => {
       onGoBack={() => navigate("/sections")}
     >
       <div className="view-all-task-container">
-        <div className="section-item-top" style={{ backgroundColor:setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask)}}>
+        <div
+          className="section-item-top"
+          style={{
+            backgroundColor: setSectionDueColor(
+              sec.dueDate,
+              sec.progress,
+              sec.totalTask
+            ),
+          }}
+        >
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span
@@ -351,11 +360,26 @@ const Task = () => {
                 >
                   <span
                     className="ml-2"
-                    style={{ fontSize: "16px", color: "black" }}
+                    style={{
+                      fontSize: "16px",
+                      color: dueDateTextColor(
+                        todoTask.dueDate,
+                        todoTask.status
+                      ),
+                    }}
                   >
                     {todoTask.taskName}
                   </span>
-                  <span>{todoTask.progress}%</span>
+                  <span
+                    style={{
+                      color: dueDateTextColor(
+                        todoTask.dueDate,
+                        todoTask.status
+                      ),
+                    }}
+                  >
+                    {todoTask.progress}%
+                  </span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -415,11 +439,20 @@ const Task = () => {
                 >
                   <span
                     className="ml-2"
-                    style={{ fontSize: "16px", color: "black" }}
+                    style={{
+                      fontSize: "16px",
+                      color: dueDateTextColor(inpg.dueDate, inpg.status),
+                    }}
                   >
                     {inpg.taskName}
                   </span>
-                  <span>{inpg.progress}%</span>
+                  <span
+                    style={{
+                      color: dueDateTextColor(inpg.dueDate, inpg.status),
+                    }}
+                  >
+                    {inpg.progress}%
+                  </span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
@@ -543,11 +576,18 @@ const Task = () => {
                 >
                   <span
                     className="ml-2"
-                    style={{ fontSize: "16px", color: "black" }}
+                    style={{
+                      fontSize: "16px",
+                      color: dueDateTextColor(oth.dueDate, oth.status),
+                    }}
                   >
                     {oth.taskName}
                   </span>
-                  <span>{oth.progress}%</span>
+                  <span
+                    style={{ color: dueDateTextColor(oth.dueDate, oth.status) }}
+                  >
+                    {oth.progress}%
+                  </span>
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">

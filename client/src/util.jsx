@@ -96,3 +96,15 @@ export const convertMinutesToHoursAndMinutes=(totalMinutes) =>{
   const minutes = totalMinutes % 60;
   return `${hours}:${minutes}`;
 }
+
+//* task Due Date text Color (White / Black) *********************************
+
+export const dueDateTextColor=(dueDate,status)=>{
+  if(status==="Completed"){
+    return "black"
+  }
+  else if(new Date(dueDate).setHours(0,0,0,0)<new Date().setHours(0,0,0,0)){
+    return "white"
+  }
+  else return "black"
+}

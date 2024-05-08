@@ -14,7 +14,7 @@ import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { useGetSelectedTaskMutation } from "../redux/api/taskApi";
 import { useGetSectionMutation } from "../redux/api/sectionApi";
-import { setSectionDueColor } from "../util";
+import { dueDateTextColor, setSectionDueColor } from "../util";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -371,7 +371,7 @@ const Section = () => {
                     >
                       <span
                         className="ml-2"
-                        style={{ fontSize: "16px", color: "black" }}
+                        style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate,task.status) }}
                       >
                         {task.taskName}
                       </span>
@@ -380,7 +380,7 @@ const Section = () => {
                           className="section-progress"
                           style={{ color: "black" }}
                         >
-                          {task.progress}<span style={{ fontSize: "16px", color: "black", marginRight: "8px" }}>%</span>
+                          <span style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate,task.status), marginRight: "8px" }}>{task.progress}%</span>
                         </div>
                       </div>
                     </div>

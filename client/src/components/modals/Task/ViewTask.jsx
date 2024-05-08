@@ -39,6 +39,7 @@ import {
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
+import { dueDateTextColor } from "../../../util";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -409,7 +410,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   };
   const getPriorityColor = (priority, dueDate, status) => {
     if (status !== "Completed") {
-      if (new Date().setHours(0,0,0,0) > new Date(dueDate)) {
+      if (new Date().setHours(0, 0, 0, 0) > new Date(dueDate)) {
         return "#FF4848";
       } else {
         switch (priority) {
@@ -511,8 +512,12 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               ),
             }}
           >
-            <span>{task.taskName}</span>
-            <span>{task.progress}%</span>
+            <span
+              style={{ color: dueDateTextColor(task.dueDate, task.status) }}
+            >
+              {task.taskName}
+            </span>
+            <span style={{ color: dueDateTextColor(task.dueDate, task.status) }}>{task.progress}%</span>
           </div>
           {editFlag ? (
             <>
