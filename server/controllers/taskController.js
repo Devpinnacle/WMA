@@ -195,7 +195,14 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
   if (task.status !== "Completed" && status === "Completed") {
     await Task.updateOne(
       { _id: taskid },
-      { $set: { progressUpdateDate: new Date() } }
+      { $set: { progressUpdateDate: new Date(),completedDate:new Date() } }
+    );
+  }
+
+  if(task.status==="Completed"&&status!=="Completed"){
+    await Task.updateOne(
+      { _id: taskid },
+      { $set: { progressUpdateDate: new Date(),completedDate:null } }
     );
   }
 
@@ -245,7 +252,7 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
 
   const data = await Task.find({ _id: taskId }, { status: 1, _id: 0 });
   const status = data.status;
-  console.log("progress", req.body.progress);
+  // console.log("progress", req.body.progress);
   await Task.updateOne(
     { _id: taskId },
     {
@@ -254,6 +261,7 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
         duration: req.body.duration,
         progressUpdateDate: new Date(),
         status: req.body.progress === 100 ? "Completed" : status,
+        completedDate:req.body.progress === 100 ? new Date() : null,
       },
     }
   );
