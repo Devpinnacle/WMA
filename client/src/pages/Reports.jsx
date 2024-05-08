@@ -34,19 +34,33 @@ const Reports = () => {
   };
 
   const betweenDateFilter = chart.filter((task) => {
+    // if(task.taskName==="task5"){
+    //   const eDate=new Date(endDate)
+    //   eDate.setHours(0,0,0,0)
+    //   console.log("eDate",eDate)
+    //   console.log("new Date(task.assignedDate)",new Date(task.assignedDate))
+    //   console.log(eDate >=new Date(task.assignedDate))
+    // }
     return (
       !startDate ||
       !endDate ||
-      (new Date(task.assignedDate) >= new Date(startDate) &&
-        new Date(task.dueDate) <= new Date(endDate))
+      (
+        (new Date(task.assignedDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0, 0, 0, 0)) &&
+        (new Date(endDate).setHours(0, 0, 0, 0) >= new Date(task.assignedDate).setHours(0,0,0,0)) ||
+        (new Date(task.dueDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0, 0, 0, 0)) &&
+        (new Date(task.dueDate).setHours(0,0,0,0) <= new Date(endDate).setHours(0, 0, 0, 0))
+      )
     );
+    
   });
 
+  // console.log("betweenDateFilter", betweenDateFilter)
+
   const statusCounts = {
-    Completed: 0,
+    "Completed": 0,
     "To Do": 0,
     "In Progress": 0,
-    Others: 0,
+    "Others": 0,
   };
   betweenDateFilter.forEach((task) => {
     const status = task.status;
@@ -63,6 +77,8 @@ const Reports = () => {
       statusCounts["Others"] = (statusCounts["Others"] || 0) + 1;
     }
   });
+
+  console.log("statusCounts",statusCounts)
 
   const filteredChart = chart.filter((task) => {
     const taskstart = new Date(task.assignedDate);
@@ -137,7 +153,7 @@ const Reports = () => {
     setSelectedDate(newDate);
   };
   const formattedSelectedDate = new Date(selectedDate);
-  const selectedYearMonth = formattedSelectedDate.toLocaleDateString('en-GB');   
+  const selectedYearMonth = formattedSelectedDate.toLocaleDateString('en-GB');
   return (
     <MainContainer pageName="Reports">
       <div className="chart-grid">
