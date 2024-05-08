@@ -161,7 +161,7 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
       $match: {
         $and: [
           {
-            status: "In Progress",
+            $or:[{status: "In Progress"},{completedDate:new Date()}],
           },
           {
             assignedDate: {
