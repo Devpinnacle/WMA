@@ -88,3 +88,11 @@ export const setSectionDueColor=(dueDate,progress,totalTask)=>{
     else return "#3D405B"
   }
 }
+
+//* Set Due Date color *******************************************************
+
+export const convertMinutesToHoursAndMinutes=(totalMinutes) =>{
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}:${minutes}`;
+}

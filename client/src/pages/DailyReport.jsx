@@ -13,6 +13,7 @@ import DayDateInput from "../components/ui/DayDateInput";
 import { CSVLink } from "react-csv";
 import { useNavigate } from "react-router-dom";
 import Note from "../components/modals/report/Note";
+import { convertMinutesToHoursAndMinutes } from "../util";
 
 const DailyReport = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -95,7 +96,7 @@ const DailyReport = () => {
             fontWeight: "500",
           }}
         >
-       {selectedDate}
+       {formatDate(selectedDate)}
         </span>
         <div className="daily-header-right">
           <DayDateInput
@@ -187,7 +188,7 @@ const DailyReport = () => {
                       <td>{formatDate(detail.assignedDate)}</td>
                       <td>{formatDate(detail.dueDate)}</td>
                       <td>{detail.stages}</td>
-                      <td>{detail.duration}</td>
+                      <td>{convertMinutesToHoursAndMinutes(detail.duration)}</td>
                       <td>{detail.status}</td>
                       <td>{detail.progress}%</td>
                       <td>{detail.notes}</td>

@@ -9,6 +9,7 @@ import { formatDate } from "../Helper/helper";
 import { CSVLink } from "react-csv";
 import { useGetSingleProjectReportMutation } from "../redux/api/reportApi";
 import { useNavigate } from "react-router-dom";
+import { convertMinutesToHoursAndMinutes } from "../util";
 
 const ProjectReport = () => {
   const [statusTag, setStatusTag] = useState([]);
@@ -234,7 +235,7 @@ const ProjectReport = () => {
                   <td>{sec.data[0]?.priority}</td>
                   <td>{sec.data[0]?.status}</td>
                   <td>{sec.data[0]?.stage}</td>
-                  <td>{sec.data[0]?.duration}</td>
+                  <td>{convertMinutesToHoursAndMinutes(sec.data[0]?.duration)}</td>
                   <td>{sec.data[0]?.progress}%</td>
                   <td>
                     {sec.data[0]?.completedDate
@@ -251,7 +252,7 @@ const ProjectReport = () => {
                     <td>{task.priority}</td>
                     <td>{task.status}</td>
                     <td>{task.stage}</td>
-                    <td>{task.duration}</td>
+                    <td>{convertMinutesToHoursAndMinutes(task.duration)}</td>
                     <td>{task.progress}%</td>
                     <td>
                       {task.completedDate
