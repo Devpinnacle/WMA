@@ -7,7 +7,6 @@ import { useLogoutMutation } from "../../../redux/api/userApi";
 
 const Logout = ({onCancel,logout}) => {
  
-
   return (
     <ModalContainer  onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal logout-modal">

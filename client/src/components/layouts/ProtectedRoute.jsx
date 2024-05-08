@@ -11,20 +11,16 @@ export default function ProtectedRoute({ children, reverse }) {
   const { isLoading, data } = useGetMeQuery();
 
   useEffect(() => {
-    console.log("get me data",data)
-    console.log("user",user)
-    console.log(data && !user)
     if (data && !user) {
-      console.log("reset Api")
       dispatch(userApi.util.resetApiState());
     }
   }, [data,user]);
 
   if (isLoading) {
-    // return null;
+  
   } else
    if (data) {
-    // const logger=data.data?.user
+    
     if (reverse) {
       return <Navigate to={"/"} state={location} replace />;
     } else {

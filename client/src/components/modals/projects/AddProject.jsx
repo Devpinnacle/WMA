@@ -44,8 +44,6 @@ const AddProject = ({ onCancel }) => {
   const handleSaveProject = (e) => {
     e.preventDefault();
     const { name, decs } = project;
-    console.log("project", project)
-    console.log("tag", tag)
     if (!name || !decs || tag.length === 0) {
       setAlertFlag(true);
       setErrorMsg("Enter all the Fields");
@@ -105,12 +103,6 @@ const AddProject = ({ onCancel }) => {
               value={project.desc}
               onChange={inputHandler}
             />
-            {/* <textarea
-              className="project-input-box"
-              name="decs"
-              value={project.decs}
-              onChange={inputHandler}
-            /> */}
           </div>
 
           <div className="project-tags add-project-tags">

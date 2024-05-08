@@ -137,32 +137,6 @@ const AddTask = ({ onCancel }) => {
     } else {
       assignee.push(user._id);
     }
-
-    // if (taskStartDate > taskDueDate) {
-    //   setAlertFlag(true);
-    //   setErrorMsg("Due date must be greater than start Date");
-    //   dispatch(
-    //     setAlert({
-    //       type: "error",
-    //       msg: "Due date must be greater than start Date",
-    //     })
-    //   );
-    // }
-
-    // if (taskStartDate < startDate || taskDueDate > dueDate) {
-    //   setAlertFlag(true);
-    //   setErrorMsg(
-    //     "Task start date and due date must be inside the range of Section's start date and due date"
-    //   );
-    //   dispatch(
-    //     setAlert({
-    //       type: "error",
-    //       msg: "Task start date and due date must be inside the range of Section's start date and due date",
-    //     })
-    //   );
-    //   return;
-    // }
-
     if (!(progressInt >= 0 && progressInt <= 100)) {
       setAlertFlag(true);
       setErrorMsg("Progress Should be in range of 0 to 100");
@@ -234,98 +208,6 @@ const AddTask = ({ onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal add-task-modal">
-        {/* <h1 style={{ color: "black" }}>Add Task</h1>
-        <input
-          type="text"
-          style={{ color: "black" }}
-          name="name"
-          onChange={inputHandler}
-          value={taskData.name}
-        />
-        {!(user.userGroupName == "Software") && (
-          <>
-            <SelectInput
-              placeholder="Tags"
-              onChange={handleTags}
-              isSearchable={false}
-              options={tags}
-            />
-            <div className="selected-tag">
-              {tag.map((tg, index) => (
-                <div key={index} className="tag-container">
-                  <p style={{ color: "black" }}>
-                    {tg.label}
-                    <button onClick={() => handleRemoveTag(tg)}>c</button>
-                  </p>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-        <input
-          type="date"
-          style={{ color: "black" }}
-          placeholder=""
-          name="startDt"
-          onChange={inputHandler}
-          value={taskData.startDt}
-        />
-        <input
-          type="date"
-          style={{ color: "black" }}
-          placeholder="enddate"
-          name="dueDt"
-          onChange={inputHandler}
-          value={taskData.dueDt}
-        />
-        <SelectInput
-          placeholder="Priority"
-          onChange={(e) => listHandleTags(e, "priority")}
-          isSearchable={false}
-          options={priorityTags}
-        />
-        <SelectInput
-          placeholder="Status"
-          onChange={(e) => listHandleTags(e, "status")}
-          isSearchable={false}
-          options={statusTags}
-        />
-        <SelectInput
-          placeholder="Stages"
-          onChange={(e) => listHandleTags(e, "stages")}
-          isSearchable={false}
-          options={stagesTags}
-        />
-        <input
-          type="number"
-          style={{ color: "black" }}
-          placeholder="progress"
-          name="progress"
-          value={taskData.progress}
-          onChange={inputHandler}
-        />
-        <input
-          type="time"
-          style={{ color: "black" }}
-          placeholder="duration"
-          name="time"
-          onChange={inputHandler}
-        />
-        <input
-          type="text"
-          style={{ color: "black" }}
-          placeholder="notes"
-          name="notes"
-          value={taskData.notes}
-          onChange={inputHandler}
-        />
-        <button style={{ color: "black" }} onClick={handleSave}>
-          save
-        </button>
-        <button style={{ color: "black" }} onClick={onCancel}>
-          cancel
-        </button> */}
-
         <div className="modal-header">
           <div className="title-container">
             <Icon name="task-outline" size="6rem" />
@@ -501,9 +383,6 @@ const AddTask = ({ onCancel }) => {
             >
               hrs
             </span>
-            {/* <div style={{ padding: "1rem" }}>
-              <Icon name="checkmark-outline" size="2rem" />
-            </div> */}
           </div>
         </div>
         <div className="task-note-container">

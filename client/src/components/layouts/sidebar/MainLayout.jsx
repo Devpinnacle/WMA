@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-// import { UseDispatch,useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
 import useScreenSize from "../../../hooks/useScreenSize";

@@ -49,13 +49,11 @@ const UserNotification = ({ onCancel }) => {
   };
 
   const handleDateChange = (date) => { 
-    // console.log(dashedFormatDate(date))
     setSelectedDate(date);
   };
 
   const filteredNotifications = notifications.filter((notification) => {
     const notificationDate = notification.createdDate;
-    console.log(dashedFormatDate(notificationDate))
     const isDateMatched =
       !selectedDate ||
       dashedFormatDate(notificationDate) === dashedFormatDate(selectedDate);
@@ -119,117 +117,6 @@ const UserNotification = ({ onCancel }) => {
                 <span>{notification.time} </span>
               </div>
             ))}
-            {/* <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#FBEFDA",
-                border: "2px solid #F3CF96",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="progress-outline" size="24px" />
-                <span className="ml-3">
-                  <span style={{ fontWeight: "700" }}>You</span> updated
-                  progress in{" "}
-                  <span style={{ fontWeight: "700" }}>
-                    Bookbetter (Development)
-                  </span>
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div>
-            <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#FBEFDA",
-                border: "2px solid #F3CF96",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="edit-outline" size="24px" />
-                <span className="ml-3">
-                  <span style={{ fontWeight: "700" }}>Joel </span>edited your
-                  task in{" "}
-                  <span style={{ fontWeight: "700" }}>
-                    JT application (Updates)
-                  </span>
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div>
-            <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#F9E3DD",
-                border: "2px solid #EDB1A1",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="delete-outline" size="24px" />
-                <span className="ml-3">
-                  <span style={{ fontWeight: "700" }}>You </span>deleted a task
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div>
-            <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#F9E3DD",
-                border: "2px solid #EDB1A1",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="due-outline" size="24px" />
-                <span className="ml-3">
-                  Your task is due in
-                  <span style={{ fontWeight: "700" }}>
-                    {" "}
-                    JT application(Updates){" "}
-                  </span>
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div>
-            <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#F9E3DD",
-                border: "2px solid #EDB1A1",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="critical-note-outline" size="24px" />
-                <span className="ml-3">
-                  <span style={{ fontWeight: "700" }}>You </span>added a
-                  critical note in{" "}
-                  <span style={{ fontWeight: "700" }}>
-                    JT application (Updates)
-                  </span>
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div>
-            <div
-              className="notification-item"
-              style={{
-                backgroundColor: "#DCEAE3",
-                border: "2px solid #AACBBA",
-              }}
-            >
-              <div className="left-content">
-                <Icon name="task-outline" size="24px" />
-                <span className="ml-3">
-                  <span style={{ fontWeight: "700" }}>You </span>
-                  completed task in
-                  <span style={{ fontWeight: "700" }}>
-                    {" "}
-                    JT application (Updates){" "}
-                  </span>
-                </span>
-              </div>
-              <span>8:00am </span>
-            </div> */}
           </div>
         </div>
       </div>

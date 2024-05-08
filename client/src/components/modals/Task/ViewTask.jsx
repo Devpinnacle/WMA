@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModalContainer from "../ModalContainer";
 import { useSelector, useDispatch } from "react-redux";
-// import "./AddTask.css";
 import "./ViewTask.css";
 import {
   dashedFormatDate,
@@ -42,15 +41,12 @@ import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
-  // console.log("task...", task);
-
   const [getSelectedTask] = useGetSelectedTaskMutation();
 
   const { user } = useSelector((state) => state.user);
   const { taskNotifications } = useSelector((state) => state.taskNotifications);
   const { selectedTask: task } = useSelector((state) => state.task);
   const { selectedProject } = useSelector((state) => state.project);
-  // console.log("task...", task);
 
   const [updateTaskStg] = useUpdateTaskStgMutation();
   const [updateDailyTask] = useUpdateDailyTaskMutation();
@@ -79,12 +75,10 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     status: task.status,
     stages: task.stage,
   });
-  // console.log("prior", list.priority);
   const [date, setDate] = useState({
     startDt: dashedFormatDate(task.assignedDate),
     dueDt: dashedFormatDate(task.dueDate),
   });
-  // console.log("date", date.startDt);
   const [notes, setNotes] = useState(task.notes);
   const [editFlag, setEditFlag] = useState(false);
   const [durationFlag, setDurationflag] = useState(false);
@@ -128,7 +122,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   }, []);
 
   const listHandleTags = (e, name) => {
-    // console.log("list", list);
     setList((prevState) => ({
       ...prevState,
       [name]: e.value,
@@ -141,7 +134,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   };
 
   const inputHandler = (e) => {
-    // console.log("date to check",date)
     setDate((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -196,8 +188,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       );
       return;
     }
-    // console.log("section start due", startDate, dueDate);
-    // console.log("task start due", startDt, dueDt);
 
     if (startDt < startDate || dueDt > dueDate) {
       setAlertFlag(true);
@@ -224,15 +214,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       );
       return;
     }
-    // if (
-    //   (totalMinutes === 0 && parseInt(updates.progress) !== 0) ||
-    //   (status === "Completed" && totalMinutes === 0)
-    // ) {
-    //   setDurationflag(true);
-    //   setFunct(handleSaveTaskStg);
-    // } else {
     handleSaveTaskStg();
-    // }
   };
 
   const handleSaveTaskStg = async () => {
@@ -330,15 +312,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       );
       return;
     }
-    // console.log("total minits", totalMinutes);
-    // console.log(totalMinutes === 0 && parseInt(updates.progress) !== 0);
-    // if (totalMinutes === 0 && parseInt(updates.progress) !== 0) {
-    //   console.log("inside minits",totalMinutes)
-    //   setDurationflag(true);
-    //   setFunct(handleSaveTaskUpd);
-    // } else {
     handleSaveTaskUpd();
-    // }
   };
 
   const handleSaveTaskUpd = async () => {
@@ -481,136 +455,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
         className="modal-container modal-centered user-modal view-task-modal"
         style={{ width: "1287px" }}
       >
-        {/* <h1 style={{ color: "black" }}>{task.projectId.sctProjectName}</h1>
-        <div className="progress-container">
-          <h2 style={{ width: "100%", background: "black", flexGrow: 1 }}>
-            {task.sectionId.sectionName}
-            {task.sectionId.progress}%
-          </h2>
-        </div>
-        <div style={{ marginTop: "20px", background: "rgb(255, 255, 102)" }}>
-          <h3 style={{ background: "orange" }}>
-            {task.taskName}
-            {task.progress}%
-          </h3>
-          <p style={{ color: "black" }}>
-            createdBy:
-            <b style={{ color: "black" }}>
-              {user._id === task.createdBy._id
-                ? `You`
-                : task.createdBy.userName}
-            </b>
-            {editFlag ? (
-              <>
-                {` `}Ta Date:
-                <input
-                  type="date"
-                  style={{ color: "black" }}
-                  value={date.startDt}
-                  name="startDt"
-                  onChange={inputHandler}
-                />
-                {` `}Td Date:
-                <input
-                  type="date"
-                  style={{ color: "black" }}
-                  value={date.dueDt}
-                  name="dueDt"
-                  onChange={inputHandler}
-                />
-                {` `}priority:
-                <SelectInput
-                  placeholder="Priority"
-                  onChange={(e) => listHandleTags(e, "priority")}
-                  isSearchable={false}
-                  options={priorityTags}
-                  value={{ label: list.priority, value: list.priority }}
-                />
-                {` `}status:
-                <SelectInput
-                  placeholder="Status"
-                  onChange={(e) => listHandleTags(e, "status")}
-                  isSearchable={false}
-                  options={statusTags}
-                  value={{ label: list.status, value: list.status }}
-                />
-                {` `}stages:
-                <SelectInput
-                  placeholder="Stages"
-                  onChange={(e) => listHandleTags(e, "stages")}
-                  isSearchable={false}
-                  options={stagesTags}
-                  value={{ label: list.stages, value: list.stages }}
-                />
-                <button style={{ color: "black" }} onClick={handleUpdateTask}>
-                  save
-                </button>
-              </>
-            ) : (
-              <>
-                {` `}Ta Date:
-                <b style={{ color: "black" }}>
-                  {formatDate(task.assignedDate)}
-                </b>
-                {` `}Td Date:
-                <b style={{ color: "black" }}>{formatDate(task.dueDate)}</b>
-                {` `}priority:<b style={{ color: "black" }}>{task.priority}</b>
-                {` `}status:<b style={{ color: "black" }}>{task.status}</b>
-                {` `}stages:<b style={{ color: "black" }}>{task.stage}</b>
-                {` `}
-                {user._id === task.createdBy._id&&<button style={{ color: "black" }} onClick={handleDelete}>
-                  delete
-                </button>}
-                {` `}
-                <button
-                  style={{ color: "black" }}
-                  onClick={() => setEditFlag(true)}
-                >
-                  edit
-                </button>
-              </>
-            )}
-          </p>
-        </div>
-        <div style={{ marginTop: "20px", display: "flex" }}>
-          <h3 style={{ color: "black" }}>
-            Progress:
-            <input
-              type="number"
-              name="progress"
-              value={updates.progress}
-              style={{ color: "black" }}
-              onChange={handleInputChange}
-            />
-            %
-          </h3>
-
-          <h3 style={{ color: "black" }}>
-            Duration:
-            <input
-              type="time"
-              name="duration"
-              value={updates.duration}
-              style={{ color: "black" }}
-              onChange={handleInputChange}
-            />
-            Hrs
-          </h3>
-          <button style={{ color: "black" }} onClick={handleDailyUpdate}>
-            save
-          </button>
-        </div>
-        <h1 style={{ color: "black" }}>Notes</h1>
-        <input
-          type="textarea"
-          style={{ color: "black" }}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
-        <button style={{ color: "black" }} onClick={handleNotes}>
-          save
-        </button> */}
-
         <div className="modal-header">
           <div className="title-container">
             <Icon name="project-outline" size="56px" />
@@ -660,7 +504,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 task.dueDate,
                 task.status
               ),
-              // backgroundColor: getPriorityColor(task.priority),
               borderColor: getPriorityColor(
                 task.priority,
                 task.dueDate,
@@ -694,7 +537,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                       onChange={inputHandler}
                     />
                   </div>
-                  {/* <span>{formatDate(task.assignedDate)}</span> */}
                 </div>
                 <div className="ta-td-date">
                   <span
@@ -716,7 +558,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                       }}
                     />
                   </div>
-                  {/* <span>{formatDate(task.dueDate)}</span> */}
                 </div>
                 <div className="priority-info">
                   <div className="select-box mb-3">
@@ -940,37 +781,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 </div>
               </div>
             ))}
-
-            {/* <div className="update-content">
-              <span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
-                <span style={{ color: "black" }}>edited the due date to</span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>dd-mm-yyyy</span>
-              </span>
-              <div className="date-time">
-                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
-              </div>
-            </div>
-            <div className="update-content">
-              <span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
-                <span style={{ color: "black" }}>edited the priority to</span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
-              </span>
-              <div className="date-time">
-                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
-              </div>
-            </div>
-            <div className="update-content">
-              <span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>Sathya </span>
-                <span style={{ color: "black" }}>edited the priority to</span>
-                <span style={{ color: "black", fontWeight: "bold", fontSize: "16px", marginLeft: "8px" }}>low</span>
-              </span>
-              <div className="date-time">
-                <span style={{ color: "black" }}>dd-mm-yyyy hh:mm am</span>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 .task-container {
-  /* height: 82px; */
   border-radius: 16px;
   padding: 8px;
   margin-top: 24px;
@@ -44,13 +43,6 @@
   display: flex;
   align-items: center;
 }
-
-/* .ta-td-date,
-.priority-info,
-.status-info,
-.stage-info {
-  margin-left: 20px;
-} */
 
 .del-edit-btn {
   margin-left: 180px;

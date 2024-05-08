@@ -1,15 +1,11 @@
 import { Fragment, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-
 import Icon from "../../ui/Icon";
-import useOutsideClick from "../../../hooks/useOutsideClick";
 import SidebarModal from "./SidebarModal";
 import "./MainContainer.css";
 
 export default function MainContainer({ onGoBack, children, pageName, userName }) {
     const wrappedRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
-    // const { user } = useSelector((state) => state.user);
     const pageIcons = {
         Hi: 'hi-emoji',
         Projects: 'projects',
@@ -45,19 +41,6 @@ export default function MainContainer({ onGoBack, children, pageName, userName }
                             color="#3D405B"
                         />
                     )}
-                    {/* <Icon
-                        name="projects"
-                        size="4rem"
-                        /> */}
-                    {/* <div className="head-container">
-                        <Icon
-                            name={pageIcons[pageName]}
-                            size="5.9rem"
-                        />
-                        <span className="page-name">{pageName}</span>
-                    </div> */}
-
-
                     <div className="page-name">
                         <Icon
                             name={pageIcons[pageName]}

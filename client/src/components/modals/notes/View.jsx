@@ -7,7 +7,6 @@ import { useUpdateNotesMutation } from "../../../redux/api/notesApi";
 const View = ({ id, head, msg, onCancel, onDelete }) => {
   const [message,setMessage]=useState(msg);
   const [updateNotes] = useUpdateNotesMutation();
-  console.log(id)
   const onExit=()=>{
     if(msg!==message){
       const fromData={

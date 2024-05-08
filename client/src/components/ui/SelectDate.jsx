@@ -5,7 +5,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import "./SelectDate.css"
 const SelectDate = ({ selected, onChange, placeholder ,min,max}) => {
 
-
     return (
         <>
             <DatePicker

@@ -14,7 +14,6 @@ const DeleteSection = ({ sec, onCancel }) => {
   const [getSections]=useGetSectionMutation();
 
   const { selectedProject } = useSelector((state) => state.project);
-  // console.log("section",sec)
 
   const [alertFlag,setAlertFlag]=useState(false)
 
@@ -38,21 +37,6 @@ const DeleteSection = ({ sec, onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal delete-section-modal">
-        {/* <div className="confirm-modal-header" style={{ color: "black" }}>
-          Delete Section
-        </div>
-        <p style={{ color: "black" }}>
-          Are you sure you want to delete "{head}" notes?
-        </p>
-        <button
-          style={{ color: "black", padding: "5px" }}
-          onClick={handleDeleteSection}
-        >
-          delete
-        </button>
-        <button style={{ color: "black", padding: "5px" }} onClick={onCancel}>
-          Cancel
-        </button> */}
         <div className="delete-section-header">
           <div className='title-container'>
             <Icon

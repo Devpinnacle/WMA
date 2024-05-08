@@ -14,8 +14,6 @@ const DurationWarn = ({ head, yes, no }) => {
         </div>
         <div className="del-content ml-5">Duration is not updated. Do you want to update the duration?</div>
         <div className="button-container p-1 ml-3" style={{ display: "flex" }}>
-          {/* <button style={{ color: "black" }} onClick={yes}>yes</button>
-          <button style={{ color: "black" }} onClick={no}>no</button> */}
           <button
             className="btn-outline" onClick={yes}>
             Yes

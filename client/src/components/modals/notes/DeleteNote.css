@@ -112,15 +112,9 @@
     .delete-note-modal {
       top: 70% !important;
     }
-    /* .delete-title{
-        font-size: 37px !important;
-    } */
   }
   @media only screen and (max-width: 375px) {
     .delete-note-modal {
       top: 60% !important;
     }
-    /* .delete-title{
-        font-size: 37px !important;
-    } */
   }

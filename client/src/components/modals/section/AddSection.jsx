@@ -74,31 +74,6 @@ const AddSection = ({ onCancel }) => {
   return (
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="modal-container modal-centered user-modal add-section-modal">
-        {/* <h1 style={{ color: "black" }}>Add Section</h1>
-        <input
-          type="text"
-          name="name"
-          onChange={inputHandler}
-          placeholder="section name"
-          style={{ color: "black", margin: "5px" }}
-        />
-        <input
-          type="date"
-          name="start"
-          onChange={inputHandler}
-          placeholder="start date"
-          style={{ color: "black", margin: "5px" }}
-        />
-        <input
-          type="date"
-          name="due"
-          onChange={inputHandler}
-          placeholder="due date"
-          style={{ color: "black", margin: "5px" }}
-        />
-        <button style={{ color: "black" }} onClick={handleSaveSection}>
-          save
-        </button> */}
         <div className="add-section-header">
           <div className='title-container'>
             <Icon
