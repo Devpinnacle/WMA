@@ -4,8 +4,6 @@ import Icon from "../components/ui/Icon";
 import { getLastDateOfMonth, getStatusColors, monthsValue, padZero } from "../util";
 import SelectInput from "../components/ui/SelectInput";
 import "./Reports.css";
-import { NavLink } from "react-router-dom";
-import ReportTopComponent from "./ReportTopComponent";
 import PieChart from "../components/ui/PieChart";
 import DateRangeInput from "../components/ui/DateRangeInput";
 import DayDateInput from "../components/ui/DayDateInput";
@@ -34,13 +32,6 @@ const Reports = () => {
   };
 
   const betweenDateFilter = chart.filter((task) => {
-    // if(task.taskName==="task5"){
-    //   const eDate=new Date(endDate)
-    //   eDate.setHours(0,0,0,0)
-    //   console.log("eDate",eDate)
-    //   console.log("new Date(task.assignedDate)",new Date(task.assignedDate))
-    //   console.log(eDate >=new Date(task.assignedDate))
-    // }
     return (
       !startDate ||
       !endDate ||
@@ -53,8 +44,6 @@ const Reports = () => {
     );
     
   });
-
-  // console.log("betweenDateFilter", betweenDateFilter)
 
   const statusCounts = {
     "Completed": 0,

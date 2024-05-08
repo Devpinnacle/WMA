@@ -50,10 +50,6 @@ const Section = () => {
     ? filteredSections.filter((section) => section.completed)
     : filteredSections.filter((section) => !section.completed);
 
-  // const formatDate = (dateString) => {
-  //   const date = new Date(dateString);
-  //   return date.toLocaleDateString("en-GB");
-  // };
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
@@ -165,7 +161,6 @@ const Section = () => {
 
   return (
     <MainContainer pageName={selectedProjectName}>
-      {/* <div className="project-name" style={{ fontWeight: "600", fontSize: "20px" }}>project name</div> */}
       <div className="section-top" >
         <div className="search-box">
           <input
@@ -197,7 +192,6 @@ const Section = () => {
           <div
             className="section-item"
             key={sec._id}
-          // onClick={() => handleSectionClick(sec)}
           >
   
             <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask) }}>
@@ -208,7 +202,6 @@ const Section = () => {
                 </span>
               </div>
               <div className="section-item-top-right">
-                {/* <div className="notify">1</div> */}
                 <div className="section-progress" style={{color:"white"}}>{sec.progress}%</div>
               </div>
             </div>
@@ -374,8 +367,6 @@ const Section = () => {
                       style={{
                         backgroundColor: getPriorityColor(task.priority,task.dueDate,task.status),
                         borderColor: getPriorityColor(task.priority,task.dueDate,task.status),
-                        // backgroundColor: getPriorityColor(task.priority),
-                        // borderColor: getPriorityColor(task.priority),
                       }}
                     >
                       <span
@@ -385,7 +376,6 @@ const Section = () => {
                         {task.taskName}
                       </span>
                       <div className="section-item-top-right">
-                        {/* <div className="notify"></div> */}
                         <div
                           className="section-progress"
                           style={{ color: "black" }}
@@ -426,7 +416,6 @@ const Section = () => {
             )}
 
             <div className="section-details-bottom">
-              {/* {user.userGroupName!=="Software"&&<button style={{color:"black"}} onClick={()=>handleEditSection(sec)}>edit</button>} */}
               <div className="mt-4">
                 {user.userGroupName !== "Software" && (
                   <Icon

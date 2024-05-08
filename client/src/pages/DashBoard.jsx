@@ -466,7 +466,6 @@ const Dashboard = () => {
                           {proj.sctProjectName}
                         </span>
                       </div>
-                      {/* <div className="notify">1</div> */}
                     </div>
                     <div
                       style={{
@@ -518,8 +517,6 @@ const Dashboard = () => {
                   <div className="mt-3">
                     <SelectInput
                       className="tags"
-                      // options={notificationTags}
-                      // onChange={handleNotificationTags}
                       placeholder="Tags"
                     />
                   </div>

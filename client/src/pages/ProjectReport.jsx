@@ -15,10 +15,10 @@ const ProjectReport = () => {
   const [statusTag, setStatusTag] = useState([]);
   const [stagesTag, setStagesTag] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { setProject, selectedProject,projectName } = useSelector((state) => state.report);
+  const { setProject, selectedProject, projectName } = useSelector((state) => state.report);
   const [getProject] = useGetSingleProjectReportMutation();
 
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const statusTags = [
     { label: "In Progress", value: "In Progress" },
@@ -35,7 +35,7 @@ const ProjectReport = () => {
     { label: "Testing", value: "Testing" },
     { label: "Re Testing", value: "Re Testing" },
   ];
-  // console.log("selectedProject", selectedProject);
+
   useEffect(() => {
     getProject(setProject);
   }, []);
@@ -101,7 +101,7 @@ const ProjectReport = () => {
     // Filter by section name
     return sec.sectionName.toLowerCase().includes(searchTerm.toLowerCase());
   });
-  console.log(filteredProject);
+
   const filteredProject1 = filteredProject.map((proj) => {
     // Filter the data within each project
     const filteredData = proj.data.filter((task) => {
@@ -109,18 +109,16 @@ const ProjectReport = () => {
       const isIncludeStagesTag = stagesTag.length === 0 || stagesTag.includes(task.stage);
       return isIncludeStatusTag && isIncludeStagesTag;
     });
-  
+
     // Update the project with the filtered data
     return {
       ...proj,
       data: filteredData,
     };
-  });  
-
-  console.log("filteredProject", filteredProject1);
+  });
 
   return (
-    <MainContainer onGoBack={()=>navigate("/reports/projectreports")} pageName={`${projectName} Report`}>
+    <MainContainer onGoBack={() => navigate("/reports/projectreports")} pageName={`${projectName} Report`}>
       <div
         style={{
           color: "#3D405B",
@@ -129,7 +127,6 @@ const ProjectReport = () => {
           paddingLeft: "2rem",
         }}
       >
-        {/* {projectName} Report */}
       </div>
       <div className="project-wise-report">
         <span
@@ -140,12 +137,10 @@ const ProjectReport = () => {
             marginLeft: "5px",
           }}
         >
-          {/* Book Better */}
           {selectedProject.ProjectName}
-          {/* {selectedProject ? selectedProject.sctProjectName : "Project Report"} */}
         </span>
         <div className="project-wise-header-right">
-          <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")} />
+          <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={() => navigate("/reports")} />
           <div className="search-box report-search">
             <input
               id="keyword"
@@ -224,14 +219,14 @@ const ProjectReport = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProject1.filter(sec=>sec.data.length>0).map((sec) => (
+            {filteredProject1.filter(sec => sec.data.length > 0).map((sec) => (
               <>
                 <tr>
                   <td rowSpan={sec.data.length}>{sec.sectionName}</td>
                   <td>{sec.data[0]?.taskName}</td>
                   <td>{sec.data[0]?.assignee}</td>
-                  <td>{sec.data[0]?formatDate(sec.data[0]?.startDate):" "}</td>
-                  <td>{sec.data[0]?formatDate(sec.data[0]?.endDate):" "}</td>
+                  <td>{sec.data[0] ? formatDate(sec.data[0]?.startDate) : " "}</td>
+                  <td>{sec.data[0] ? formatDate(sec.data[0]?.endDate) : " "}</td>
                   <td>{sec.data[0]?.priority}</td>
                   <td>{sec.data[0]?.status}</td>
                   <td>{sec.data[0]?.stage}</td>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
-import ReportTopComponent from "./ReportTopComponent";
 import Icon from "../components/ui/Icon";
 import SelectInput from "../components/ui/SelectInput";
 import {
@@ -24,7 +23,7 @@ const ProjectWiseReport = () => {
     { label: "Mobile", value: "Mobile" },
     { label: "Others", value: "Others" },
   ];
-  // console.log("projectReport", projectReport);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -158,9 +157,6 @@ const ProjectWiseReport = () => {
               <div className="tag-container mr-5" style={{ color: "black" }}>
                 {proj.tags.length === 0 ? "none" : proj.tags[0]}
               </div>
-              {/* <div className="download-icon">
-                <Icon name="download-outline" size="2rem" />
-              </div> */}
             </div>
           </div>
         ))}

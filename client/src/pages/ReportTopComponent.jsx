@@ -3,11 +3,9 @@ import Icon from "../components/ui/Icon";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 const ReportTopComponent = () => {
-
   const location = useLocation();
   const isProjectReportActive = location.pathname === "/reports/singleprojectreports";
   const isMemberReportActive = location.pathname === "/reports/singleuserreports";
-
 
   return (
     <>

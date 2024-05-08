@@ -19,12 +19,10 @@ const Login = () => {
   const socket = io(import.meta.env.VITE_SOCKET_URL);
 
   useEffect(() => {
-    console.log("login data",logdata)
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
     if (logdata?.status === "SUCCESS") {
       saveNotification({ userId: logdata.userId });
-      console.log("login")
       socket.emit("login", logdata.userId);
       dispatch(setAlert({ type: "success", msg: "Welcome" }));
       navigate("/")
