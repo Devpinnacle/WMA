@@ -18,9 +18,11 @@ const MemberReport = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { setUser, selectedUser,memberName } = useSelector((state) => state.report);
+  const { setUser, selectedUser, memberName } = useSelector(
+    (state) => state.report
+  );
   const [getUser] = useGetSingleUserReportMutation();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   // console.log("selectedUser", selectedUser);
   useEffect(() => {
     getUser(setUser);
@@ -95,8 +97,14 @@ const MemberReport = () => {
         const meetsCriteria =
           !startDate ||
           !endDate ||
-          (new Date(task.startDate) >= new Date(startDate) &&
-            new Date(task.endDate) <= new Date(endDate));
+          (new Date(task.startDate).setHours(0, 0, 0, 0) >=
+            new Date(startDate).setHours(0, 0, 0, 0) &&
+            new Date(task.startDate).setHours(0, 0, 0, 0) <=
+              new Date(endDate).setHours(0, 0, 0, 0)) ||
+          (new Date(task.endDate).setHours(0, 0, 0, 0) >=
+            new Date(startDate).setHours(0, 0, 0, 0) &&
+            new Date(task.endDate).setHours(0, 0, 0, 0) <=
+              new Date(endDate).setHours(0, 0, 0, 0));
         return meetsCriteria;
       });
       // Return the filtered section with filtered tasks
@@ -122,7 +130,11 @@ const MemberReport = () => {
       </div>
       <div className="member-wise-report">
         <div className="header-left back-icon">
-          <Icon name="arrow-outline" sixe="18px" onClick={()=>navigate("/reports/memberreports")}  />
+          <Icon
+            name="arrow-outline"
+            sixe="18px"
+            onClick={() => navigate("/reports/memberreports")}
+          />
         </div>
         <span
           style={{
@@ -155,7 +167,12 @@ const MemberReport = () => {
               </CSVLink>
             </div>
             <div className="chart-icon mt-4">
-              <Icon name="chart-icon" size="3rem" title="Go to chart" onClick={()=>navigate("/reports")}/>
+              <Icon
+                name="chart-icon"
+                size="3rem"
+                title="Go to chart"
+                onClick={() => navigate("/reports")}
+              />
             </div>
           </div>
         </div>
@@ -207,7 +224,11 @@ const MemberReport = () => {
                     <td>{proj.data[0].data[0].priority}</td>
                     <td>{proj.data[0].data[0].status}</td>
                     <td>{proj.data[0].data[0].stage}</td>
-                    <td>{convertMinutesToHoursAndMinutes(proj.data[0].data[0].duration)}</td>
+                    <td>
+                      {convertMinutesToHoursAndMinutes(
+                        proj.data[0].data[0].duration
+                      )}
+                    </td>
                     <td>{proj.data[0].data[0].progress}%</td>
                     <td>
                       {proj.data[0].data[0].completedDate
@@ -245,7 +266,11 @@ const MemberReport = () => {
                           <td>{sec.data[0].priority}</td>
                           <td>{sec.data[0].status}</td>
                           <td>{sec.data[0].stage}</td>
-                          <td>{convertMinutesToHoursAndMinutes(sec.data[0].duration)}</td>
+                          <td>
+                            {convertMinutesToHoursAndMinutes(
+                              sec.data[0].duration
+                            )}
+                          </td>
                           <td>{sec.data[0].progress}%</td>
                           <td>
                             {sec.data[0].completedDate
@@ -261,7 +286,9 @@ const MemberReport = () => {
                             <td>{task.priority}</td>
                             <td>{task.status}</td>
                             <td>{task.stage}</td>
-                            <td>{convertMinutesToHoursAndMinutes(task.duration)}</td>
+                            <td>
+                              {convertMinutesToHoursAndMinutes(task.duration)}
+                            </td>
                             <td>{task.progress}%</td>
                             <td>
                               {task.completedDate
