@@ -177,7 +177,7 @@ const Reports = () => {
 
         <div className="chart" style={{ color: "black" }}>
           <span className="chart-title pt-3">Task Status-{selectedYearMonth}</span>
-          <DayDateInput placeholder="Day dd/mm/yyyy" onChange={handleSetSelectedDate} />
+          <DayDateInput placeholder="Day dd/mm/yyyy"  selected={selectedDate} onChange={handleSetSelectedDate} />
           <div className="pt-5">
             <PieChart
               series={[

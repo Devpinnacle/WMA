@@ -96,7 +96,7 @@ const DailyReport = () => {
             fontWeight: "500",
           }}
         >
-       {selectedDate}
+       {formatDate(selectedDate)}
         </span>
         <div className="daily-header-right">
           <DayDateInput
