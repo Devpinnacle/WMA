@@ -129,6 +129,9 @@
     margin: 8px;
     font-size: 16px;
     font-weight: 400;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .total-progress-count {
