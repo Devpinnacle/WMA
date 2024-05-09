@@ -485,10 +485,15 @@ exports.userTaskReport = catchAsync(async (req, res, next) => {
   });
 });
 
-//* Get  Single User ***********************************************************
+//* Get Users ***************************************************************
 
 exports.userReport = catchAsync(async (req, res, next) => {
+  const today=new Date()
+  today.setHours(0,0,0,0)
   const tasks = await Task.aggregate([
+    {
+      $match:{deletedStatus:false}
+    },
     {
       $lookup: {
         from: "sections",
@@ -566,7 +571,10 @@ exports.userReport = catchAsync(async (req, res, next) => {
           $sum: {
             $cond: [
               {
-                $lt: ["$dueDate", new Date()],
+                $and: [
+                  { $ne: ["$status", "Completed"] },
+                  { $lt: ["$dueDate", today] }
+                ]
               },
               1,
               0,
