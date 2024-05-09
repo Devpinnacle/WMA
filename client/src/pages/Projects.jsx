@@ -83,7 +83,7 @@ const Projects = () => {
                 />
                 <Icon title="Search" name="search-icon" size="2rem" />
               </div>
-              <div className="project-tags" style={{ width: "12rem" }}>
+              <div className="mt-3" style={{ width: "12rem" }}>
                 <SelectInput
                   placeholder="Tags"
                   isSearchable={false}
@@ -165,7 +165,7 @@ const Projects = () => {
                 </span>
               </span>
               <span>
-                Completed Taks:
+                Completed Tasks:
                 <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
                   {proj.completedTasks}
                 </span>
