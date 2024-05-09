@@ -18,7 +18,7 @@ export const taskApi = createApi({
         try {
           const { data } = await obj.queryFulfilled;
           obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtask" }]));
-
+          obj.dispatch(taskApi.util.invalidateTags([{ type: "bringtodaystask" }]));
         } catch (error) {
           console.error("Error....", error);
         }
@@ -161,7 +161,7 @@ export const taskApi = createApi({
       },
     }),
 
-    //* Get selected Task *********************************************************
+    //* Get Today Task *********************************************************
     getTodaysTask: builder.query({
       providesTags:()=>[{type:"bringtodaystask"}],
       query: () => ({

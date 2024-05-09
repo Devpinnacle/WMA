@@ -220,8 +220,8 @@ const Dashboard = () => {
   };
 
   const handleClickTask = async (task) => {
-    const sec = await getSelectedSection(task.sectionId);
-    setSection(sec);
+    const sec = await getSelectedSection(task.sectionId._id);
+    setSection(sec.data.data);
     setTask(task._id);
     await getSelectedTask(task._id);
     setTaskFlag(true);

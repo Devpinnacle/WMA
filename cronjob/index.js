@@ -15,6 +15,9 @@ async function updateDailyReport() {
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayDateString = yesterday.toISOString().split("T")[0];
 
+    console.log("yesterday",yesterday)
+    console.log("new Date()",new Date())
+
     // Fetch tasks that are in progress or were completed yesterday
     const tasks = await Task.find({
       $or: [

@@ -66,7 +66,7 @@ exports.getSelectedTask = catchAsync(async (req, res, next) => {
     .populate("projectId", "sctProjectName")
     .populate("sectionId", ["sectionName", "progress"]);
 
-  console.log("selected task", task);
+  // console.log("selected task", task);
 
   res.status(200).json({
     status: "success",
