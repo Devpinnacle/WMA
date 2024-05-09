@@ -524,9 +524,9 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               <div className="employee-assigned">
                 <Icon name="employee-outline" size="24px" />
                 <span style={{ color: "black" }}>
-                  {user._id === task.createdBy._id
+                  {user._id === task.assignedTo._id
                     ? `You`
-                    : task.createdBy.userName}
+                    : task.assignedTo.userName}
                 </span>
               </div>
               <div className="view-task-body">
@@ -615,9 +615,9 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               <div className="employee-info">
                 <Icon name="employee-outline" size="24px" />
                 <span>
-                  {user._id === task.createdBy._id
+                  {user._id === task.assignedTo._id
                     ? `You`
-                    : task.createdBy.userName}
+                    : task.assignedTo.userName}
                 </span>
               </div>
               <div className="ta-td-date">

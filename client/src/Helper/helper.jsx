@@ -8,7 +8,10 @@ export const minutesToHoursAndMinutes = (totalMinutes) => {
 
  export const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB");
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add 1 before padding
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${day}/${month}/${year}`.toString();
   };
 
   export const dashedFormatDate = (dateString) => {
