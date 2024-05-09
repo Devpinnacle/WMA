@@ -119,8 +119,8 @@ exports.addTask = catchAsync(async (req, res, next) => {
     assignedToArray.map(async (element) => {
       const newTask = new Task({
         taskName,
-        assignedDate: startDate,
-        dueDate,
+        assignedDate: new Date(startDate).setHours(0,0,0,0),
+        dueDate:new Date(dueDate).setHours(0,0,0,0),
         status,
         stage,
         progress,
@@ -131,6 +131,7 @@ exports.addTask = catchAsync(async (req, res, next) => {
         projectId,
         createdBy: userId,
         assignedTo: element,
+        completedDate:progress===100?new Date().setHours(0,0,0,0):null
       });
       return await newTask.save();
     })

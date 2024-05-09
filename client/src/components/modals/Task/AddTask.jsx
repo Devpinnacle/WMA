@@ -19,6 +19,8 @@ const AddTask = ({ onCancel }) => {
   const { selectedProject } = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
+  console.log("sec",sec)
+
   const [tag, setTag] = useState([]);
   const [alertFlage, setAlertFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
