@@ -285,9 +285,7 @@ exports.ProjectReport = catchAsync(async (req, res, next) => {
       ).length;
 
       const overdueTasks = userTasks.filter((task) => {
-        const now = Date.now() - 20000000;
-        const dueDateTimestamp = new Date(task.dueDate).getTime();
-        return now > dueDateTimestamp && task.status !== "Completed";
+        return new Date().setHours(0,0,0,0)> new Date(task.dueDate).setHours(0,0,0,0) && task.status !== "Completed";
       }).length;
 
       const updatedProject = {
@@ -350,6 +348,11 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
       $unwind: "$users",
     },
     {
+      $addFields: {
+        totalDurationWithAdditional: { $sum: ["$totalDuration", "$duration"] }
+      }
+    },
+    {
       $group: {
         _id: "$sectionId",
         sectionName: {
@@ -364,7 +367,7 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
             priority: "$priority",
             status: "$status",
             stage: "$stage",
-            duration: "$totalDuration",
+            duration: "$totalDurationWithAdditional",
             progress: "$progress",
             completedDate: "$completedDate",
           },

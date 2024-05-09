@@ -39,7 +39,7 @@ import {
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
-import { dueDateTextColor} from "../../../util";
+import { dueDateTextColor, setSectionDueColor} from "../../../util";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -473,8 +473,8 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             onClick={onCancel}
           />
         </div>
-        <div className="section-item-top">
-          <div className="section-item-top-left">
+        <div className="section-item-top" style={{backgroundColor:setSectionDueColor(section.dueDate,section.progress,section.totalTask)}}>
+          <div className="section-item-top-left" >
             <Icon name="section-outline" size="2.5rem" />
             <span
               className="ml-2"

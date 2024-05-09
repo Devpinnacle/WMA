@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddTask from "../components/modals/Task/AddTask";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  taskApi,
   useGetSelectedTaskMutation,
   useGetTaskQuery,
 } from "../redux/api/taskApi";
@@ -117,10 +118,15 @@ const Task = () => {
     }
   };
 
+  const handleGoBack=()=>{
+    dispatch(taskApi.util.resetApiState())
+    navigate("/sections")
+  }
+
   return (
     <MainContainer
       pageName={selectedProjectName}
-      onGoBack={() => navigate("/sections")}
+      onGoBack={handleGoBack}
     >
       <div className="view-all-task-container">
         <div

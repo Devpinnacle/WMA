@@ -15,9 +15,6 @@ async function updateDailyReport() {
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayDateString = yesterday.toISOString().split("T")[0];
 
-    console.log("yesterday", yesterday);
-    console.log("new Date()", new Date());
-
     // Fetch tasks that are in progress or were completed yesterday
     const tasks = await Task.find({
       $and: [
@@ -80,7 +77,7 @@ async function updateCompletedSections() {
 }
 
 // Schedule the cron job to run at midnight
-cron.schedule("46 11 * * *", async () => {
+cron.schedule("20 14 * * *", async () => {
   console.log("Running daily report cron job...");
   await updateDailyReport();
   await updateCompletedSections();
