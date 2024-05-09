@@ -39,7 +39,7 @@ import {
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
-import { dueDateTextColor } from "../../../util";
+import { dueDateTextColor} from "../../../util";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   const [getSelectedTask] = useGetSelectedTaskMutation();
