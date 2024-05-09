@@ -39,7 +39,7 @@ import {
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
-import { dueDateTextColor } from "../../../util";
+import { dueDateTextColor, setSectionDueColor } from "../../../util";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -48,6 +48,8 @@ const ViewTask = ({ onCancel, taskId, section }) => {
   const { taskNotifications } = useSelector((state) => state.taskNotifications);
   const { selectedTask: task } = useSelector((state) => state.task);
   const { selectedProject } = useSelector((state) => state.project);
+  const { selectedSection: sec1 } = useSelector((state) => state.section);
+  const sec = typeof sec1 === "string" ? JSON.parse(sec1) : sec1;
 
   const [updateTaskStg] = useUpdateTaskStgMutation();
   const [updateDailyTask] = useUpdateDailyTaskMutation();
@@ -473,7 +475,13 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             onClick={onCancel}
           />
         </div>
-        <div className="section-item-top">
+        <div className="section-item-top"  style={{
+            backgroundColor: setSectionDueColor(
+              sec.dueDate,
+              sec.progress,
+              sec.totalTask
+            ),
+          }}>
           <div className="section-item-top-left">
             <Icon name="section-outline" size="2.5rem" />
             <span
