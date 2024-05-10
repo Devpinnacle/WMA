@@ -2,11 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--text-white-color);
+    /* color: var(--text-white-color); */
 }
 
 .page-name {
     display: flex;
+    align-items: center;
     font-size: 57px;
     font-weight: 700;
     color: black;
@@ -14,8 +15,7 @@
     fill:#3D405B;
 }
 
-.btn-menu,
-.main-container-home-icon {
+.btn-menu{
     display: none;
 }
 
@@ -25,6 +25,9 @@
     /* 62em = 992px */
     .btn-menu{
         display: block;
+    }
+    .page-name{
+        font-size: 45px;
     }
 }
 
