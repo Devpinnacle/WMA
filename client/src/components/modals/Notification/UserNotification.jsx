@@ -67,7 +67,7 @@ const UserNotification = ({ onCancel }) => {
     <ModalContainer onCancel={onCancel} backdropClass={"backdrop-dark"}>
       <div className="user-madol modal-centered modal-notification">
         <div className="notification">
-          <div className="project-header">
+          <div className="dashboard-grid-header">
             <span className="title">Notification</span>
             <div className="header-right">
               <SelectInput

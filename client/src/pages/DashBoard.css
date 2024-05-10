@@ -129,7 +129,7 @@
     margin: 8px;
     font-size: 16px;
     font-weight: 400;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -188,7 +188,7 @@
 }
 
 /* Projects */
-.project-header {
+.dashboard-grid-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -233,9 +233,10 @@
 
 .chat-container {
     margin-left: 20px;
-    height: 240px;
-    overflow-y: auto;
     max-height: 230px;
+    height: 250px;
+    overflow-y: auto;
+    max-height: 300px;
 }
 
 .chat-input {
@@ -267,12 +268,33 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 8px;
+    /* padding-top: 8px; */
 }
 
 .tag-time {
     display: flex;
     align-items: center;
     margin-right: 8px;
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+}
+
+.horizontal-line {
+    flex: 1;
+    border: 1px solid #A0A0A0;
+}
+
+.date {
+    padding:10px;
+    margin-left: 10px !important;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #A0A0A0;
 }
 
 /* notes */
@@ -395,6 +417,18 @@
     .notification-container {
         max-height: 210px;
     }
+
+    .chat-container {
+        max-height: 200px;
+    }
+
+    /* .message-container{
+        display: block;
+    }
+    .tag-time{
+        padding-top: 8px;
+    } */
+
 }
 
 @media only screen and (max-width: 992px) {
@@ -438,7 +472,7 @@
 
     }
 
-    .project-header,
+    .dashboard-grid-header,
     .notes-header {
         flex-direction: column;
         align-items: flex-start;
