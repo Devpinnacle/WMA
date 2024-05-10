@@ -105,7 +105,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
         const overdueTasks = userTasks.filter((task) => {
           // const now = Date.now() - 20000000;
           // const dueDateTimestamp = new Date(task.dueDate).getTime();
-          return new Date().setHours(0,0,0,0) >= new Date(task.dueDate) && task.status !== "Completed";
+          return new Date().setHours(0,0,0,0) > new Date(task.dueDate) && task.status !== "Completed";
         }).length;
 
         const tasks = userTasks.filter((task) => {
@@ -170,7 +170,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
         ).length;
 
         const overdueTasks = userTasks.filter((task) => {
-          return new Date().setHours(0,0,0,0) >= new Date(task.dueDate) && task.status !== "Completed";
+          return new Date().setHours(0,0,0,0) > new Date(task.dueDate) && task.status !== "Completed";
         }).length;
 
         const updatedSection = {
