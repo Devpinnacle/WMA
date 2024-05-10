@@ -6,6 +6,7 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const Notification = require("./model/Notification");
 const TaskNotification = require("./model/TaskNotification");
+const Chat=require('./model/Chat')
 dotenv.config();
 
 const app = express();
@@ -94,9 +95,18 @@ io.on("connection", async (socket) => {
     });
   });
 
+  socket.on("chats",async(data)=>{
+    const newChat=new Chat({
+      userId:userId,
+      message:message,
+      projectId:projectId?projectId:null,
+    })
+    const newMsg= await newChat.save()
+    io.sockets.emit("chats", newMsg);
+  })
+
   socket.on("disconnect", () => {
-    // console.log(`User disconnected: ${socket.id}`);
-    // Add your disconnect logic here
+    
   });
 });
 

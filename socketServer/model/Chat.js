@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 ObjectId = mongoose.Schema.ObjectId;
+const EmpDetails = require("./EmpDetails"); 
+const Projects=require("./sctProjects");
 
 const chatSchema = new mongoose.Schema({
   userId: {
@@ -24,13 +26,12 @@ const chatSchema = new mongoose.Schema({
   time: {
     type: String,
     default: () => {
-      // Function to get the current time in HH:MM AM/PM format
       const currentDate = new Date();
       let hours = currentDate.getHours();
       const minutes = currentDate.getMinutes();
       const amPM = hours >= 12 ? "PM" : "AM";
       hours %= 12;
-      hours = hours || 12; // Handle midnight (0 hours)
+      hours = hours || 12; 
       const formattedTime = `${hours}:${
         minutes < 10 ? "0" : ""
       }${minutes} ${amPM}`;
@@ -42,6 +43,22 @@ const chatSchema = new mongoose.Schema({
     ref: "sctproject",
     default:null
   },
+});
+
+chatSchema.pre('save', async function(next) {
+  try {
+    const user = await EmpDetails.findById(this.userId);
+    if (user) {
+      this.name = user.userName;
+    }
+    const project=await Projects.findById(this.projectId);
+    if(project){
+      this.projectName=project.sctProjectName
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports=chats=mongoose.model("chats",chatSchema)

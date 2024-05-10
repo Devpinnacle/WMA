@@ -35,6 +35,7 @@ import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { dueDateTextColor } from "../util";
+import { useGetChatsQuery } from "../redux/api/chatApi";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -52,19 +53,25 @@ const Dashboard = () => {
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-  const { data: fetchedData, isLoading } = useGetNotesQuery();
-  const { data: projectData } = useGetProjectQuery();
-  const { data: nofify } = useGetNotificationQuery();
-  const { data: tasktoday } = useGetTodaysTaskQuery();
+  const [chatMsg, setChatMsg] = useState(null);
+
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
   const [getSections] = useGetSectionMutation();
+
+  const { data: fetchedData, isLoading } = useGetNotesQuery();
+  const { data: projectData } = useGetProjectQuery();
+
+  useGetNotificationQuery();
+  useGetTodaysTaskQuery();
+  useGetChatsQuery();
 
   const { notes } = useSelector((state) => state.notes);
   const { project } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
   const { notifications } = useSelector((state) => state.notifications);
   const { todaysTask } = useSelector((state) => state.task);
+  const { chats } = useSelector((state) => state.chats);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -571,22 +578,38 @@ const Dashboard = () => {
               </div>
               <div className="chat-container">
                 <div className="message-container">
-                  <div className="message">
-                    {/* <span style={{ color: "black", fontWeight: "bold" }}>Vinayak:</span>
-                    <span style={{ color: "#AACBBA", fontWeight: "bold", marginLeft: "5px" }}>@Rakshith</span>
-                    <span style={{ color: "black", marginLeft: "5px" }}>Please update the git</span> */}
-                  </div>
-                  <div className="tag-time">
-                    <div className="project-tags p-0 m-1">
-                      {/* <span
-                        className="tag-list"
-                        style={{ color: "black" }}
-                      >
-                        Software
-                      </span> */}
-                    </div>
-                    {/* <span style={{ color: "black", fontSize: "14px" }}>08:00am</span> */}
-                  </div>
+                  {chats.map((chat) => (
+                    <>
+                      <h2 style={{ color: "black" }}>{formatDate(chat._id)}</h2>
+                      {chat.data.map((chat) => (
+                        <>
+                          <div className="message">
+                            <span
+                              style={{ color: "black", fontWeight: "bold" }}
+                            >
+                              {chat.userName}:
+                            </span>
+                            <span style={{ color: "black", marginLeft: "5px" }}>
+                              {chat.message}
+                            </span>
+                          </div>
+                          <div className="tag-time">
+                            <div className="project-tags p-0 m-1">
+                              <span
+                                className="tag-list"
+                                style={{ color: "black" }}
+                              >
+                                {chat.projectName}
+                              </span>
+                            </div>
+                            <span style={{ color: "black", fontSize: "14px" }}>
+                              {chat.time}
+                            </span>
+                          </div>
+                        </>
+                      ))}
+                    </>
+                  ))}
                 </div>
               </div>
               <div className="chat-input">

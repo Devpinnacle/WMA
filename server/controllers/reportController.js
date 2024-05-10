@@ -242,7 +242,7 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
   groupedData.push(...task);
   groupedData.sort((a, b) => new Date(b._id) - new Date(a._id));
 
-  console.log(groupedData);
+  // console.log(groupedData);
 
   res.status(200).json({
     status: "success",
