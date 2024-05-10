@@ -161,7 +161,7 @@ const Section = () => {
 
   return (
     <MainContainer pageName={selectedProjectName}>
-      <div className="section-top" >
+      <div className="section-top pb-2" >
         <div className="search-box">
           <input
             id="keyword"
