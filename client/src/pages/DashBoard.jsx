@@ -359,7 +359,7 @@ const Dashboard = () => {
                           <span>{task.taskName}</span>
                           {task.progressUpdateDate ? (
                             formatDate(task.progressUpdateDate) ===
-                              formatDate(new Date()) && (
+                            formatDate(new Date()) && (
                               <div className="progress-tag">
                                 <Icon name="save-outline" size="24px" />
                                 <span>Progress updated</span>
@@ -398,7 +398,7 @@ const Dashboard = () => {
               ) : (
                 <>
                   {/* NOTIFICATION */}
-                  <div className="project-header">
+                  <div className="dashboard-grid-header">
                     <span className="title">Notification</span>
                     <div className="header-right">
                       <div className="mt-3">
@@ -425,7 +425,7 @@ const Dashboard = () => {
                           size="2rem"
                           onClick={() => handleRemoveNotificationTag(tg)}
                         />
-                        <p style={{ color: "black" }}>{tg.label}</p>
+                        <p>{tg.label}</p>
                       </div>
                     ))}
                   </div>
@@ -461,7 +461,7 @@ const Dashboard = () => {
           {/* PROJECT */}
           <div className="dashboard-item">
             <div className="projects">
-              <div className="project-header">
+              <div className="dashboard-grid-header">
                 <span className="title" onClick={() => navigate("projects")}>
                   Project
                 </span>
@@ -501,7 +501,7 @@ const Dashboard = () => {
                       size="2rem"
                       onClick={() => handleRemoveTag(tg)}
                     />
-                    <p style={{ color: "black" }}>{tg}</p>
+                    <p>{tg}</p>
                   </div>
                 ))}
               </div>
@@ -518,7 +518,6 @@ const Dashboard = () => {
                         <Icon name="project-outline" size="3rem" />
                         <span
                           className="item-title ml-2"
-                          style={{ color: "black" }}
                         >
                           {proj.sctProjectName}
                         </span>
@@ -528,15 +527,14 @@ const Dashboard = () => {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        color: "black",
                         margin: "0 1rem",
                       }}
                     >
-                      <span style={{ color: "black" }}>
+                      <span>
                         Tasks pending:
                         <span
                           style={{
-                            color: "black",
+
                             fontWeight: "bold",
                             marginLeft: "3px",
                           }}
@@ -544,11 +542,11 @@ const Dashboard = () => {
                           {proj.pendingTasks}
                         </span>
                       </span>
-                      <span style={{ color: "black" }}>
+                      <span>
                         Tasks in progress:
                         <span
                           style={{
-                            color: "black",
+
                             fontWeight: "bold",
                             marginLeft: "3px",
                           }}
@@ -567,7 +565,7 @@ const Dashboard = () => {
         <div className="dashboard-lower-grid">
           <div className="dashboard-item">
             <div className="chats">
-              <div className="project-header">
+              <div className="dashboard-grid-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
                   <DayDateInput placeholder="Day dd/mm/yyyy" />
@@ -577,54 +575,40 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="chat-container">
+              <div class="date-container">
+                    <div class="horizontal-line"></div>
+                    <div class="date">20 March 2024</div>
+                    <div class="horizontal-line"></div>
+                  </div>
                 <div className="message-container">
-                  {chats.map((chat) => (
-                    <>
-                      <h2 style={{ color: "black" }}>{formatDate(chat._id)}</h2>
-                      {chat.data.map((chat) => (
-                        <>
-                          <div className="message">
-                            <span
-                              style={{ color: "black", fontWeight: "bold" }}
-                            >
-                              {chat.userName}:
-                            </span>
-                            <span style={{ color: "black", marginLeft: "5px" }}>
-                              {chat.message}
-                            </span>
-                          </div>
-                          <div className="tag-time">
-                            <div className="project-tags p-0 m-1">
-                              <span
-                                className="tag-list"
-                                style={{ color: "black" }}
-                              >
-                                {chat.projectName}
-                              </span>
-                            </div>
-                            <span style={{ color: "black", fontSize: "14px" }}>
-                              {chat.time}
-                            </span>
-                          </div>
-                        </>
-                      ))}
-                    </>
-                  ))}
+                  <div className="message">
+                    <span style={{ fontWeight: "bold" }}>Vinayak:</span>
+                    <span style={{ marginLeft: "5px" }}>Please update the git</span>
+                  </div>
+                  <div className="tag-time">
+                    <div className="project-tags p-0 m-1">
+                      <span
+                        className="tag-list"
+                      >
+                        Software
+                      </span>
+                    </div>
+                    <span style={{ fontSize: "14px" }}>08:00am</span>
+                  </div>
                 </div>
               </div>
               <div className="chat-input">
                 <input
                   type="text"
                   placeholder="Message"
-                  style={{ color: "black" }}
                 />
                 <div className="input-operation-buttons">
                   <div className="ml-3 mr-3">
                     <Icon name="tag-outline" size="20px" />
                   </div>
-                  <div className="mr-3">
+                  {/* <div className="mr-3">
                     <Icon name="attachment-outline" size="20px" />
-                  </div>
+                  </div> */}
                   <div className="">
                     <Icon name="send-outline" size="20px" />
                   </div>
@@ -680,7 +664,6 @@ const Dashboard = () => {
                             <div className="item-content">
                               <span
                                 className="item-title ml-2"
-                                style={{ color: "black" }}
                               >
                                 {message.heading}
                               </span>
