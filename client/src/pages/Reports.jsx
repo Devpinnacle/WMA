@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import MainContainer from "../components/layouts/sidebar/MainContainer";
 import Icon from "../components/ui/Icon";
-import { getLastDateOfMonth, getStatusColors, monthsValue, padZero } from "../util";
+import {
+  getLastDateOfMonth,
+  getStatusColors,
+  monthsValue,
+  padZero,
+} from "../util";
 import SelectInput from "../components/ui/SelectInput";
 import "./Reports.css";
 import PieChart from "../components/ui/PieChart";
@@ -15,7 +20,9 @@ const Reports = () => {
   const { chart } = useSelector((state) => state.report);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date().setHours(0, 0, 0, 0))
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().setHours(0, 0, 0, 0)
+  );
   const current = new Date(
     new Date().getFullYear() + 1,
     new Date().getMonth() - 11,
@@ -35,21 +42,22 @@ const Reports = () => {
     return (
       !startDate ||
       !endDate ||
-      (
-        (new Date(task.assignedDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0, 0, 0, 0)) &&
-        (new Date(endDate).setHours(0, 0, 0, 0) >= new Date(task.assignedDate).setHours(0,0,0,0)) ||
-        (new Date(task.dueDate).setHours(0,0,0,0) >= new Date(startDate).setHours(0, 0, 0, 0)) &&
-        (new Date(task.dueDate).setHours(0,0,0,0) <= new Date(endDate).setHours(0, 0, 0, 0))
-      )
+      (new Date(task.assignedDate).setHours(0, 0, 0, 0) >=
+        new Date(startDate).setHours(0, 0, 0, 0) &&
+        new Date(endDate).setHours(0, 0, 0, 0) >=
+          new Date(task.assignedDate).setHours(0, 0, 0, 0)) ||
+      (new Date(task.dueDate).setHours(0, 0, 0, 0) >=
+        new Date(startDate).setHours(0, 0, 0, 0) &&
+        new Date(task.dueDate).setHours(0, 0, 0, 0) <=
+          new Date(endDate).setHours(0, 0, 0, 0))
     );
-    
   });
 
   const statusCounts = {
-    "Completed": 0,
+    Completed: 0,
     "To Do": 0,
     "In Progress": 0,
-    "Others": 0,
+    Others: 0,
   };
   betweenDateFilter.forEach((task) => {
     const status = task.status;
@@ -67,7 +75,7 @@ const Reports = () => {
     }
   });
 
-  console.log("statusCounts",statusCounts)
+  console.log("statusCounts", statusCounts);
 
   const filteredChart = chart.filter((task) => {
     const taskstart = new Date(task.assignedDate);
@@ -113,7 +121,7 @@ const Reports = () => {
     const startDate = new Date(task.assignedDate).setHours(0, 0, 0, 0);
     const endDate = new Date(task.dueDate).setHours(0, 0, 0, 0);
     return startDate <= selectedDate && endDate >= selectedDate;
-  })
+  });
 
   const statusCounts2 = {
     Completed: 0,
@@ -142,7 +150,7 @@ const Reports = () => {
     setSelectedDate(newDate);
   };
   const formattedSelectedDate = new Date(selectedDate);
-  const selectedYearMonth = formattedSelectedDate.toLocaleDateString('en-GB');
+  const selectedYearMonth = formattedSelectedDate.toLocaleDateString("en-GB");
   return (
     <MainContainer pageName="Reports">
       <div className="chart-grid">
@@ -163,7 +171,9 @@ const Reports = () => {
           </div>
         </div>
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title pt-3 pb-3">Task Status-{monthsValue[new Date(date).getMonth()]}</span>
+          <span className="chart-title pt-3 pb-3">
+            Task Status-{monthsValue[new Date(date).getMonth()]}
+          </span>
 
           <MonthYearPicker defaultDate={date} setMonthYear={setDate} />
           <div className="pt-5">
@@ -181,8 +191,14 @@ const Reports = () => {
         </div>
 
         <div className="chart" style={{ color: "black" }}>
-          <span className="chart-title pt-3">Task Status-{selectedYearMonth}</span>
-          <DayDateInput placeholder="Day dd/mm/yyyy"  selected={selectedDate} onChange={handleSetSelectedDate} />
+          <span className="chart-title pt-3">
+            Task Status-{selectedYearMonth}
+          </span>
+          <DayDateInput
+            placeholder="Day dd/mm/yyyy"
+            selected={selectedDate}
+            onChange={handleSetSelectedDate}
+          />
           <div className="pt-5">
             <PieChart
               series={[

@@ -80,7 +80,7 @@ const UserNotification = ({ onCancel }) => {
                 className="date-box"
                 style={{ padding: "1rem", margin: "1rem" }}
               >
-                <SelectDate placeholder="Day dd-mm-yyyy" value={selectedDate} onChange={handleDateChange}/>
+                <SelectDate placeholder="Day dd-mm-yyyy" selected={selectedDate} onChange={handleDateChange}/>
               </div>
             </div>
           </div>
