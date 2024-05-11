@@ -97,12 +97,50 @@ io.on("connection", async (socket) => {
 
   socket.on("chats",async(data)=>{
     const newChat=new Chat({
-      userId:userId,
-      message:message,
-      projectId:projectId?projectId:null,
+      userId:data.userId,
+      message:data.message,
+      projectId:data.projectId?data.projectId:null,
     })
-    const newMsg= await newChat.save()
-    io.sockets.emit("chats", newMsg);
+    await newChat.save()
+    const chats = await Chat.aggregate([
+      {
+        $lookup: {
+          from: "empdetails",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $lookup: {
+          from: "sctprojects",
+          localField: "projectId",
+          foreignField: "_id",
+          as: "project",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $unwind: { path: "$project", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $group: {
+          _id: "$date",
+          data: {
+            $push: {
+              name: "$user.userName",
+              projectName: "$project.sctProjectName",
+              message: "$message",
+              time: "$time",
+            },
+          },
+        },
+      },
+    ]);
+    chats.sort((a,b)=> new Date(a._id) - new Date(b._id));
+    io.sockets.emit("chats", chats);
   })
 
   socket.on("disconnect", () => {

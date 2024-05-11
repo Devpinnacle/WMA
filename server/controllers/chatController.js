@@ -24,7 +24,7 @@ exports.getchats = catchAsync(async (req, res, next) => {
       $unwind: "$user",
     },
     {
-      $unwind: "$project",
+      $unwind: { path: "$project", preserveNullAndEmptyArrays: true },
     },
     {
       $group: {

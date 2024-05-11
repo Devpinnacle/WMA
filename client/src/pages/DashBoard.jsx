@@ -36,6 +36,7 @@ import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { dueDateTextColor } from "../util";
 import { useGetChatsQuery } from "../redux/api/chatApi";
+import { getChats, getSingleChat } from "../redux/slice/chatSlice";
 
 const Dashboard = () => {
   const [noteId, setNoteId] = useState(null);
@@ -46,6 +47,7 @@ const Dashboard = () => {
   const [viewNoteFlag, setViewNoteFlag] = useState(false);
   const [addProjectFlag, setAddProjectFlag] = useState(false);
   const [taskFlag, setTaskFlag] = useState(false);
+  const [toggleFlag, setToggeleFlag] = useState(false);
   const [task, setTask] = useState(null);
   const [section, setSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,6 +56,7 @@ const Dashboard = () => {
   const [notificationTag, setNotificationTag] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [chatMsg, setChatMsg] = useState(null);
+  const [projTag, setProjTag] = useState({ id: null, name: null });
 
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -95,6 +98,13 @@ const Dashboard = () => {
       if (user.userGroupName !== "Software") {
         dispatch(getNotifications(data));
       }
+    });
+    return () => socket?.off("N");
+  }, []);
+
+  useEffect(() => {
+    socket.on("chats", (data) => {
+      dispatch(getChats(data));
     });
     return () => socket?.off("N");
   }, []);
@@ -286,6 +296,22 @@ const Dashboard = () => {
     }
   };
 
+  const handleSendMessage = () => {
+    console.log("hit");
+    const data = {
+      userId: user._id,
+      message: chatMsg,
+      projectId: projTag.id,
+    };
+    socket.emit("chats", data);
+    setChatMsg(null);
+  };
+
+  const handleToggle = () => {
+    if (toggleFlag) setToggeleFlag(false);
+    else setToggeleFlag(true);
+  };
+
   return (
     <MainContainer pageName={`Hi`} userName={user?.userName}>
       <div className="dashboard-container">
@@ -359,7 +385,7 @@ const Dashboard = () => {
                           <span>{task.taskName}</span>
                           {task.progressUpdateDate ? (
                             formatDate(task.progressUpdateDate) ===
-                            formatDate(new Date()) && (
+                              formatDate(new Date()) && (
                               <div className="progress-tag">
                                 <Icon name="save-outline" size="24px" />
                                 <span>Progress updated</span>
@@ -516,9 +542,7 @@ const Dashboard = () => {
                     <div className="project-item-header">
                       <div className="left-content">
                         <Icon name="project-outline" size="3rem" />
-                        <span
-                          className="item-title ml-2"
-                        >
+                        <span className="item-title ml-2">
                           {proj.sctProjectName}
                         </span>
                       </div>
@@ -534,7 +558,6 @@ const Dashboard = () => {
                         Tasks pending:
                         <span
                           style={{
-
                             fontWeight: "bold",
                             marginLeft: "3px",
                           }}
@@ -546,7 +569,6 @@ const Dashboard = () => {
                         Tasks in progress:
                         <span
                           style={{
-
                             fontWeight: "bold",
                             marginLeft: "3px",
                           }}
@@ -575,45 +597,80 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="chat-container">
-              <div class="date-container">
-                    <div class="horizontal-line"></div>
-                    <div class="date">20 March 2024</div>
-                    <div class="horizontal-line"></div>
-                  </div>
-                <div className="message-container">
-                  <div className="message">
-                    <span style={{ fontWeight: "bold" }}>Vinayak:</span>
-                    <span style={{ marginLeft: "5px" }}>Please update the git</span>
-                  </div>
-                  <div className="tag-time">
-                    <div className="project-tags p-0 m-1">
-                      <span
-                        className="tag-list"
-                      >
-                        Software
-                      </span>
+                {chats.map((chat) => (
+                  <>
+                    <div class="date-container">
+                      <div class="horizontal-line"></div>
+                      <div class="date">{formatDate(chat._id)}</div>
+                      <div class="horizontal-line"></div>
                     </div>
-                    <span style={{ fontSize: "14px" }}>08:00am</span>
-                  </div>
-                </div>
+                    {chat.data.map((ch) => (
+                      <>
+                        <div className="message-container">
+                          <div className="message">
+                            <span style={{ fontWeight: "bold" }}>
+                              {ch.name}:
+                            </span>
+                            <span style={{ marginLeft: "5px" }}>
+                              {ch.message}
+                            </span>
+                          </div>
+                          <div className="tag-time">
+                            {ch.projectName&&<div className="project-tags p-0 m-1">
+                              <span className="tag-list">{ch.projectName}</span>
+                            </div>}
+                            <span style={{ fontSize: "14px" }}>{ch.time}</span>
+                          </div>
+                        </div>
+                      </>
+                    ))}
+                  </>
+                ))}
               </div>
               <div className="chat-input">
                 <input
                   type="text"
                   placeholder="Message"
+                  value={chatMsg}
+                  onChange={(e) => setChatMsg(e.target.value)}
                 />
                 <div className="input-operation-buttons">
+                  {projTag.name && (
+                    <div className="tag-container">{projTag.name}</div>
+                  )}
                   <div className="ml-3 mr-3">
-                    <Icon name="tag-outline" size="20px" />
+                    <Icon
+                      name="tag-outline"
+                      size="20px"
+                      onClick={handleToggle}
+                    />
                   </div>
-                  {/* <div className="mr-3">
-                    <Icon name="attachment-outline" size="20px" />
-                  </div> */}
-                  <div className="">
+                  <div className="" onClick={handleSendMessage}>
                     <Icon name="send-outline" size="20px" />
                   </div>
                 </div>
               </div>
+              {toggleFlag && (
+                <div className="selected-tag total-progress-count">
+                  <div
+                    className="tag-container"
+                    onClick={() => setProjTag({ name: null, id: null })}
+                  >
+                    <p>none</p>
+                  </div>
+                  {project.map((tg, index) => (
+                    <div
+                      key={index}
+                      className="tag-container"
+                      onClick={() =>
+                        setProjTag({ name: tg.sctProjectName, id: tg._id })
+                      }
+                    >
+                      <p>{tg.sctProjectName}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -662,9 +719,7 @@ const Dashboard = () => {
                           <div className="left-content">
                             <Icon name="notes-outline" size="3rem" />
                             <div className="item-content">
-                              <span
-                                className="item-title ml-2"
-                              >
+                              <span className="item-title ml-2">
                                 {message.heading}
                               </span>
                             </div>
