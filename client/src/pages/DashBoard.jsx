@@ -701,17 +701,17 @@ const Dashboard = () => {
                 </div>
               </div>
               {toggleFlag && (
-                <div className="selected-tag total-progress-count">
-                  <div
+                <div className="settings-container">
+                  {/* <div
                     className="tag-container"
                     onClick={() => setProjTag({ name: null, id: null })}
                   >
                     <p>none</p>
-                  </div>
+                  </div> */}
                   {project.map((tg, index) => (
                     <div
                       key={index}
-                      className="tag-container"
+                      className="setting-item"
                       onClick={() =>
                         setProjTag({ name: tg.sctProjectName, id: tg._id })
                       }
