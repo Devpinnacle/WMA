@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddNotes from "../components/modals/notes/AddNotes";
 import { useGetNotesQuery } from "../redux/api/notesApi";
@@ -55,8 +55,11 @@ const Dashboard = () => {
   const [tag, setTag] = useState([]);
   const [notificationTag, setNotificationTag] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [chatMsg, setChatMsg] = useState(null);
+  const [chatMsg, setChatMsg] = useState("");
   const [projTag, setProjTag] = useState({ id: null, name: null });
+  const [chatDate,setChatDate]=useState(null)
+  const [chatTag,setChatTag]=useState([])
+  const chatContainerRef = useRef(null);
 
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -78,6 +81,11 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const chatTags=project.map((proj)=>({
+    label:proj.sctProjectName,
+    value:proj.sctProjectName,
+  }))
 
   const tags = [
     { label: "Software", value: "Software" },
@@ -116,6 +124,10 @@ const Dashboard = () => {
   }, [dispatch, fetchedData]);
 
   useEffect(() => {
+    chatContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [chatMsg]);
+
+  useEffect(() => {
     if (projectData) {
       dispatch(getProject(projectData.data));
     }
@@ -128,10 +140,6 @@ const Dashboard = () => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
-
-  const handleTags = (e) => {
-    if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
   };
 
   const handleNotificationTags = (e) => {
@@ -147,6 +155,10 @@ const Dashboard = () => {
     setNotificationTag((prevTag) =>
       prevTag.filter((tg) => tg.value !== item.value)
     );
+  };
+
+  const handleTags = (e) => {
+    if (!tag.includes(e.value)) setTag((prevTag) => [...prevTag, e.value]);
   };
 
   const handleRemoveTag = (item) => {
@@ -297,20 +309,46 @@ const Dashboard = () => {
   };
 
   const handleSendMessage = () => {
-    console.log("hit");
     const data = {
       userId: user._id,
       message: chatMsg,
       projectId: projTag.id,
     };
+   
     socket.emit("chats", data);
-    setChatMsg(null);
+    setChatMsg("");
+    setProjTag({ name: null, id: null })
+    setToggeleFlag(false)
   };
+
+  useEffect(()=>{console.log(chatMsg)},[chatMsg])
 
   const handleToggle = () => {
     if (toggleFlag) setToggeleFlag(false);
     else setToggeleFlag(true);
   };
+
+  const handleChatTags = (e) => {
+    if (!chatTag.includes(e.value)) setChatTag((prevTag) => [...prevTag, e.value]);
+  };
+
+  const handleChatRemoveTag = (item) => {
+    setChatTag((prevTag) => prevTag.filter((tg) => tg !== item));
+  };
+
+  const chatfilter=chats.filter((chat)=>{
+    return !chatDate||dashedFormatDate(chat._id)===dashedFormatDate(chatDate)
+  })
+
+  const chatfilter1=chatfilter.map((chat)=>{
+    const filteredData=chat.data.filter((ch)=>{
+      return chatTag.length===0||chatTag.includes(ch.projectName)
+    });
+    return{
+      ...chat,
+      data:filteredData,
+    }
+  })
 
   return (
     <MainContainer pageName={`Hi`} userName={user?.userName}>
@@ -590,14 +628,26 @@ const Dashboard = () => {
               <div className="dashboard-grid-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
-                  <DayDateInput placeholder="Day dd/mm/yyyy" />
+                  <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date)=>setChatDate(date)}/>
                   <div className="mt-3">
-                    <SelectInput className="tags" placeholder="Tags" />
+                    <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
                   </div>
                 </div>
               </div>
-              <div className="chat-container">
-                {chats.map((chat) => (
+              {chatTag.length>0&&<div className="selected-tag">
+                {chatTag.map((tg, index) => (
+                  <div key={index} className="tag-container">
+                    <Icon
+                      name="close"
+                      size="2rem"
+                      onClick={() => handleChatRemoveTag(tg)}
+                    />
+                    <p>{tg}</p>
+                  </div>
+                ))}
+              </div>}
+              <div className="chat-container" ref={chatContainerRef}>
+                {chatfilter1.map((chat) => (
                   <>
                     <div class="date-container">
                       <div class="horizontal-line"></div>

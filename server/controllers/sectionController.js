@@ -141,8 +141,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
         return updatedSection; // Return the newly created updated section
       })
     );
-    // console.log("updatedSection", updatedSections[0]);
-    // Send the response with the updated sections
+    
     res.status(200).json({
       status: "success",
       data: updatedSections,
@@ -231,7 +230,6 @@ exports.deleteSections = catchAsync(async (req, res, next) => {
 //* Update Section *************************************************
 
 exports.updateSection = catchAsync(async (req, res, next) => {
-  // console.log("hit update section");
   const userId = req.user._id;
   const { id, sectionName, startDate, dueDate } = req.body;
 
@@ -258,7 +256,6 @@ exports.updateSection = catchAsync(async (req, res, next) => {
 
 exports.getSelectedSection=catchAsync(async(req,res,next)=>{
   const {Id}=req.body
-  console.log("Id...",Id)
   if (!Id) {
     return next(new AppError("Please Enter Project Id", 400));
   }
@@ -275,8 +272,6 @@ exports.getSelectedSection=catchAsync(async(req,res,next)=>{
       completed: 1,
     }
   ).populate("createdBy", "userName");
-
-  console.log("sections[0]",sections)
 
   res.status(200).json({
     status: "success",

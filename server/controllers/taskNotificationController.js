@@ -15,8 +15,6 @@ exports.getTaskNotifications = catchAsync(async (req, res, next) => {
     "userName"
   ); 
 
-  console.log("hit get notification",taskNotification)
-
   res.status(200).json({
     status: "success",
     data: taskNotification,
@@ -25,7 +23,6 @@ exports.getTaskNotifications = catchAsync(async (req, res, next) => {
 
 //* Add progress *********************************************************
 exports.progress = catchAsync(async (req, res, next) => {
-  console.log("hit progress")
   const { taskId, newData } = req.body;
   const userId = req.user._id;
 
@@ -44,7 +41,6 @@ exports.assignDate = catchAsync(async (req, res, next) => {
   const { taskId, newData } = req.body;
   const userId = req.user._id;
   const date=dashedFormatDate(newData)
-  // console.log("date is",typeof(date))
   addTaskNotification(
     userId,
     taskId,

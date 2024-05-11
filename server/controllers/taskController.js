@@ -66,8 +66,6 @@ exports.getSelectedTask = catchAsync(async (req, res, next) => {
     .populate("projectId", "sctProjectName")
     .populate("sectionId", ["sectionName", "progress"]);
 
-  // console.log("selected task", task);
-
   res.status(200).json({
     status: "success",
     data: task,
@@ -245,7 +243,6 @@ exports.tskUpdate = catchAsync(async (req, res, next) => {
 //* Update Daily task (Progress, Duration) *******************************
 
 exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
-  // console.log("hit..Daily");
   const taskId = req.body.id;
   if (!taskId) {
     return next(new AppError("Please provide task id.", 400));
@@ -253,7 +250,6 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
 
   const data = await Task.find({ _id: taskId }, { status: 1, _id: 0 });
   const status = data.status;
-  // console.log("progress", req.body.progress);
   await Task.updateOne(
     { _id: taskId },
     {
@@ -355,7 +351,6 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
 //* Adjust task **********************************************************
 
 exports.adjustTask = catchAsync(async (req, res, next) => {
-  console.log("hit..adjust");
   const { initialStartDt, movedStartDt, sectionId } = req.body;
 
   // Calculate the difference in days between the initial and moved section start dates

@@ -242,8 +242,6 @@ exports.getDailyReport = catchAsync(async (req, res, next) => {
   groupedData.push(...task);
   groupedData.sort((a, b) => new Date(b._id) - new Date(a._id));
 
-  // console.log(groupedData);
-
   res.status(200).json({
     status: "success",
     data: groupedData,
@@ -316,8 +314,6 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
   if (!id) {
     return next(new AppError("Please Project id.", 400));
   }
-  console.log("id is...", id);
-
   const tasks = await Task.aggregate([
     {
       $match: {
@@ -376,7 +372,6 @@ exports.tasksReport = catchAsync(async (req, res, next) => {
     },
   ]);
 
-  // console.log(tasks);
   res.status(200).json({
     status: "success",
     data: tasks,

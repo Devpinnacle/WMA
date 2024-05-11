@@ -44,7 +44,6 @@ const io = new Server(server, {
 });
 
 io.on("connection", async (socket) => {
-  // console.log(`User connected: ${socket.id}`);
   socket.on("join", (userId) => {
     socket.join(userId); // Join a room identified by user ID
   });
@@ -73,18 +72,15 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("userNotification", async (Id) => {
-    console.log("user Notifications");
     const notifications = await Notification.find({ empUserId: Id })
       .populate("userId", "userName")
       .populate("projectId", "sctProjectName")
       .populate("sectionId", "sectionName")
       .populate("empUserId", "userName");
-    // console.log("user Notifications", notifications);
     io.to(Id).emit("userNotification", notifications);  
   });
 
   socket.on("updateTaskNotification", async (assign) => {
-    console.log("update task Notifications");
     assign.map(async (Id) => {
       const notifications = await Notification.find({ empUserId: Id })
         .populate("userId", "userName")
