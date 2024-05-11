@@ -59,7 +59,7 @@ const Dashboard = () => {
   const [projTag, setProjTag] = useState({ id: null, name: null });
   const [chatDate,setChatDate]=useState(null)
   const [chatTag,setChatTag]=useState([])
-  const chatContainerRef = useRef(null);
+  const chatRef = useRef(null);
 
   const [getSelectedSection] = useGetSelectedSectionMutation();
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -123,9 +123,11 @@ const Dashboard = () => {
     }
   }, [dispatch, fetchedData]);
 
-  useEffect(() => {
-    chatContainerRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [chatMsg]);
+   useEffect(() => {
+ 
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+     
+  }, [chats]);
 
   useEffect(() => {
     if (projectData) {
@@ -646,7 +648,7 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>}
-              <div className="chat-container" ref={chatContainerRef}>
+              <div className="chat-container" ref={chatRef} >
                 {chatfilter1.map((chat) => (
                   <>
                     <div class="date-container">
@@ -702,12 +704,12 @@ const Dashboard = () => {
               </div>
               {toggleFlag && (
                 <div className="settings-container">
-                  {/* <div
+                  <div
                     className="tag-container"
                     onClick={() => setProjTag({ name: null, id: null })}
                   >
                     <p>none</p>
-                  </div> */}
+                  </div>
                   {project.map((tg, index) => (
                     <div
                       key={index}
