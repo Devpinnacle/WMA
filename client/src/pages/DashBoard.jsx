@@ -479,6 +479,7 @@ const Dashboard = () => {
                         placeholder="Day dd/mm/yyyy"
                         selected={selectedDate}
                         onChange={handleDateChange}
+                        className="day-date"
                       />
                     </div>
                   </div>
@@ -631,8 +632,8 @@ const Dashboard = () => {
                 <span className="title">Chats</span>
                 <div className="header-right ">
                   <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date)=>setChatDate(date)}/>
-                  <div className="mt-3">
-                    <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
+                  <div className="chat-filter-tag mt-3" style={{width:"17rem"}}>
+                      <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
                   </div>
                 </div>
               </div>
@@ -668,7 +669,7 @@ const Dashboard = () => {
                             </span>
                           </div>
                           <div className="tag-time">
-                            {ch.projectName&&<div className="project-tags p-0 m-1">
+                            {ch.projectName&&<div className="project-tags chat-tag p-0 m-1">
                               <span className="tag-list">{ch.projectName}</span>
                             </div>}
                             <span style={{ fontSize: "14px" }}>{ch.time}</span>
@@ -690,7 +691,7 @@ const Dashboard = () => {
                   {projTag.name && (
                     <div className="tag-container">{projTag.name}</div>
                   )}
-                  <div className="ml-3 mr-3">
+                  <div className="tag-icon ml-3 mr-3">
                     <Icon
                       name="tag-outline"
                       size="20px"
@@ -698,17 +699,17 @@ const Dashboard = () => {
                     />
                   </div>
                   <div className="" onClick={handleSendMessage}>
-                    <Icon name="send-outline" size="20px" />
+                    <Icon name="send-outline" size="20px" title="send"/>
                   </div>
                 </div>
               </div>
               {toggleFlag && (
                 <div className="settings-container">
                   <div
-                    className="tag-container"
+                    className="setting-item"
                     onClick={() => setProjTag({ name: null, id: null })}
                   >
-                    <p>none</p>
+                    <p>None</p>
                   </div>
                   {project.map((tg, index) => (
                     <div
