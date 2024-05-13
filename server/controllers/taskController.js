@@ -257,10 +257,15 @@ exports.dailyTaskUpdate = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide task id.", 400));
   }
 
-  const data = await Task.find({ _id: taskId }, { status: 1, _id: 0 });
-  const status = data.status;
-  const progress = data.progress;
-  const date = data.progressUpdateDate;
+  const data = await Task.find(
+    { _id: taskId },
+    { status: 1, _id: 0, progress: 1,progressUpdateDate:1 }
+  );
+  const status = data[0].status;
+  const progress = data[0].progress;
+  const date = data[0].progressUpdateDate;
+  console.log(data);
+  console.log("req.body.progress", req.body.progress, "progress", progress,"status",status);
   await Task.updateOne(
     { _id: taskId },
     {
