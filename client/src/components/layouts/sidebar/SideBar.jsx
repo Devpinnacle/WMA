@@ -14,7 +14,7 @@ export default function SideBar() {
         <div className="flex-between mb-3">
           <div className="profile">
             <div className="profile-img-container">
-              <div className="profile-letter flex-center">
+              <div className="profile-letter flex-center" style={{background:user?.empColorCode}}>
                 {user?.userName.slice(0, 1)}
               </div>
             </div>

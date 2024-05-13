@@ -91,6 +91,7 @@ export default function SidebarTop() {
       {logoutFlag && (
         <Logout onCancel={() => setLogoutFlag(false)} logout={handleLogout} />
       )}
+       <style>{`.top-link-item-active::after { background-color: ${user?.empColorCode}; }`}</style>
     </div>
   );
 }
