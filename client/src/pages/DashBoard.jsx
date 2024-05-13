@@ -520,7 +520,7 @@ const Dashboard = () => {
                             </span>
                           </span>
                         </div>
-                        <span>{notification.time}</span>
+                        <span style={{whiteSpace:"nowrap"}}>{notification.time}</span>
                       </div>
                     ))}
                   </div>
@@ -658,9 +658,9 @@ const Dashboard = () => {
                 {chatfilter1.map((chat) => (
                   <>
                     <div class="date-container">
-                      <div class="horizontal-line"></div>
+                      <div class="date-line"></div>
                       <div class="date">{formatDate(chat._id)}</div>
-                      <div class="horizontal-line"></div>
+                      <div class="date-line"></div>
                     </div>
                     {chat.data.map((ch) => (
                       <>
@@ -675,7 +675,7 @@ const Dashboard = () => {
                           </div>
                           <div className="tag-time">
                             {ch.projectName && (
-                              <div className="project-tags p-0 m-1">
+                              <div className="project-tags chat-tag p-0 m-1">
                                 <span className="tag-list">
                                   {ch.projectName}
                                 </span>
@@ -689,7 +689,7 @@ const Dashboard = () => {
                   </>
                 ))}
               </div>
-              <div className="chat-input">
+              <div className={`chat-input ${chatTag.length > 0 ? 'hidden' : ''}`}>
                 <input
                   type="text"
                   placeholder="Message"
