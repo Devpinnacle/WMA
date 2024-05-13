@@ -57,8 +57,8 @@ const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [chatMsg, setChatMsg] = useState("");
   const [projTag, setProjTag] = useState({ id: null, name: null });
-  const [chatDate,setChatDate]=useState(null)
-  const [chatTag,setChatTag]=useState([])
+  const [chatDate, setChatDate] = useState(null);
+  const [chatTag, setChatTag] = useState([]);
   const chatRef = useRef(null);
 
   const [getSelectedSection] = useGetSelectedSectionMutation();
@@ -82,10 +82,10 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const chatTags=project.map((proj)=>({
-    label:proj.sctProjectName,
-    value:proj.sctProjectName,
-  }))
+  const chatTags = project.map((proj) => ({
+    label: proj.sctProjectName,
+    value: proj.sctProjectName,
+  }));
 
   const tags = [
     { label: "Software", value: "Software" },
@@ -123,10 +123,8 @@ const Dashboard = () => {
     }
   }, [dispatch, fetchedData]);
 
-   useEffect(() => {
- 
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-     
+  useEffect(() => {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chats]);
 
   useEffect(() => {
@@ -316,14 +314,16 @@ const Dashboard = () => {
       message: chatMsg,
       projectId: projTag.id,
     };
-   
+
     socket.emit("chats", data);
     setChatMsg("");
-    setProjTag({ name: null, id: null })
-    setToggeleFlag(false)
+    setProjTag({ name: null, id: null });
+    setToggeleFlag(false);
   };
 
-  useEffect(()=>{console.log(chatMsg)},[chatMsg])
+  useEffect(() => {
+    console.log(chatMsg);
+  }, [chatMsg]);
 
   const handleToggle = () => {
     if (toggleFlag) setToggeleFlag(false);
@@ -331,26 +331,29 @@ const Dashboard = () => {
   };
 
   const handleChatTags = (e) => {
-    if (!chatTag.includes(e.value)) setChatTag((prevTag) => [...prevTag, e.value]);
+    if (!chatTag.includes(e.value))
+      setChatTag((prevTag) => [...prevTag, e.value]);
   };
 
   const handleChatRemoveTag = (item) => {
     setChatTag((prevTag) => prevTag.filter((tg) => tg !== item));
   };
 
-  const chatfilter=chats.filter((chat)=>{
-    return !chatDate||dashedFormatDate(chat._id)===dashedFormatDate(chatDate)
-  })
+  const chatfilter = chats.filter((chat) => {
+    return (
+      !chatDate || dashedFormatDate(chat._id) === dashedFormatDate(chatDate)
+    );
+  });
 
-  const chatfilter1=chatfilter.map((chat)=>{
-    const filteredData=chat.data.filter((ch)=>{
-      return chatTag.length===0||chatTag.includes(ch.projectName)
+  const chatfilter1 = chatfilter.map((chat) => {
+    const filteredData = chat.data.filter((ch) => {
+      return chatTag.length === 0 || chatTag.includes(ch.projectName);
     });
-    return{
+    return {
       ...chat,
-      data:filteredData,
-    }
-  })
+      data: filteredData,
+    };
+  });
 
   return (
     <MainContainer pageName={`Hi`} userName={user?.userName}>
@@ -630,25 +633,36 @@ const Dashboard = () => {
               <div className="dashboard-grid-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
-                  <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date)=>setChatDate(date)}/>
+                  <DayDateInput
+                    placeholder="Day dd/mm/yyyy"
+                    selected={chatDate}
+                    onChange={(date) => setChatDate(date)}
+                  />
                   <div className="mt-3">
-                    <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
+                    <SelectInput
+                      className="tags"
+                      placeholder="Tags"
+                      options={chatTags}
+                      onChange={handleChatTags}
+                    />
                   </div>
                 </div>
               </div>
-              {chatTag.length>0&&<div className="selected-tag">
-                {chatTag.map((tg, index) => (
-                  <div key={index} className="tag-container">
-                    <Icon
-                      name="close"
-                      size="2rem"
-                      onClick={() => handleChatRemoveTag(tg)}
-                    />
-                    <p>{tg}</p>
-                  </div>
-                ))}
-              </div>}
-              <div className="chat-container" ref={chatRef} >
+              {chatTag.length > 0 && (
+                <div className="selected-tag">
+                  {chatTag.map((tg, index) => (
+                    <div key={index} className="tag-container">
+                      <Icon
+                        name="close"
+                        size="2rem"
+                        onClick={() => handleChatRemoveTag(tg)}
+                      />
+                      <p>{tg}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="chat-container" ref={chatRef}>
                 {chatfilter1.map((chat) => (
                   <>
                     <div class="date-container">
@@ -668,9 +682,13 @@ const Dashboard = () => {
                             </span>
                           </div>
                           <div className="tag-time">
-                            {ch.projectName&&<div className="project-tags p-0 m-1">
-                              <span className="tag-list">{ch.projectName}</span>
-                            </div>}
+                            {ch.projectName && (
+                              <div className="project-tags p-0 m-1">
+                                <span className="tag-list">
+                                  {ch.projectName}
+                                </span>
+                              </div>
+                            )}
                             <span style={{ fontSize: "14px" }}>{ch.time}</span>
                           </div>
                         </div>
@@ -697,9 +715,11 @@ const Dashboard = () => {
                       onClick={handleToggle}
                     />
                   </div>
-                  <div className="" onClick={handleSendMessage}>
-                    <Icon name="send-outline" size="20px" />
-                  </div>
+                  {chatMsg !== "" && (
+                    <div className="" onClick={handleSendMessage}>
+                      <Icon name="send-outline" size="20px" />
+                    </div>
+                  )}
                 </div>
               </div>
               {toggleFlag && (
