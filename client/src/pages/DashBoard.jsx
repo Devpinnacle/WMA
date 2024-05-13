@@ -707,9 +707,9 @@ const Dashboard = () => {
                       onClick={handleToggle}
                     />
                   </div>
-                  <div className="" onClick={handleSendMessage}>
+                  {chatMsg!==""&&<div className="" onClick={handleSendMessage}>
                     <Icon name="send-outline" size="20px" title="send"/>
-                  </div>
+                  </div>}
                 </div>
               </div>
               {toggleFlag && (
