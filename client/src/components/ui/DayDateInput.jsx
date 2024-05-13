@@ -7,7 +7,7 @@ import './DayDateInput.css'
 const DayDateInput = ({ selected, onChange, placeholder }) => {
   return (
     <>
-      <div className='day-date-picker'>
+      <div className='day-date-picker day-date'>
         <DatePicker
           selected={selected} placeholderText={placeholder}
           onChange={onChange}

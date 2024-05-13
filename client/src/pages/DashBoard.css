@@ -232,7 +232,6 @@
 }
 
 .chat-container {
-    margin-left: 20px;
     max-height: 230px;
     height: 250px;
     overflow-y: auto;
@@ -267,14 +266,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 8px;
-    /* padding-top: 8px; */
+    margin-bottom: 8px;
 }
 
 .tag-time {
-    display: flex;
+    display: flex;  
     align-items: center;
-    margin-right: 8px;
+    margin-right: 10px;
+    white-space: nowrap; 
 }
 
 .date-container {
@@ -296,6 +295,7 @@
     line-height: 20px;
     color: #A0A0A0;
 }
+
 .settings-container {
     position: absolute;
     bottom: 15rem;
@@ -312,7 +312,6 @@
     flex-direction: column;
     box-shadow: var(--modal-shadow-2);
     font-size: 1.3rem;
-    /* overflow: hidden; */
   }
   
   .setting-item {
@@ -323,7 +322,7 @@
     cursor: pointer;
   }
   .setting-item:hover {
-    background-color: var(--btn-hovered-color);
+    background-color: #FBEFDA;
   }
 
 /* notes */
@@ -450,17 +449,15 @@
     .chat-container {
         max-height: 200px;
     }
-    .settings-container{
-        left: 250px;
-        bottom:25rem
+    .tag-icon,
+    .chat-tag,
+    .chat-filter-tag{
+        display: none;
     }
-
-    /* .message-container{
-        display: block;
+    .day-date{
+        margin-right: 0 !important;
+        margin-left:0 !important
     }
-    .tag-time{
-        padding-top: 8px;
-    } */
 
 }
 
@@ -469,6 +466,7 @@
     .project-body-container {
         grid-template-columns: 1fr;
     }
+   
 }
 
 @media only screen and (max-width: 662px) {
