@@ -16,7 +16,7 @@ const Projects = () => {
   const [addProjectFlag, setAddProjectFlag] = useState(false);
 
   const { data: projectData } = useGetProjectQuery();
-  const [getSections]=useGetSectionMutation();
+  const [getSections] = useGetSectionMutation();
 
   const { project } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
@@ -48,7 +48,7 @@ const Projects = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
-  
+
   const filteredProjects = project.filter((proj) => {
     const isIncludedInTags =
       tag.length === 0 || tag.every((tg) => proj.tags.includes(tg));
@@ -58,7 +58,7 @@ const Projects = () => {
     return isIncludedInTags && isIncludedInSearch;
   });
 
-  const handleProjectClick = async(id,name) => {
+  const handleProjectClick = async (id, name) => {
     dispatch(setSelectedProject(id));
     dispatch(setSelectedProjectName(name))
     await getSections(id)
@@ -94,15 +94,15 @@ const Projects = () => {
             </div>
           </div>
           {user.userGroupName !== "Software" && (
-            <button className="btn-outline" onClick={()=>setAddProjectFlag(true)}>
+            <button className="btn-outline" onClick={() => setAddProjectFlag(true)}>
               <Icon name="add-outline" size="2rem" />
               Add Project
             </button>
           )}
         </div>
       </div>
-      {tag.map((tg, index) => (
-      <div className="selected-tag">    
+        <div className="selected-tag">
+        {tag.map((tg, index) => (
           <div key={index} className="tag-container">
             <Icon
               name="close"
@@ -111,14 +111,15 @@ const Projects = () => {
             />
             <p style={{ color: "black" }}>{tg}</p>
           </div>
-      </div>
-      ))}
+          ))}
+        </div>
+      
       <div className="project-container">
         {filteredProjects.map((proj) => (
           <div
             className="project-item"
             key={proj.id}
-            onClick={() => handleProjectClick(proj._id,proj.sctProjectName)}
+            onClick={() => handleProjectClick(proj._id, proj.sctProjectName)}
           >
             <div className="project-title">
               <Icon name="project-outline" size="2rem" />
@@ -184,13 +185,13 @@ const Projects = () => {
                   {proj.overdueTasks}
                 </span>
               </span>
-            </div>  
+            </div>
             <div className="project-tags">
               {proj.tags.map((tg, index) => (
                 <span
                   className="tag-list"
                   key={index}
-                  style={{ color: "black"}}
+                  style={{ color: "black" }}
                 >
                   {tg}
                 </span>

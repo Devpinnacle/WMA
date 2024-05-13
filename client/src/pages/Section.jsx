@@ -14,7 +14,7 @@ import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
 import { useGetSelectedTaskMutation } from "../redux/api/taskApi";
 import { useGetSectionMutation } from "../redux/api/sectionApi";
-import { dueDateTextColor, setSectionDueColor } from "../util";
+import { dueDateTextColor, setSectionDueColor, dueDateColor, dueDateFontWeight, dueDateIcon, setSectionDueTextColor } from "../util";
 
 const Section = () => {
   const [addSectionFlag, setAddSectionFlag] = useState(false);
@@ -31,13 +31,13 @@ const Section = () => {
 
   const [getSelectedTask] = useGetSelectedTaskMutation();
 
-  const { selectedProject ,selectedProjectName} = useSelector((state) => state.project);
+  const { selectedProject, selectedProjectName } = useSelector((state) => state.project);
   const { sections } = useSelector((state) => state.section);
   const { user } = useSelector((state) => state.user);
 
-  const [getSections]=useGetSectionMutation();
+  const [getSections] = useGetSectionMutation();
 
-  useEffect(()=>{getSections(selectedProject)},[])
+  useEffect(() => { getSections(selectedProject) }, [])
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ const Section = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth()+1).toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -111,7 +111,7 @@ const Section = () => {
     setSection(sec);
     setTaskFlag(true);
   }
- 
+
   const getPriorityColor = (priority, dueDate, status) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set time to midnight
@@ -193,26 +193,25 @@ const Section = () => {
             className="section-item"
             key={sec._id}
           >
-  
-            <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(sec.dueDate,sec.progress,sec.totalTask) }}>
+
+            <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(sec.dueDate, sec.progress, sec.totalTask) }}>
               <div className="section-item-top-left">
                 <Icon name="section-outline" size="2.5rem" />
-                <span className="ml-2" style={{ fontSize: "16px",color:"white" }}>
+                <span className="ml-2" style={{ fontSize: "16px", color: "white" }}>
                   {sec.sectionName}
                 </span>
               </div>
               <div className="section-item-top-right">
-                <div className="section-progress" style={{color:"white"}}>{sec.progress}%</div>
+                <div className="section-progress" style={{ color: "white" }}>{sec.progress}%</div>
               </div>
             </div>
             <div className="section-details-container">
               <div className="section-details-left">
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   Addition date:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -220,12 +219,12 @@ const Section = () => {
                     {formatDate(sec.startDate)}
                   </span>
                 </span>
-                <span style={{fontSize: "16px",color: sec.dueDate > new Date()  ? '#FF4848' : 'black'}}>
+                <span>
                   Due date:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: sec.dueDate > new Date()  ? 'red' : 'black',
+                      color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -233,12 +232,11 @@ const Section = () => {
                     {formatDate(sec.dueDate)}
                   </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   Completed tasks:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -247,12 +245,11 @@ const Section = () => {
                   </span>
                 </span>
                 {user.userGroupName === "Software" && (
-                  <span style={{ color: "black", fontSize: "16px" }}>
+                  <span style={{fontSize: "16px" }}>
                     Tasks in progress:
                     <span
                       style={{
                         fontWeight: "bold",
-                        color: "black",
                         fontSize: "16px",
                       }}
                       className="ml-2"
@@ -281,12 +278,11 @@ const Section = () => {
                 </span>
               </div>
               <div className="section-details-right">
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   Addition by:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -296,14 +292,13 @@ const Section = () => {
                       : sec.createdBy.userName}
                   </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   {user.userGroupName === "Software"
                     ? `Task assigned to you:`
                     : `Total task:`}
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -311,12 +306,11 @@ const Section = () => {
                     {sec.assigned}
                   </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   Pending tasks:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -324,12 +318,11 @@ const Section = () => {
                     {sec.pendingTasks}
                   </span>
                 </span>
-                <span style={{ color: "black", fontSize: "16px" }}>
+                <span style={{fontSize: "16px" }}>
                   Tasks on hold:
                   <span
                     style={{
                       fontWeight: "bold",
-                      color: "black",
                       fontSize: "16px",
                     }}
                     className="ml-2"
@@ -338,12 +331,11 @@ const Section = () => {
                   </span>
                 </span>
                 {user.userGroupName === "Software" && (
-                  <span style={{ color: "black", fontSize: "16px" }}>
+                  <span style={{fontSize: "16px" }}>
                     Your total progress:
                     <span
                       style={{
                         fontWeight: "bold",
-                        color: "black",
                         fontSize: "16px",
                       }}
                       className="ml-2"
@@ -358,29 +350,28 @@ const Section = () => {
               <div className="section-task-container">
                 {sec.tasks.map((task) => (
                   <div className="section-task-body" onClick={() => handleTaskView(task._id, sec)}
-                  style={{
-                    backgroundColor: getPriorityBodyColor(task.priority),
-                    borderColor: getPriorityBodyColor(task.priority),
-                  }}
+                    style={{
+                      backgroundColor: getPriorityBodyColor(task.priority),
+                      borderColor: getPriorityBodyColor(task.priority),
+                    }}
                   >
                     <div className="section-task-header"
                       style={{
-                        backgroundColor: getPriorityColor(task.priority,task.dueDate,task.status),
-                        borderColor: getPriorityColor(task.priority,task.dueDate,task.status),
+                        backgroundColor: getPriorityColor(task.priority, task.dueDate, task.status),
+                        borderColor: getPriorityColor(task.priority, task.dueDate, task.status),
                       }}
                     >
                       <span
                         className="ml-2"
-                        style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate,task.status) }}
+                        style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate, task.status) }}
                       >
                         {task.taskName}
                       </span>
                       <div className="section-item-top-right">
                         <div
                           className="section-progress"
-                          style={{ color: "black" }}
                         >
-                          <span style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate,task.status), marginRight: "8px" }}>{task.progress}%</span>
+                          <span style={{ fontSize: "16px", color: dueDateTextColor(task.dueDate, task.status), marginRight: "8px" }}>{task.progress}%</span>
                         </div>
                       </div>
                     </div>
@@ -388,25 +379,30 @@ const Section = () => {
                     <div className="section-task-details">
                       <div className="task-details">
                         <Icon name="employee-outline" size="2rem" />
-                        <span style={{ color: "black" }} className="ml-2">
+                        <span className="ml-2">
                           {user._id === task.createdBy._id ? `You` : task.createdBy.userName}
                         </span>
                       </div>
                       <div className="task-details">
-                        <Icon name="calender-outline" size="2rem" />
-                        <span style={{ color: "black" }} className="ml-2">
+                        <Icon
+                          name={dueDateIcon(task.dueDate, task.status)}
+                          size="2rem" color={dueDateColor(
+                            task.dueDate,
+                            task.status
+                          )} />
+                        <span style={{ color: dueDateColor(task.dueDate, task.status), fontWeight: dueDateFontWeight(task.dueDate, task.status) }} className="ml-2">
                           {formatDate(task.assignedDate)}
                         </span>
                       </div>
                       <div className="task-details">
                         <Icon name="priority-outline" size="2rem" />
-                        <span style={{ color: "black" }} className="ml-2">
+                        <span className="ml-2">
                           {task.priority}
                         </span>
                       </div>
                       <div className="task-details">
                         <Icon name="status-outline" size="2rem" />
-                        <span style={{ color: "black" }} className="ml-2">
+                        <span className="ml-2">
                           {task.status}
                         </span>
                       </div>

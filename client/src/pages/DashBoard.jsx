@@ -34,7 +34,7 @@ import {
 import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
-import { dueDateTextColor } from "../util";
+import { dueDateTextColor, dueDateColor,dueDateFontWeight, dueDateIcon} from "../util";
 import { useGetChatsQuery } from "../redux/api/chatApi";
 import { getChats, getSingleChat } from "../redux/slice/chatSlice";
 
@@ -428,7 +428,7 @@ const Dashboard = () => {
                           <span>{task.taskName}</span>
                           {task.progressUpdateDate ? (
                             formatDate(task.progressUpdateDate) ===
-                              formatDate(new Date()) && (
+                            formatDate(new Date()) && (
                               <div className="progress-tag">
                                 <Icon name="save-outline" size="24px" />
                                 <span>Progress updated</span>
@@ -444,8 +444,20 @@ const Dashboard = () => {
                             <span>{task.assignedTo.userName}</span>
                           </div>
                           <div className="date-info">
-                            <Icon name="calender-outline" size="22px" />
-                            <span>{formatDate(task.dueDate)}</span>
+                            <Icon 
+                              name={dueDateIcon(task.dueDate,task.status)}
+                              size="22px"
+                              color={dueDateColor(
+                                task.dueDate,
+                                task.status
+                              )}
+                            />
+                            <span style={{
+                              color: dueDateColor(
+                                task.dueDate,
+                                task.status
+                              ), fontWeight: dueDateFontWeight(task.dueDate, task.status)
+                            }}>{formatDate(task.dueDate)}</span>
                           </div>
                           <div className="priority-info">
                             <Icon name="priority-outline" size="22px" />
@@ -520,7 +532,7 @@ const Dashboard = () => {
                             </span>
                           </span>
                         </div>
-                        <span style={{whiteSpace:"nowrap"}}>{notification.time}</span>
+                        <span style={{ whiteSpace: "nowrap" }}>{notification.time}</span>
                       </div>
                     ))}
                   </div>
@@ -634,9 +646,9 @@ const Dashboard = () => {
               <div className="dashboard-grid-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
-                  <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date)=>setChatDate(date)}/>
-                  <div className="chat-filter-tag mt-3" style={{width:"17rem"}}>
-                      <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
+                  <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date) => setChatDate(date)} />
+                  <div className="chat-filter-tag mt-3" style={{ width: "17rem" }}>
+                    <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
                   </div>
                 </div>
               </div>
@@ -657,11 +669,13 @@ const Dashboard = () => {
               <div className="chat-container" ref={chatRef}>
                 {chatfilter1.map((chat) => (
                   <>
-                    <div class="date-container">
-                      <div class="date-line"></div>
-                      <div class="date">{formatDate(chat._id)}</div>
-                      <div class="date-line"></div>
-                    </div>
+                    {chat.data.length > 0 && (
+                      <div class="date-container">
+                        <div class="date-line"></div>
+                        <div class="date">{formatDate(chat._id)}</div>
+                        <div class="date-line"></div>
+                      </div>
+                    )}
                     {chat.data.map((ch) => (
                       <>
                         <div className="message-container">
@@ -707,8 +721,8 @@ const Dashboard = () => {
                       onClick={handleToggle}
                     />
                   </div>
-                  {chatMsg!==""&&<div className="" onClick={handleSendMessage}>
-                    <Icon name="send-outline" size="20px" title="send"/>
+                  {chatMsg !== "" && <div className="" onClick={handleSendMessage}>
+                    <Icon name="send-outline" size="20px" title="send" />
                   </div>}
                 </div>
               </div>
