@@ -12,7 +12,7 @@ import "./Task.css";
 import Icon from "../components/ui/Icon";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
-import { dueDateTextColor, setSectionDueColor } from "../util";
+import { dueDateTextColor, setSectionDueColor, dueDateColor, dueDateIcon, dueDateFontWeight, setSectionDueTextColor } from "../util";
 import { useNavigate } from "react-router-dom";
 
 const Task = () => {
@@ -118,7 +118,7 @@ const Task = () => {
     }
   };
 
-  const handleGoBack=()=>{
+  const handleGoBack = () => {
     dispatch(taskApi.util.resetApiState())
     navigate("/sections")
   }
@@ -160,13 +160,12 @@ const Task = () => {
         <div className="section-details-container">
           <div className="section-details-left">
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               Addition date:
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -185,7 +184,7 @@ const Task = () => {
               <span
                 style={{
                   fontWeight: "700",
-                  color: sec.dueDate > new Date() ? "#FF4848" : "black",
+                  color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -194,13 +193,12 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{fontSize: "16px", fontWeight: "400" }}
             >
               Completed tasks:
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -210,13 +208,12 @@ const Task = () => {
             </span>
             {user.userGroupName === "Software" && (
               <span
-                style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+                style={{fontSize: "16px", fontWeight: "400" }}
               >
                 Tasks in progress:
                 <span
                   style={{
                     fontWeight: "700",
-                    color: "black",
                     fontSize: "16px",
                   }}
                   className="ml-2"
@@ -247,13 +244,12 @@ const Task = () => {
           </div>
           <div className="section-details-right">
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{fontSize: "16px", fontWeight: "400" }}
             >
               Addition by:
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -264,7 +260,7 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{fontSize: "16px", fontWeight: "400" }}
             >
               {user.userGroupName === "Software"
                 ? `Task assigned to you:`
@@ -272,7 +268,6 @@ const Task = () => {
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -281,13 +276,12 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{fontSize: "16px", fontWeight: "400" }}
             >
               Pending tasks:
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -296,13 +290,12 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+              style={{fontSize: "16px", fontWeight: "400" }}
             >
               Tasks on hold:
               <span
                 style={{
                   fontWeight: "700",
-                  color: "black",
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -312,13 +305,12 @@ const Task = () => {
             </span>
             {user.userGroupName === "Software" && (
               <span
-                style={{ color: "black", fontSize: "16px", fontWeight: "400" }}
+                style={{fontSize: "16px", fontWeight: "400" }}
               >
                 Your total progress:
                 <span
                   style={{
                     fontWeight: "700",
-                    color: "black",
                     fontSize: "16px",
                   }}
                   className="ml-2"
@@ -393,11 +385,24 @@ const Task = () => {
                     <span>{todoTask.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="calender-outline" size="22px" />
+                    <Icon
+                      name={dueDateIcon(todoTask.dueDate, todoTask.status)}
+                      size="22px"
+                      color={dueDateColor(
+                        todoTask.dueDate,
+                        todoTask.status
+                      )}
+                    />
                     <span
                       style={{
-                        color:
-                          todoTask.dueDate > new Date() ? "#FF4848" : "black",
+                        color: dueDateColor(
+                          todoTask.dueDate,
+                          todoTask.status
+                        ),
+                        fontWeight: dueDateFontWeight(
+                          todoTask.dueDate,
+                          todoTask.status
+                        )
                       }}
                     >
                       {formatDate(todoTask.dueDate)}
@@ -466,10 +471,24 @@ const Task = () => {
                     <span>{inpg.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="calender-outline" size="22px" />
+                    <Icon
+                      name={dueDateIcon(inpg.dueDate, inpg.status)}
+                      size="22px"
+                      color={dueDateColor(
+                        inpg.dueDate,
+                        inpg.status
+                      )}
+                    />
                     <span
                       style={{
-                        color: inpg.dueDate > new Date() ? "#FF4848" : "black",
+                        color: dueDateColor(
+                          inpg.dueDate,
+                          inpg.status
+                        ),
+                        fontWeight: dueDateFontWeight(
+                          inpg.dueDate,
+                          inpg.status
+                        )
                       }}
                     >
                       {formatDate(inpg.dueDate)}
@@ -518,7 +537,7 @@ const Task = () => {
                 >
                   <span
                     className="ml-2"
-                    style={{ fontSize: "16px", color: "black" }}
+                    style={{ fontSize: "16px"}}
                   >
                     {comp.taskName}
                   </span>
@@ -531,11 +550,7 @@ const Task = () => {
                   </div>
                   <div className="stage-task-body">
                     <Icon name="calender-outline" size="22px" />
-                    <span
-                      style={{
-                        color: comp.dueDate > new Date() ? "#FF4848" : "black",
-                      }}
-                    >
+                    <span>
                       {formatDate(comp.dueDate)}
                     </span>
                   </div>
@@ -601,10 +616,24 @@ const Task = () => {
                     <span>{oth.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="calender-outline" size="22px" />
+                    <Icon
+                      name={dueDateIcon(oth.dueDate, oth.status)}
+                      size="22px"
+                      color={dueDateColor(
+                        oth.dueDate,
+                        oth.status
+                      )}
+                    />
                     <span
                       style={{
-                        color: oth.dueDate > new Date() ? "#FF4848" : "black",
+                        color: dueDateColor(
+                          oth.dueDate,
+                          oth.status
+                        ),
+                        fontWeight: dueDateFontWeight(
+                          oth.dueDate,
+                          oth.status
+                        )
                       }}
                     >
                       {formatDate(oth.dueDate)}

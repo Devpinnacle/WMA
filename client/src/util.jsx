@@ -89,6 +89,21 @@ export const setSectionDueColor=(dueDate,progress,totalTask)=>{
   }
 }
 
+//* Set section Due Date color *******************************************************
+export const setSectionDueTextColor=(dueDate,progress,totalTask)=>{
+  if(progress===0&&totalTask<=0){
+    return "black"
+  }
+  if(progress===100)
+    return "black"
+  else{
+    if(new Date().setHours(0,0,0,0)>new Date(dueDate)){
+      return "#FF4848"
+    }
+    else return "black"
+  }
+}
+
 //* Set Due Date color *******************************************************
 
 export const convertMinutesToHoursAndMinutes=(totalMinutes) =>{
@@ -108,3 +123,36 @@ export const dueDateTextColor=(dueDate,status)=>{
   }
   else return "black"
 }
+
+//* Task Date color for due*****************************************************
+export const dueDateColor=(dueDate,status)=>{
+  if(status==="Completed"){
+    return "black"
+  }
+  else if(new Date(dueDate).setHours(0,0,0,0)<new Date().setHours(0,0,0,0)){
+    return "#FF4848"
+  }
+  else return "black"
+}
+
+//* Task Date font for due*****************************************************************
+export const dueDateFontWeight = (dueDate, status) => {
+  if (status === "Completed") {
+    return "400"; 
+  } else if (new Date(dueDate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) {
+    return "700";
+  } else {
+    return "400";
+  }
+};
+
+//* Task Date Icon for due*****************************************************************
+export const dueDateIcon = (dueDate, status) => {
+  if (status === "Completed") {
+    return "calender-outline"; 
+  } else if (new Date(dueDate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) {
+    return "due-outline";
+  } else {
+    return "calender-outline";
+  }
+};

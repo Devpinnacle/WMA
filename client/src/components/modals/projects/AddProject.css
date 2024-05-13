@@ -44,10 +44,10 @@
 .tag{
     position: absolute !important;
 }
-
+/* 
 .selected-tag{
     display:flex
-}
+} */
 
 .tag-container{
     border:2px solid #F3CF96;

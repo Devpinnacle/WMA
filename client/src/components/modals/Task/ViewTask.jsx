@@ -39,7 +39,7 @@ import {
 import io from "socket.io-client";
 import { getTaskNotifications } from "../../../redux/slice/taskNotificationSlice";
 import { useGetSectionMutation } from "../../../redux/api/sectionApi";
-import { dueDateTextColor, setSectionDueColor} from "../../../util";
+import { dueDateTextColor, setSectionDueColor, dueDateIcon, dueDateColor, dueDateFontWeight } from "../../../util";
 
 const ViewTask = ({ onCancel, taskId, section }) => {
   const [getSelectedTask] = useGetSelectedTaskMutation();
@@ -473,7 +473,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             onClick={onCancel}
           />
         </div>
-        <div className="section-item-top" style={{backgroundColor:setSectionDueColor(section.dueDate,section.progress,section.totalTask)}}>
+        <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(section.dueDate, section.progress, section.totalTask) }}>
           <div className="section-item-top-left" >
             <Icon name="section-outline" size="2.5rem" />
             <span
@@ -544,11 +544,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                   </div>
                 </div>
                 <div className="ta-td-date">
-                  <span
-                    style={{
-                      color: date.dueDt > new Date() ? "#FF4848" : "black",
-                    }}
-                  >
+                  <span>
                     TD Date :
                   </span>
                   <div className="date-box m-0">
@@ -558,9 +554,6 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                       value={date.dueDt}
                       name="dueDt"
                       onChange={inputHandler}
-                      style={{
-                        color: date.dueDt > new Date() ? "#FF4848" : "black",
-                      }}
                     />
                   </div>
                 </div>
@@ -627,8 +620,20 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               </div>
               <div className="ta-td-date">
                 <span>TD Date :</span>
-                <Icon name="calender-outline" size="24px" />
-                <span>{formatDate(task.dueDate)}</span>
+                <Icon
+                  name={dueDateIcon(task.dueDate, task.status)}
+                  size="22px"
+                  color={dueDateColor(
+                    task.dueDate,
+                    task.status
+                  )}
+                />
+                <span style={{
+                  color: dueDateColor(
+                    task.dueDate,
+                    task.status
+                  ), fontWeight: dueDateFontWeight(task.dueDate, task.status)
+                }}>{formatDate(task.dueDate)}</span>
               </div>
               <div className="priority-info">
                 <Icon name="priority-outline" size="24px" />
@@ -645,14 +650,14 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               <div className="del-edit-btn">
                 {(user._id === task.createdBy._id ||
                   user.userGroupName !== "Software") && (
-                  <div className="del-btn">
-                    <Icon
-                      name="delete-outline"
-                      size="24px"
-                      onClick={() => setDeleteFlag(true)}
-                    />
-                  </div>
-                )}
+                    <div className="del-btn">
+                      <Icon
+                        name="delete-outline"
+                        size="24px"
+                        onClick={() => setDeleteFlag(true)}
+                      />
+                    </div>
+                  )}
                 <Icon
                   name="edit-outline"
                   size="24px"
