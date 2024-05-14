@@ -49,7 +49,7 @@ export default function SidebarTop() {
         </div>
         <NavLink
           className={({ isActive }) => getClassName(isActive)}
-          to="projects"
+          to="/projects"
           style={{ textDecoration: "none" }}
         >
           <div className="side-icon">
@@ -63,7 +63,7 @@ export default function SidebarTop() {
             <div className="top-link-items">
               <NavLink
                 className={({ isActive }) => getClassName(isActive)}
-                to="reports"
+                to="/reports"
                 style={{ textDecoration: "none" }}
               >
                 <div className="side-icon">

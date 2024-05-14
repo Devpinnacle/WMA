@@ -59,6 +59,7 @@ const Reports = () => {
     "In Progress": 0,
     Others: 0,
   };
+
   betweenDateFilter.forEach((task) => {
     const status = task.status;
     // Check if status is one of the predefined values
@@ -74,8 +75,6 @@ const Reports = () => {
       statusCounts["Others"] = (statusCounts["Others"] || 0) + 1;
     }
   });
-
-  console.log("statusCounts", statusCounts);
 
   const filteredChart = chart.filter((task) => {
     const taskstart = new Date(task.assignedDate);
@@ -189,7 +188,7 @@ const Reports = () => {
             />
           </div>
         </div>
-
+              
         <div className="chart" style={{ color: "black" }}>
           <span className="chart-title pt-3">
             Task Status-{selectedYearMonth}
