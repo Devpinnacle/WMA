@@ -34,7 +34,12 @@ import {
 import ViewTask from "../components/modals/Task/ViewTask";
 import { resetTaskNotifications } from "../redux/slice/taskNotificationSlice";
 import { taskNotificationApi } from "../redux/api/taskNotificationApi";
-import { dueDateTextColor, dueDateColor,dueDateFontWeight, dueDateIcon} from "../util";
+import {
+  dueDateTextColor,
+  dueDateColor,
+  dueDateFontWeight,
+  dueDateIcon,
+} from "../util";
 import { useGetChatsQuery } from "../redux/api/chatApi";
 import { getChats, getSingleChat } from "../redux/slice/chatSlice";
 
@@ -103,7 +108,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     socket.on("Notifie", (data) => {
-      if (user.userGroupName !== "Software") {
+      if (user?.userGroupName !== "Software") {
         dispatch(getNotifications(data));
       }
     });
@@ -366,8 +371,9 @@ const Dashboard = () => {
                   {/* TODAY'S TASK */}
                   <span className="title">Today's task</span>
                   <div className="tasks-container">
-                    {todaysTask.data?.map((task) => (
+                    {todaysTask.data?.map((task, idx) => (
                       <div
+                        key={idx}
                         className="task-body"
                         onClick={() => handleClickTask(task)}
                         style={{
@@ -428,7 +434,7 @@ const Dashboard = () => {
                           <span>{task.taskName}</span>
                           {task.progressUpdateDate ? (
                             formatDate(task.progressUpdateDate) ===
-                            formatDate(new Date()) && (
+                              formatDate(new Date()) && (
                               <div className="progress-tag">
                                 <Icon name="save-outline" size="24px" />
                                 <span>Progress updated</span>
@@ -444,20 +450,22 @@ const Dashboard = () => {
                             <span>{task.assignedTo.userName}</span>
                           </div>
                           <div className="date-info">
-                            <Icon 
-                              name={dueDateIcon(task.dueDate,task.status)}
+                            <Icon
+                              name={dueDateIcon(task.dueDate, task.status)}
                               size="22px"
-                              color={dueDateColor(
-                                task.dueDate,
-                                task.status
-                              )}
+                              color={dueDateColor(task.dueDate, task.status)}
                             />
-                            <span style={{
-                              color: dueDateColor(
-                                task.dueDate,
-                                task.status
-                              ), fontWeight: dueDateFontWeight(task.dueDate, task.status)
-                            }}>{formatDate(task.dueDate)}</span>
+                            <span
+                              style={{
+                                color: dueDateColor(task.dueDate, task.status),
+                                fontWeight: dueDateFontWeight(
+                                  task.dueDate,
+                                  task.status
+                                ),
+                              }}
+                            >
+                              {formatDate(task.dueDate)}
+                            </span>
                           </div>
                           <div className="priority-info">
                             <Icon name="priority-outline" size="22px" />
@@ -513,8 +521,9 @@ const Dashboard = () => {
                   </div>
 
                   <div className="notification-container">
-                    {filteredNotifications.map((notification) => (
+                    {filteredNotifications.map((notification, idx) => (
                       <div
+                        key={idx}
                         className={`notification-item ${notification.priority}`}
                       >
                         <div className="left-content">
@@ -532,7 +541,9 @@ const Dashboard = () => {
                             </span>
                           </span>
                         </div>
-                        <span style={{ whiteSpace: "nowrap" }}>{notification.time}</span>
+                        <span style={{ whiteSpace: "nowrap" }}>
+                          {notification.time}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -588,8 +599,9 @@ const Dashboard = () => {
                 ))}
               </div>
               <div className="project-body-container">
-                {filteredProjects.map((proj) => (
+                {filteredProjects.map((proj, idx) => (
                   <div
+                    key={idx}
                     className="project-items"
                     onClick={() =>
                       handleProjectClick(proj._id, proj.sctProjectName)
@@ -646,9 +658,21 @@ const Dashboard = () => {
               <div className="dashboard-grid-header">
                 <span className="title">Chats</span>
                 <div className="header-right ">
-                  <DayDateInput placeholder="Day dd/mm/yyyy" selected={chatDate} onChange={(date) => setChatDate(date)} />
-                  <div className="chat-filter-tag mt-3" style={{ width: "17rem" }}>
-                    <SelectInput className="tags" placeholder="Tags" options={chatTags} onChange={handleChatTags} />
+                  <DayDateInput
+                    placeholder="Day dd/mm/yyyy"
+                    selected={chatDate}
+                    onChange={(date) => setChatDate(date)}
+                  />
+                  <div
+                    className="chat-filter-tag mt-3"
+                    style={{ width: "17rem" }}
+                  >
+                    <SelectInput
+                      className="tags"
+                      placeholder="Tags"
+                      options={chatTags}
+                      onChange={handleChatTags}
+                    />
                   </div>
                 </div>
               </div>
@@ -667,18 +691,18 @@ const Dashboard = () => {
                 </div>
               )}
               <div className="chat-container" ref={chatRef}>
-                {chatfilter1.map((chat) => (
+                {chatfilter1.map((chat, idx) => (
                   <>
                     {chat.data.length > 0 && (
-                      <div class="date-container">
-                        <div class="date-line"></div>
-                        <div class="date">{formatDate(chat._id)}</div>
-                        <div class="date-line"></div>
+                      <div className="date-container" key={idx}>
+                        <div className="date-line"></div>
+                        <div className="date">{formatDate(chat._id)}</div>
+                        <div className="date-line"></div>
                       </div>
                     )}
-                    {chat.data.map((ch) => (
+                    {chat.data.map((ch, idx) => (
                       <>
-                        <div className="message-container">
+                        <div className="message-container" key={idx}>
                           <div className="message">
                             <span style={{ fontWeight: "bold" }}>
                               {ch.name}:
@@ -703,7 +727,9 @@ const Dashboard = () => {
                   </>
                 ))}
               </div>
-              <div className={`chat-input ${chatTag.length > 0 ? 'hidden' : ''}`}>
+              <div
+                className={`chat-input ${chatTag.length > 0 ? "hidden" : ""}`}
+              >
                 <input
                   type="text"
                   placeholder="Message"
@@ -721,9 +747,11 @@ const Dashboard = () => {
                       onClick={handleToggle}
                     />
                   </div>
-                  {chatMsg !== "" && <div className="" onClick={handleSendMessage}>
-                    <Icon name="send-outline" size="20px" title="send" />
-                  </div>}
+                  {chatMsg !== "" && (
+                    <div className="" onClick={handleSendMessage}>
+                      <Icon name="send-outline" size="20px" title="send" />
+                    </div>
+                  )}
                 </div>
               </div>
               {toggleFlag && (
@@ -786,46 +814,42 @@ const Dashboard = () => {
               </div>
               <div className="notes-body-container">
                 {filteredNotes &&
-                  filteredNotes.map(
-                    (
-                      message // Added a null check for filteredNotes
-                    ) => (
-                      <div className="notes-item" key={message._id}>
-                        <div className="notes-item-header">
-                          <div className="left-content">
-                            <Icon name="notes-outline" size="3rem" />
-                            <div className="item-content">
-                              <span className="item-title ml-2">
-                                {message.heading}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="notes-header-right">
-                            <Icon
-                              title="Delete"
-                              name="delete-outline"
-                              size="3rem"
-                              onClick={() =>
-                                handleDelete(message._id, message.heading)
-                              }
-                            />
-                            <Icon
-                              name="open-outline"
-                              size="3rem"
-                              onClick={() =>
-                                handleViewNote(
-                                  message._id,
-                                  message.heading,
-                                  message.msg
-                                )
-                              }
-                            />
+                  filteredNotes.map((message,idx) => (
+                    <div className="notes-item" key={idx}>
+                      <div className="notes-item-header">
+                        <div className="left-content">
+                          <Icon name="notes-outline" size="3rem" />
+                          <div className="item-content">
+                            <span className="item-title ml-2">
+                              {message.heading}
+                            </span>
                           </div>
                         </div>
-                        <div className="note-content">{message.msg}</div>
+                        <div className="notes-header-right">
+                          <Icon
+                            title="Delete"
+                            name="delete-outline"
+                            size="3rem"
+                            onClick={() =>
+                              handleDelete(message._id, message.heading)
+                            }
+                          />
+                          <Icon
+                            name="open-outline"
+                            size="3rem"
+                            onClick={() =>
+                              handleViewNote(
+                                message._id,
+                                message.heading,
+                                message.msg
+                              )
+                            }
+                          />
+                        </div>
                       </div>
-                    )
-                  )}
+                      <div className="note-content">{message.msg}</div>
+                    </div>
+                  ))}
                 {deleteNoteFlag && (
                   <DeleteNotes
                     id={noteId}

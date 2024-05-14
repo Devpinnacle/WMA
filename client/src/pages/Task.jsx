@@ -332,8 +332,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>To Do</span>
             </div>
-            {todoTasks.map((todoTask) => (
+            {todoTasks.map((todoTask,idx) => (
               <div
+              key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(todoTask._id)}
                 style={{
@@ -424,8 +425,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>In Progress</span>
             </div>
-            {inProgressTasks.map((inpg) => (
+            {inProgressTasks.map((inpg,idx) => (
               <div
+              key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(inpg._id)}
                 style={{
@@ -511,8 +513,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>Completed</span>
             </div>
-            {completedTasks.map((comp) => (
+            {completedTasks.map((comp,idx) => (
               <div
+              key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(comp._id)}
                 style={{
@@ -571,8 +574,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>Others</span>
             </div>
-            {othersTasks.map((oth) => (
+            {othersTasks.map((oth,idx) => (
               <div
+              key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(oth._id)}
                 style={{

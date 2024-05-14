@@ -115,10 +115,10 @@ const Projects = () => {
         </div>
       
       <div className="project-container">
-        {filteredProjects.map((proj) => (
+        {filteredProjects.map((proj,idx) => (
           <div
             className="project-item"
-            key={proj.id}
+            key={idx}
             onClick={() => handleProjectClick(proj._id, proj.sctProjectName)}
           >
             <div className="project-title">
