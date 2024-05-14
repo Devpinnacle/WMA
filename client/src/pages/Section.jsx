@@ -207,7 +207,7 @@ const Section = () => {
             </div>
             <div className="section-details-container">
               <div className="section-details-left">
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   Addition date:
                   <span
                     style={{
@@ -219,7 +219,10 @@ const Section = () => {
                     {formatDate(sec.startDate)}
                   </span>
                 </span>
-                <span>
+                <span style={{
+                  color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),
+                  fontSize: "16px",
+                }}>
                   Due date:
                   <span
                     style={{
@@ -232,7 +235,7 @@ const Section = () => {
                     {formatDate(sec.dueDate)}
                   </span>
                 </span>
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   Completed tasks:
                   <span
                     style={{
@@ -245,7 +248,7 @@ const Section = () => {
                   </span>
                 </span>
                 {user.userGroupName === "Software" && (
-                  <span style={{fontSize: "16px" }}>
+                  <span style={{ fontSize: "16px" }}>
                     Tasks in progress:
                     <span
                       style={{
@@ -278,7 +281,7 @@ const Section = () => {
                 </span>
               </div>
               <div className="section-details-right">
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   Addition by:
                   <span
                     style={{
@@ -292,7 +295,7 @@ const Section = () => {
                       : sec.createdBy.userName}
                   </span>
                 </span>
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   {user.userGroupName === "Software"
                     ? `Task assigned to you:`
                     : `Total task:`}
@@ -306,7 +309,7 @@ const Section = () => {
                     {sec.assigned}
                   </span>
                 </span>
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   Pending tasks:
                   <span
                     style={{
@@ -318,7 +321,7 @@ const Section = () => {
                     {sec.pendingTasks}
                   </span>
                 </span>
-                <span style={{fontSize: "16px" }}>
+                <span style={{ fontSize: "16px" }}>
                   Tasks on hold:
                   <span
                     style={{
@@ -331,7 +334,7 @@ const Section = () => {
                   </span>
                 </span>
                 {user.userGroupName === "Software" && (
-                  <span style={{fontSize: "16px" }}>
+                  <span style={{ fontSize: "16px" }}>
                     Your total progress:
                     <span
                       style={{

@@ -75,7 +75,7 @@ const Reports = () => {
     }
   });
 
-  console.log("statusCounts", statusCounts);
+  // console.log("statusCounts", statusCounts);
 
   const filteredChart = chart.filter((task) => {
     const taskstart = new Date(task.assignedDate);

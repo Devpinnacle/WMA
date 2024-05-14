@@ -175,9 +175,8 @@ const Task = () => {
             </span>
             <span
               style={{
-                color: sec.dueDate > new Date() ? "#FF4848" : "black",
+                color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),
                 fontSize: "16px",
-                fontWeight: "400",
               }}
             >
               Due date:
@@ -193,7 +192,7 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               Completed tasks:
               <span
@@ -208,7 +207,7 @@ const Task = () => {
             </span>
             {user.userGroupName === "Software" && (
               <span
-                style={{fontSize: "16px", fontWeight: "400" }}
+                style={{ fontSize: "16px", fontWeight: "400" }}
               >
                 Tasks in progress:
                 <span
@@ -244,7 +243,7 @@ const Task = () => {
           </div>
           <div className="section-details-right">
             <span
-              style={{fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               Addition by:
               <span
@@ -260,7 +259,7 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               {user.userGroupName === "Software"
                 ? `Task assigned to you:`
@@ -276,7 +275,7 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               Pending tasks:
               <span
@@ -290,7 +289,7 @@ const Task = () => {
               </span>
             </span>
             <span
-              style={{fontSize: "16px", fontWeight: "400" }}
+              style={{ fontSize: "16px", fontWeight: "400" }}
             >
               Tasks on hold:
               <span
@@ -305,7 +304,7 @@ const Task = () => {
             </span>
             {user.userGroupName === "Software" && (
               <span
-                style={{fontSize: "16px", fontWeight: "400" }}
+                style={{ fontSize: "16px", fontWeight: "400" }}
               >
                 Your total progress:
                 <span
@@ -332,9 +331,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>To Do</span>
             </div>
-            {todoTasks.map((todoTask,idx) => (
+            {todoTasks.map((todoTask, idx) => (
               <div
-              key={idx}
+                key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(todoTask._id)}
                 style={{
@@ -425,9 +424,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>In Progress</span>
             </div>
-            {inProgressTasks.map((inpg,idx) => (
+            {inProgressTasks.map((inpg, idx) => (
               <div
-              key={idx}
+                key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(inpg._id)}
                 style={{
@@ -513,9 +512,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>Completed</span>
             </div>
-            {completedTasks.map((comp,idx) => (
+            {completedTasks.map((comp, idx) => (
               <div
-              key={idx}
+                key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(comp._id)}
                 style={{
@@ -540,7 +539,7 @@ const Task = () => {
                 >
                   <span
                     className="ml-2"
-                    style={{ fontSize: "16px"}}
+                    style={{ fontSize: "16px" }}
                   >
                     {comp.taskName}
                   </span>
@@ -574,9 +573,9 @@ const Task = () => {
             <div className="stages-heading">
               <span>Others</span>
             </div>
-            {othersTasks.map((oth,idx) => (
+            {othersTasks.map((oth, idx) => (
               <div
-              key={idx}
+                key={idx}
                 className="stage-task"
                 onClick={() => handleViewClick(oth._id)}
                 style={{

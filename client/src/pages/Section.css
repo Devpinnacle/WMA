@@ -40,11 +40,12 @@
     height: 36px;
     border-radius: 8px;
     padding: 0 1rem;
-    overflow: hidden;
+    overflow: hidden; 
     fill: var(--text-white-color);
 }
 .section-item-top span{
-    color:white
+    color:white;
+    white-space: nowrap;
 }
 .section-item-top-left {
     display: flex;
