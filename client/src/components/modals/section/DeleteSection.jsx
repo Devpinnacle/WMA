@@ -41,7 +41,8 @@ const DeleteSection = ({ sec, onCancel }) => {
           <div className='title-container'>
             <Icon
               name="delete-outline"
-              size="6rem" />
+              size="6rem" 
+              noCursor={true}/>
             <span className='delete-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Delete section</span>
           </div>
           <Icon
@@ -50,6 +51,7 @@ const DeleteSection = ({ sec, onCancel }) => {
             size="6rem"
             color="black"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <div className="del-content">Are you sure you want to delete <span>"{sec.sectionName}"</span> section?</div>
@@ -65,6 +67,7 @@ const DeleteSection = ({ sec, onCancel }) => {
             <Icon
               name="delete-outline"
               size="2rem"
+              title="Delete"
             />
             Delete
           </button>

@@ -9,7 +9,7 @@ const DeleteTask = ({onCancel, onDelete}) => {
       <div className="modal-container modal-centered user-modal delete-task-modal">
         <div className="modal-header delete-header">
           <div className="title-container">
-            <Icon name="delete-outline" size="6rem" />
+            <Icon name="delete-outline" size="6rem" noCursor={true}/>
             <span
               className="title"
               style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}
@@ -17,7 +17,7 @@ const DeleteTask = ({onCancel, onDelete}) => {
               Delete task
             </span>
           </div>
-          <Icon className="close-icon" name="close" size="6rem" onClick={onCancel} color="black" />
+          <Icon className="close-icon" name="close" size="6rem" onClick={onCancel} color="black" title="Close"/>
         </div>
         <div className="del-content ml-5">
           Are you sure you want to delete <span>db</span> notes?

@@ -79,7 +79,9 @@ const AddSection = ({ onCancel }) => {
             <Icon
               className="notes-icon"
               name="section-outline"
-              size="6rem" />
+              size="6rem" 
+              noCursor={true}
+              />
             <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Add Section</span>
           </div>
           <Icon
@@ -87,6 +89,7 @@ const AddSection = ({ onCancel }) => {
             name="close"
             size="6rem"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <div className='section-input'>

@@ -210,7 +210,7 @@ const AddTask = ({ onCancel }) => {
       <div className="modal-container modal-centered user-modal add-task-modal">
         <div className="modal-header">
           <div className="title-container">
-            <Icon name="task-outline" size="6rem" />
+            <Icon name="task-outline" size="6rem" noCursor={true}/>
             <span
               className="title"
               style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}
@@ -223,11 +223,12 @@ const AddTask = ({ onCancel }) => {
             name="close"
             size="6rem"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <div className="section-item-top">
           <div className="section-item-top-left">
-            <Icon name="section-outline" size="2rem" />
+            <Icon name="section-outline" size="2rem" noCursor={true}/>
             <span className="ml-2" style={{ fontSize: "22px" }}>
               {sec.sectionName}
             </span>
@@ -271,6 +272,7 @@ const AddTask = ({ onCancel }) => {
                       name="close"
                       size="2rem"
                       onClick={() => handleRemoveTag(tg)}
+                      title="Remove"
                     />
                     <p style={{ color: "black" }}>{tg.label}</p>
                   </div>
@@ -282,7 +284,7 @@ const AddTask = ({ onCancel }) => {
 
         <div className="task-details-input">
           <div className="date-box">
-            <Icon name="calender-outline" size="2rem" />
+            <Icon name="calender-outline" size="2rem" noCursor={true}/>
 
             <SelectDate
               placeholder="Start Date"
@@ -297,7 +299,7 @@ const AddTask = ({ onCancel }) => {
             />
           </div>
           <div className="date-box">
-            <Icon name="calender-outline" size="2rem" />
+            <Icon name="calender-outline" size="2rem" noCursor={true}/>
             <SelectDate
               placeholder="Due Date"
               selected={taskData.dueDt}
@@ -309,7 +311,7 @@ const AddTask = ({ onCancel }) => {
             />
           </div>
           <div className="select-box">
-            <Icon name="priority-outline" size="2rem" />
+            <Icon name="priority-outline" size="2rem" noCursor={true}/>
             <SelectInput
               placeholder="Priority"
               onChange={(e) => listHandleTags(e, "priority")}
@@ -319,7 +321,7 @@ const AddTask = ({ onCancel }) => {
             />
           </div>
           <div className="select-box">
-            <Icon name="status-outline" size="2rem" />
+            <Icon name="status-outline" size="2rem" noCursor={true}/>
             <SelectInput
               placeholder="Status"
               onChange={(e) => listHandleTags(e, "status")}
@@ -329,7 +331,7 @@ const AddTask = ({ onCancel }) => {
             />
           </div>
           <div className="select-box">
-            <Icon name="stage-outline" size="2rem" />
+            <Icon name="stage-outline" size="2rem" noCursor={true}/>
             <SelectInput
               placeholder="Stages"
               onChange={(e) => listHandleTags(e, "stages")}
@@ -341,7 +343,7 @@ const AddTask = ({ onCancel }) => {
         </div>
         <div className="progress-duration-details">
           <div className="progress-duration">
-            <Icon name="progress-outline" size="2rem" />
+            <Icon name="progress-outline" size="2rem" noCursor={true}/>
             <label
               htmlFor="progress"
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
@@ -363,7 +365,7 @@ const AddTask = ({ onCancel }) => {
             </span>
           </div>
           <div className="progress-duration">
-            <Icon name="duration-outline" size="2rem" />
+            <Icon name="duration-outline" size="2rem" noCursor={true}/>
             <label
               htmlFor="duration"
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
@@ -387,7 +389,7 @@ const AddTask = ({ onCancel }) => {
         </div>
         <div className="task-note-container">
           <div className="task-note">
-            <Icon name="task-note-outline" size="2rem" />
+            <Icon name="task-note-outline" size="2rem" noCursor={true}/>
             <span
               style={{
                 color: "black",

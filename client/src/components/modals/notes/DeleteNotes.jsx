@@ -21,7 +21,7 @@ const DeleteNotes = ({ id, head, onCancel }) => {
             <div className="header-icon">
               <Icon
                 name="delete-outline"
-                size="50px" />
+                size="50px" noCursor={true}/>
             </div>
             <span className='delete-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Delete notes</span>
           </div>
@@ -32,6 +32,7 @@ const DeleteNotes = ({ id, head, onCancel }) => {
               size="45px"
               color="black"
               onClick={onCancel}
+              title="Close"
             />
           </div>
         </div>

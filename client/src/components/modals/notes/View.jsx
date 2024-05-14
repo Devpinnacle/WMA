@@ -27,7 +27,8 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
             <Icon
               className="notes-icon"
               name="notes-outline"
-              size="6rem" />
+              size="6rem" 
+              noCursor={true}/>
             <span className='view-title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Notes</span>
           </div>
           <Icon
@@ -35,6 +36,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
             name="close"
             size="6rem"
             onClick={onExit}
+            title="Close"
           />
         </div>
         <div className="view-notes-body">
@@ -44,6 +46,7 @@ const View = ({ id, head, msg, onCancel, onDelete }) => {
               name="delete-outline"
               size="3rem"
               onClick={onDelete}
+              title="Delete"
             />
           </div>
           <textarea className="body-content" value={message} onChange={(e)=>setMessage(e.target.value)} />

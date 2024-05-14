@@ -91,6 +91,7 @@ const UserNotification = ({ onCancel }) => {
                   name="close"
                   size="2rem"
                   onClick={() => handleRemoveNotificationTag(tg)}
+                  title="Remove"
                 />
                 <p style={{ color: "black" }}>{tg.label}</p>
               </div>
@@ -100,7 +101,7 @@ const UserNotification = ({ onCancel }) => {
             {filteredNotifications.map((notification) => (
               <div className={`notification-item ${notification.priority}`}>
                 <div className="left-content">
-                  <Icon name={notification.symbol} size="24px" />
+                  <Icon name={notification.symbol} size="24px" noCursor={true}/>
                   <span className="ml-3">
                     <span
                       style={{ fontWeight: "700" }}

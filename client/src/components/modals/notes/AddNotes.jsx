@@ -32,7 +32,8 @@ const AddNotes = ({ onCancel }) => {
           <div className='title-container'>
             <Icon
               name="notes-outline"
-              size="6rem" />
+              size="6rem" 
+              noCursor={true}/>
             <span className='title' style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}>Notes</span>
           </div>
           <Icon
@@ -40,6 +41,7 @@ const AddNotes = ({ onCancel }) => {
             name="close"
             size="6rem"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <form onSubmit={submitHandler}>

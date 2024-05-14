@@ -77,6 +77,7 @@ const AddProject = ({ onCancel }) => {
             name="close"
             size="45px"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <form onSubmit={handleSaveProject}>
@@ -110,6 +111,7 @@ const AddProject = ({ onCancel }) => {
               <Icon
                 name="tag-outline"
                 size="24px"
+                noCursor={true}
               />
               <SelectInput
                 className="select-tag"
