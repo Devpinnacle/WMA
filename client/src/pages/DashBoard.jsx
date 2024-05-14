@@ -404,6 +404,7 @@ const Dashboard = () => {
                                 task.dueDate,
                                 task.status
                               )}
+                              noCursor={true}
                             />
                             <span
                               style={{
@@ -436,7 +437,7 @@ const Dashboard = () => {
                             formatDate(task.progressUpdateDate) ===
                               formatDate(new Date()) && (
                               <div className="progress-tag">
-                                <Icon name="save-outline" size="24px" />
+                                <Icon name="save-outline" size="24px" noCursor={true}/>
                                 <span>Progress updated</span>
                               </div>
                             )
@@ -446,7 +447,7 @@ const Dashboard = () => {
                         </div>
                         <div className="task-detail">
                           <div className="employee-detail">
-                            <Icon name="employee-outline" size="22px" />
+                            <Icon name="employee-outline" size="22px" noCursor={true}/>
                             <span>{task.assignedTo.userName}</span>
                           </div>
                           <div className="date-info">
@@ -454,6 +455,7 @@ const Dashboard = () => {
                               name={dueDateIcon(task.dueDate, task.status)}
                               size="22px"
                               color={dueDateColor(task.dueDate, task.status)}
+                              noCursor={true}
                             />
                             <span
                               style={{
@@ -468,11 +470,11 @@ const Dashboard = () => {
                             </span>
                           </div>
                           <div className="priority-info">
-                            <Icon name="priority-outline" size="22px" />
+                            <Icon name="priority-outline" size="22px" noCursor={true}/>
                             <span>{task.priority}</span>
                           </div>
                           <div className="status-info">
-                            <Icon name="stage-outline" size="22px" />
+                            <Icon name="stage-outline" size="22px" noCursor={true}/>
                             <span>{task.status}</span>
                           </div>
                         </div>
@@ -514,6 +516,7 @@ const Dashboard = () => {
                           name="close"
                           size="2rem"
                           onClick={() => handleRemoveNotificationTag(tg)}
+                          title="Remove"
                         />
                         <p>{tg.label}</p>
                       </div>
@@ -527,7 +530,7 @@ const Dashboard = () => {
                         className={`notification-item ${notification.priority}`}
                       >
                         <div className="left-content">
-                          <Icon name={notification.symbol} size="24px" />
+                          <Icon name={notification.symbol} size="24px" noCursor={true} />
                           <span className="ml-3">
                             <span style={{ fontWeight: "700" }}>
                               {notification.userId.userName}
@@ -582,6 +585,7 @@ const Dashboard = () => {
                       name="add-outline"
                       onClick={() => setAddProjectFlag(true)}
                       size="3rem"
+                      title="Add"
                     />
                   )}
                 </div>
@@ -593,6 +597,7 @@ const Dashboard = () => {
                       name="close"
                       size="2rem"
                       onClick={() => handleRemoveTag(tg)}
+                      title="Remove"
                     />
                     <p>{tg}</p>
                   </div>
@@ -684,6 +689,7 @@ const Dashboard = () => {
                         name="close"
                         size="2rem"
                         onClick={() => handleChatRemoveTag(tg)}
+                        title="Remove"
                       />
                       <p>{tg}</p>
                     </div>
@@ -745,11 +751,12 @@ const Dashboard = () => {
                       name="tag-outline"
                       size="20px"
                       onClick={handleToggle}
+                      title="Attach tags"
                     />
                   </div>
                   {chatMsg !== "" && (
                     <div className="" onClick={handleSendMessage}>
-                      <Icon name="send-outline" size="20px" title="send" />
+                      <Icon name="send-outline" size="20px" title="Send" />
                     </div>
                   )}
                 </div>
@@ -805,6 +812,7 @@ const Dashboard = () => {
                       name="add-notes"
                       size="3rem"
                       onClick={handleAddNote}
+                      title="Add"
                     />
                     {addNoteFlag && (
                       <AddNotes onCancel={() => setAddNoteFlag(false)} />
@@ -818,7 +826,7 @@ const Dashboard = () => {
                     <div className="notes-item" key={idx}>
                       <div className="notes-item-header">
                         <div className="left-content">
-                          <Icon name="notes-outline" size="3rem" />
+                          <Icon name="notes-outline" size="3rem" noCursor={true} />
                           <div className="item-content">
                             <span className="item-title ml-2">
                               {message.heading}
@@ -844,6 +852,7 @@ const Dashboard = () => {
                                 message.msg
                               )
                             }
+                            title="Open"
                           />
                         </div>
                       </div>

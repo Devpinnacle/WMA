@@ -196,7 +196,7 @@ const Section = () => {
 
             <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(sec.dueDate, sec.progress, sec.totalTask) }}>
               <div className="section-item-top-left">
-                <Icon name="section-outline" size="2.5rem" />
+                <Icon name="section-outline" size="2.5rem" noCursor={true} />
                 <span className="ml-2" style={{ fontSize: "16px", color: "white" }}>
                   {sec.sectionName}
                 </span>
@@ -421,6 +421,7 @@ const Section = () => {
                     name="edit-outline"
                     size="2.5rem "
                     onClick={() => handleEditSection(sec)}
+                    title="Edit"
                   />
                 )}
               </div>

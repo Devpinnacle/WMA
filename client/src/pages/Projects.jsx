@@ -95,7 +95,7 @@ const Projects = () => {
           </div>
           {user.userGroupName !== "Software" && (
             <button className="btn-outline" onClick={() => setAddProjectFlag(true)}>
-              <Icon name="add-outline" size="2rem" />
+              <Icon name="add-outline" size="2rem" title="Add" />
               Add Project
             </button>
           )}
@@ -108,6 +108,7 @@ const Projects = () => {
               name="close"
               size="2rem"
               onClick={() => handleRemoveTag(tg)}
+              title="Remove"
             />
             <p style={{ color: "black" }}>{tg}</p>
           </div>
@@ -122,7 +123,7 @@ const Projects = () => {
             onClick={() => handleProjectClick(proj._id, proj.sctProjectName)}
           >
             <div className="project-title">
-              <Icon name="project-outline" size="2rem" />
+              <Icon name="project-outline" size="2rem" noCursor={true}/>
               {proj.sctProjectName}
             </div>
             <div className="project-info">

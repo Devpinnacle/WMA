@@ -140,7 +140,7 @@ const Task = () => {
           }}
         >
           <div className="section-item-top-left">
-            <Icon name="section-outline" size="2.5rem" />
+            <Icon name="section-outline" size="2.5rem" noCursor={true}/>
             <span
               className="ml-2"
               style={{ fontSize: "22px", fontWeight: "400" }}
@@ -183,7 +183,7 @@ const Task = () => {
               <span
                 style={{
                   fontWeight: "700",
-                  color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),
+                  color: setSectionDueTextColor(sec.dueDate, sec.progress, sec.totalTask),  
                   fontSize: "16px",
                 }}
                 className="ml-2"
@@ -381,7 +381,7 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon name="employee-outline" size="22px" />
+                    <Icon name="employee-outline" size="22px" noCursor={true}/>
                     <span>{todoTask.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
@@ -392,6 +392,7 @@ const Task = () => {
                         todoTask.dueDate,
                         todoTask.status
                       )}
+                      noCursor={true}
                     />
                     <span
                       style={{
@@ -409,11 +410,11 @@ const Task = () => {
                     </span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="priority-outline" size="22px" />
+                    <Icon name="priority-outline" size="22px" noCursor={true}/>
                     <span>{todoTask.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="status-outline" size="22px" />
+                    <Icon name="status-outline" size="22px" noCursor={true}/>
                     <span>{todoTask.status}</span>
                   </div>
                 </div>
@@ -468,7 +469,7 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon name="employee-outline" size="22px" />
+                    <Icon name="employee-outline" size="22px" noCursor={true}/>
                     <span>{inpg.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
@@ -479,6 +480,7 @@ const Task = () => {
                         inpg.dueDate,
                         inpg.status
                       )}
+                      noCursor={true}
                     />
                     <span
                       style={{
@@ -496,11 +498,11 @@ const Task = () => {
                     </span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="priority-outline" size="22px" />
+                    <Icon name="priority-outline" size="22px" noCursor={true}/>
                     <span>{inpg.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="status-outline" size="22px" />
+                    <Icon name="status-outline" size="22px" noCursor={true}/>
                     <span>{inpg.status}</span>
                   </div>
                 </div>
@@ -547,21 +549,21 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon name="employee-outline" size="22px" />
+                    <Icon name="employee-outline" size="22px" noCursor={true}/>
                     <span>{comp.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="calender-outline" size="22px" />
+                    <Icon name="calender-outline" size="22px" noCursor={true}/>
                     <span>
                       {formatDate(comp.dueDate)}
                     </span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="priority-outline" size="22px" />
+                    <Icon name="priority-outline" size="22px" noCursor={true}/>
                     <span>{comp.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="status-outline" size="22px" />
+                    <Icon name="status-outline" size="22px" noCursor={true}/>
                     <span>{comp.status}</span>
                   </div>
                 </div>
@@ -615,7 +617,7 @@ const Task = () => {
                 </div>
                 <div className="stage-body-grid">
                   <div className="stage-task-body">
-                    <Icon name="employee-outline" size="22px" />
+                    <Icon name="employee-outline" size="22px" noCursor={true}/>
                     <span>{oth.assignedTo.userName}</span>
                   </div>
                   <div className="stage-task-body">
@@ -626,6 +628,7 @@ const Task = () => {
                         oth.dueDate,
                         oth.status
                       )}
+                      noCursor={true}
                     />
                     <span
                       style={{
@@ -643,11 +646,11 @@ const Task = () => {
                     </span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="priority-outline" size="22px" />
+                    <Icon name="priority-outline" size="22px" noCursor={true}/>
                     <span>{oth.priority}</span>
                   </div>
                   <div className="stage-task-body">
-                    <Icon name="status-outline" size="22px" />
+                    <Icon name="status-outline" size="22px" noCursor={true}/>
                     <span>{oth.status}</span>
                   </div>
                 </div>
