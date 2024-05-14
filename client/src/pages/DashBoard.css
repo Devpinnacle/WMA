@@ -451,6 +451,9 @@
     .chat-container {
         max-height: 200px;
     }
+    .notes-body-container{
+        max-height:250px;
+    }
     .tag-icon,
     .chat-tag,
     .chat-filter-tag{
