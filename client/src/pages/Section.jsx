@@ -381,7 +381,7 @@ const Section = () => {
 
                     <div className="section-task-details">
                       <div className="task-details">
-                        <Icon name="employee-outline" size="2rem" />
+                        <Icon name="employee-outline" size="2rem" noCursor={true}/>
                         <span className="ml-2">
                           {user._id === task.createdBy._id ? `You` : task.createdBy.userName}
                         </span>
@@ -392,19 +392,21 @@ const Section = () => {
                           size="2rem" color={dueDateColor(
                             task.dueDate,
                             task.status
-                          )} />
+                          )} 
+                          noCursor={true}
+                          />
                         <span style={{ color: dueDateColor(task.dueDate, task.status), fontWeight: dueDateFontWeight(task.dueDate, task.status) }} className="ml-2">
                           {formatDate(task.assignedDate)}
                         </span>
                       </div>
                       <div className="task-details">
-                        <Icon name="priority-outline" size="2rem" />
+                        <Icon name="priority-outline" size="2rem" noCursor={true}/>
                         <span className="ml-2">
                           {task.priority}
                         </span>
                       </div>
                       <div className="task-details">
-                        <Icon name="status-outline" size="2rem" />
+                        <Icon name="status-outline" size="2rem" noCursor={true}/>
                         <span className="ml-2">
                           {task.status}
                         </span>

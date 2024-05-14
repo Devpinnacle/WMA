@@ -458,7 +458,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
       >
         <div className="modal-header">
           <div className="title-container">
-            <Icon name="project-outline" size="56px" />
+            <Icon name="project-outline" size="56px" noCursor={true}/>
             <span
               className="title"
               style={{ color: "#3D405B", fontWeight: "700", fontSize: "57px" }}
@@ -471,6 +471,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             name="close"
             size="56px"
             onClick={onCancel}
+            title="Close"
           />
         </div>
         <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(section.dueDate, section.progress, section.totalTask) }}>
@@ -522,7 +523,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
           {editFlag ? (
             <>
               <div className="employee-assigned">
-                <Icon name="employee-outline" size="24px" />
+                <Icon name="employee-outline" size="24px" noCursor={true}/>
                 <span style={{ color: "black" }}>
                   {user._id === task.assignedTo._id
                     ? `You`
@@ -533,7 +534,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 <div className="ta-td-date">
                   <span>TA Date :</span>
                   <div className="date-box m-0">
-                    <Icon name="calender-outline" size="24px" />
+                    <Icon name="calender-outline" size="24px" noCursor={true}/>
                     <input
                       type="date"
                       style={{ color: "black" }}
@@ -548,7 +549,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                     TD Date :
                   </span>
                   <div className="date-box m-0">
-                    <Icon name="calender-outline" size="24px" />
+                    <Icon name="calender-outline" size="24px" noCursor={true}/>
                     <input
                       type="date"
                       value={date.dueDt}
@@ -559,7 +560,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 </div>
                 <div className="priority-info">
                   <div className="select-box mb-3">
-                    <Icon name="priority-outline" size="2rem" />
+                    <Icon name="priority-outline" size="2rem" noCursor={true}/>
                     <SelectInput
                       placeholder="Priority"
                       onChange={(e) => listHandleTags(e, "priority")}
@@ -572,7 +573,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 </div>
                 <div className="status-info">
                   <div className="select-box mb-3">
-                    <Icon name="status-outline" size="2rem" />
+                    <Icon name="status-outline" size="2rem" noCursor={true}/>
                     <SelectInput
                       placeholder="Status"
                       onChange={(e) => listHandleTags(e, "status")}
@@ -585,7 +586,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 </div>
                 <div className="stage-info">
                   <div className="select-box mb-3">
-                    <Icon name="stage-outline" size="2rem" />
+                    <Icon name="stage-outline" size="2rem" noCursor={true}/>
                     <SelectInput
                       placeholder="Stages"
                       onChange={(e) => listHandleTags(e, "stages")}
@@ -600,13 +601,14 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                   name="checkmark-outline"
                   size="24px"
                   onClick={handleUpdateTask}
+                  title="Update"
                 />
               </div>
             </>
           ) : (
             <div className="view-task-body">
               <div className="employee-info">
-                <Icon name="employee-outline" size="24px" />
+                <Icon name="employee-outline" size="24px" noCursor={true}/>
                 <span>
                   {user._id === task.assignedTo._id
                     ? `You`
@@ -615,7 +617,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               </div>
               <div className="ta-td-date">
                 <span>TA Date :</span>
-                <Icon name="calender-outline" size="24px" />
+                <Icon name="calender-outline" size="24px" noCursor={true}/>
                 <span>{formatDate(task.assignedDate)}</span>
               </div>
               <div className="ta-td-date">
@@ -627,6 +629,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                     task.dueDate,
                     task.status
                   )}
+                  noCursor={true}
                 />
                 <span style={{
                   color: dueDateColor(
@@ -636,15 +639,15 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 }}>{formatDate(task.dueDate)}</span>
               </div>
               <div className="priority-info">
-                <Icon name="priority-outline" size="24px" />
+                <Icon name="priority-outline" size="24px" noCursor={true}/>
                 <span>{task.priority}</span>
               </div>
               <div className="status-info">
-                <Icon name="status-outline" size="24px" />
+                <Icon name="status-outline" size="24px" noCursor={true}/>
                 <span>{task.status}</span>
               </div>
               <div className="stage-info">
-                <Icon name="stage-outline" size="24px" />
+                <Icon name="stage-outline" size="24px" noCursor={true}/>
                 <span>{task.stage}</span>
               </div>
               <div className="del-edit-btn">
@@ -655,6 +658,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                         name="delete-outline"
                         size="24px"
                         onClick={() => setDeleteFlag(true)}
+                        title="Delete"
                       />
                     </div>
                   )}
@@ -662,6 +666,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                   name="edit-outline"
                   size="24px"
                   onClick={() => setEditFlag(true)}
+                  title="Edit"
                 />
               </div>
             </div>
@@ -670,7 +675,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
 
         <div className="progress-duration-details">
           <div className="progress-duration">
-            <Icon name="progress-outline" size="2rem" />
+            <Icon name="progress-outline" size="2rem" noCursor={true}/>
             <label
               htmlFor="progress"
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
@@ -692,7 +697,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
             </span>
           </div>
           <div className="progress-duration">
-            <Icon name="duration-outline" size="2rem" />
+            <Icon name="duration-outline" size="2rem" noCursor={true}/>
             <label
               htmlFor="duration"
               style={{ color: "black", fontWeight: "bold", margin: "1rem" }}
@@ -718,13 +723,14 @@ const ViewTask = ({ onCancel, taskId, section }) => {
                 name="checkmark-outline"
                 size="2rem"
                 onClick={handleDailyUpdate}
+                title="Update"
               />
             </div>
           </div>
         </div>
         <div className="task-note-container">
           <div className="task-note">
-            <Icon name="task-note-outline" size="2rem" />
+            <Icon name="task-note-outline" size="2rem" noCursor={true}/>
             <span
               style={{
                 color: "black",
@@ -755,7 +761,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
         </div>
         <div className="updates-container">
           <div className="update-header">
-            <Icon name="info-outline" size="24px" />
+            <Icon name="info-outline" size="24px" noCursor={true}/>
             <span>Updates</span>
           </div>
           <div className="update-body">
