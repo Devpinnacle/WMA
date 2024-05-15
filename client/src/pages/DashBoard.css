@@ -212,6 +212,7 @@
     height: 80px;
     color: black;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .project-item-header {

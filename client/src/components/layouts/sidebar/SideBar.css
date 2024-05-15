@@ -25,14 +25,12 @@
     gap: 1rem;
     padding: 0.5rem;
     align-items: center;
-    cursor: pointer;
 }
 
 .profile-img-container {
     height: 48px;
     width: 48px;
     border-radius: 50%;
-    cursor: pointer;
     overflow: hidden;
     background-color: #EDB1A1;
 }

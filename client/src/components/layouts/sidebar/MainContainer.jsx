@@ -46,6 +46,7 @@ export default function MainContainer({ onGoBack, children, pageName, userName }
                         <Icon
                             name={pageIcons[pageName]}
                             size="50px"
+                            noCursor={true}
                         />
                         {/* </div> */}
                         <span className="ml-4" style={{color:"#3D405B"}}>{pageName}{" "}{userName}</span>

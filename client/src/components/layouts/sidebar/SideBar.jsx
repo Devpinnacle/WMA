@@ -30,7 +30,8 @@ export default function SideBar() {
             <Icon
               name="bell-icon"
               onClick={()=>setUserNotificationFlag(true)}
-              size="26px"/>
+              size="26px"
+              title="Notification"/>
           </div>)}
         </div>
         <div className="sidebar-container"></div>
