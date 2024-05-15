@@ -476,7 +476,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
         </div>
         <div className="section-item-top" style={{ backgroundColor: setSectionDueColor(section.dueDate, section.progress, section.totalTask) }}>
           <div className="section-item-top-left" >
-            <Icon name="section-outline" size="2.5rem" />
+            <Icon name="section-outline" size="2.5rem" noCursor={true}/>
             <span
               className="ml-2"
               style={{ fontSize: "22px", fontWeight: "400" }}

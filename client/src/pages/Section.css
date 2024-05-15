@@ -125,6 +125,7 @@
 .section-task-body{
     border-radius: 8px;
     background-color:#FBEFDA    ;
+    cursor: pointer;
 }
 
 .section-task-details{
