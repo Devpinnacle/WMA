@@ -8,7 +8,7 @@ const Section = require("../models/Sections");
 
 exports.getProjects = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
-  const group = req.user.userGroupName;
+  const group = req.user.softDesig;
 
   const projects = await Project.find(
     {},

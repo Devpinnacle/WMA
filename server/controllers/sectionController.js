@@ -37,7 +37,7 @@ exports.addSection = catchAsync(async (req, res, next) => {
 exports.getSection = catchAsync(async (req, res, next) => {
   const { projectId } = req.body;
   const userId = req.user._id;
-  const group = req.user.userGroupName;
+  const group = req.user.softDesig;
 
   if (!projectId) {
     return next(new AppError("Please provide Project ID.", 400));

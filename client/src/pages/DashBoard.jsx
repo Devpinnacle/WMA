@@ -108,18 +108,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     socket.on("Notifie", (data) => {
-      if (user?.userGroupName !== "Software") {
+      if (user?.softDesig !== "Software") {
         dispatch(getNotifications(data));
       }
     });
-    return () => socket?.off("N");
+    return () => socket?.off("Notifie");
   }, []);
 
   useEffect(() => {
     socket.on("chats", (data) => {
       dispatch(getChats(data));
     });
-    return () => socket?.off("N");
+    return () => socket?.off("chats");
   }, []);
 
   useEffect(() => {
@@ -366,7 +366,7 @@ const Dashboard = () => {
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
-              {user?.userGroupName === "Software" ? (
+              {user?.softDesig === "Software" ? (
                 <>
                   {/* TODAY'S TASK */}
                   <span className="title">Today's task</span>
@@ -579,7 +579,7 @@ const Dashboard = () => {
                     onChange={handleTags}
                     options={tags}
                   />
-                  {user?.userGroupName !== "Software" && (
+                  {user?.softDesig !== "Software" && (
                     <Icon
                       className="icon"
                       name="add-outline"

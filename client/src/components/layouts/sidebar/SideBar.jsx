@@ -25,7 +25,7 @@ export default function SideBar() {
               <span className="profile-details_post">{user?.designationName}</span>
             </div>
           </div>
-          {user?.userGroupName==="Software"&&(
+          {user?.softDesig==="Software"&&(
           <div className="bell-icon">
             <Icon
               name="bell-icon"

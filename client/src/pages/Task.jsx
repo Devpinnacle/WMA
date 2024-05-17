@@ -205,7 +205,7 @@ const Task = () => {
                 {sec.completedTasks}
               </span>
             </span>
-            {user.userGroupName === "Software" && (
+            {user.softDesig === "Software" && (
               <span
                 style={{ fontSize: "16px", fontWeight: "400" }}
               >
@@ -261,7 +261,7 @@ const Task = () => {
             <span
               style={{ fontSize: "16px", fontWeight: "400" }}
             >
-              {user.userGroupName === "Software"
+              {user.softDesig === "Software"
                 ? `Task assigned to you:`
                 : `Total task:`}
               <span
@@ -302,7 +302,7 @@ const Task = () => {
                 {sec.onHoldTasks}
               </span>
             </span>
-            {user.userGroupName === "Software" && (
+            {user.softDesig === "Software" && (
               <span
                 style={{ fontSize: "16px", fontWeight: "400" }}
               >

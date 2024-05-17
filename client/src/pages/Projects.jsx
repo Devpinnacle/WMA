@@ -93,7 +93,7 @@ const Projects = () => {
               </div>
             </div>
           </div>
-          {user.userGroupName !== "Software" && (
+          {user.softDesig !== "Software" && (
             <button className="btn-outline" onClick={() => setAddProjectFlag(true)}>
               <Icon name="add-outline" size="2rem" title="Add" />
               Add Project
@@ -127,7 +127,7 @@ const Projects = () => {
               {proj.sctProjectName}
             </div>
             <div className="project-info">
-              {user.userGroupName !== "Software" && (
+              {user.softDesig !== "Software" && (
                 <span>
                   Addition By :
                   <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
@@ -149,7 +149,7 @@ const Projects = () => {
                   {proj.inProgressTasks}
                 </span>
               </span>
-              {user.userGroupName !== "Software" && (
+              {user.softDesig !== "Software" && (
                 <span>
                   Total Sections:
                   <span style={{ fontWeight: "bold", marginLeft: "3px" }}>
@@ -158,7 +158,7 @@ const Projects = () => {
                 </span>
               )}
               <span>
-                {user.userGroupName !== "Software"
+                {user.softDesig !== "Software"
                   ? `Total tasks`
                   : `Total task assigned to you`}
                 :{" "}

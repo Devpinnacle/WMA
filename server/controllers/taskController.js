@@ -7,7 +7,7 @@ const Section = require("../models/Sections");
 
 exports.getTasks = catchAsync(async (req, res, next) => {
   const { user } = req;
-  const { userGroupName } = user;
+  const { softDesig } = user;
   const { _id: userId } = user;
   const { sectionId } = req.body;
 
@@ -17,10 +17,10 @@ exports.getTasks = catchAsync(async (req, res, next) => {
 
   let query = { sectionId, deletedStatus: false };
 
-  if (userGroupName === "Super Admin" || userGroupName === "Administrator") {
+  if (softDesig === "Admin") {
     // For Super Admins or Administrators
     query = { ...query };
-  } else if (userGroupName === "Software") {
+  } else if (softDesig === "Software") {
     // For Software Users
     query = { ...query, assignedTo: userId };
   } else {

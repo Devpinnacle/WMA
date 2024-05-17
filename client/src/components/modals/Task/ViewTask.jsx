@@ -119,7 +119,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     socket.on("taskNotifications", (data) => {
       dispatch(getTaskNotifications(data));
     });
-    return () => socket?.off("N");
+    return () => socket?.off("taskNotifications");
   }, []);
 
   const listHandleTags = (e, name) => {
@@ -244,7 +244,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     await updateTaskStg(fromData);
     getSections(selectedProject);
-    if (user.userGroupName === "Software") {
+    if (user.softDesig === "Software") {
       notifiyTaskEdit({ sectionId: section._id, projectId: section.projectId });
     } else {
       notifiyTaskEdit({
@@ -333,7 +333,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
 
     await updateDailyTask(fromData);
     getSections(selectedProject);
-    if (user.userGroupName === "Software") {
+    if (user.softDesig === "Software") {
       notifiyTaskProgress({
         sectionId: section._id,
         projectId: section.projectId,
@@ -371,7 +371,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     if (task.notes !== notes) {
       updateNotes(fromData);
-      if (user.userGroupName === "Software") {
+      if (user.softDesig === "Software") {
         notifiyTaskNotes({
           sectionId: section._id,
           projectId: section.projectId,
@@ -393,7 +393,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     await deleteTask(fromData);
     getSections(selectedProject);
-    if (user.userGroupName === "Software") {
+    if (user.softDesig === "Software") {
       notifiyTaskDelete({
         sectionId: section._id,
         projectId: section.projectId,
@@ -652,7 +652,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               </div>
               <div className="del-edit-btn">
                 {(user._id === task.createdBy._id ||
-                  user.userGroupName !== "Software") && (
+                  user.softDesig !== "Software") && (
                     <div className="del-btn">
                       <Icon
                         name="delete-outline"

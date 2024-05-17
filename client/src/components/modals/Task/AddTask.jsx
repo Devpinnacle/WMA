@@ -37,7 +37,7 @@ const AddTask = ({ onCancel }) => {
     stages: "",
   });
 
-  if (!(user.userGroupName === "Software")) useGetSwUsersQuery();
+  if (!(user.softDesig === "Software")) useGetSwUsersQuery();
   const [addTask] = useAddTaskMutation();
   const [notifiyTaskAdd] = useNotifiyTaskAddMutation();
   const [getSections] = useGetSectionMutation();
@@ -121,7 +121,7 @@ const AddTask = ({ onCancel }) => {
       return;
     }
 
-    if (!(user.userGroupName === "Software")) {
+    if (!(user.softDesig === "Software")) {
       if (tag.length === 0) {
         setAlertFlag(true);
         setErrorMsg("You have to assign the task to someone");
@@ -188,7 +188,7 @@ const AddTask = ({ onCancel }) => {
     };
     await addTask(fromData);
     getSections(selectedProject);
-    if (user.userGroupName === "Software") {
+    if (user.softDesig === "Software") {
       notifiyTaskAdd({ sectionId: sec._id, projectId: sec.projectId });
     } else {
       notifiyTaskAdd({
@@ -252,7 +252,7 @@ const AddTask = ({ onCancel }) => {
           />
         </div>
         <div className="assignee-details">
-          {!(user.userGroupName === "Software") && (
+          {!(user.softDesig === "Software") && (
             <>
               {" "}
               <div className="select-box">

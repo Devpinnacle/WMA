@@ -30,7 +30,7 @@ const UserNotification = ({ onCancel }) => {
     socket.on("userNotification", (data) => {
       dispatch(getNotifications(data));
     });
-    return () => socket?.off("N");
+    return () => socket?.off("join");
   }, []);
 
   const handleNotificationTags = (e) => {

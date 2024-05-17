@@ -58,7 +58,7 @@ export default function SidebarTop() {
           Projects
         </NavLink>
 
-        {!(user?.userGroupName === "Software") && (
+        {!(user?.softDesig === "Software") && (
           <>
             <div className="top-link-items">
               <NavLink
