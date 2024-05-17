@@ -52,6 +52,7 @@ const AddNotes = ({ onCancel }) => {
               name="head"
               placeholder="Notes Heading"
               onChange={inputHandler}
+              required
             />
           </div>
           <div className="notes-input">
@@ -61,6 +62,7 @@ const AddNotes = ({ onCancel }) => {
               name="msg"
               placeholder="Notes "
               onChange={inputHandler}
+              required
             />
           </div>
           <div className='save-button'>
