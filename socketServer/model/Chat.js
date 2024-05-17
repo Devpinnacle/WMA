@@ -61,4 +61,4 @@ chatSchema.pre('save', async function(next) {
   }
 });
 
-module.exports=chats=mongoose.model("chats",chatSchema)
+module.exports=chats=mongoose.model("softwarechats",chatSchema)
