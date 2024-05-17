@@ -151,6 +151,9 @@ const EmpDetailsSchema = new mongoose.Schema({
   empLoginStatus: {
     type: Number,
   },
+  softDesig:{
+    type:String,
+  }
 });
 
 module.exports = empdetails = mongoose.model("empdetails", EmpDetailsSchema);

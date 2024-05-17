@@ -160,6 +160,9 @@ const EmpDetailsSchema = new mongoose.Schema({
       },
     },
   ],
+  softDesig:{
+    type:String,
+  }
 });
 
 module.exports = empdetails = mongoose.model("empdetails", EmpDetailsSchema);
