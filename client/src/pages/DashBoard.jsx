@@ -326,10 +326,6 @@ const Dashboard = () => {
     setToggeleFlag(false);
   };
 
-  useEffect(() => {
-    console.log(chatMsg);
-  }, [chatMsg]);
-
   const handleToggle = () => {
     if (toggleFlag) setToggeleFlag(false);
     else setToggeleFlag(true);
