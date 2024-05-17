@@ -235,6 +235,7 @@
 .chat-container {
     overflow-y: auto;
     max-height: 250px;
+    height: 250px;
 }
 .chat-input.hidden {
     display: none;
