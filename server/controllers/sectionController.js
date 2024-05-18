@@ -59,7 +59,7 @@ exports.getSection = catchAsync(async (req, res, next) => {
   ).populate("createdBy", "userName");
 
   // Process sections asynchronously and store the results
-  if (group === "Software") {
+  if (group === "members") {
     const updatedSections = await Promise.all(
       sections.map(async (section) => {
         const userTasks = await Task.find(

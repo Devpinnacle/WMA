@@ -244,7 +244,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     await updateTaskStg(fromData);
     getSections(selectedProject);
-    if (user.softDesig === "Software") {
+    if (user.softDesig === "members") {
       notifiyTaskEdit({ sectionId: section._id, projectId: section.projectId });
     } else {
       notifiyTaskEdit({
@@ -333,7 +333,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
 
     await updateDailyTask(fromData);
     getSections(selectedProject);
-    if (user.softDesig === "Software") {
+    if (user.softDesig === "members") {
       notifiyTaskProgress({
         sectionId: section._id,
         projectId: section.projectId,
@@ -371,7 +371,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     if (task.notes !== notes) {
       updateNotes(fromData);
-      if (user.softDesig === "Software") {
+      if (user.softDesig === "members") {
         notifiyTaskNotes({
           sectionId: section._id,
           projectId: section.projectId,
@@ -393,7 +393,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
     };
     await deleteTask(fromData);
     getSections(selectedProject);
-    if (user.softDesig === "Software") {
+    if (user.softDesig === "members") {
       notifiyTaskDelete({
         sectionId: section._id,
         projectId: section.projectId,
@@ -652,7 +652,7 @@ const ViewTask = ({ onCancel, taskId, section }) => {
               </div>
               <div className="del-edit-btn">
                 {(user._id === task.createdBy._id ||
-                  user.softDesig !== "Software") && (
+                  user.softDesig !== "members") && (
                     <div className="del-btn">
                       <Icon
                         name="delete-outline"

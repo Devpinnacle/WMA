@@ -14,7 +14,7 @@ exports.addNotification = catchAsync(async (req, res, next) => {
     symbol: "log-outline",
   };
 
-  if (group === "Software") {
+  if (group === "members") {
     notificationData.empUserId = req.user._id;
   }
 
@@ -27,7 +27,7 @@ exports.getNotification = catchAsync(async (req, res, next) => {
   let query = {};
   const group = req.user.softDesig;
 
-  if (group === "Software") {
+  if (group === "members") {
     query.empUserId = req.user._id;
   }
 
@@ -61,7 +61,7 @@ exports.addSectionNotification = catchAsync(async (req, res, next) => {
     projectId: projectId,
   };
 
-  if (group === "Software") {
+  if (group === "members") {
     notificationData.empUserId = req.user._id;
   }
 
@@ -108,7 +108,7 @@ exports.deleteSectionNotification = catchAsync(async (req, res, next) => {
     "has deleted section in",
     res,
     next,
-    group === "Software" ? req.user._id : null
+    group === "members" ? req.user._id : null
   );
 });
 
@@ -120,7 +120,7 @@ exports.addTaskNotification = catchAsync(async (req, res, next) => {
 
   const notificationsToAdd = [];
 
-  if (group === "Software") {
+  if (group === "members") {
     notificationsToAdd.push({
       userId: userId,
       projectId: projectId,
@@ -176,7 +176,7 @@ exports.editTaskNotification = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide projectId and sectionId", 400));
   }
 
-  const empUserId = group === "Software" ? req.user._id : req.body.Id;
+  const empUserId = group === "members" ? req.user._id : req.body.Id;
 
   addNotification(
     userId,
@@ -196,7 +196,7 @@ exports.deleteTaskNotification = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const { projectId, sectionId } = req.body;
   const group = req.user.softDesig;
-  const empUserId = (group === "Software") ? req.user._id : req.body.Id;
+  const empUserId = (group === "members") ? req.user._id : req.body.Id;
 
   addNotification(
     userId,
@@ -216,7 +216,7 @@ exports.progressTaskNotification = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const { projectId, sectionId } = req.body;
   const group = req.user.softDesig;
-  const empUserId = (group === "Software") ? req.user._id : req.body.Id;
+  const empUserId = (group === "members") ? req.user._id : req.body.Id;
   addNotification(
     userId,
     projectId,
@@ -235,7 +235,7 @@ exports.notesTaskNotification = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const { projectId, sectionId } = req.body;
   const group = req.user.softDesig;
-  const empUserId = (group === "Software") ? req.user._id : req.body.Id;
+  const empUserId = (group === "members") ? req.user._id : req.body.Id;
   addNotification(
     userId,
     projectId,

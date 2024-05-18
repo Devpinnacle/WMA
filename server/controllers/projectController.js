@@ -15,7 +15,7 @@ exports.getProjects = catchAsync(async (req, res, next) => {
     { tags: 1, sctProjectName: 1, sctProjectEnteredById: 1 }
   ).populate("sctProjectEnteredById", "userName");
 
-  if (group === "Software") {
+  if (group === "members") {
     const updatedProjects = await Promise.all(
       projects.map(async (project) => {
         const userTasks = await Task.find({

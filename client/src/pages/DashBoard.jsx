@@ -87,6 +87,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const chatTags = project.map((proj) => ({
     label: proj.sctProjectName,
     value: proj.sctProjectName,
@@ -108,7 +109,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     socket.on("Notifie", (data) => {
-      if (user?.softDesig !== "Software") {
+      if (user?.softDesig !== "members") {
         dispatch(getNotifications(data));
       }
     });
@@ -362,7 +363,7 @@ const Dashboard = () => {
         <div className="dashboard-upper-grid">
           <div className="dashboard-item">
             <div className="notification">
-              {user?.softDesig === "Software" ? (
+              {user?.softDesig === "members" ? (
                 <>
                   {/* TODAY'S TASK */}
                   <span className="title">Today's task</span>
@@ -575,7 +576,7 @@ const Dashboard = () => {
                     onChange={handleTags}
                     options={tags}
                   />
-                  {user?.softDesig !== "Software" && (
+                  {user?.softDesig !== "members" && (
                     <Icon
                       className="icon"
                       name="add-outline"

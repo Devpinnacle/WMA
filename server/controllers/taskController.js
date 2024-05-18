@@ -24,7 +24,7 @@ console.log("user",req,req.user,req.user.refreshTokens);
   if (softDesig === "Admin") {
     // For Super Admins or Administrators
     query = { ...query };
-  } else if (softDesig === "Software") {
+  } else if (softDesig === "members") {
     // For Software Users
     query = { ...query, assignedTo: userId };
   } else {

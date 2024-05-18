@@ -247,7 +247,7 @@ const Section = () => {
                     {sec.completedTasks}
                   </span>
                 </span>
-                {user.softDesig === "Software" && (
+                {user.softDesig === "members" && (
                   <span style={{ fontSize: "16px" }}>
                     Tasks in progress:
                     <span
@@ -296,7 +296,7 @@ const Section = () => {
                   </span>
                 </span>
                 <span style={{ fontSize: "16px" }}>
-                  {user.softDesig === "Software"
+                  {user.softDesig === "members"
                     ? `Task assigned to you:`
                     : `Total task:`}
                   <span
@@ -333,7 +333,7 @@ const Section = () => {
                     {sec.onHoldTasks}
                   </span>
                 </span>
-                {user.softDesig === "Software" && (
+                {user.softDesig === "members" && (
                   <span style={{ fontSize: "16px" }}>
                     Your total progress:
                     <span
@@ -349,7 +349,7 @@ const Section = () => {
                 )}
               </div>
             </div>
-            {user.softDesig === "Software" && (
+            {user.softDesig === "members" && (
               <div className="section-task-container">
                 {sec.tasks.map((task) => (
                   <div className="section-task-body" onClick={() => handleTaskView(task._id, sec)}
@@ -418,7 +418,7 @@ const Section = () => {
 
             <div className="section-details-bottom">
               <div className="mt-4">
-                {user.softDesig !== "Software" && (
+                {user.softDesig !== "members" && (
                   <Icon
                     name="edit-outline"
                     size="2.5rem "
