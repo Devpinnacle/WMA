@@ -29,7 +29,11 @@ exports.getNotification = catchAsync(async (req, res, next) => {
 
   if (group === "members") {
     query.empUserId = req.user._id;
+
   }
+  // else{
+  //   query={..query};
+  // }
 
   const notifications = await Notification.find(query)
     .populate("userId", "userName")

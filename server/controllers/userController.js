@@ -49,7 +49,7 @@ exports.login = catchAsync(async (req, res, next) => {
 //* Get Software user *********************************************************
 
 exports.getSwUsers = catchAsync(async (req, res, next) => {
-  const users =  await User.find({ empStatus: "Active", softDesig: "members", userGroupName:{$in:["Super Admin", "Software"]} },{userName:1});
+  const users =  await User.find({ empStatus: "Active", softDesig: "members", userGroupName:{$in:[ "Software"]} },{userName:1});
   res.status(200).json({
     status: "SUCCESS",
     data: users,
