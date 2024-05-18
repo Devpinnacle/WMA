@@ -13,6 +13,7 @@ async function updateDailyReport() {
     // Get yesterday's date
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0,0,0,0)
 
     // Fetch tasks that are in progress or were completed yesterday
     const tasks = await Task.find({
