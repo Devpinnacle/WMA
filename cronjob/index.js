@@ -21,7 +21,7 @@ async function updateDailyReport() {
         {
           $or: [
             { status: "In Progress" },
-            { completedDate: { $gte: yesterday, $lt: new Date() } },
+            { completedDate: { $eq: yesterday } },
           ],
         },
         {
