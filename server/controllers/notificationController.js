@@ -29,17 +29,22 @@ exports.getNotification = catchAsync(async (req, res, next) => {
 
   if (group === "members") {
     query.empUserId = req.user._id;
-
   }
-  // else{
-  //   query={..query};
-  // }
+
+  // Calculate the date 5 days ago
+  const fiveDaysAgo = new Date();
+  fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+
+  // Add date range to query
+  query.createdDate = {
+    $gte: fiveDaysAgo
+  };
 
   const notifications = await Notification.find(query)
     .populate("userId", "userName")
     .populate("projectId", "sctProjectName")
     .populate("sectionId", "sectionName")
-    .populate("empUserId","userName");
+    .populate("empUserId", "userName");
 
   res.status(200).json({
     status: "success",

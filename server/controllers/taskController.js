@@ -11,8 +11,6 @@ exports.getTasks = catchAsync(async (req, res, next) => {
   const { _id: userId } = user;
   const { sectionId } = req.body;
 
-console.log("user",req,req.user,req.user.refreshTokens);
-
   // console.log("softDesig",softDesig)
 
   if (!sectionId) {

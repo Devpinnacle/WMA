@@ -49,7 +49,15 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("login", async (data) => {
-    const notifications = await Notification.find({})
+    let query={}
+    const fiveDaysAgo = new Date();
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+  
+    // Add date range to query
+    query.createdDate = {
+      $gte: fiveDaysAgo
+    };
+    const notifications = await Notification.find(query)
       .populate("userId", "userName")
       .populate("projectId", "sctProjectName")
       .populate("sectionId", "sectionName");
@@ -57,7 +65,15 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("updateNotification", async (data) => {
-    const notifications = await Notification.find({})
+    let query={}
+    const fiveDaysAgo = new Date();
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+  
+    // Add date range to query
+    query.createdDate = {
+      $gte: fiveDaysAgo
+    };
+    const notifications = await Notification.find(query)
       .populate("userId", "userName")
       .populate("projectId", "sctProjectName")
       .populate("sectionId", "sectionName");
@@ -72,7 +88,16 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("userNotification", async (Id) => {
-    const notifications = await Notification.find({ empUserId: Id })
+    let query={}
+    const fiveDaysAgo = new Date();
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+  
+    // Add date range to query
+    query.createdDate = {
+      $gte: fiveDaysAgo
+    };
+    query.empUserId=Id
+    const notifications = await Notification.find(query)
       .populate("userId", "userName")
       .populate("projectId", "sctProjectName")
       .populate("sectionId", "sectionName")
