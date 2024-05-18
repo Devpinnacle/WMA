@@ -59,7 +59,7 @@ const UserNotification = ({ onCancel }) => {
       dashedFormatDate(notificationDate) === dashedFormatDate(selectedDate);
     const isTagMatched =
       notificationTag.length === 0 ||
-      notificationTag.includes(tg.value);
+      notificationTag.some((tg) => notification.priority.includes(tg.value));
     return isDateMatched && isTagMatched;
   });
 
